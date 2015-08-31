@@ -1693,25 +1693,27 @@ end
 --------------------------------------------------------------------------------
 function ENT:SpawnFunction(ply, tr)
 	--MaxTrains limit
-	local Limit1 = math.min(2,GetConVarNumber("metrostroi_maxwagons"))*GetConVarNumber("metrostroi_maxtrains_onplayer")
-	local Limit2 = math.max(0,GetConVarNumber("metrostroi_maxwagons")-2)*GetConVarNumber("metrostroi_maxtrains_onplayer")
+	if self.ClassName ~= "gmod_subway_base" then
+		local Limit1 = math.min(2,GetConVarNumber("metrostroi_maxwagons"))*GetConVarNumber("metrostroi_maxtrains_onplayer")
+		local Limit2 = math.max(0,GetConVarNumber("metrostroi_maxwagons")-2)*GetConVarNumber("metrostroi_maxtrains_onplayer")
 
-	if Metrostroi.TrainCount() + 1 > GetConVarNumber("metrostroi_maxtrains")*GetConVarNumber("metrostroi_maxwagons") then
-		Metrostroi.LimitMessage(ply)
-		return
-	end
-	
-	if self.ClassName:find("ezh3") or self.ClassName:find("717") or self.ClassName:find("7036") then
-		if Metrostroi.TrainCountOnPlayer(ply, "gmod_subway_81-717", "gmod_subway_ezh3", "gmod_subway_81-7036") + 1 > Limit1 then
+		if Metrostroi.TrainCount() + 1 > GetConVarNumber("metrostroi_maxtrains")*GetConVarNumber("metrostroi_maxwagons") then
 			Metrostroi.LimitMessage(ply)
 			return
 		end
-	elseif self.ClassName:find("ema") or self.ClassName:find("714") or self.ClassName:find("7037") then
-		if Metrostroi.TrainCountOnPlayer(ply, "gmod_subway_81-714", "gmod_subway_ema", "gmod_subway_81-7037") + 1 > Limit2 then
-			Metrostroi.LimitMessage(ply)
-			return
+		
+		if self.ClassName:find("ezh3") or self.ClassName:find("717") or self.ClassName:find("7036") then
+			if Metrostroi.TrainCountOnPlayer(ply, "gmod_subway_81-717", "gmod_subway_ezh3", "gmod_subway_81-7036") + 1 > Limit1 then
+				Metrostroi.LimitMessage(ply)
+				return
+			end
+		elseif self.ClassName:find("ema") or self.ClassName:find("714") or self.ClassName:find("7037") then
+			if Metrostroi.TrainCountOnPlayer(ply, "gmod_subway_81-714", "gmod_subway_ema", "gmod_subway_81-7037") + 1 > Limit2 then
+				Metrostroi.LimitMessage(ply)
+				return
+			end
+		--elseif self.ClassName:find("tatra") then
 		end
-	--elseif self.ClassName:find("tatra") then
 	end
 	local verticaloffset = 5 -- Offset for the train model
 	local distancecap = 2000 -- When to ignore hitpos and spawn at set distanace

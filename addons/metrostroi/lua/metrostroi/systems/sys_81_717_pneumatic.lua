@@ -512,7 +512,7 @@ function TRAIN_SYSTEM:Think(dT)
 			end
 			
 			if self.CloseValue == nil then
-				self.CloseValue = (math.random() > 0.05) --05)
+				self.CloseValue = (math.random() > 0.005) --05)
 				if self.CloseValue == false then print("DOOR FAIL",self.Train) end
 				--print("DOOR DESTINY",self.CloseValue)
 			end

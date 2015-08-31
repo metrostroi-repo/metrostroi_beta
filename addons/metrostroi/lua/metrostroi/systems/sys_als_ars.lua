@@ -82,7 +82,7 @@ end
 function TRAIN_SYSTEM:Outputs()
 	return { "2", "8", "20", "31", "32", "29", "33D", "33G", "33Zh",
 			 "Speed", "Signal80","Signal70","Signal60","Signal40","Signal0","Special","NoFreq","RealNoFreq",
-			 "SpeedLimit", "NextLimit","Ring","KVT","EnableARS","EnableALS","Signal"}
+			 "SpeedLimit", "NextLimit","Ring","KVT","EnableARS","EnableALS","Signal", "UAVA"}
 end
 
 function TRAIN_SYSTEM:Inputs()
@@ -615,7 +615,7 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 				self.ElectricBrake = true
 			end
 		end
-		if self.Overspeed and not self.ElectricBrake1 then
+		if self.Overspeed then
 			self.ARSBrake = true
 			self.ElectricBrake = true
 			self.ElectricBrake1 = true
@@ -700,8 +700,11 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 				self.PneumaticBrake1 = false
 			end
 		end
-		if self.Signal0 and not self.RealNoFreq and not self.Signal40 and not self.Signal60 and not self.Signal70 and not self.Signal80 and not Train["PA-KSD"].VRD then self.ElectricBrake1 = true self.ARSBrake = true self.VRD = true end
-		if not self.Signal0 and not Train["PA-KSD"].VRD and self.VRD then self.VRD = false self.ElectricBrake1 = false self.ARSBrake = false end
+		if self.Signal0 and not self.RealNoFreq and not self.Signal40 and not self.Signal60 and not self.Signal70 and not self.Signal80 then
+			if not Train["PA-KSD"].VRD then self.ElectricBrake1 = true self.ARSBrake = true self.VRD = true end
+		else
+			if not self.Signal0 and self.VRD then self.VRD = false self.ElectricBrake1 = false self.ARSBrake = false end
+		end
 		-- Door close cancel pneumatic brake 1 command trigger
 		if (Train:GetSkin() == 1) and (Train.KD) and Train.SubwayTrain.Name:sub(1,-2) == "81-71" then
 			-- Prepare
@@ -743,16 +746,19 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 		self.LVD = self.LVD or self["33D"] < 0.5
 		if Train:ReadTrainWire(6) < 1 and self["33D"] > 0.5  then  self.LVD = false end
 		self.Ring = ((self["33D"] < 0.5 and NFBrake < 1 and self.ElectricBrake) or self.KSZD)
+		if self.ElectricBrake and self.ARSBrake and NFBrake < 1 then
+			if self.EPKTimer4 == nil then self.EPKTimer4 = CurTime() + 5 end
+		else
+			self.EPKTimer4 = nil
+		end
 		if self.ElectricBrake1 or self.PneumaticBrake2 then
 			if not self.LKT and not self.EPKTimer then
 				self.EPKTimer = CurTime() + ((10 <= self.Speed and self.Speed <= 30) and 5.5 or 3.3)
 			elseif self.LKT then
 				self.EPKTimer = nil
 			end
-			if self.EPKTimer4 == nil then self.EPKTimer4 = CurTime() + 5 end
 		else
 			self.EPKTimer = nil
-			self.EPKTimer4 = nil
 		end
 		if self.KVT and self.EPKTimer4 then self.EPKTimer4 = false end
 		if self.BPSActive then self.AntiRolling = false end
@@ -772,7 +778,7 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 		if (Train.RPB) and not self.AttentionPedal then
 			--Train.RPB:TriggerInput("Open",1)
 		end
-		
+		self.AntiRolling = false
 		self.ElectricBrake = true
 		self.ElectricBrake1 = true
 		self.PneumaticBrake1 = false
