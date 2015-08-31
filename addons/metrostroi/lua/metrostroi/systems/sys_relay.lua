@@ -257,5 +257,6 @@ function TRAIN_SYSTEM:Think(dT)
 		if self.in_cabin_alt3 and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close4","cabin",0.6)		end
 		if self.in_cabin_avu and (self.Value == 0.0) then	self.Train:PlayOnce("relay_open","cabin",0.7,70)	end
 		if self.in_cabin_avu and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close","cabin",0.7,70)	end
+		if self.in_cabin_alt4 and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close5","cabin",0.6)		end
 	end
 end

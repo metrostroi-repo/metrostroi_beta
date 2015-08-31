@@ -878,7 +878,7 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 		local KAH = (Train.KAH ~= nil and Train.KAH.Value > 0.5) and 1 or 0
 		self["33D"] = KAH
 		self["33G"] = 0                
-		self["33Zh"] = KAH
+		self["33Zh"] = 1--KAH
 		--
 		self["2"] = 0
 		self["20"] = 0
@@ -890,13 +890,13 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 
 		if not EnableARS and EnableUOS then
 			self["33D"] = (self.Speed + 0.5 > 40) and 0 or KAH
-			self["33Zh"] = (self.Speed + 0.5 > 40) and 0 or KAH
+			self["33Zh"] = 1--(self.Speed + 0.5 > 40) and 0 or KAH
 			self["8"] = (self.Speed + 0.5 > 40) and 1 or KRUEnabled and (1-Train.RPB.Value) or 0
 		end
 	else
 		if (not EPKActivated) then
 			self["33D"] = 0
-			self["33Zh"] = 0
+			self["33Zh"] = 1
 		end
 	end
 end
@@ -1199,7 +1199,7 @@ function TRAIN_SYSTEM:Think()
 	-- 81-717 autodrive/autostop
 	if (Train.Pneumatic and Train.Pneumatic.EmergencyValve) or self.UAVAContacts then
 		self["33D"] = 0
-		self["33Zh"] = 0
+		self["33Zh"] = 1
 	end
 
 	-- 81-717 special VZ1 button
