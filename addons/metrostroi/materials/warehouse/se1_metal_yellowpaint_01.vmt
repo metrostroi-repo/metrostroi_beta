@@ -1,0 +1,13 @@
+"lightmappedgeneric"
+{
+	"$basetexture" "WAREHOUSE/SE1_metal_yellowPaint_01"
+	//"$bumpmap" "WAREHOUSE/SE1_metal_yellowPaint_01_Normal"
+	//"$envmap" "env_cubemap"
+	//"$envmapconstrast" "1"
+	//"$envmaptint" "[ .1 .1 .1]"
+	//"$normalmapalphaenvmapmask" 1
+	"$surfaceprop" "metal"
+	"%keywords" "warehouse"
+} 
+
+

@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/props_jorpakko/doubleglass"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models/props_jorpakko/doubleglass_env"
+	"$translucent" 1
+}

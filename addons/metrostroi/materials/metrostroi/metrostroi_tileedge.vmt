@@ -1,0 +1,9 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "metrostroi/metrostroi_tileedge"		"$surfaceprop" "glass"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.5 .5 .5]"
+//	"$envmapmask" "metrostroi/metrostroi_tile1_mask"
+//	"$envmapcontrast" "1"
+	//Texture by Xanadu available for uncredited use
+}

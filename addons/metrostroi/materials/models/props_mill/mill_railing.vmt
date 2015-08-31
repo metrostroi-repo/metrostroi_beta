@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+$baseTexture "metal/urban_metalwall01a_small"
+$surfaceprop metalvent
+$phong 1
+$phongexponent 10
+$phongboost ".15"
+$phongfresnelranges "[.7 15 20]"
+$bumpmap "models/props_fortifications/orangecone001_normal"
+}

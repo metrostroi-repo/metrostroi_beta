@@ -1,0 +1,11 @@
+"LightmappedGeneric"
+
+{
+	"$basetexture" "highrise\se1_exterior_metal_02"
+	"$surfaceprop" "solidmetal"
+
+	
+	"%keywords" "highrise"
+}
+
+

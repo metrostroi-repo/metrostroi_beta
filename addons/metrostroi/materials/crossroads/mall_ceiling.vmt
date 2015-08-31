@@ -1,0 +1,4 @@
+"lightmappedgeneric" {
+    "$basetexture" "crossroads\mall_ceiling"
+    "$surfaceprop" "concrete"
+}

@@ -1,0 +1,7 @@
+"WorldVertexTransition"
+{
+	"$basetexture"  "metrostroi_nature/metronature001"
+	"$basetexture2" "metrostroi_nature/metronature006"
+	"$blendmodulatetexture" "metrostroi_nature/blendnature006_modulation"
+	"%tooltexture"  "metrostroi_nature/metronature006"
+}

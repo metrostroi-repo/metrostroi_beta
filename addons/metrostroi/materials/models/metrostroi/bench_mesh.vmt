@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	$basetexture "models/metrostroi/bench_mesh"
+	$envmap env_cubemap
+	$envmaptint "[.50 .50 .50]"
+}

@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+
+	$basetexture "models/metrostroi/overhang_glass"
+	$envmap env_cubemap
+	$envmapmask "models/metrostroi/overhang_glass_spec"
+	$selfillum 1
+	$selfillumtint "[.85 .85 .85]"
+
+}

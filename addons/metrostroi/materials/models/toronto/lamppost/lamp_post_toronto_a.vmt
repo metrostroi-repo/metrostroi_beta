@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\toronto\LampPost\lamp_post_toronto_a"
+	"$surfaceprop" "metal"
+	"$model"       "1"
+	"%keywords" "LampPosttor1"
+}

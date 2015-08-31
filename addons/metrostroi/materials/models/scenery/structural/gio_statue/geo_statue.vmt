@@ -1,0 +1,8 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\scenery\structural\gio_statue\geo_statue"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models\scenery\structural\gio_statue\geo_statue_envmap"
+	"$surfaceprop" "stone"
+
+}

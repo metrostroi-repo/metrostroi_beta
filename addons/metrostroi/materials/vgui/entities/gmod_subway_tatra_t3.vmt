@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "vgui/entities/gmod_subway_tatra_t3"
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$nolod" 1
+} 

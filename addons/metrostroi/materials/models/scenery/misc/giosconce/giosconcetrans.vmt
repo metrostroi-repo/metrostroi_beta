@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/scenery/misc/giosconce/giosconcetrans"
+//	"$translucent" 1
+}

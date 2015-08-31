@@ -1,0 +1,6 @@
+LightmappedGeneric
+{
+$basetexture "de_train\train_metalgrate_01"
+$translucent 1
+$surfaceprop metalgrate
+}

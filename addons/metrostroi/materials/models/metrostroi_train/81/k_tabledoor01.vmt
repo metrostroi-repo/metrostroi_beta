@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/metrostroi_train/81/k_tabledoor01"
+	"$model" "1"
+	"$translucent" "1"
+	"$nocull" "1" 
+}

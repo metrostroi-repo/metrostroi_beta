@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\scenery\structural\ventrue_tower\twroffhalllightillum"
+	"$surfaceprop" 	"metal"
+	"$selfillum"	"1"
+
+}

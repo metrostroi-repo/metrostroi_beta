@@ -1,0 +1,6 @@
+"Sprite"
+{
+	"$spriteorientation" "vp_parallel"
+	"$spriteorigin" "[ 0.50 0.50 ]"
+	"$basetexture" "models/metrostroi_signals/signal_sprite_002"
+}

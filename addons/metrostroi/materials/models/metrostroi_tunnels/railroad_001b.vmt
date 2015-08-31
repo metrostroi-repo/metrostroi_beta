@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/metrostroi_tunnels/railroad_001b"
+	"$alphatest" "1"
+}

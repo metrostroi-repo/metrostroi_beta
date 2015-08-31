@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\scenery\structural\ventrue_tower\twroffhalllight"
+	"$surfaceprop" "metal"
+
+}

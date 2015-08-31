@@ -1,0 +1,8 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "tile/slatetest"
+	"$surfaceprop" "tile"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.1 .1 .1]"
+	"$bumpmap" "tile/slatetest_ref"
+}

@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/metrostroi_train/signs/v_depo"
+	"$model" "1"
+}

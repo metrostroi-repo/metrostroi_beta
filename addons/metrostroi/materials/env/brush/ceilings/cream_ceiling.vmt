@@ -1,0 +1,10 @@
+
+"LightMappedGeneric"
+{
+	"$color"				"[1 1 1]"
+	"$baseTexture"			"env/brush/ceilings/cream_ceiling"
+	"$selfIllum"			0
+	"$translucent"			0
+	"$alpha"				1
+	"$surfaceprop" "plaster"
+}

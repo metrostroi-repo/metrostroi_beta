@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+
+	$basetexture "models/metrostroi/pillar_squares01"
+	$envmap env_cubemap
+	$envmapmask "models/metrostroi/pillar_squares01_spec"
+}

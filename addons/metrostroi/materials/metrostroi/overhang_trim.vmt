@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	$basetexture "models/metrostroi/overhang_trim"
+	$envmap env_cubemap
+	$envmaptint "[.5 .5 .5]"
+}

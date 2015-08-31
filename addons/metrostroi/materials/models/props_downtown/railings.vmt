@@ -1,0 +1,10 @@
+vertexlitGeneric
+{
+$baseTexture "models/props_downtown/railings"
+
+$AllowFenceRenderStateHack 1
+$AlphaTest 1
+$AlphaTestReference 0.1 
+$Translucent 1
+$FlashlightNoLambert 1
+}

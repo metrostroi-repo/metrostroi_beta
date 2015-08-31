@@ -1,0 +1,7 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "stone/lawflra"
+	"$envmap" "envmap/pwnshpcntr"
+	"$envmapmask" "stone/lawflra_ref"
+	"$surfaceprop" "tile"
+}

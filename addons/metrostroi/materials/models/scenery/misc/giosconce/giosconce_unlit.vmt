@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/scenery/misc/giosconce/giosconce"
+	//"$translucent" 1
+//	"$selfillum" "1"
+	//"$envmapmask" 	"models\scenery\structural\giosconce\giosconce_ref"
+	//"$envmap"		"env_cubemap"
+}

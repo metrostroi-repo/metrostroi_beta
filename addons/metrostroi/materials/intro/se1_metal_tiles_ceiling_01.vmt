@@ -1,0 +1,9 @@
+"lightmappedgeneric"
+{
+	"$basetexture" "INTRO/SE1_metal_tiles_ceiling_01"
+	"$selfillum" 1
+	"$surfaceprop" "metal"
+	"%keywords" "intro"
+}
+
+

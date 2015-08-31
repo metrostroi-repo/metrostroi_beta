@@ -1,0 +1,7 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "stone/asfloora"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "stone/asfloora_ref"
+	"$surfaceprop" "concrete"
+}

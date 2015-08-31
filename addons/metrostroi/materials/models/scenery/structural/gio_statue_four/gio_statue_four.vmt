@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\scenery\structural\gio_statue_four\gio_statue_four"
+	"$surfaceprop" "stone"
+
+}

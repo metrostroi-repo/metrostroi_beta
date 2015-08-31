@@ -1,0 +1,8 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "metrostroi/subway_tile01_dirty"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.045 .045 .045]"
+	"$envmapmask" "metrostroi/subway_tile01_dirty_spec"
+	"$normalmap" "metrostroi/subway_tile_nrm"
+}

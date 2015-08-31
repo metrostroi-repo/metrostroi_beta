@@ -1,0 +1,7 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "sgtsicktextures/marblefloor2"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.4 .4 .4]"
+	"$surfaceprop" "Brick"
+}
