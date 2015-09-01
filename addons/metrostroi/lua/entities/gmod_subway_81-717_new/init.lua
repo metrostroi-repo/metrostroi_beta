@@ -113,6 +113,7 @@ function ENT:Initialize()
 			[KEY_L] = "DriverValveDisconnectToggle",
 		},
 		[KEY_LALT] = {
+			[KEY_V] = "VUD1Toggle",
 			[KEY_L] = "EPKToggle",
 			[KEY_PAD_1] = "B1Set",
 			[KEY_PAD_2] = "B2Set",

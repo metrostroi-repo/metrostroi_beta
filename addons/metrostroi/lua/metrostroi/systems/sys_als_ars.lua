@@ -598,6 +598,12 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 	local Train = self.Train
 	if self.SpeedLimit > 20 then self.SpeedLimit = self.SpeedLimit - 2 end
 	if EnableARS then
+		if self.ElectricBrake and self.ARSBrake and not (self.RealNoFreq and not self.KVT and not self.ARSBrake) then
+			if self.EPKTimer4 == nil then self.EPKTimer4 = CurTime() + 5 end
+		else
+			self.EPKTimer4 = nil
+		end
+
 		if self.RealNoFreq and (not self.PrevNoFreq) then
 			self.IgnorePedal = true
 		end
@@ -625,7 +631,7 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 		if not self.Overspeed and not self.ElectricBrake then
 			self.PneumaticBrake1 = false
 		end
-		if self.KVT and (self.Speed < self.SpeedLimit - 1 and self.SpeedLimit > 20 or self.SpeedLimit < 20 and not self.Overspeed) then
+		if (self.KVT or not self.EPKTimer4) and (self.Speed < self.SpeedLimit - 1 and self.SpeedLimit > 20 or self.SpeedLimit < 20 and not self.Overspeed) then
 			self.ElectricBrake1 = false
 			self.ElectricBrake = false
 			self.ARSBrake = false
@@ -650,7 +656,8 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 				self.AntiRolling = true
 			end
 		end
-		if EPKActivated and not Train["PA-KSD"].Stancionniy and Train:ReadTrainWire(5) > 0 and self.Speed*self.Train.SpeedSign <  -5 and not Train.Pneumatic.EmergencyValveEPK then
+		local BPSWorking = (Train.BPS ~= nil and Train.BPS.Value > 0.5) and not KRUEnabled and Train:GetAngles().pitch < -1
+		if BPSWorking and EPKActivated and not Train["PA-KSD"].Stancionniy and Train:ReadTrainWire(5) > 0 and self.Speed*self.Train.SpeedSign <  -5 and not Train.Pneumatic.EmergencyValveEPK then
 			Train.Pneumatic.EmergencyValveEPK = true
 			RunConsoleCommand("say","EPV braking (Driver rolling back)",Train:GetDriverName())
 		end
@@ -662,7 +669,6 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 		end
 
 		--BPS Logic
-		local BPSWorking = (Train.BPS ~= nil and Train.BPS.Value > 0.5) and not KRUEnabled and Train:GetAngles().pitch < -1
 		if not BPSWorking then
 			self.StoppedOnSlopeByRP = false
 			self.BPSActive = false
@@ -701,9 +707,16 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 			end
 		end
 		if self.Signal0 and not self.RealNoFreq and not self.Signal40 and not self.Signal60 and not self.Signal70 and not self.Signal80 then
-			if not Train["PA-KSD"].VRD then self.ElectricBrake1 = true self.ARSBrake = true self.VRD = true end
+			if not Train["PA-KSD"].VRD then
+				self.ElectricBrake1 = true
+				self.ARSBrake = true
+				self.PneumaticBrake2 = true
+				self.VRD = true 
+			else
+				--self.NFBrake = true
+			end
 		else
-			if not self.Signal0 and self.VRD then self.VRD = false self.ElectricBrake1 = false self.ARSBrake = false end
+			if self.VRD then self.VRD = false self.ElectricBrake1 = false self.ARSBrake = false end
 		end
 		-- Door close cancel pneumatic brake 1 command trigger
 		if (Train:GetSkin() == 1) and (Train.KD) and Train.SubwayTrain.Name:sub(1,-2) == "81-71" then
@@ -721,7 +734,7 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 		local Ebrake, Abrake, NFBrake, Pbrake1,Pbrake2 =
 			((self.ElectricBrake1) and 1 or 0),
 			((self.ARSBrake or self.AntiRolling)  and 1 or 0),
-			((self.RealNoFreq and not self.KVT and not self.ARSBrake) and 1 or 0),
+			((self.SpeedLimit < 20 and not self.KVT and not self.ARSBrake) and 1 or 0),
 			(self.PneumaticBrake1 and 1 or 0),
 			(self.PneumaticBrake2 and 1 or 0)
 		-- Apply ARS system commands
@@ -745,12 +758,7 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 		---self.LKT = (self["33G"] > 0.5) or (self["29"] > 0.5) or (Train:ReadTrainWire(35) > 0)
 		self.LVD = self.LVD or self["33D"] < 0.5
 		if Train:ReadTrainWire(6) < 1 and self["33D"] > 0.5  then  self.LVD = false end
-		self.Ring = ((self["33D"] < 0.5 and NFBrake < 1 and self.ElectricBrake) or self.KSZD)
-		if self.ElectricBrake and self.ARSBrake and NFBrake < 1 then
-			if self.EPKTimer4 == nil then self.EPKTimer4 = CurTime() + 5 end
-		else
-			self.EPKTimer4 = nil
-		end
+		self.Ring = ((self["33D"] < 0.5 and NFBrake < 1 and self.ElectricBrake and self.EPKTimer4 ~= nil and self.EPKTimer4 ~= false) or self.KSZD)
 		if self.ElectricBrake1 or self.PneumaticBrake2 then
 			if not self.LKT and not self.EPKTimer then
 				self.EPKTimer = CurTime() + ((10 <= self.Speed and self.Speed <= 30) and 5.5 or 3.3)
@@ -801,77 +809,6 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
 		self.Train:WriteTrainWire(21,self.LVD and 1 or 0)-----self.LKT and 1 or 0)
 	else--if not EnableUOS then
 		self.Train:WriteTrainWire(21,0)
-	end
-	-- Special UPPS behavior
-	if self.Train.A45 and self.Train.A45.Value == 1 and (Train.KV) then
-		local distance = Train:ReadCell(49165)
-		local skip_station = false
-
-		-- Check if station must be skipped
-		local station = Train:ReadCell(49160) > 0 and Train:ReadCell(49160) or Train:ReadCell(49161)
-		if not Metrostroi.AnnouncerData[station] then
-			skip_station = true
-		end
-
-		if (Train.CustomA and Train.CustomA.Value > 0.5 and distance < 120 and not self.UPPSOverride)
-			or self.AutodriveEnabled or not Train.KV or Train.KV.ReverserPosition ~= 1.0 or Train.VB.Value ~= 1.0
-			or Train.KV.ControllerPosition <= -0.5 or not EnableARS or not EnableALS or (self.Train.RC1 and (self.Train.RC1.Value == 0))then
-			self.UPPSOverride = true
-		end
-		if distance > 120 then
-			self.UPPSOverride = false
-		end
-		if distance < 120 and Train.KV.ControllerPosition > -0.5 and not self.UPPSBraking and not self.UPPSOverride and not skip_station then
-			self.UPPSBraking = true
-			Train:PlayOnce("dura1","cabin",0.5,50.0)
-			timer.Create("UPPSAlarm"..Train:EntIndex(),4,0,function()
-				if IsValid(Train) then
-					Train:PlayOnce("dura1","cabin",0.5,50.0)
-				else
-					timer.Remove("UPPSAlarm"..Train:EntIndex())
-				end
-			end)
-		end
-		if skip_station then self.UPPSBraking = false end
-		if ((distance > 120 or self.UPPSOverride) and self.UPPSBraking) then
-			self["2"] = 0
-			self["6"] = 0
-			self["20"] = 0
-			self["33D"] = 1
-			self["33G"] = 0
-			self["33Zh"] = 1
-			timer.Remove("UPPSAlarm"..Train:EntIndex())
-			self.UPPSBraking = false
-		end
-
-		if self.UPPSBraking then
-			self:UPPS(Train)
-		end
-		-- Default trigger
-		if (distance > 120) and (distance < 210) and (not skip_station) then self.UPPSArmed1 = true end
-		if self.UPPSArmed1 and (distance < 120) and Train.VB.Value == 1.0 then
-			Train:PlayOnce("upps","cabin",0.55,100.0)
-			self.UPPSArmed1 = false
-		end
-
-		-- KV trigger
-		if Train.KV and (Train.KV.ReverserPosition == 0.0) then
-			self.UPPSArmed2 = true
-			self.UPPSTimer2 = CurTime() + 1
-		end
-		if self.UPPSArmed2 and Train.KV and (Train.KV.ReverserPosition == 1.0) and Train.VB.Value == 1.0 and self.UPPSTimer2 and (CurTime() > self.UPPSTimer2) then
-			Train:PlayOnce("upps","cabin",0.55,100.0)
-			self.UPPSArmed2 = false
-		end
-	elseif self.UPPSBraking then
-		self["2"] = 0
-		self["6"] = 0
-		self["20"] = 0
-		self["33D"] = 1
-		self["33G"] = 0
-		self["33Zh"] = 1
-		timer.Remove("UPPSAlarm"..Train:EntIndex())
-		self.UPPSBraking = false
 	end
 	-- RC1 operation
 	if self.Train.RC1 and (self.Train.RC1.Value == 0) then

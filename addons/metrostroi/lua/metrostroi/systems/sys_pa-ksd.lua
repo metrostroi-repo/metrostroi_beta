@@ -301,7 +301,7 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 	local dX = Train:ReadCell(49165) + (self.Corrections[self.Station] or 0) - 4.3
 	local speedLimit = (Train.ALS_ARS.Signal0 or Train.ALS_ARS.RealNoFreq) and 0 or Train.ALS_ARS.Signal40 and 40 or Train.ALS_ARS.Signal60 and 60 or Train.ALS_ARS.Signal70 and 70 or Train.ALS_ARS.Signal80 and 80 or 0
 	local OnStation = dX < (160+35 - (speedLimit == 40 and 30 or 0)) and not self.StartMoving and Metrostroi.AnnouncerData[self.Station]and Metrostroi.AnnouncerData[self.Station][1]
-	if StationBraking and dX >= (160+35 - (speedLimit == 40 and 30 or 0)) then return end
+	if StationBraking and (dX >= (160+35 - (speedLimit == 40 and 30 or 0)) or not OnStation) then self.StationAutodrive = false return end
 	--print(Train:ReadCell(49165) + (Corrections[self.Station] or 0) - 4.3)
 	-- Target and real RK position (0 if not braking)
 	local TargetBrakeRKPosition = 0
@@ -347,8 +347,6 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 	-- Calculate RK position based on distance and autodrive profile
 	if OnStation then
 		TargetBrakeRKPosition = GetStationRK(mu, dX)
-		self.Train.R25p:TriggerInput("Set",self.OldRKPos ~= RKPosition)
-		self.OldRKPos = RKPosition	
 	else
 		if dX > (160+35*mu - (speedLimit == 40 and 30 or 0)) then self.StartMoving = nil end
 	end
@@ -435,6 +433,10 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 	end
 	if self.VZTimer1 and self.VZTimer1 < CurTime() then
 		PneumaticValve1 = true
+	end
+	if OnStation then
+		self.Train.R25p:TriggerInput("Set",self.OldRheostatBrakeRotating ~= RheostatBrakeRotating)
+		self.OldRheostatBrakeRotating = RheostatBrakeRotating	
 	end
 	Train:WriteCell(29, PneumaticValve1 and 1 or 0) -- Engage PN1
 	Train:TriggerInput("KVControllerAutodriveSet",KVPos)
@@ -649,7 +651,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				self.State = 71
 			end
 		elseif name == "B2" then
-			if self.AutodriveWorking or self.VRD or self.Transit or self.Nakat then
+			if (self.AutodriveWorking or self.VRD or self.Nakat) and not self.Trainsit then
 				self.State = 72
 			end
 		elseif name == "B3" then
@@ -721,9 +723,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 	elseif self.State == 74 then
 		if name == "BUp" then
 			self.State74 = math.max(1,self.State74 - 1)
-			if self.State74 == 4 and self.Transit then
-				self:Trigger("BUp",true)
-			elseif self.State74 == 5 and (self.VRD or not (self.Train.ALS_ARS.Signal0 and not self.Train.ALS_ARS.RealNoFreq and not self.Train.ALS_ARS.Signal40 and not self.Train.ALS_ARS.Signal60 and not self.Train.ALS_ARS.Signal70 and not self.Train.ALS_ARS.Signal80)) then
+			--if self.State74 == 4 and self.Transit then
+				--self:Trigger("BUp",true)
+			--else
+			if self.State74 == 5 and (self.VRD or not (self.Train.ALS_ARS.Signal0 and not self.Train.ALS_ARS.RealNoFreq and not self.Train.ALS_ARS.Signal40 and not self.Train.ALS_ARS.Signal60 and not self.Train.ALS_ARS.Signal70 and not self.Train.ALS_ARS.Signal80)) then
 				self:Trigger("BUp",true)
 			elseif self.State74 == 6 then
 				if self.LastStation == tostring(self.Station) then
@@ -737,9 +740,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		end
 		if name == "BDown" then
 			self.State74 = math.min(8,self.State74 + 1)
-			if self.State74 == 4 and self.Transit then
-				self:Trigger("BDown",true)
-			elseif self.State74 == 5 and (self.VRD or not (self.Train.ALS_ARS.Signal0 and not self.Train.ALS_ARS.RealNoFreq and not self.Train.ALS_ARS.Signal40 and not self.Train.ALS_ARS.Signal60 and not self.Train.ALS_ARS.Signal70 and not self.Train.ALS_ARS.Signal80)) then
+			--if self.State74 == 4 and self.Transit then
+				--self:Trigger("BDown",true)
+			--else
+			if self.State74 == 5 and (self.VRD or not (self.Train.ALS_ARS.Signal0 and not self.Train.ALS_ARS.RealNoFreq and not self.Train.ALS_ARS.Signal40 and not self.Train.ALS_ARS.Signal60 and not self.Train.ALS_ARS.Signal70 and not self.Train.ALS_ARS.Signal80)) then
 				self:Trigger("BDown",true)
 			elseif self.State74 == 6 then
 				if self.LastStation == tostring(self.Station) then
@@ -762,7 +766,8 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			elseif self.State74 == 3 then
 				self.State = 3
 			elseif self.State74 == 4 then
-				self.Transit = true
+				self.Transit = not self.Transit
+				self.AutodriveWorking = false
 			elseif self.State74 == 5 then
 				self.State = 76
 			elseif self.State74 == 6 then
@@ -1128,7 +1133,7 @@ function TRAIN_SYSTEM:ClientThink()
 					self:STR1("3"..(State74 == 3 and "%" or "")..":"..(State74 == 3 and "$" or "").."SETTINGS CHANGE")
 					self:STR1("        VVVV        ")
 				elseif State74 < 7 then
-					self:STR1("4"..(State74 == 4 and "%" or "")..":"..(State74 == 4 and "$" or "").."TRANSIT MODE")
+					self:STR1("4"..(State74 == 4 and "%" or "")..":"..(State74 == 4 and "$" or "")..(self.Train:GetNWBool("PAKSD:Transit",false) and "DIS " or "").."TRANSIT MODE")
 					self:STR1("5"..(State74 == 5 and "%" or "")..":"..(State74 == 5 and "$" or "").."DRIVE WITH Vd=0")
 					self:STR1("6"..(State74 == 6 and "%" or "")..":"..(State74 == 6 and "$" or "").."ZONED TURN")
 					self:STR1("        VVVV        ")
@@ -1175,6 +1180,8 @@ function TRAIN_SYSTEM:ClientThink()
 					self:STR1()
 					if self.VRDTimer and CurTime() - self.VRDTimer < 0 then
 						self:STR1("@ACC MOV WITH Vd=0")
+					elseif self.Train:GetNWBool("PAKSD:Transit",false) then
+						self:STR1("TRANSIT MODE")
 					else
 						self:STR1(typ.."="..pos..string.rep(" ",6-#typ-#pos)..VZ..string.rep(" ",20-5-#VZ-6-1).."Vd="..spd)
 						self.VRDTimer = nil
@@ -1189,6 +1196,8 @@ function TRAIN_SYSTEM:ClientThink()
 					self:STR1("ST "..bt..string.rep(" ",20-8-3-#bt)..tm)
 					if self.VRDTimer and CurTime() - self.VRDTimer < 0 then
 						self:STR1("@ACC MOV WITH Vd=0")
+					elseif self.Train:GetNWBool("PAKSD:Transit",false) then
+						self:STR1("TRANSIT MODE")
 					else
 						self:STR1(typ.."="..pos..string.rep(" ",6-#typ-#pos)..VZ..string.rep(" ",20-6-4-#VZ)..(path == 1 and "I " or "II" ).."P")
 						self.VRDTimer = nil
@@ -1202,6 +1211,8 @@ function TRAIN_SYSTEM:ClientThink()
 					self:STR1("TC="..name..string.rep(" ",20-9-#name)..math.min(9999,math.floor(distance)).." m")
 					if self.VRDTimer and CurTime() - self.VRDTimer < 0 then
 						self:STR1("@ACC MOV WITH Vd=0")
+					elseif self.Train:GetNWBool("PAKSD:Transit",false) then
+						self:STR1("TRANSIT MODE")
 					else
 						self:STR1(typ.."="..pos..string.rep(" ",6-#typ-#pos)..VZ..string.rep(" ",20-2-6-1-#VZ-math.max(4,#self.StataionData[station])).."<"..self.StataionData[station]..">")
 						self.VRDTimer = nil
@@ -1309,10 +1320,11 @@ function TRAIN_SYSTEM:Think()
 			self:SetTimer()
 		end
 	elseif self.State > 6 and self.State ~= 8 and self.State ~= 49 and self.State ~= 45 and self.State ~= 48 then
+		if self.VRD and (not ARS.Signal0 or ARS.Signal0 and (ARS.Signal40 or ARS.Signal60 or ARS.Signal70 or ARS.Signal80)) then self.VRD = false end
 		if self.Distance > 40 and (self.Distance + (self.Corrections[self.Station] or 0) - 4.3) < (160+35 - (ARS.SpeedLimit == 40 and 30 or 0)) then
 			self.StationAutodrive = true
 		end
-		if ARS["33D"] < 0.5 then
+		if ARS["33G"] > 0.5 then
 			self.AutodriveReset = true
 			self.AutodriveWorking = false
 		end
@@ -1460,6 +1472,7 @@ function TRAIN_SYSTEM:Think()
 		elseif self.State == 7 then
 			self.Train:SetNWInt("PAKSD:State7",self.State7)
 			self.Train:SetNWBool("PAKSD:VRD",self.VRD)
+			self.Train:SetNWBool("PAKSD:Transit",self.Transit)
 			self.Train:SetNWInt("PAKSD:Station",self.Station)
 			self.Train:SetNWInt("PAKSD:Distance",self.Distance)
 			self.Train:SetNWInt("PAKSD:Type",(self.Train.Pneumatic.EmergencyValveEPK and 0 or self.Train.ALS_ARS.UAVAContacts and 4 or self.VRD and 2 or (self.AutodriveEnabled or self.StationAutodrive) and 1 or 3))
@@ -1480,6 +1493,7 @@ function TRAIN_SYSTEM:Think()
 		elseif self.State == 74 then
 			self.Train:SetNWInt("PAKSD:State74",self.State74)
 			self.Train:SetNWBool("PAKSD:KD",self.KD)
+			self.Train:SetNWBool("PAKSD:Transit",self.Transit)
 		elseif self.State == 75 then
 			self.Train:SetNWInt("PAKSD:State75",self.State75)
 		elseif self.State == 8 then

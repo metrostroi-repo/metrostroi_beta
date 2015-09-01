@@ -98,6 +98,17 @@ function ENT:Initialize()
 	self:SetNWVector("PlatformEnd",self.PlatformEnd)
 	self:SetNWVector("StationCenter",self:GetPos())
 	
+	self.Map = ""
+	local Map = game.GetMap() or ""
+	if Map:find("gm_metrostroi") and Map:find("lite") then
+		self.Map = "gm_metrostroi_lite"
+	elseif Map:find("gm_metrostroi") then
+		self.Map = "gm_metrostroi"
+	elseif Map:find("gm_mus_orange_line") and Map:find("long") then
+		self.Map = "gm_orange"
+	elseif Map:find("gm_mus_orange_line") then
+		self.Map = "gm_orange_lite"
+	end
 	-- FIXME make this nicer
 	for i=1,32 do self:SetNWVector("TrainDoor"..i,Vector(0,0,0)) end
 	self:SetNWInt("TrainDoorCount",0)
@@ -339,7 +350,7 @@ function ENT:Think()
 	end
 	if self.HasTrain then
 		if not self.TritonePlayed then
-			if self.HasTrain.SignsList and self.HasTrain.SignsIndex > #self.HasTrain.SignsList-6 then
+			if self.HasTrain.SignsList and Metrostroi.WorkingStations[self.Map][self.HasTrain.SignsList] then
 				self:PlayAnnounce(2)
 			else
 				self:PlayAnnounce(1)
