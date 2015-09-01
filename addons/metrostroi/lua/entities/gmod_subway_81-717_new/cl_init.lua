@@ -283,12 +283,14 @@ ENT.ARSMap[3] = {
 		{x=1838,y=291 + 85*1,w = 80, h = 45,tooltip="1: Лампа первого провода (включение двигателей)\n1: 1st train wire lamp(engines engaged)"},
 		{x=1838,y=291 + 86*2,w = 80, h = 45,tooltip="2: Лампа второго провода (ход реостатного контроллера)\n2: 2nd train wire lamp(rheostat controller motion)"},
 		{x=1838,y=291 + 88*3,w = 80, h = 45,tooltip="6: Лампа шестого провода (сигнализация торможения)\n6: 6th train wire lamp(brakes engaged)"},
+		{x=1838,y=291 + 88*4,w = 80, h = 45,tooltip="ЛРД: Лампа разрешения движения под 0\nLRD: Movement permission under 0 lamp"},
 		
 		{x=2005,y=291 + 85*1,w = 85, h = 45,tooltip="РП: Красная лампа реле перегрузки\nRP: Red overload relay light (power circuits failed to assemble)"},
 		
 		{x=2093,y=291 + 85*1,w = 90, h = 45,tooltip="ЛСН: Лампа сигнализации неисправности\nLSN: Failure indicator light (power circuits failed to assemble)"},
 		{x=2093,y=291 + 88*2,w = 90, h = 45,tooltip="ЛКВД: Контроль выключения двигателей\nLKVD: ARS engine shutdown indicator"},
 		{x=2093,y=291 + 88*3,w = 90, h = 45,tooltip="ЛКТ: Контроль тормоза\nLKT: ARS braking indicator"},
+		{x=2093,y=291 + 88*4,w = 90, h = 45,tooltip="ПА: Лампа работы поездной аппаратуры(ПА-КСД)\nPA: Train equipment work lamp(PA-KSD)"},
 	}
 }
 -- ARS/Speedometer panel (Kyiv version)

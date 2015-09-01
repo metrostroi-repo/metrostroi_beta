@@ -207,8 +207,7 @@ function TRAIN_SYSTEM:Think()
 		local v = self.ReverserMatrix[i*2-1]
 		local d = self.ReverserMatrix[i*2]
 		self[v[1].."-"..v[2]] = d[self.ReverserPosition+2]
-	end	
-	if self.ControllerPositionAutodrive then print(self.ControllerPositionAutodrive) end
+	end
 	for i=1,#self.ControllerMatrix/2 do
 		local v = self.ControllerMatrix[i*2-1]
 		local d = self.ControllerMatrix[i*2]
