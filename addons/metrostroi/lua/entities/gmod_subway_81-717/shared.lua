@@ -20,6 +20,7 @@ function ENT:GetStandingArea()
 end
 
 function ENT:InitializeSystems()
+	self:LoadSystem("PAKSD_DOOR","Relay","Switch")
 	-- Электросистема 81-705
 	self:LoadSystem("Electric","81_717_Electric")
 

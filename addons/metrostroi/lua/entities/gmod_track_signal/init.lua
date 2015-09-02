@@ -232,6 +232,7 @@ end
 function ENT:OnRemove()
 	Metrostroi.UpdateSignalEntities()
 	hook.Remove("PlayerSay","metrostroi-signal-say"..self:EntIndex())
+	Metrostroi.PostSignalInitialize()
 end
 
 function ENT:GetARS(ARSID, Train)

@@ -273,6 +273,7 @@ function Metrostroi.UpdateSignalEntities()
 end
 
 function Metrostroi.PostSignalInitialize()
+	if Metrostroi.IgnoreEntityUpdates then return end
 	print("Metrostroi: PostInitialize signals")
 	local entities = ents.FindByClass("gmod_track_signal")
 	for k,v in pairs(entities) do
@@ -414,7 +415,7 @@ function Metrostroi.ScanTrack(itype,node,func,x,dir,checked,startx,train)
 			local isolating = false
 			if IsValid(v) then
 				if itype == "light" then
-					isolating = v.TrackDir == dir and (not v.ARSOnly or tonumber(v.RouteNumber) ~= nil)
+					isolating = (v.TrackDir == dir and not v.ARSOnly) or (tonumber(v.RouteNumber) ~= nil and v.ARSOnly)
 				end
 				if itype == "ars" then
 					isolating = v.TrackDir == dir

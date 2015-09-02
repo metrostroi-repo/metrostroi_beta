@@ -82,6 +82,7 @@ function TOOL:SpawnSignal(ply,trace,param)
 				end
 			end
 			Metrostroi.UpdateSignalEntities()
+			Metrostroi.PostSignalInitialize()
 		end
 		return ent
 	end

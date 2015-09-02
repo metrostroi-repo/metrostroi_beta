@@ -840,7 +840,7 @@ end
 
 function TRAIN_SYSTEM:Think()
 	local Train = self.Train
-	if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then print(Train:ReadCell(49165)) end
+	--if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then print(Train:ReadCell(49165)) end
 	self.LKT = true
 	for i,train in ipairs(Train.WagonList) do
 		--print(i,train.RKTT.Value,self["33G"],train.DKPT.Value)
@@ -962,10 +962,10 @@ function TRAIN_SYSTEM:Think()
 				self.Signal0	= ars:GetARS(0,Train)
 				self.Special	= false
 				self.NoFreq		= ars:GetARS(1,Train) or not (self.Signal80 or self.Signal70 or self.Signal60 or self.Signal40 or self.Signal0)
-				if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then print(ars.Name,arsback and arsback.Name,ars.NextSignalLink and ars.NextSignalLink.Name or "unknown",pos.node1.path.id,Metrostroi.TrainDirections[Train]) end
+				if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then RunConsoleCommand("say",ars.Name,tostring(arsback and arsback.Name),tostring(ars.NextSignalLink and ars.NextSignalLink.Name or "unknown"),tostring(pos.node1.path.id),tostring(Metrostroi.TrainDirections[Train])) end
 				self.RealNoFreq = not (self.Signal80 or self.Signal70 or self.Signal60 or self.Signal40 or self.Signal0)
 			else
-				if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then print("LOSE SIGNAL",pos and pos.node1.path.id or "unknown",Metrostroi.TrainDirections[Train]) end
+				if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then RunConsoleCommand("say","LOSE SIGNAL",tostring(pos and pos.node1.path.id or "unknown"),tostring(Metrostroi.TrainDirections[Train])) end
 				if (self.CheckedNF  and self.CheckedNF > 1) or (self.CheckedNF == 0 and self.NoFreq) or self.RealNoFreq then
 					self.Alert = nil
 					self.Signal80 = false
@@ -1131,7 +1131,7 @@ function TRAIN_SYSTEM:Think()
 			--self.EPKOffARS = false
 		--end
 	end
-	if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then print(self.EPKOffARS,EnableARS) end
+	--if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then print(self.EPKOffARS,EnableARS) end
 	if not EnableARS then self.EPKOffARS = false end
 	-- 81-717 autodrive/autostop
 	if (Train.Pneumatic and Train.Pneumatic.EmergencyValve) or self.UAVAContacts then

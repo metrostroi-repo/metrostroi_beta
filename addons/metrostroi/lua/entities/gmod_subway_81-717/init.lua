@@ -6,7 +6,6 @@ ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 
 --------------------------------------------------------------------------------
 function ENT:Initialize()
-	self:Remove()
 	-- Defined train information
 	self.SubwayTrain = {
 		Type = "81",
