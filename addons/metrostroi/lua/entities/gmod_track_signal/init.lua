@@ -121,7 +121,7 @@ function ENT:SayHook(ply, comm)
 				if self.Routes[1] and self.Routes[1].Manual then
 					self:OpenRoute(1) 
 				--RunConsoleCommand("say","open manual route",self.Name)
-				elseif self.RedSignal then
+				elseif self.AutoEnabled then
 					self.InvasionSignal = true
 				end
 			end
@@ -411,7 +411,6 @@ function ENT:Think()
 	end
 	]]
 	--if self.IsolateSwitches then print(self.Name) end
-	self.RedSignal = false
 	self.AutoEnabled = false
 	--if self.Name == "LT 31" then print(self.Occupied) end
 	if not self.Routes[self.Route or 1].Lights then return end
@@ -434,7 +433,7 @@ function ENT:Think()
 
 				local MustBlink = (((self.Lenses[#self.Lenses] ~= "W" and v[i] == "W") or v == "W") and self.InvasionSignal) or (AverageState > 0 and Route.LightsExploded[LightID][AverageState+1] == "b") --Blinking, when next is "b" (or it's invasion signal')
 				local TimeToOff = not (RealTime() % 1 > 0.25)
-				--if v[i] == "R" and #Route.LightsExploded[LightID] == 1 and AverageState then self.RedSignal = true end
+				--if v[i] == "R" and #Route.LightsExploded[LightID] == 1 and AverageState then self.AutoEnabled = true end
 				if v[i] == "R" and AverageState > 0 then self.AutoEnabled = true end
 				--if v[i] == "R" and AverageState > 0 then print(self.Name,v[i] == "R",AverageState) end
 				if MustBlink and TimeToOff then AverageState = 0 end

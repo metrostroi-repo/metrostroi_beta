@@ -2,7 +2,7 @@
 -- Simulation acceleration DLL support
 --------------------------------------------------------------------------------
 if not TURBOSTROI then
-	local FPS = 1/FrameTime()
+	local FPS = math.Round(1/FrameTime())
 	local messageTimeout = 0
 	local messageCounter = 0
 	Metrostroi.dataCache = {}
@@ -82,11 +82,6 @@ if not TURBOSTROI then
 				Turbostroi.SendMessage(train,4,system,name,0,v)
 			end
 		end
-		hook.Add("EntityRemoved","TurbostroiMetrostroi.DataCache2",function(ent)
-			if Metrostroi.dataCache[ent] then
-				Metrostroi.dataCache[ent] = nil
-			end
-		end)
 		hook.Add("Think", "Turbostroi_Think", function()
 			if not Turbostroi then return end
 			

@@ -684,11 +684,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "1280+",
 				"ARSCodes": "046",
+				"RouteName": "MOSK1-1",
 				"Lights": "2-21-1-13-3",
 				"NextSignal": "MOS41",
-				"RouteName": "MOSK1-1",
+				"Switches": "1280+",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -700,13 +700,13 @@
 			},
 			"2": 
 			{
-				"Switches": "1280-",
-				"Repeater": false,
 				"RouteName": "MOSK1-2",
+				"Repeater": false,
+				"ARSCodes": "0",
 				"Manual": false,
 				"Lights": "24b",
 				"NextSignal": "MOS41",
-				"ARSCodes": "0",
+				"Switches": "1280-",
 				"LightsExploded": 
 				{
 					"1": "24b"
@@ -966,13 +966,13 @@
 		{
 			"1": 
 			{
-				"IsOpened": false,
-				"Repeater": true,
 				"ARSCodes": "04",
+				"Repeater": true,
+				"Switches": "1400-,14/5-,14/1-",
 				"Manual": false,
 				"Lights": "1",
 				"NextSignal": "OKT63",
-				"Switches": "1400-,14/5-,14/1-",
+				"IsOpened": false,
 				"LightsExploded": 
 				{
 					"1": "1"
@@ -1646,11 +1646,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "046",
 				"RouteName": "PLM1-1",
+				"Switches": "1620+,22038+",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "103",
-				"Switches": "1620+,22038+",
+				"ARSCodes": "046",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -1663,11 +1663,11 @@
 			"2": 
 			{
 				"Manual": false,
-				"Switches": "1620-,22038-",
 				"RouteName": "PLM1-2",
+				"ARSCodes": "04",
 				"Lights": "3-31-14-1b4",
 				"NextSignal": "PLM101",
-				"ARSCodes": "04",
+				"Switches": "1620-,22038-",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -1678,13 +1678,13 @@
 			},
 			"3": 
 			{
-				"RouteName": "PLM1-PTO",
-				"Manual": false,
 				"Switches": "1620-,22038-,22036-",
+				"Manual": false,
+				"ARSCodes": "004",
 				"Repeater": false,
 				"Lights": "3-31-14-1b4",
 				"NextSignal": "PLM101",
-				"ARSCodes": "004",
+				"RouteName": "PLM1-PTO",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -1743,21 +1743,21 @@
 					"2": "2"
 				},
 				"Manual": false,
-				"RouteName": "OKT1-3",
+				"IsOpened": false,
 				"Lights": "1-2",
-				"Repeater": false,
+				"RouteName": "OKT1-3",
 				"Switches": "1400-,14/5-,14/1-",
-				"IsOpened": false
+				"Repeater": false
 			},
 			"2": 
 			{
-				"ARSCodes": "04",
-				"Repeater": false,
 				"RouteName": "OKT1-4",
+				"Repeater": false,
+				"Switches": "1400-,14/5+,14/1+",
 				"Manual": false,
 				"Lights": "1-2",
 				"NextSignal": "OKT346",
-				"Switches": "1400-,14/5+,14/1+",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -1923,11 +1923,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "04",
 				"RouteName": "PLM2-PTO",
+				"Switches": "22036-",
 				"Lights": "1-1-2",
 				"NextSignal": "PTO1",
-				"Switches": "22036-",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -1937,13 +1937,13 @@
 			},
 			"2": 
 			{
-				"RouteName": "PLM12-2",
-				"Repeater": false,
 				"ARSCodes": "04",
+				"Repeater": false,
+				"Switches": "22036+",
 				"Manual": false,
 				"Lights": "1-1-2",
 				"NextSignal": "PLM109",
-				"Switches": "22036+",
+				"RouteName": "PLM12-2",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -2298,11 +2298,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "VOK1-1",
 				"Switches": "1767+",
+				"ARSCodes": "04",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "139",
-				"ARSCodes": "04",
+				"RouteName": "VOK1-1",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -2314,13 +2314,13 @@
 			},
 			"2": 
 			{
-				"ARSCodes": "04",
-				"Manual": false,
 				"Switches": "1767-,52+,76+",
+				"Manual": false,
+				"RouteName": "VOK1-3",
 				"Repeater": false,
 				"Lights": "3-3-1b4",
 				"NextSignal": "VOK127",
-				"RouteName": "VOK1-3",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -2330,13 +2330,13 @@
 			},
 			"3": 
 			{
-				"Switches": "1767-,52-,76-",
-				"Manual": false,
 				"ARSCodes": "04",
+				"Manual": false,
+				"RouteName": "VOK1-4",
 				"Repeater": false,
 				"Lights": "3-3-1b4",
 				"NextSignal": "VOK280",
-				"RouteName": "VOK1-4",
+				"Switches": "1767-,52-,76-",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -2468,11 +2468,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "VOK3-2",
 				"Switches": "52-,76-,21898-",
+				"ARSCodes": "04",
 				"Lights": "1-1-2",
 				"NextSignal": "VOK276",
-				"ARSCodes": "04",
+				"RouteName": "VOK3-2",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -2482,13 +2482,13 @@
 			},
 			"2": 
 			{
-				"ARSCodes": "04",
-				"Manual": false,
 				"Switches": "52+,76+,1767-",
+				"Manual": false,
+				"RouteName": "VOK3-1",
 				"Repeater": false,
 				"Lights": "1-1-2",
 				"NextSignal": "VOK135",
-				"RouteName": "VOK3-1",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -2687,11 +2687,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "04",
 				"RouteName": "NOV1-2",
+				"Switches": "1708-,21971-",
 				"Lights": "1-1-2",
 				"NextSignal": "NOV296",
-				"Switches": "1708-,21971-",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -2701,13 +2701,13 @@
 			},
 			"2": 
 			{
-				"RouteName": "NOV1-1",
-				"Manual": false,
 				"Switches": "1708+,21971+",
+				"Manual": false,
+				"ARSCodes": "04",
 				"Repeater": false,
 				"Lights": "1-1-2",
 				"NextSignal": "NOV117",
-				"ARSCodes": "04",
+				"RouteName": "NOV1-1",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -3344,11 +3344,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "046",
 				"RouteName": "SEZD1-1",
+				"Switches": "1960+,1963+",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "167",
-				"Switches": "1960+,1963+",
+				"ARSCodes": "046",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -3360,13 +3360,13 @@
 			},
 			"2": 
 			{
-				"ARSCodes": "0",
-				"Repeater": false,
 				"Switches": "1960+,1963-",
+				"Repeater": false,
+				"RouteName": "SEZD1-PTO",
 				"Manual": false,
 				"Lights": "3-35b",
 				"NextSignal": "PTOOG",
-				"RouteName": "SEZD1-PTO",
+				"ARSCodes": "0",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -3420,11 +3420,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "11059-,21587-",
 				"ARSCodes": "04",
+				"RouteName": "ELE1-2",
 				"Lights": "1-1-2",
 				"NextSignal": "ELE230",
-				"RouteName": "ELE1-2",
+				"Switches": "11059-,21587-",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -3434,13 +3434,13 @@
 			},
 			"2": 
 			{
-				"Switches": "11059+,21587+",
-				"Repeater": false,
 				"RouteName": "ELE1-1",
+				"Repeater": false,
+				"ARSCodes": "04",
 				"Manual": false,
 				"Lights": "1-2",
 				"NextSignal": "ELE185",
-				"ARSCodes": "04",
+				"Switches": "11059+,21587+",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -5095,11 +5095,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "11774-,2880-",
 				"ARSCodes": "04",
+				"RouteName": "LES1-2",
 				"Lights": "1-2",
 				"NextSignal": "LES124",
-				"RouteName": "LES1-2",
+				"Switches": "11774-,2880-",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -7846,11 +7846,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "12301+",
 				"ARSCodes": "046",
+				"RouteName": "TSVO-MEZD",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "371",
-				"RouteName": "TSVO-MEZD",
+				"Switches": "12301+",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -7862,13 +7862,13 @@
 			},
 			"2": 
 			{
-				"RouteName": "TSVO-AVUZ",
-				"Repeater": false,
 				"ARSCodes": "04",
+				"Repeater": false,
+				"Switches": "12301-",
 				"Manual": false,
 				"Lights": "3-23-14-1b4",
 				"NextSignal": "425",
-				"Switches": "12301-",
+				"RouteName": "TSVO-AVUZ",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -9390,11 +9390,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "046",
 				"RouteName": "MEZD-TSVO",
+				"Switches": "2345+",
 				"Lights": "3-31-14-1b4",
 				"NextSignal": "TSVO48",
-				"Switches": "2345+",
+				"ARSCodes": "046",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -10920,13 +10920,13 @@
 		{
 			"1": 
 			{
-				"RouteName": "D2-2",
-				"Repeater": false,
 				"Switches": "22/1+,22/5+,2574-",
+				"Repeater": false,
+				"ARSCodes": "04",
 				"Manual": false,
 				"Lights": "1-2",
 				"NextSignal": "MNSK80",
-				"ARSCodes": "04",
+				"RouteName": "D2-2",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -10935,13 +10935,13 @@
 			},
 			"2": 
 			{
-				"RouteName": "D2-1",
-				"Repeater": false,
 				"ARSCodes": "0",
+				"Repeater": false,
+				"Switches": "22/1-,22/5-,12088-",
 				"Manual": false,
 				"Lights": "1-12b",
 				"NextSignal": "MNSKOG",
-				"Switches": "22/1-,22/5-,12088-",
+				"RouteName": "D2-1",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -10966,13 +10966,13 @@
 		{
 			"1": 
 			{
-				"RouteName": "D1-2",
-				"Manual": false,
 				"ARSCodes": "04",
+				"Manual": false,
+				"Switches": "22/1-,22/5-,2574-",
 				"Repeater": false,
 				"Lights": "1-2",
 				"NextSignal": "MNSK80",
-				"Switches": "22/1-,22/5-,2574-",
+				"RouteName": "D1-2",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -10989,11 +10989,11 @@
 					"2": "12b"
 				},
 				"Repeater": false,
-				"Manual": true,
+				"Switches": "22/1+,22/5+,12088-",
 				"Lights": "1-12b",
-				"IsOpened": false,
+				"Manual": true,
 				"RouteName": "D1-1",
-				"Switches": "22/1+,22/5+"
+				"IsOpened": false
 			}
 		},
 		"ARSOnly": false,
@@ -11064,27 +11064,40 @@
 		"SignalType": 0,
 		"LensesStr": "RW",
 		"RouteNumber": "",
-		"Angles": "{0 271.2891 0}",
+		"Angles": "{0 270.7345 0}",
 		"Left": false,
 		"Class": "gmod_track_signal",
 		"Routes": 
 		{
 			"1": 
 			{
-				"Manual": false,
 				"Repeater": true,
-				"Switches": "22/1-",
+				"Manual": false,
+				"ARSCodes": "04",
 				"Lights": "1",
 				"NextSignal": "MNSK80R2",
-				"ARSCodes": "04",
+				"Switches": "22/1-",
 				"LightsExploded": 
 				{
 					"1": "1"
 				}
+			},
+			"2": 
+			{
+				"Repeater": false,
+				"Switches": "22/1+,12088-",
+				"Manual": false,
+				"Lights": "12b",
+				"NextSignal": "",
+				"ARSCodes": "0",
+				"LightsExploded": 
+				{
+					"1": "12b"
+				}
 			}
 		},
 		"ARSOnly": false,
-		"Pos": "[-3862.8772 11019.6113 -10638.5059]",
+		"Pos": "[-3844.1172 11020.0059 -10638.5059]",
 		"Name": "MNSKOG"
 	},
 	"361": 
@@ -11885,11 +11898,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "",
 				"ARSCodes": "04",
+				"RouteName": "LES2-1",
 				"Lights": "1-2",
 				"NextSignal": "LES128",
-				"RouteName": "LES2-1",
+				"Switches": "",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -13506,11 +13519,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "21587-,11059-",
 				"ARSCodes": "04",
+				"RouteName": "ELE2-1",
 				"Lights": "1-2",
 				"NextSignal": "193",
-				"RouteName": "ELE2-1",
+				"Switches": "21587-,11059-",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -13767,11 +13780,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "SEZD1-2",
 				"Switches": "1960-,21693-",
+				"ARSCodes": "04",
 				"Lights": "1-2",
 				"NextSignal": "250",
-				"ARSCodes": "04",
+				"RouteName": "SEZD1-2",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -14018,11 +14031,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "SEZD2-1",
 				"Switches": "21693-,1960-,1963+",
+				"ARSCodes": "04",
 				"Lights": "1-1-2",
 				"NextSignal": "PTOR",
-				"ARSCodes": "04",
+				"RouteName": "SEZD2-1",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -14033,11 +14046,11 @@
 			"2": 
 			{
 				"Manual": false,
-				"RouteName": "SEZD2-PTO",
 				"Switches": "21693-,1960-,1963-",
+				"ARSCodes": "04",
 				"Lights": "1-1-2",
 				"NextSignal": "PTOR",
-				"ARSCodes": "04",
+				"RouteName": "SEZD2-PTO",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -14500,11 +14513,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "VOK4-2",
 				"Switches": "52+,76+,21898-",
+				"ARSCodes": "04",
 				"Lights": "1-1-2",
 				"NextSignal": "VOK276",
-				"ARSCodes": "04",
+				"RouteName": "VOK4-2",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -14514,13 +14527,13 @@
 			},
 			"2": 
 			{
-				"ARSCodes": "04",
-				"Manual": false,
 				"Switches": "52-,76-,1767-",
+				"Manual": false,
+				"RouteName": "VOK4-1",
 				"Repeater": false,
 				"Lights": "1-1-2",
 				"NextSignal": "VOK135",
-				"RouteName": "VOK4-1",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -14802,11 +14815,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "VOK2-4",
 				"Switches": "21898-,52+,76+",
+				"ARSCodes": "04",
 				"Lights": "1-1-2",
 				"NextSignal": "VOK280",
-				"ARSCodes": "04",
+				"RouteName": "VOK2-4",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -14816,13 +14829,13 @@
 			},
 			"2": 
 			{
-				"Switches": "21898-,52-,76-",
-				"Repeater": false,
 				"ARSCodes": "04",
+				"Repeater": false,
+				"RouteName": "VOK2-3",
 				"Manual": false,
 				"Lights": "1-1-2",
 				"NextSignal": "VOK127",
-				"RouteName": "VOK2-3",
+				"Switches": "21898-,52-,76-",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -15052,11 +15065,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "04",
 				"RouteName": "NOV2-1",
+				"Switches": "1708-,21971-",
 				"Lights": "1-2",
 				"NextSignal": "117",
-				"Switches": "1708-,21971-",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -15456,11 +15469,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "04",
 				"RouteName": "PTO-2",
+				"Switches": "22036-,22038+,1620+",
 				"Lights": "1-1-2",
 				"NextSignal": "PLM310",
-				"Switches": "22036-,22038+,1620+",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -15470,13 +15483,13 @@
 			},
 			"2": 
 			{
-				"RouteName": "PTO-1",
-				"Manual": false,
 				"Switches": "22036-,22038-,1620-",
+				"Manual": false,
+				"ARSCodes": "04",
 				"Repeater": false,
 				"Lights": "1-1-2",
 				"NextSignal": "PLM103",
-				"ARSCodes": "04",
+				"RouteName": "PTO-1",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -15716,11 +15729,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "046",
 				"RouteName": "PLM2-2",
+				"Switches": "22036+,22038+",
 				"Lights": "2-21-1-13-3",
 				"NextSignal": "PLM310",
-				"Switches": "22036+,22038+",
+				"ARSCodes": "046",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -15732,13 +15745,13 @@
 			},
 			"2": 
 			{
-				"RouteName": "PLM2-1",
-				"Manual": false,
 				"Switches": "22038-",
+				"Manual": false,
+				"ARSCodes": "04",
 				"Repeater": false,
 				"Lights": "2-21-4",
 				"NextSignal": "PLM103",
-				"ARSCodes": "04",
+				"RouteName": "PLM2-1",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -16181,11 +16194,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "22261+",
 				"ARSCodes": "046",
+				"RouteName": "OKT2-2",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "360",
-				"RouteName": "OKT2-2",
+				"Switches": "22261+",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -16197,13 +16210,13 @@
 			},
 			"2": 
 			{
-				"ARSCodes": "04",
-				"Manual": false,
 				"Switches": "22261-,14/5-,14/1-",
+				"Manual": false,
+				"RouteName": "OKT2-4",
 				"Repeater": false,
 				"Lights": "3-31-14-1b4",
 				"NextSignal": "OKT346",
-				"RouteName": "OKT2-4",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -16214,13 +16227,13 @@
 			},
 			"3": 
 			{
-				"ARSCodes": "04",
-				"Manual": false,
 				"Switches": "22261-,14/5+,14/1+",
+				"Manual": false,
+				"RouteName": "OKT2-3",
 				"Repeater": false,
 				"Lights": "3-31-14-1b4",
 				"NextSignal": "OKT63",
-				"RouteName": "OKT2-3",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -17154,11 +17167,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "22376+",
 				"ARSCodes": "046",
+				"RouteName": "MOSK2-2",
 				"Lights": "2-21-1-13-3",
 				"NextSignal": "376",
-				"RouteName": "MOSK2-2",
+				"Switches": "22376+",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -17170,13 +17183,13 @@
 			},
 			"2": 
 			{
-				"Switches": "22376-",
-				"Repeater": false,
 				"RouteName": "MOSK2-1",
+				"Repeater": false,
+				"ARSCodes": "0",
 				"Manual": false,
 				"Lights": "24b",
 				"NextSignal": "376",
-				"ARSCodes": "0",
+				"Switches": "22376-",
 				"LightsExploded": 
 				{
 					"1": "24b"
@@ -18244,7 +18257,7 @@
 				"Manual": false,
 				"Switches": "",
 				"Lights": "2-21-1-13-3",
-				"NextSignal": "TSVO458",
+				"NextSignal": "MUSK458",
 				"ARSCodes": "046",
 				"LightsExploded": 
 				{
@@ -18256,7 +18269,7 @@
 				}
 			}
 		},
-		"Pos": "[-7962.0264 -8141.1499 -14929.5059]",
+		"Pos": "[-7970.5283 -8137.6719 -14929.5059]",
 		"Name": "456"
 	},
 	"591": 
@@ -18274,7 +18287,7 @@
 				"Manual": false,
 				"Switches": "",
 				"Lights": "2-1-13",
-				"NextSignal": "TSVO460",
+				"NextSignal": "MUSK460",
 				"ARSCodes": "046",
 				"LightsExploded": 
 				{
@@ -18284,8 +18297,8 @@
 				}
 			}
 		},
-		"Pos": "[-1560.1178 -10188.2129 -14929.5059]",
-		"Name": "TSVO458"
+		"Pos": "[-1550.7725 -10190.0518 -14929.5059]",
+		"Name": "MUSK458"
 	},
 	"592": 
 	{
@@ -18314,8 +18327,8 @@
 				}
 			}
 		},
-		"Pos": "[5593.5327 -11595.124 -14929.5059]",
-		"Name": "TSVO460"
+		"Pos": "[5567.3462 -11589.9746 -14929.5059]",
+		"Name": "MUSK460"
 	},
 	"593": 
 	{
@@ -18419,11 +18432,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "MNSK1-1",
 				"Switches": "12088+",
+				"ARSCodes": "046",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "341",
-				"ARSCodes": "046",
+				"RouteName": "MNSK1-1",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -18435,13 +18448,13 @@
 			},
 			"2": 
 			{
-				"ARSCodes": "04",
-				"Manual": false,
 				"RouteName": "MNSK1-D1",
+				"Manual": false,
+				"Switches": "12088-,22/5+,22/1+",
 				"Repeater": false,
 				"Lights": "3-31-14-1b4",
 				"NextSignal": "D1",
-				"Switches": "12088-,22/5+,22/1+",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -18452,13 +18465,13 @@
 			},
 			"3": 
 			{
-				"Switches": "12088-,22/5-,22/1-",
-				"Manual": false,
 				"RouteName": "MNSK1-D2",
+				"Manual": false,
+				"ARSCodes": "04",
 				"Repeater": false,
 				"Lights": "3-31-14-1b4",
 				"NextSignal": "D2",
-				"ARSCodes": "04",
+				"Switches": "12088-,22/5-,22/1-",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -18618,11 +18631,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "",
 				"RouteName": "",
+				"Switches": "",
 				"Lights": "",
 				"NextSignal": "",
-				"Switches": "",
+				"ARSCodes": "",
 				"LightsExploded": 
 				{
 					"1": ""
@@ -18647,11 +18660,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "1",
 				"RouteName": "",
+				"Switches": "",
 				"Lights": "",
 				"NextSignal": "",
-				"Switches": "",
+				"ARSCodes": "1",
 				"LightsExploded": 
 				{
 					"1": ""
@@ -18784,13 +18797,13 @@
 		{
 			"1": 
 			{
-				"RouteName": "TSVO-MEZD",
-				"Manual": false,
 				"Switches": "12301+",
+				"Manual": false,
+				"ARSCodes": "046",
 				"Repeater": true,
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "371",
-				"ARSCodes": "046",
+				"RouteName": "TSVO-MEZD",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -18802,13 +18815,13 @@
 			},
 			"2": 
 			{
-				"RouteName": "TSVO-AVUZ",
-				"Manual": false,
 				"Switches": "12301-",
+				"Manual": false,
+				"ARSCodes": "04",
 				"Repeater": true,
 				"Lights": "3-23-14-1b4",
 				"NextSignal": "425",
-				"ARSCodes": "04",
+				"RouteName": "TSVO-AVUZ",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -18890,11 +18903,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "0",
 				"RouteName": "AVUZ-TSVO",
+				"Switches": "",
 				"Lights": "1",
 				"NextSignal": "",
-				"Switches": "",
+				"ARSCodes": "0",
 				"LightsExploded": 
 				{
 					"1": "1"
@@ -18917,11 +18930,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "0",
 				"RouteName": "AVUZ-TSVO",
+				"Switches": "",
 				"Lights": "1",
 				"NextSignal": "",
-				"Switches": "",
+				"ARSCodes": "0",
 				"LightsExploded": 
 				{
 					"1": "1"
@@ -18944,11 +18957,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "0",
 				"RouteName": "AVUZ-TSVO",
+				"Switches": "",
 				"Lights": "1",
 				"NextSignal": "",
-				"Switches": "",
+				"ARSCodes": "0",
 				"LightsExploded": 
 				{
 					"1": "1"
@@ -18971,11 +18984,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "0",
 				"RouteName": "AVUZ-TSVO",
+				"Switches": "",
 				"Lights": "1",
 				"NextSignal": "",
-				"Switches": "",
+				"ARSCodes": "0",
 				"LightsExploded": 
 				{
 					"1": "1"
@@ -19104,11 +19117,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "AVUZ-TSVO",
 				"Switches": "2345-",
+				"ARSCodes": "046",
 				"Lights": "2-21-1-13-3",
 				"NextSignal": "TSVO48",
-				"ARSCodes": "046",
+				"RouteName": "AVUZ-TSVO",
 				"LightsExploded": 
 				{
 					"1": "2",
