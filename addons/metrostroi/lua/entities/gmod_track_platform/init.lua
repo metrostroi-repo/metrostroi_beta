@@ -180,7 +180,7 @@ end
 
 ENT.TESTTEST = false
 local dT = 0.25
-local trains 
+local trains  = {}
 function ENT:Think()
 	if not Metrostroi.Stations[self.StationIndex] then return end
 	-- Rate of boarding
@@ -215,8 +215,10 @@ function ENT:Think()
 	local boardingDoorList = {}
 	self.HasTrain = nil
 	for k,v in pairs(trains) do
+		if not IsValid(v) then trains[k] = nil end
 		if not IsValid(v) or v:GetPos():Distance(self:GetPos()) > platformStart:Distance(platformEnd) then continue end
 		local platform_distance	= ((platformStart-v:GetPos()) - ((platformStart-v:GetPos()):Dot(platformNorm))*platformNorm):Length()
+		
 		local vertical_distance = math.abs(v:GetPos().z - platformStart.z)
 		local train_start		= (v:LocalToWorld(Vector(480,0,0)) - platformStart):Dot(platformDir) / (platformDir:Length()^2)
 		local train_end			= (v:LocalToWorld(Vector(-480,0,0)) - platformStart):Dot(platformDir) / (platformDir:Length()^2)
