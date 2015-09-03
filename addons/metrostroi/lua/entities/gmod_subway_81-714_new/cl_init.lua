@@ -28,7 +28,7 @@ ENT.ButtonMap["AirDistributor"] = {
 
 -- Battery panel
 ENT.ButtonMap["Battery"] = {
-	pos = Vector(461.0,4,59.0+6),
+	pos = Vector(461.0,4,62.0+6),
 	ang = Angle(0,-90,90),
 	width = 100,
 	height = 100,
@@ -221,7 +221,7 @@ ENT.ClientProps["volt1"] = {
 --------------------------------------------------------------------------------
 ENT.ClientProps["battery"] = {
 	model = "models/metrostroi/81-717/switch01.mdl",
-	pos = Vector(446.0+16,0.0,55+6),
+	pos = Vector(446.0+16,0.0,58+6),
 	ang = Angle(90,0,180)
 }
 ENT.ClientProps["gv"] = {
