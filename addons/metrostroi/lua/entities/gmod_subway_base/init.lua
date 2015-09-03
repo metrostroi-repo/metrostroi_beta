@@ -667,8 +667,18 @@ Metrostroi.SignsTextures["gm_metrostroi_lite"] = {
 	[121] = {"models/metrostroi_train/signs/minskaya","Минская"},
 }
 Metrostroi.SignsTextures["gm_metrostroi"] = Metrostroi.SignsTextures["gm_metrostroi_lite"]
-Metrostroi.SignsTextures["gm_metrostroi"][123] = {"models/metrostroi_train/signs/mezdustroiskaya","Междустройская"}
-Metrostroi.SignsTextures["gm_metrostroi"][322] = {"models/metrostroi_train/signs/avtostancya_yznaya","Автостанция южная"}
+Metrostroi.SignsTextures["gm_metrostroi"][123] = {"models/metrostroi_train/signs/mezdustroiskaya","(ЗЕЛЁНАЯ)\nМеждустройская"}
+Metrostroi.SignsTextures["gm_metrostroi"][322] = {"models/metrostroi_train/signs/avtostancya_yznaya","(СИНЯЯ)\nАвтостанция южная"}
+
+Metrostroi.SignsTextures["gm_orange_lite"] = {
+	[403] = {"models/metrostroi_train/signs/park","Парк"},
+	[406] = {"models/metrostroi_train/signs/stancya_vollesa","Имени Уоллеса Брина"},
+	[408] = {"models/metrostroi_train/signs/truzenikov_gm","Труженников Garry's mod'а"},
+}
+Metrostroi.SignsTextures["gm_orange"] = Metrostroi.SignsTextures["gm_orange_lite"]
+Metrostroi.SignsTextures["gm_orange"][401] = {"models/metrostroi_train/signs/slavnaya_strana","Славная страна"}
+Metrostroi.SignsTextures["gm_orange"][501] = {"models/metrostroi_train/signs/aero","(МАЛИНОВАЯ)\nАэропорт"}
+Metrostroi.SignsTextures["gm_orange"][503] = {"models/metrostroi_train/signs/litium","(МАЛИНОВАЯ)\nЛитиевая"}
 Metrostroi.SignsTextures["special"] = {
 	{"models/metrostroi_train/signs/phoenix1","Феникс-1"},
 	{"models/metrostroi_train/signs/v_depo","В депо"},
@@ -693,7 +703,7 @@ function ENT:PrepareSigns()
 			self.Map = "gm_orange_lite"
 		end
 		self.SignsList = { "" }
-		for k,v in SortedPairs(Metrostroi.SignsTextures[self.Map]) do
+		for k,v in SortedPairs(Metrostroi.SignsTextures[self.Map] or {}) do
 			local x = table.insert(self.SignsList,v)
 			self.SignsList[k] = x
 		end

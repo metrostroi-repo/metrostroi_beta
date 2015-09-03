@@ -1878,6 +1878,10 @@ function ENT:DrawPost()
 
 	if self.InfoTableTimeout and (CurTime() < self.InfoTableTimeout) then
 		self:DrawOnPanel("InfoTableSelect",function()
+			local text = self:GetNWString("FrontText","")
+			local col = text:find("ЗЕЛ") and Color(100,200,0) or text:find("СИН") and Color(0,100,200) or text:find("МАЛ") and Color(200,100,200) or text:find("ОРА") and Color(200,200,0) or Color(255,0,0)
+			draw.DrawText(self:GetNWString("RouteNumber","") .. " " .. text,"MetrostroiSubway_InfoPanel",260, -100,col,TEXT_ALIGN_CENTER)
+			--[[
 			draw.Text({
 				text = self:GetNWString("RouteNumber","") .. " " .. self:GetNWString("FrontText",""),
 				font = "MetrostroiSubway_InfoPanel",--..self:GetNWInt("Style",1),
@@ -1885,6 +1889,7 @@ function ENT:DrawPost()
 				xalign = TEXT_ALIGN_CENTER,
 				yalign = TEXT_ALIGN_CENTER,
 				color = Color(255,0,0,255)})
+			]]
 		end)
 	end
 

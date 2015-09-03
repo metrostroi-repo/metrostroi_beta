@@ -7,7 +7,7 @@ include("shared.lua")
 function ENT:PlayAnnounce(arriving,Ann)
 	if not arriving then
 		if self.MustPlayAnnounces then
-			local Announce = Sound( "subway_stations_test1/"..self.Map.."_"..(math.random(6))..".mp3" )
+			local Announce = Sound( "subway_stations_test1/"..self.Map:Replace("_lite",""):Replace("gm_","").."_"..(math.random(6))..".mp3" )
 			sound.Play(Announce,self:LocalToWorld(Vector(0,-1200,200)),90,100,1)
 			sound.Play(Announce,self:LocalToWorld(Vector(0,1200,200)),90,100,1)
 			timer.Adjust( "metrostroi_station_announce_"..self:EntIndex(), math.random(45,150),0,function() self:PlayAnnounce() end)
@@ -39,12 +39,6 @@ end
 -- Initialize the platform data
 --------------------------------------------------------------------------------
 function ENT:Initialize()
-	local Map = game.GetMap() or ""
-	if Map:find("gm_metrostroi") then
-		self.Map = "metrostroi"
-	elseif Map:find("gm_mus_orange_line") then
-		self.Map = "orange"
-	end
 	-- Get platform parameters
 	self.VMF = self.VMF or {}
 	self.PlatformStart		= ents.FindByName(self.VMF.PlatformStart or "")[1]
