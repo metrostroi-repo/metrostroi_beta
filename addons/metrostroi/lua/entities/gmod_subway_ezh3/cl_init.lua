@@ -44,8 +44,8 @@ ENT.ButtonMap["Main"] = {
 
 		{ID = "R_UNchToggle",	x=112, y=30, radius=20, tooltip="УНЧ: Усилитель низких частот\nUNCh: Low frequency amplifier"},
 		{ID = "R_ZSToggle",		x=149, y=30, radius=20, tooltip="ЗС: Звук в салоне\nZS: Sound in wagons enable"},
-		{ID = "R_GToggle",		x=112, y=80, radius=20, tooltip="Громкоговоритель\nLoudspeaker: Sound in cabin enable"},
-		{ID = "R_RadioToggle",	x=149, y=80, radius=20, tooltip="Радиоинформатор (встроеный)\nRadioinformator: Announcer (built-in)"},
+		{ID = "R_RadioToggle",	x=112, y=80, radius=20, tooltip="Радиоинформатор (встроеный)\nRadioinformator: Announcer (built-in)"},
+		{ID = "R_GToggle",		x=149, y=80, radius=20, tooltip="Громкоговоритель\nLoudspeaker: Sound in cabin enable"},
 		
 	}
 }
@@ -1299,7 +1299,7 @@ function ENT:DrawPost()
 			surface.DrawRect(101*10,73*10,16*10,8*10)
 		end
 		
-		b = self:Animate("light_NR1",self:GetPackedBool(34) and 1 or 0,0,1,5,false)
+		b = self:Animate("light_NR1",self:GetPackedBool(34) and 0 or 1,0,1,5,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(50,255,50)
