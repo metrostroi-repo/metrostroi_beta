@@ -78,7 +78,6 @@ if not TURBOSTROI then
 			if type(value) == "boolean" then v = value and 1 or 0 end
 			--if not Metrostroi.dataCache[2][train] then Metrostroi.dataCache[2][train] = {} end
 			--if not Metrostroi.dataCache[2][train][system] then Metrostroi.dataCache[2][train][system] = {} end
-			if system == "KV" and name ~= "ControllerAutodriveSet" then print(system,name,v) end
 			--if Metrostroi.dataCache[2][train][system][name] ~= v then
 				--Metrostroi.dataCache[2][train][system][name] = v
 				Turbostroi.SendMessage(train,4,system,name,0,v)

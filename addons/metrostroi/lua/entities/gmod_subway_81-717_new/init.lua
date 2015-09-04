@@ -336,11 +336,11 @@ end
 
 --------------------------------------------------------------------------------
 function ENT:Think()
-	if self.Lights[70] and self.LampType and self.LampType == 1 and self.Lights[70][4] ~= Color(150,150,150) then
+	if self.Lights[70] and self.LampType and self.LampType == 1 and self.Lights[70][4] ~= Color(255,175,50) then
 		for i = 1,23 do
 			self:SetLightPower(69+i,false)
 			self.Lights[69+i][2] = Vector(-470 + 35.8*i, 0, 70)
-			self.Lights[69+i][4] = Color(150,150,150)
+			self.Lights[69+i][4] = Color(255,175,50)
 		end
 		for i = 11,13 do
 			self:SetLightPower(i,false)
