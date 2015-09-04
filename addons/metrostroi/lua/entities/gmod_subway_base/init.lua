@@ -256,6 +256,7 @@ function ENT:Initialize()
 	if Turbostroi and (not self.NoPhysics) then
 		Turbostroi.InitializeTrain(self)
 	end
+	self.Changed = {}
 	
 	-- Passenger related data (must be set by derived trains to allow boarding)
 	self.LeftDoorsOpen = false
