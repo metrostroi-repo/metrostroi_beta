@@ -2,7 +2,7 @@
 -- Simulation acceleration DLL support
 --------------------------------------------------------------------------------
 if not TURBOSTROI then
-	local FPS = math.Round(1/FrameTime())
+	local FPS = 33
 	local messageTimeout = 0
 	local messageCounter = 0
 	Metrostroi.dataCache = {}
