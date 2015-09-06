@@ -36,6 +36,10 @@ local function LoadSkin()
 		path = "metrostroi_skins/ezh3/8",
 	})
 	table.insert(Metrostroi.Skins["ezh3"],{
+		name = "Parad",
+		path = "metrostroi_skins/ezh3/9",
+	})
+	table.insert(Metrostroi.Skins["ezh3"],{
 		name = "Random",
 		path = "RND",
 	})
@@ -68,7 +72,7 @@ local function LoadSkin()
 		path = "metrostroi_skins/81-717/6",
 	})
 	table.insert(Metrostroi.Skins["717"],{
-		name = "Kiyv",
+		name = "Kiyv1",
 		path = "metrostroi_skins/81-717/7",
 	})
 	table.insert(Metrostroi.Skins["717"],{
@@ -86,6 +90,18 @@ local function LoadSkin()
 	table.insert(Metrostroi.Skins["717"],{
 		name = "St.Petersburg3",
 		path = "metrostroi_skins/81-717/11",
+	})
+	table.insert(Metrostroi.Skins["717"],{
+		name = "Red Arrow",
+		path = "metrostroi_skins/81-717/12",
+	})
+	table.insert(Metrostroi.Skins["717"],{
+		name = "Kiyv2",
+		path = "metrostroi_skins/81-717/14",
+	})
+	table.insert(Metrostroi.Skins["717"],{
+		name = "Minsk",
+		path = "metrostroi_skins/81-717/13",
 	})
 	--[[
 	print("Metrostroi:Loading 81-717 skins...")	
@@ -209,8 +225,34 @@ local function LoadSkin()
 		path = "metrostroi_skins/81-717_pass/9",
 	})
 	table.insert(Metrostroi.Skins["717_pass"],{
+		name = "Red Arrow",
+		path = "metrostroi_skins/81-717_pass/10",
+	})
+	table.insert(Metrostroi.Skins["717_pass"],{
+		name = "SL-Wood",
+		path = "metrostroi_skins/81-717_pass/11",
+	})
+	Metrostroi.Skins["717_pass2"] = {}
+	for i = 1,#Metrostroi.Skins["717_pass"] do
+		Metrostroi.Skins["717_pass2"][Metrostroi.Skins["717_pass"][i].path] = Metrostroi.Skins["717_pass"][i].name
+	end
+	table.insert(Metrostroi.Skins["717_pass"],{
 		name = "Random",
 		path = "RND",
 	})
+	print("Metrostroi:Loading 717 advert skins...")	
+	if not Metrostroi.Skins["717_schemes"] then Metrostroi.Skins["717_schemes"] = {} end
+	Metrostroi.Skins["717_schemes"]["p_metrostroi"] = {
+		path = "metrostroi_skins/81-717_schemes/int02_b50p",
+	}
+	Metrostroi.Skins["717_schemes"]["p_orange"] = {
+		path = "metrostroi_skins/81-717_schemes/int02_orangep",
+	}
+	Metrostroi.Skins["717_schemes"]["m_metrostroi"] = {
+		path = "metrostroi_skins/81-717_schemes/int02_b50m",
+	}
+	Metrostroi.Skins["717_schemes"]["m_orange"] = {
+		path = "metrostroi_skins/81-717_schemes/int02_orangem",
+	}
 end
 timer.Simple(1,LoadSkin)

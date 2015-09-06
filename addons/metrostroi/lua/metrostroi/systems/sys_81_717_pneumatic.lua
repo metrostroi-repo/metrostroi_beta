@@ -413,7 +413,7 @@ function TRAIN_SYSTEM:Think(dT)
 		end
 		-- Valve #2
 		if self.Train.PneumaticNo2.Value == 1.0 then
-			local PN2 = math.min(self.TrainLinePressure,(1.5 + error)*1.7)
+			local PN2 = math.min(self.TrainLinePressure,(2.5 + error)*1.7)
 			self:equalizePressure(dT,"BrakeCylinderPressure", PN2, 1.00, 5.50)
 			--self:equalizePressure(dT,"BrakeCylinderPressure", self.TrainLinePressure * 0.39 + error, 1.00, 5.50)
 			pneumaticValveConsumption_dPdT = pneumaticValveConsumption_dPdT + self.BrakeCylinderPressure_dPdT

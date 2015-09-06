@@ -63,6 +63,7 @@ net.Receive("metrostroi-signal", function()
 	if not ent.ARSOnly then
 		ent.LensesTBL = string.Explode("-",ent.Lenses)
 	end
+	if ent.RemoveModels then ent:RemoveModels() end
 	--print(ent.Name..", signal received update")
 end)
 
