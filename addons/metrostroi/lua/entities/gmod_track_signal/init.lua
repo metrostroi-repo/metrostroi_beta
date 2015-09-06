@@ -91,8 +91,8 @@ function ENT:SayHook(ply, comm)
 				self:CloseRoute(1) 
 			--RunConsoleCommand("say","open manual route",self.Name)
 			else
-				if self.InvasionSignal then
-					self.InvasionSignal = false
+				if self.InvationSignal then
+					self.InvationSignal = false
 				end
 				--RunConsoleCommand("say","close route",self.Name,"next signal",comm[2])
 				if (self.LastOpenedRoute and self.LastOpenedRoute == 1) or self.Routes[1].Repeater then
@@ -129,7 +129,7 @@ function ENT:SayHook(ply, comm)
 					self:OpenRoute(1) 
 				--RunConsoleCommand("say","open manual route",self.Name)
 				elseif self.AutoEnabled then
-					self.InvasionSignal = true
+					self.InvationSignal = true
 				end
 			end
 		elseif self.Routes then
@@ -274,6 +274,10 @@ function ENT:ARSLogic(tim)
 			if self.Routes[self.Route] and self.Routes[self.Route].Manual then
 				self.Occupied = self.Occupied or not self.Routes[self.Route].IsOpened
 			end
+			if self.OccupiedByNowOld ~= self.OccupiedByNow then
+				self.InvationSignal = false
+				self.OccupiedByNowOld = self.OccupiedByNow
+			end
 		else
 			self.Occupied = self.OverrideTrackOccupied or Metrostroi.Voltage < 50
 		end
@@ -364,7 +368,7 @@ function ENT:ARSLogic(tim)
 			else
 				local curr = ARSCodes[math.min(#ARSCodes, self.FreeBS+1)]
 				local max = tonumber(ARSCodes[#ARSCodes])
-				if curr == "1" or curr == "0" or self.ARSNextSpeedLimit == nil then
+				if curr == "1" or curr == "0" or self.ARSNextSpeedLimit == nil or not max then
 					self.ARSSpeedLimit = IsValid(self.NextSignalLink) and tonumber(curr) or tonumber(ARSCodes[1] or "1")
 				else
 					if self.ARSNextSpeedLimit == 4 and max >= 6 then
@@ -381,6 +385,9 @@ function ENT:ARSLogic(tim)
 end
 
 function ENT:Think()
+	--if self.LensesStr == "YR-GW-M" then
+		--self.Routes[1].Lights = "2-21-1-13-3"
+	--end
 	if self.PostInitalized then return end
 	--if self.Name == "PR 2R3" then print(self.TrackPosition and self.TrackPosition.path.id or "shit") end
 	--Outdated for now
@@ -447,11 +454,11 @@ function ENT:Think()
 					self.AutostopEnt = v
 				end
 				self.CurrentAutostopEnt = v
-				self.InvasionSignal = false
+				self.InvationSignal = false
 			end
 		end
 	else
-		self.InvasionSignal = false
+		self.InvationSignal = false
 	end
 	]]
 	--if self.IsolateSwitches then print(self.Name) end
@@ -472,10 +479,10 @@ function ENT:Think()
 				--Get the LightID and check, is this light must light up
 				local LightID = IsValid(self.NextSignalLink) and math.min(#Route.LightsExploded,self.FreeBS+1) or 1
 				
-				--local InvasionSignal = ((v[i] == "W" and self.InvasionSignal and k == self.InS)
-				local AverageState = Route.LightsExploded[LightID]:find(tostring(index)) or ((v[i] == "W" and self.InvasionSignal and k == self.InS) and 1 or 0)
+				--local InvationSignal = ((v[i] == "W" and self.InvationSignal and k == self.InS)
+				local AverageState = Route.LightsExploded[LightID]:find(tostring(index)) or ((v[i] == "W" and self.InvationSignal and k == self.InS) and 1 or 0)
 
-				local MustBlink = (((self.Lenses[#self.Lenses] ~= "W" and v[i] == "W") or v == "W") and self.InvasionSignal) or (AverageState > 0 and Route.LightsExploded[LightID][AverageState+1] == "b") --Blinking, when next is "b" (or it's invasion signal')
+				local MustBlink = (((self.Lenses[#self.Lenses] ~= "W" and v[i] == "W") or v == "W") and self.InvationSignal) or (AverageState > 0 and Route.LightsExploded[LightID][AverageState+1] == "b") --Blinking, when next is "b" (or it's invasion signal')
 				local TimeToOff = not (RealTime() % 1 > 0.25)
 				--if v[i] == "R" and #Route.LightsExploded[LightID] == 1 and AverageState then self.AutoEnabled = true end
 				if v[i] == "R" and AverageState > 0 then self.AutoEnabled = true end
@@ -528,6 +535,9 @@ function ENT:Think()
 					self.BasePosition + offset + data[3] - Vector(i1*data[4],0,i2*data[5]), Color(255,255,255))
 			end
 		end
+	end
+	if not self.AutoEnabled then
+		self.InvationSignal = false
 	end
 	self:NextThink(CurTime() + 0.25)
 	return true

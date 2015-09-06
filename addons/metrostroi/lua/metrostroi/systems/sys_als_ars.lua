@@ -302,7 +302,7 @@ function TRAIN_SYSTEM:Autodrive(Train)
 	end)
 end
 
-function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
+function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKActivated)
 	local Train = self.Train
 	if EnableARS then
 		--Train.RPB:TriggerInput("Set",1)
@@ -877,11 +877,11 @@ function TRAIN_SYSTEM:Think(dT)
 	if not OverrideState and StPetersburg then
 		EnableARS = EnableARS and Train.ARS.Value == 1 and (self.Train["PA-KSD"].State > 0 or self.Train["PA-KSD"].State == -1)
 		EnableALS = EnableALS and Train.VPA.Value == 1 and (self.Train["PA-KSD"].State > 0 or self.Train["PA-KSD"].State == -1)
-		EnableUOS = Train["PA-KSD"].UOS--EnableUOS and Train["PA-KSD"].UOS
+		EnableUOS = false--Train["PA-KSD"].UOS--EnableUOS and Train["PA-KSD"].UOS
 	elseif not OverrideState then
 		EnableARS = EnableARS and Train.ARS.Value == 1.0
 		EnableALS = EnableALS and Train.ALS.Value == 1.0
-		EnableUOS = false--EnableUOS and Train.UOS.Value == 1.0
+		EnableUOS = EnableUOS and Train.UOS.Value == 1.0
 	end
 	self.EnableARS = EnableARS
 	self.EnableALS = EnableALS
@@ -1076,7 +1076,7 @@ function TRAIN_SYSTEM:Think(dT)
 		--if not self.PiterARS then print(self.Train.Owner) end
 		self:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated,dT)
 	else
-		self:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated)
+		self:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKActivated)
 	end
 	if Train.RV_2 then
 		Train.RV_2:TriggerInput("Set",EnableARS and 1 or 0)
