@@ -332,6 +332,7 @@ function ENT:Initialize()
 	end
 	self.L_5:TriggerInput("Set",1)
 	self.A5:TriggerInput("Set",0)
+	self.OldTexture = 0
 end
 
 --------------------------------------------------------------------------------
@@ -368,6 +369,15 @@ function ENT:Think()
 		end
 		self.LightsReload = true
 	end
+
+	if self.PassTexture ~= self.OldTexture then
+		for k,v in pairs(self:GetMaterials()) do
+			if v == "models/metrostroi_train/81/int02" then
+				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path)
+			end
+		end
+		self.OldTexture = self.PassTexture
+	end
 	self.TextureTime = self.TextureTime or CurTime()
 	if (CurTime() - self.TextureTime) > 1.0 then
 		--table.insert(self.SignsList,"Синергия-1")
@@ -390,7 +400,7 @@ function ENT:Think()
 					else
 						self:PrepareSigns()
 					end
-				else
+				elseif v ~= "models/metrostroi_train/81/int02" then
 					self:SetSubMaterial(k-1,"")
 				end
 			end
@@ -1077,10 +1087,13 @@ function ENT:Check2Cab(button,breaker,func,isbreaker)
 	end
 end
 function ENT:PhysicsCollide( colData, collider )
-	--print("COLLIDE")
-	--PrintTable(colData)
-	--print(self:WorldToLocal(colData.HitPos))
-	--print(collider)
+	if colData.HitEntity == Entity(0) then
+		--PrintTable(colData)
+		file.Append("collides.txt",tostring(self:WorldToLocal(colData.HitPos)).."\n")
+		print("COLLIDE")
+		print(self:WorldToLocal(colData.HitPos))
+		--print(collider)
+	end
 end
 --------------------------------------------------------------------------------
 function ENT:OnButtonPress(button,state)

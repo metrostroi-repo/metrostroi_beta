@@ -1524,7 +1524,7 @@ function ENT:Think()
 	self:SetBodygroup(4,(self.SeatType or 1)-1)
 	self:SetBodygroup(5,(self.HandRail or 1)-1)
 	self:SetBodygroup(6,self.MVM and (self.MaskType > 2 and 1 or 0) or 2)
-	self:SetBodygroup(7,(self.BortLampType or 1)-1)
+	self:SetBodygroup(7,(self.BortLampType or 1)-1)	
 	]]
 	local transient = (self.Transient or 0)*0.05
 	if (self.Transient or 0) ~= 0.0 then self.Transient = 0.0 end
@@ -1533,7 +1533,6 @@ function ENT:Think()
 	then self.KRUPos = self.KRUPos + (0.0 - self.KRUPos)*8.0*self.DeltaTime
 	else self.KRUPos = 1.0
 	end
-
 	-- Simulate pressure gauges getting stuck a little
 	self:Animate("brake334", 		1-self:GetPackedRatio(0), 			0.00, 0.65,  256,24)
 	self:Animate("brake013", 		self:GetPackedRatio(0)^0.5,			0.00, 0.65,  256,24)
@@ -1829,7 +1828,7 @@ function ENT:Think()
 	if self.PreviousAlertState ~= state then
 		self.PreviousAlertState = state
 		if state then
-			if self.ARSType == 3 then self:SetSoundState("ring3",0.20,1) else self:SetSoundState("ring2",0.20,1) end
+			if self.ARSType == 3  then self:SetSoundState("ring3",0.20,1) else self:SetSoundState("ring2",0.20,1) end
 		else
 			self:SetSoundState("ring3",0,0)
 			self:SetSoundState("ring2",0,0)

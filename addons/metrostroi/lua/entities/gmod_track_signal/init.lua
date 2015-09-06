@@ -101,7 +101,14 @@ function ENT:SayHook(ply, comm)
 					self:OpenRoute(1)
 				end
 			end
-		end		
+		elseif self.Routes then
+			for k,v in pairs(self.Routes) do
+				if v.RouteName and v.RouteName:upper() == comm[1] then
+					if self.LastOpenedRoute and k ~= self.LastOpenedRoute then self:CloseRoute(self.LastOpenedRoute) end
+					self:CloseRoute(k)
+				end
+			end
+		end
 	elseif comm:sub(1,7) == "!sopen " then
 		comm = comm:sub(8,-1):upper()
 		comm = string.Explode(":",comm)
@@ -135,7 +142,7 @@ function ENT:SayHook(ply, comm)
 		end
 	end
 end
-
+ENT.ARSOrder = "04678"
 function ENT:Initialize()
 	--hook.Add( "metrostroi-signal-update-hook", "metrostroi-signal-update-hook"..self:EntIndex(), self:ARSLogic() )
 	self:SetModel("models/metrostroi/signals/ars_box.mdl")
@@ -181,6 +188,10 @@ function ENT:PreInitalize()
 			end
 			--if self.NextSignals[v.NextSignal] then FoundedSignals = FoundedSignals + 1 end
 		end
+	end
+	self.MU = false
+	for k,v in ipairs(self.Lenses) do
+		if v:find("M") then self.MU = true break end
 	end
 --	self:SendUpdate()
 end
@@ -239,6 +250,10 @@ function ENT:GetARS(ARSID, Train)
 	--print(self.Name,self.ARSNextSpeedLimit)
 	return self.ARSSpeedLimit == ARSID or (self.ARSNextSpeedLimit == ARSID and self.ARSSpeedLimit > self.ARSNextSpeedLimit and GetConVarNumber("metrostroi_ars_sfreq") > 0)
 end
+function ENT:Get325Hz()
+	--print(self.Name,self.ARSNextSpeedLimit)
+	return self.ARSSpeedLimit == 0 and self.Approve0
+end
 function ENT:GetMaxARS()
 	local ARSCodes = self.Routes[1].ARSCodes
 	if not self.Routes[1] or not ARSCodes then return 1 end
@@ -262,7 +277,6 @@ function ENT:ARSLogic(tim)
 		else
 			self.Occupied = self.OverrideTrackOccupied or Metrostroi.Voltage < 50
 		end
-
 
 		if self.Occupied then	
 			if self.Routes[self.Route or 1].Manual then self.Routes[self.Route or 1].IsOpened = false end
@@ -344,12 +358,24 @@ function ENT:ARSLogic(tim)
 		elseif self.Routes[self.Route].ARSCodes then
 			--print(self.Name,self.NextSignalLink)
 			local ARSCodes = self.Routes[self.Route].ARSCodes
+			self.ARSNextSpeedLimit = IsValid(self.NextSignalLink) and self.NextSignalLink.ARSSpeedLimit or tonumber(ARSCodes[1])
 			if GetConVarNumber("metrostroi_ars_independent") > 0 then
 				self.ARSSpeedLimit = tonumber(ARSCodes[#ARSCodes] or "1")
 			else
-				self.ARSSpeedLimit = IsValid(self.NextSignalLink) and tonumber(ARSCodes[math.min(#ARSCodes, self.FreeBS+1)]) or tonumber(ARSCodes[1] or "1")
+				local curr = ARSCodes[math.min(#ARSCodes, self.FreeBS+1)]
+				local max = tonumber(ARSCodes[#ARSCodes])
+				if curr == "1" or curr == "0" or self.ARSNextSpeedLimit == nil then
+					self.ARSSpeedLimit = IsValid(self.NextSignalLink) and tonumber(curr) or tonumber(ARSCodes[1] or "1")
+				else
+					if self.ARSNextSpeedLimit == 4 and max >= 6 then
+						self.ARSSpeedLimit = 6
+					elseif  self.ARSNextSpeedLimit == 0 or self.ARSNextSpeedLimit == 1 and max >= 4 then
+						self.ARSSpeedLimit = 4
+					else
+						self.ARSSpeedLimit = math.min(max,self.ARSNextSpeedLimit + 1)
+					end
+				end
 			end
-			self.ARSNextSpeedLimit = IsValid(self.NextSignalLink) and self.NextSignalLink.ARSSpeedLimit or ARSCodes[1]
 		end
 	end
 end
@@ -373,6 +399,24 @@ function ENT:Think()
 	--self:ARSLogic(0.25 )
 	
 	--If we use only ARS Box - we stop all next operations (lenses, autostop)
+	if self.ARSOnly then
+		local number = self.NextSignalLink and (self.NextSignalLink.RouteNumberOverrite or self.NextSignalLink.RouteNumber) or nil
+		self.RouteNumberOverrite = self.RouteNumber or (number ~= "" and number or nil)
+	end
+	self.RouteNumberOverrite = nil
+	local number
+	if self.MU or self.Depot or self.ARSOnly then
+		number = self.NextSignalLink and (self.NextSignalLink.RouteNumberOverrite or self.NextSignalLink.RouteNumber) or ""
+		if self.NextSignalLink and self.Depot and self.NextSignalLink.FreeBS < 2 then
+			number = self.NextSignalLink.RouteNumber or self.NextSignalLink.RouteNumberOverrite
+		elseif self.NextSignalLink and self.Depot then
+			--print(self.NextSignalLink.Name)
+			--if number == "4" then self.FreeBS = 0 self.NextSignalLink = nil end
+		end
+		if (self.Depot and self.NextSignalLink and self.NextSignalLink.FreeBS > 2) or not self.Depot then
+			self.RouteNumberOverrite = number ~= "" and number or nil
+		end
+	end
 	if self.ARSOnly or Metrostroi.Voltage <= 50  then 
 		if self.Sprites then
 			for k,v in pairs(self.Sprites) do
@@ -417,7 +461,7 @@ function ENT:Think()
 	local Route = self.Routes[self.Route or 1]
 	local index = 1
 	local offset = self.RenderOffset[self.SignalType] or Vector(0,0,0)
-
+	--if self.Name == "MN339" then print(self.NextSignalLink.NextSignalLink.NextSignalLink.NextSignalLink.RouteNumberOverrite) end
 	for k,v in ipairs(self.Lenses) do
 		if v ~= "M" then
 			--get the some models data
@@ -463,8 +507,6 @@ function ENT:Think()
 			--Get the some models data
 			local data = self.TrafficLightModels[self.SignalType][Metrostroi.Signal_RP]
 			offset = offset - Vector(0,0,data[1])
-			local number = self.NextSignalLink and self.NextSignalLink.RouteNumber or ""
-			self.RouteNumber = number ~= "" and number or nil
 
 			--Let's draw the sprites
 			local RN = tostring(self.RouteNumber,(self.ARSSpeedLimit or 0) < 4)..tostring(self.NextSignalLink and self.NextSignalLink.Name or "unk")
@@ -499,7 +541,7 @@ function ENT:SendUpdate(ply)
 		net.WriteInt(self.SignalType or 0,3)
 		net.WriteString(self.Name or "NOT LOADED")
 		net.WriteString(self.ARSOnly and "ARSOnly" or self.LensesStr)
-	net.Send(ply)
+	if ply then net.Send(ply) else net.Broadcast() end
 end
 
 --On receive update request, we send update
