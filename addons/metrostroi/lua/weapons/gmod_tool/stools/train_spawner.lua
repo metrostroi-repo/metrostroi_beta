@@ -3,6 +3,7 @@ TOOL.ClientConVar["train"] = 1
 TOOL.ClientConVar["wagnum"] = 3
 TOOL.ClientConVar["texture"] = 1
 TOOL.ClientConVar["passtexture"] = 1
+TOOL.ClientConVar["adv"] = 1
 TOOL.ClientConVar["ars"] = 1
 TOOL.ClientConVar["skin"] = 1
 TOOL.ClientConVar["cran"] = 1
@@ -110,6 +111,7 @@ function TOOL:GetConvar()
 	tbl.WagNum = self:GetClientNumber("wagnum")
 	tbl.Texture = self:GetClientNumber("texture")
 	tbl.PassTexture = self:GetClientNumber("passtexture")
+	tbl.Adv = self:GetClientNumber("adv")
 	tbl.ARS = self:GetClientNumber("ars")
 	tbl.Skin = self:GetClientNumber("skin")
 	tbl.Cran = self:GetClientNumber("cran")
@@ -180,15 +182,15 @@ function TOOL:UpdateGhost(pl, ent)
 		end
 	else
 		--ent:SetSkin(self.tbl.Paint == 1 and math.random(0,2) or self.tbl.Paint-2)
-		ent:SetBodygroup(1,(self.tbl.ARSType or 1)-1)
-		ent:SetBodygroup(2,(self.tbl.LampType or 1)-1)
-		ent:SetBodygroup(3,(self.tbl.MaskType or 1)-1)
-		ent:SetBodygroup(4,(self.tbl.SeatType or 1)-1)
-		ent:SetBodygroup(5,(self.tbl.HandRail or 1)-1)
-		ent:SetBodygroup(6,(self.tbl.MVM and ((self.tbl.Mask > 2 and self.tbl.Mask ~= 6) and 1 or 0) or 2))
-		ent:SetBodygroup(7,(self.tbl.BortLampType or 1)-1)
+		ent:SetBodygroup(1,(self.tbl.ARS or 1)-1)
+		ent:SetBodygroup(2,(self.tbl.Lamp or 1)-1)
+		ent:SetBodygroup(3,(self.tbl.Mask or 1)-1)
+		ent:SetBodygroup(4,(self.tbl.Seat or 1)-1)
+		ent:SetBodygroup(5,(self.tbl.Hand or 1)-1)
+		ent:SetBodygroup(6,(self.tbl.MVM > 0 and ((self.tbl.Mask > 2 and self.tbl.Mask ~= 6) and 1 or 0) or 2))
+		ent:SetBodygroup(7,(self.tbl.Bort or 1)-1)
 		ent:SetBodygroup(9,(self.tbl.Breakers or 0))
-		ent:SetBodygroup(14,self.tbl.ARSType == 3 and 1 or 0)
+		ent:SetBodygroup(14,self.tbl.ARS == 3 and 1 or 0)
 		for k,v in pairs(ent:GetMaterials()) do
 			if v == "models/metrostroi_train/81/b01a" then
 				ent:SetSubMaterial(k-1,Metrostroi.Skins["717"][self.tbl.Texture].path)
@@ -317,6 +319,7 @@ function TOOL:SetSettings(ent, ply, i)
 		ent.MaskType = self.tbl.Mask
 		ent.SeatType = self.tbl.Seat
 		ent.HandRail = self.tbl.Hand
+		ent.Adverts = self.tbl.Adv
 		ent.MVM = self.tbl.MVM > 0
 		ent.BortLampType = self.tbl.Bort
 		ent.LED = self.tbl.LED > 0

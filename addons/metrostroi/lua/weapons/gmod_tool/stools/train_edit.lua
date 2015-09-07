@@ -12,13 +12,14 @@ end
 TOOL.ClientConVar["train"] = 0
 TOOL.ClientConVar["passtexture"] = 0
 TOOL.ClientConVar["texture"] = 0
+TOOL.ClientConVar["adv"] = 1
 TOOL.ClientConVar["led"] = 0
 TOOL.ClientConVar["cran"] = 0
 TOOL.ClientConVar["bpsn"] = 1
 TOOL.ClientConVar["oldkv"] = 0
 TOOL.ClientConVar["oldkvpos"] = 0
 TOOL.ClientConVar["horn"] = 0
-TOOL.ClientConVar["ars"] = 0
+TOOL.ClientConVar["ars"] = 1
 TOOL.ClientConVar["lamp"] = 0
 TOOL.ClientConVar["mask"] = 0
 TOOL.ClientConVar["seat"] = 0
@@ -53,6 +54,7 @@ function TOOL:LeftClick(trace)
 	train.Breakers= self:GetClientNumber("breakers")
 	train:SetNWBool("Breakers",(train.Breakers or 1) > 0)
 	train.OldKVPos = self:GetClientNumber("oldkvpos") > 0
+	train.Adverts = self:GetClientNumber("adv")
 	--train:SetNWInt("ARSType",train.ARSType)
 	train:SetNWInt("BPSNType",train.BPSNType+1)
 	if self:GetClientNumber("oldkv") > 0 then
@@ -105,7 +107,7 @@ function TOOL:RightClick(trace)
 end
 
 local SettingTypes = {
-	"Train,Texture,PassTexture,ARS,Cran,Mask,LED,BPSN,OldKV,Horn,OldKVPos,Bort,MVM,Hand,Seat,Lamp,Breakers",
+	"Train,Texture,PassTexture,ARS,Cran,Mask,LED,BPSN,OldKV,Horn,OldKVPos,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv",
 	"Train,Texture,Cran,Horn",
 	"Train",
 }
@@ -120,6 +122,7 @@ function TOOL:LoadConCMD()
 		Train = 1,
 		Texture = 1,
 		PassTexture = 1,
+		Adv = 1,
 		ARS = 1,
 		Cran = 1,
 		Mask = 1,
@@ -146,7 +149,7 @@ end
 function TOOL:CreateList(name,text,tbl,OnSelect)
 	if not SettingTypes[self.Settings.Train]:find(name) then return end
 	local frame = controlpanel.Get("train_edit")
-	local List,ListLabel = frame:ComboBox(name)
+	local List,ListLabel = frame:ComboBox(text)
 	List:SizeToContents()
 	tbl[0] = text
 	for i=1,#tbl do
@@ -224,6 +227,7 @@ function TOOL:BuildCPanelCustom()
 --	self:CreateSlider("WagNum",0,1, GetGlobalInt("metrostroi_maxwagons"),"Wagons")
 	self:CreateList("Texture","Texture",Texture)
 	self:CreateList("PassTexture","PassTexture",PassTexture)
+	self:CreateList("Adv","Adverts",{"Type1","Type2","Type3","No adverts"})
 	self:CreateList("Cran","Cran type",{"334","013"})
 	self:CreateList("ARS","ARS Type",{"Standart(square lamps)","Standart(round lamps)","Kiev/St.Petersburg"})
 	self:CreateList("Mask","Mask",{"2-2","2-2-2","1-4-1 bumper 1","1-3-1","1-4-1 bumper2","1-1"})

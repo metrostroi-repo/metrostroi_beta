@@ -333,6 +333,7 @@ end
 
 --------------------------------------------------------------------------------
 function ENT:Think()
+	--print(self.Owner)
 	self.TextureTime = self.TextureTime or CurTime()
 	if (CurTime() - self.TextureTime) > 1.0 then
 		--table.insert(self.SignsList,"Синергия-1")

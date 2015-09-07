@@ -370,13 +370,18 @@ function ENT:Think()
 		self.LightsReload = true
 	end
 
-	if self.PassTexture ~= self.OldTexture then
+	if self.PassTexture ~= self.OldTexture or self.Adverts ~= self.OldAdverts then
 		for k,v in pairs(self:GetMaterials()) do
 			if v == "models/metrostroi_train/81/int02" then
-				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path)
+				if self.Adverts ~= 4 then
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path1)
+				else
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path2)
+				end
 			end
 		end
 		self.OldTexture = self.PassTexture
+		self.OldAdverts = self.Adverts
 	end
 	self.TextureTime = self.TextureTime or CurTime()
 	if (CurTime() - self.TextureTime) > 1.0 then
@@ -416,6 +421,7 @@ function ENT:Think()
 	self:SetBodygroup(6,(self.MVM and ((self.MaskType > 2 and self.MaskType ~= 6) and 1 or 0) or 2))
 	self:SetBodygroup(7,(self.BortLampType or 1)-1)
 	self:SetBodygroup(9,(self.Breakers or 0))
+	self:SetBodygroup(10,math.min(3,self.Adverts or 1)-1)
 	self:SetBodygroup(13,2-self.Pneumatic.ValveType)
 	self:SetBodygroup(14,self.ARSType == 3 and 1 or 0)
 

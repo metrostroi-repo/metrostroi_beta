@@ -3,7 +3,4 @@
 	"$basetexture" "metrostroi_skins/81-717_schemes/int_orange_msk_adv"
 	"$model" "1"
 	"$alphatest" "1"
-  	"$allowalphatocoverage" "1"
-}
-
-}
+  	"$allowalphatocoverage" "1"}

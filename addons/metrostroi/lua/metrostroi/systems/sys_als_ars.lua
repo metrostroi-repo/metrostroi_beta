@@ -957,12 +957,8 @@ function TRAIN_SYSTEM:Think(dT)
 			end
 
 			if Train:ReadTrainWire(5) < 1 then
-				for i = #Train.WagonList,1,-1 do
-					if Train.WagonList[i].ALS_ARS and Train.WagonList[i].ALS_ARS.EnableALS then
-						ars = Train.WagonList[i].ALS_ARS.Signal
-						break
-					end
-				end
+				ars = nil
+				self.RealNoFreq = true
 			end
 		
 			if IsValid(ars) then

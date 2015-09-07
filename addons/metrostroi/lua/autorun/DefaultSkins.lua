@@ -76,7 +76,7 @@ local function LoadSkin()
 		path = "metrostroi_skins/81-717/7",
 	})
 	table.insert(Metrostroi.Skins["717"],{
-		name = "Moscow3",
+		name = "Moscow4",
 		path = "metrostroi_skins/81-717/8",
 	})
 	table.insert(Metrostroi.Skins["717"],{
@@ -244,11 +244,11 @@ local function LoadSkin()
 	if not Metrostroi.Skins["717_schemes"] then Metrostroi.Skins["717_schemes"] = {} end
 	Metrostroi.Skins["717_schemes"]["p_metrostroi"] = {
 		path1 = "metrostroi_skins/81-717_schemes/int_b50_spb_adv",
-		path2 = "metrostroi_skins/81-717_schemes/int_b50_spb_noadv",
+		path2 = "metrostroi_skins/81-717_schemes/int_b50_spb_clean",
 	}
 	Metrostroi.Skins["717_schemes"]["p_orange"] = {
 		path1 = "metrostroi_skins/81-717_schemes/int_orange_spb_adv",
-		path2 = "metrostroi_skins/81-717_schemes/int_orange_spb_noadv",
+		path2 = "metrostroi_skins/81-717_schemes/int_orange_spb_clean",
 	}
 	Metrostroi.Skins["717_schemes"]["m_metrostroi"] = {
 		path1 = "metrostroi_skins/81-717_schemes/int_b50_msk_adv",

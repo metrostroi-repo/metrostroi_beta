@@ -1,10 +1,11 @@
 ﻿include("shared.lua")
-local MaxHorisontal = 13
+local MaxHorisontal = 14
 local frame = nil
 local MaxWagons = 0
 local MaxWagonsOnPlayer = 0
 local Settings = {
 	Train = 1,
+	Adv = 1,
 	WagNum = 3,
 	Texture = 1,
 	PassTexture = 1,
@@ -33,7 +34,7 @@ local Settings = {
 	Breakers = 0,
 }
 local Types = {
-	"Train,WagNum,PassTexture,Texture,ARS,Cran,Mask,LED,BPSN,OldKV,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,OldKVPos,Bort,MVM,Hand,Seat,Lamp,Breakers",
+	"Train,WagNum,PassTexture,Texture,ARS,Cran,Mask,LED,BPSN,OldKV,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,OldKVPos,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv",
 	"Train,WagNum,Texture,Prom,Cran,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB",
 	"Train,WagNum",
 }
@@ -181,6 +182,7 @@ local function Draw()
 	CreateSlider("WagNum",0,1, GetGlobalInt("metrostroi_maxwagons"),"Wagons")
 	CreateList("Texture","Texture",Texture)
 	CreateList("PassTexture","PassTexture",PassTexture)
+	CreateList("Adv","Adverts",{"Type1","Type2","Type3","No adverts"})
 	CreateList("Cran","Cran type",{"334","013"})
 	CreateSlider("NM",1,0.1,9,"Train Line Pressure")
 	CreateList("ARS","ARS Type",{"Standart(square lamps)","Standart(round lamps)","Kiev/St.Petersburg"})
