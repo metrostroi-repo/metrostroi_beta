@@ -22,16 +22,24 @@ function ENT:Initialize()
 end
 
 function ENT:OnRemove()
-	if IsValid(self.Model) then self.Model:Remove() end
+	self:RemoveModels()
+	--self.LightType = 0
+	--hook.Remove("PostDrawOpaqueRenderables")
+end
+function ENT:RemoveModels()
+	if IsValid(self.Model) then
+		self.Model:Remove()
+	end
 	self.Model = nil
 end
-
 function ENT:Think()
 	self:NextThink(CurTime()+5)
 	if self.SendReq == nil or (self.SendReq and CurTime() - self.SendReq <= 0) then return true elseif self.SendReq then self.SendReq = false end
 	if LocalPlayer():GetPos():Distance(self:GetPos()) > 10000 or LocalPlayer():GetPos().z - self:GetPos().z > 500 then
-		if IsValid(self.Model) then self.Model:Remove() end
-		self.Model= nil
+		if IsValid(self.Model) then
+			self.Model:Remove()
+			self.Model = nil
+		end
 		self.MustDraw = false
 		return true
 	else
@@ -66,8 +74,6 @@ net.Receive("metrostroi-signs", function()
 	ent.ModelProp = ent.SignModels[net.ReadInt(6)-1]
 	ent.Offset = net.ReadVector()
 	--print(ent.Offset)
-	if ent.Model then
-		ent.Model:Remove()
-	end
+	ent:RemoveModels()
 	--print(ent,"sign received update")
 end)

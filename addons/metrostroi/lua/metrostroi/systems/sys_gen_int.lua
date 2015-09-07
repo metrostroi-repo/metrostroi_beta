@@ -325,7 +325,7 @@ function TRAIN_SYSTEM.Solve81_717(Train,Triggers)
 	Triggers["SDRK_Shunt"]( 1.0 - (0.20+0.20*C((RK >= 2) and (RK <= 7))*C(P == 1))*Train.LK2.Value )
 	S["33-33Aa"] = Train.KD.Value+Train.VAD.Value
 	S["U2-20"] = Train.KV["U2-20a"]+Train.KV["U2-20b"]
-	S["31V'-31V"] = Train.KDL.Value+Train.VDL.Value
+	S["31V'-31V"] = (Train.KDL.Value+Train.VDL.Value)
 	S["10AK-VAH1"] = Train.VAH.Value+Train.RPB.Value
 	S["33B-33AVU"] = Train.AVU.Value+Train.OtklAVU.Value
 	S["1T-1P"] = Train.NR.Value+Train.RPU.Value
@@ -336,7 +336,7 @@ function TRAIN_SYSTEM.Solve81_717(Train,Triggers)
 	S["10AYa-10E"] = (1.0-Train.LK3.Value)+C((P == 1))
 	S["10AP-10AD"] = Train.LK2.Value+C((P == 3) or (P == 4))
 	S["10AE-10B"] = Train.TR1.Value+Train.RV1.Value
-	S["D1-32V"] = Train.DoorSelect.Value*Train.KDP.Value+Train.ALS_ARS["32"]
+	S["D1-32V"] = Train.DoorSelect.Value*Train.KDP.Value*(1-(Train.PAKSD_VUD.Value*Train.VUD1.Value))+Train.ALS_ARS["32"]
 	S["TW[15]-15A"] = Train.KRU["15/2-D8"]*Train.KV["D8-15A"]+1
 	S["1E-1Yu"] = Train.KSH2.Value+Train.KSB2.Value*Train.KSB1.Value
 	S["10-8"] = Train.KV["10-8"]+(1.0-Train.VAH.Value)*Train.KV["FR1-10"]*(1.0-Train.RPB.Value)
@@ -348,7 +348,7 @@ function TRAIN_SYSTEM.Solve81_717(Train,Triggers)
 	S["1Zh-1G"] = C((P == 1) or (P == 3))*Train.LK5.Value*C(RK == 1)*S["1E-1Yu"]+Train.LK3.Value
 	S["10AG-10E"] = C(RK == 18)*C((P == 1))*Train.LK3.Value+(1.0-Train.LK1.Value)*S["10AP-10AD"]*S["10AG-10AD"]
 	S["2A-2G"] = C((P == 1) or (P == 3))*C((RK >= 1) and (RK <= 17))+S["2V-2G"]*C((P == 2) or (P == 4))
-	S["D1-31V"] = (1.0-Train.DoorSelect.Value)*S["31V'-31V"]+Train.ALS_ARS["31"]
+	S["D1-31V"] = (1.0-Train.DoorSelect.Value)*S["31V'-31V"]*(1-(Train.PAKSD_VUD.Value*Train.VUD1.Value))+Train.ALS_ARS["31"]
 	S["1A-1R"] = (1.0-Train.RV1.Value)*C((P == 1))+S["1A-1M"]*C((P == 2))
 	S["10"] = 1*Train:ReadTrainWire(10)
 	S["FR1/2"] = S["10"]*Train.KV["FR1-10"]

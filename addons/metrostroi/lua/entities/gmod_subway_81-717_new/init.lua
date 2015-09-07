@@ -204,9 +204,9 @@ function ENT:Initialize()
 		[10] = { "dynamiclight",	Vector( 440, 0, 40), Angle(0,0,0), Color(255,255,255), brightness = 0.05, distance = 550 },
 		
 		-- Interior
-		[11] = { "dynamiclight",	Vector( 294, 0, 10), Angle(0,0,0), Color(255,220,180), brightness = 3, distance = 400 },
-		[12] = { "dynamiclight",	Vector(   0, 0, 10), Angle(0,0,0), Color(255,220,180), brightness = 3, distance = 400 },
-		[13] = { "dynamiclight",	Vector(-294, 0, 10), Angle(0,0,0), Color(255,220,180), brightness = 3, distance = 400 },
+		[11] = { "dynamiclight",	Vector( 294, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400 },
+		[12] = { "dynamiclight",	Vector(   0, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400 },
+		[13] = { "dynamiclight",	Vector(-294, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400 },
 		
 		-- Side lights
 		[14] = { "light",			Vector(-50, 69, 59.5), Angle(0,0,0), Color(255,0,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
@@ -332,23 +332,51 @@ function ENT:Initialize()
 	end
 	self.L_5:TriggerInput("Set",1)
 	self.A5:TriggerInput("Set",0)
+	self.OldTexture = 0
 end
 
 --------------------------------------------------------------------------------
 function ENT:Think()
-	if self.Lights[70] and self.LampType and self.LampType == 1 and self.Lights[70][2] ~=  Vector(-470 + 35.8*1, 0, 70) then
+	if self.Lights[70] and self.LampType and self.LampType == 1 and self.Lights[70][4] ~= Color(255,175,50) then
 		for i = 1,23 do
 			self:SetLightPower(69+i,false)
 			self.Lights[69+i][2] = Vector(-470 + 35.8*i, 0, 70)
+			self.Lights[69+i][4] = Color(255,175,50)
+		end
+		for i = 11,13 do
+			self:SetLightPower(i,false)
+			self.Lights[i][4] = Color(255,175,50)
 		end
 		self.LightsReload = true
 	end
-	if self.Lights[70] and self.LampType and self.LampType > 1 and self.Lights[70][2] ~= Vector(-474 + 67.5*1, 0, 70) then
+	if self.Lights[70] and self.LampType and self.LampType > 1 and ((self.Lights[70][4] ~= Color(200,200,255)  and self.LampType == 2) or (self.Lights[70][4] ~= Color(255,255,255)  and self.LampType == 3)) then
 		for i = 1,23 do
 			self:SetLightPower(69+i,false)
 			self.Lights[69+i][2] = Vector(-474 + 67.5*i, 0, 70)
+			if self.LampType == 2 then
+				self.Lights[69+i][4] = Color(200,200,255)
+			elseif self.LampType == 3 then
+				self.Lights[69+i][4] = Color(255,255,255)
+			end
+		end
+		for i = 11,13 do
+			self:SetLightPower(i,false)
+			if self.LampType == 2 then
+				self.Lights[i][4] = Color(200,200,255)
+			elseif self.LampType == 3 then
+				self.Lights[i][4] = Color(255,255,255)
+			end
 		end
 		self.LightsReload = true
+	end
+
+	if self.PassTexture ~= self.OldTexture then
+		for k,v in pairs(self:GetMaterials()) do
+			if v == "models/metrostroi_train/81/int02" then
+				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path)
+			end
+		end
+		self.OldTexture = self.PassTexture
 	end
 	self.TextureTime = self.TextureTime or CurTime()
 	if (CurTime() - self.TextureTime) > 1.0 then
@@ -372,7 +400,7 @@ function ENT:Think()
 					else
 						self:PrepareSigns()
 					end
-				else
+				elseif v ~= "models/metrostroi_train/81/int02" then
 					self:SetSubMaterial(k-1,"")
 				end
 			end
@@ -1059,10 +1087,13 @@ function ENT:Check2Cab(button,breaker,func,isbreaker)
 	end
 end
 function ENT:PhysicsCollide( colData, collider )
-	--print("COLLIDE")
-	--PrintTable(colData)
-	--print(self:WorldToLocal(colData.HitPos))
-	--print(collider)
+	if colData.HitEntity == Entity(0) then
+		--PrintTable(colData)
+		file.Append("collides.txt",tostring(self:WorldToLocal(colData.HitPos)).."\n")
+		print("COLLIDE")
+		print(self:WorldToLocal(colData.HitPos))
+		--print(collider)
+	end
 end
 --------------------------------------------------------------------------------
 function ENT:OnButtonPress(button,state)

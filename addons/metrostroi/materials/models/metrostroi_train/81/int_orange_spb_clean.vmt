@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/metrostroi_train/81/int_orange_spb_clean"
+	"$model" "1"
+	"$alphatest" "1"
+  	"$allowalphatocoverage" "1"
+}

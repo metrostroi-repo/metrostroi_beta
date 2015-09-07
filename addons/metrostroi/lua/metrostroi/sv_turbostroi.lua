@@ -2,10 +2,10 @@
 -- Simulation acceleration DLL support
 --------------------------------------------------------------------------------
 if not TURBOSTROI then
-	local FPS = 1/FrameTime()
+	local FPS = 33
 	local messageTimeout = 0
 	local messageCounter = 0
-	Metrostroi.dataCache = {}
+	Metrostroi.dataCache = {{},{}}
 	local inputCache = {}
 	local id,system,name,index,value
 	local function updateTrains(trains)
@@ -44,20 +44,21 @@ if not TURBOSTROI then
 		-- Output all system values
 		for _,train in pairs(trains) do
 			for i=1,32 do
-				if not Metrostroi.dataCache[train] then Metrostroi.dataCache[train] = {} end
-				if not Metrostroi.dataCache[train]["wires"] then Metrostroi.dataCache[train]["wires"] = {} end
-				if Metrostroi.dataCache[train]["wires"][i] ~= train:ReadTrainWire(i) then
-					Metrostroi.dataCache[train]["wires"][i] = train:ReadTrainWire(i)
+				if not Metrostroi.dataCache[1][train] then Metrostroi.dataCache[1][train] = {} end
+				if not Metrostroi.dataCache[1][train]["wires"] then Metrostroi.dataCache[1][train]["wires"] = {} end
+				--if Metrostroi.dataCache[1][train]["wires"][i] ~= train:ReadTrainWire(i) then
+					--Metrostroi.dataCache[1][train]["wires"][i] = train:ReadTrainWire(i)
 					Turbostroi.SendMessage(train,3,"","",i,train:ReadTrainWire(i))
-				end
+				--end
 			end
 			for sys_name,system in pairs(train.Systems) do
 				if system.OutputsList and system.DontAccelerateSimulation then
 					for _,name in pairs(system.OutputsList) do
-						local value = (system[name] or 0)
-						if not Metrostroi.dataCache[train][sys_name] then Metrostroi.dataCache[train][sys_name] = {} end
-						if Metrostroi.dataCache[train][sys_name][name] ~= value then
-							Metrostroi.dataCache[train][sys_name][name] = value
+						local value = system[name] or 0
+						if not Metrostroi.dataCache[1][train][sys_name] then Metrostroi.dataCache[1][train][sys_name] = {} end
+						--print(Metrostroi.dataCache[1][train][sys_name][name],value)
+						if Metrostroi.dataCache[1][train][sys_name][name] ~= value then
+							Metrostroi.dataCache[1][train][sys_name][name] = value
 							Turbostroi.SendMessage(train,1,sys_name,name,0,tonumber(value) or 0)
 						end
 					end
@@ -75,18 +76,13 @@ if not TURBOSTROI then
 		function Turbostroi.TriggerInput(train,system,name,value)
 			local v = value or 0
 			if type(value) == "boolean" then v = value and 1 or 0 end
-			if not Metrostroi.dataCache[train] then Metrostroi.dataCache[train] = {} end
-			if not Metrostroi.dataCache[train][system] then Metrostroi.dataCache[train][system] = {} end
-			if Metrostroi.dataCache[train][system][name] ~= value then
-				Metrostroi.dataCache[train][system][name] = value
+			--if not Metrostroi.dataCache[2][train] then Metrostroi.dataCache[2][train] = {} end
+			--if not Metrostroi.dataCache[2][train][system] then Metrostroi.dataCache[2][train][system] = {} end
+			--if Metrostroi.dataCache[2][train][system][name] ~= v then
+				--Metrostroi.dataCache[2][train][system][name] = v
 				Turbostroi.SendMessage(train,4,system,name,0,v)
-			end
+			--end
 		end
-		hook.Add("EntityRemoved","TurbostroiMetrostroi.DataCache2",function(ent)
-			if Metrostroi.dataCache[ent] then
-				Metrostroi.dataCache[ent] = nil
-			end
-		end)
 		hook.Add("Think", "Turbostroi_Think", function()
 			if not Turbostroi then return end
 			
@@ -273,6 +269,7 @@ function Initialize()
 	for k,v in pairs(LoadSystems) do
 		GlobalTrain:LoadSystem(k,v)
 	end
+	--Metrostroi.DataCache = {}
 	GlobalTrain.Initialized = true
 end
 
@@ -314,10 +311,12 @@ function DataExchange()
 	-- Output train wire writes
 	if not Metrostroi.DataCache["wires"] then Metrostroi.DataCache["wires"] = {} end
 	for twID,value in pairs(GlobalTrain.WriteTrainWires) do
-		if Metrostroi.DataCache["wires"][twID] ~= value then
-			Metrostroi.DataCache["wires"][twID] = value
+		--local value = tonumber(value) or 0
+		--if Metrostroi.DataCache["wires"][twID] ~= value then
+			--Metrostroi.DataCache["wires"][twID] = value
 			SendMessage(3,"","",tonumber(twID) or 0,tonumber(value) or 0)
-		end
-		--GlobalTrain.WriteTrainWires[twID] = nil
+			--print(GlobalTrain,twID,value)
+		--end
+		GlobalTrain.WriteTrainWires[twID] = nil
 	end
 end

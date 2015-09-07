@@ -10,6 +10,9 @@ ENT.Category		= "Metrostroi"
 ENT.Spawnable       = true
 ENT.AdminSpawnable  = false
 
+function ENT:SetupDataTables()
+	self._NetData = {}
+end
 function ENT:GetSpeed()
 	return self:GetNWFloat("Speed")
 end
@@ -25,19 +28,27 @@ end
 
 if SERVER then
 	function ENT:SetSpeed(val)
-		self:SetNWFloat("Speed",math.Round(val,0.5))
+		local val = math.Round(val,0.5)
+		if self._NetData[1] == val then return end
+		self:SetNWFloat("Speed",val)
 	end
 
 	function ENT:SetMotorPower(val)
-		self:SetNWFloat("MotorPower",math.Round(val,1.5))
+		local val = math.Round(val,1.5)
+		if self._NetData[2] == val then return end
+		self:SetNWFloat("MotorPower",val)
 	end
 
 	function ENT:SetdPdT(val)
-		self:SetNWFloat("dPdT",math.Round(val,2))
+		local val = math.Round(val,2)
+		if self._NetData[3] == val then return end
+		self:SetNWFloat("dPdT",val)
 	end
 
 	function ENT:SetBrakeSqueal(val)
-		self:SetNWFloat("BrakeSqueal",math.Round(val,2))
+		local val = math.Round(val,2)
+		if self._NetData[4] == val then return end
+		self:SetNWFloat("BrakeSqueal",val)
 	end
 end
 
