@@ -243,16 +243,20 @@ local function LoadSkin()
 	print("Metrostroi:Loading 717 advert skins...")	
 	if not Metrostroi.Skins["717_schemes"] then Metrostroi.Skins["717_schemes"] = {} end
 	Metrostroi.Skins["717_schemes"]["p_metrostroi"] = {
-		path = "metrostroi_skins/81-717_schemes/int02_b50p",
+		path1 = "metrostroi_skins/81-717_schemes/int_b50_spb_adv",
+		path2 = "metrostroi_skins/81-717_schemes/int_b50_spb_noadv",
 	}
 	Metrostroi.Skins["717_schemes"]["p_orange"] = {
-		path = "metrostroi_skins/81-717_schemes/int02_orangep",
+		path1 = "metrostroi_skins/81-717_schemes/int_orange_spb_adv",
+		path2 = "metrostroi_skins/81-717_schemes/int_orange_spb_noadv",
 	}
 	Metrostroi.Skins["717_schemes"]["m_metrostroi"] = {
-		path = "metrostroi_skins/81-717_schemes/int02_b50m",
+		path1 = "metrostroi_skins/81-717_schemes/int_b50_msk_adv",
+		path2 = "metrostroi_skins/81-717_schemes/int_b50_msk_noadv",
 	}
 	Metrostroi.Skins["717_schemes"]["m_orange"] = {
-		path = "metrostroi_skins/81-717_schemes/int02_orangem",
+		path1 = "metrostroi_skins/81-717_schemes/int_orange_msk_adv",
+		path2 = "metrostroi_skins/81-717_schemes/int_orange_msk_noadv",
 	}
 end
 timer.Simple(1,LoadSkin)
