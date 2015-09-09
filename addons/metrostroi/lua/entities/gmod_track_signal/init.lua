@@ -128,7 +128,7 @@ function ENT:SayHook(ply, comm)
 				if self.Routes[1] and self.Routes[1].Manual then
 					self:OpenRoute(1) 
 				--RunConsoleCommand("say","open manual route",self.Name)
-				elseif self.AutoEnabled then
+				elseif self.Red then
 					self.InvationSignal = true
 				end
 			end
@@ -278,6 +278,7 @@ function ENT:ARSLogic(tim)
 				self.InvationSignal = false
 				self.OccupiedByNowOld = self.OccupiedByNow
 			end
+			--if self.Name == "AU477" then print( self.OccupiedBy) end
 		else
 			self.Occupied = self.OverrideTrackOccupied or Metrostroi.Voltage < 50
 		end
@@ -366,7 +367,6 @@ function ENT:ARSLogic(tim)
 				self.ARSSpeedLimit = tonumber(ARSCodes[#ARSCodes] or "1")
 			else
 				local curr = ARSCodes[math.min(#ARSCodes, self.FreeBS+1)]
-				--if self.Name == "AU477" then print(1) end
 				local max = tonumber(ARSCodes[#ARSCodes])
 				if curr == "1" or curr == "0" or self.ARSNextSpeedLimit == nil or not max then
 					self.ARSSpeedLimit = IsValid(self.NextSignalLink) and tonumber(curr) or tonumber(ARSCodes[1] or "1")
@@ -462,6 +462,7 @@ function ENT:Think()
 	]]
 	--if self.IsolateSwitches then print(self.Name) end
 	self.AutoEnabled = false
+	self.Red = nil
 	--if self.Name == "LT 31" then print(self.Occupied) end
 	if not self.Routes[self.Route or 1].Lights then return end
 	local Route = self.Routes[self.Route or 1]
@@ -484,7 +485,12 @@ function ENT:Think()
 				local MustBlink = (((self.Lenses[#self.Lenses] ~= "W" and v[i] == "W") or v == "W") and self.InvationSignal) or (AverageState > 0 and Route.LightsExploded[LightID][AverageState+1] == "b") --Blinking, when next is "b" (or it's invasion signal')
 				local TimeToOff = not (RealTime() % 1 > 0.25)
 				--if v[i] == "R" and #Route.LightsExploded[LightID] == 1 and AverageState then self.AutoEnabled = true end
-				if v[i] == "R" and AverageState > 0 then self.AutoEnabled = true end
+				if v[i] == "R" and AverageState > 0 then
+					self.AutoEnabled = true
+					if self.Red == nil then self.Red = true end
+				elseif AverageState > 0 then
+					self.Red = false
+				end
 				--if v[i] == "R" and AverageState > 0 then print(self.Name,v[i] == "R",AverageState) end
 				if MustBlink and TimeToOff then AverageState = 0 end
 				--Simulate signal changing delay
@@ -526,7 +532,7 @@ function ENT:Think()
 				--Get's the number table
 				local RPData = Metrostroi.RoutePointer[number]
 				--Check, can we light'up this route pointer sprite
-				local AverageState = RPData and ((self.ARSSpeedLimit or 0) >= 4 and RPData[i+1]) or false
+				local AverageState = RPData and (not self.Red and RPData[i+1]) or false
 				if self.SpriteDelay and self.SpriteDelay - CurTime() > 0 then AverageState = false end
 				--Overall glow
 				self:SetSprite(k..i.."m",AverageState,
