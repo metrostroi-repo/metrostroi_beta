@@ -346,7 +346,6 @@ function ENT:ARSLogic(tim)
 			self.Route = 1
 		end
 	end
-
 	if self.Routes[self.Route] then
 		if self.Routes[self.Route or 1].Repeater then
 			self.RealName = IsValid(self.NextSignalLink) and self.NextSignalLink.Name or self.Name
@@ -367,6 +366,7 @@ function ENT:ARSLogic(tim)
 				self.ARSSpeedLimit = tonumber(ARSCodes[#ARSCodes] or "1")
 			else
 				local curr = ARSCodes[math.min(#ARSCodes, self.FreeBS+1)]
+				--if self.Name == "AU477" then print(1) end
 				local max = tonumber(ARSCodes[#ARSCodes])
 				if curr == "1" or curr == "0" or self.ARSNextSpeedLimit == nil or not max then
 					self.ARSSpeedLimit = IsValid(self.NextSignalLink) and tonumber(curr) or tonumber(ARSCodes[1] or "1")
@@ -402,7 +402,6 @@ function ENT:Think()
 		self.PrevTime = CurTime()+math.random(0.5,1.5)
 		self:ARSLogic(self.PrevTime - CurTime())
 	end
-	
 	--self:ARSLogic(0.25 )
 	
 	--If we use only ARS Box - we stop all next operations (lenses, autostop)

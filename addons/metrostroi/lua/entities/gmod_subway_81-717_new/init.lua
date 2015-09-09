@@ -370,7 +370,7 @@ function ENT:Think()
 		self.LightsReload = true
 	end
 
-	if self.PassTexture ~= self.OldTexture or self.Adverts ~= self.OldAdverts then
+	if (self.PassTexture ~= self.OldTexture or self.Adverts ~= self.OldAdverts) and self.Map ~= "" then
 		for k,v in pairs(self:GetMaterials()) do
 			if v == "models/metrostroi_train/81/int02" then
 				if not self.Adverts or self.Adverts ~= 4 then
