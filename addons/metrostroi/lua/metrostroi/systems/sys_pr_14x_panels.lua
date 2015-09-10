@@ -34,6 +34,9 @@ function TRAIN_SYSTEM:Initialize()
 end
 
 function TRAIN_SYSTEM:Think()
+	--print("K25",self.Train.K25.Value)
+	--print("K6",self.Train.K6.Value)
+	--print("RVT",self.Train.RVT.Value)
 	if not self.Checked then
 		if not self.Train.Electric.TrainSolver:find("81") then
 			self.Train.RVT.open_time = 1

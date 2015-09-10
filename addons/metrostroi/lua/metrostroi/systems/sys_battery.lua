@@ -24,10 +24,10 @@ end
 
 function TRAIN_SYSTEM:Think(dT)
 	-- Calculate discharge
-	self.Current = 90*(self.Train.PowerSupply.XT3_1 > 0 and 3 or -1)*50*self.Train.Panel["V1"]
+	self.Current = 90*(self.Train.PowerSupply.XT3_1 > 0 and 3 or -1 + 4*self.Train:ReadTrainWire(27))*50*self.Train.Panel["V1"]
 	--print(self.Train.Panel["V1"])
 	self.Charge = math.min(self.Capacity,self.Charge + self.Current * dT)
 
 	-- Calculate battery voltage
-	self.Voltage = 65*(self.Charge/self.Capacity) + (self.Train.PowerSupply.XT3_1 > 0 and 17 or 0)
+	self.Voltage = 65*(self.Charge/self.Capacity) + (self.Train.PowerSupply.XT3_1 > 0 and 17 or self.Train:ReadTrainWire(27)*17)
 end
