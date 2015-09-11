@@ -370,13 +370,17 @@ function ENT:Think()
 		self.LightsReload = true
 	end
 
-	if self.PassTexture and (self.PassTexture ~= self.OldTexture or self.Adverts ~= self.OldAdverts) and self.Map ~= "" then
+	if (self.PassTexture ~= self.OldTexture or self.Adverts ~= self.OldAdverts) then
 		for k,v in pairs(self:GetMaterials()) do
 			if v == "models/metrostroi_train/81/int02" then
-				if not self.Adverts or self.Adverts ~= 4 then
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path1)
+				if self.Map == "" then
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
 				else
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path2)
+					if not self.Adverts or self.Adverts ~= 4 then
+						self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path1)
+					else
+						self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path2)
+					end
 				end
 			end
 		end

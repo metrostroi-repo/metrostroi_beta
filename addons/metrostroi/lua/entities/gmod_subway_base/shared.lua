@@ -269,8 +269,9 @@ function ENT:InitializeSounds()
 	self.SoundNames["ezh_kv_x2_x3"]		= "subway_trains/new/ezh_kv_x2_x3.wav"
 	self.SoundNames["ezh_kv_x3_x2"]		= "subway_trains/new/ezh_kv_x3_x2.wav"
 	
-	for i = 1,7 do
-		self.SoundNames["styk"..i] = "subway_trains/new/styk"..i..".wav"
+	for i = 1,5 do
+		self.SoundNames["st"..i.."a"] = "subway_trains/new/st"..i.."a.wav"
+		self.SoundNames["st"..i.."b"] = "subway_trains/new/st"..i.."a.wav"
 	end
 	
 	self.SoundNames["tr"] = {

@@ -297,13 +297,14 @@ local function GetStationRK(mu,dX)
 	return TargetBrakeRKPosition
 end
 
+local mu = -0.25
 function TRAIN_SYSTEM:Autodrive(StationBraking)
 	local Train= self.Train
 	-- Calculate distance to station
 	local dX = Train:ReadCell(49165) + (self.Corrections[self.Station] or 0) - 4.3
 	local speedLimit = (Train.ALS_ARS.Signal0 or Train.ALS_ARS.RealNoFreq) and 0 or Train.ALS_ARS.Signal40 and 40 or Train.ALS_ARS.Signal60 and 60 or Train.ALS_ARS.Signal70 and 70 or Train.ALS_ARS.Signal80 and 80 or 0
-	local OnStation = dX < (160+35 - (speedLimit == 40 and 30 or 0)) and not self.StartMoving and Metrostroi.AnnouncerData[self.Station]and Metrostroi.AnnouncerData[self.Station][1]
-	if StationBraking and (dX >= (160+35 - (speedLimit == 40 and 30 or 0)) or not OnStation) then self.StationAutodrive = false return end
+	local OnStation = dX < (160+35*mu - (speedLimit == 40 and 30 or 0)) and not self.StartMoving and Metrostroi.AnnouncerData[self.Station]and Metrostroi.AnnouncerData[self.Station][1]
+	if StationBraking and (dX >= (160+35*mu - (speedLimit == 40 and 30 or 0)) or not OnStation) then self.StationAutodrive = false return end
 	--print(Train:ReadCell(49165) + (Corrections[self.Station] or 0) - 4.3)
 	-- Target and real RK position (0 if not braking)
 	local TargetBrakeRKPosition = 0
@@ -342,7 +343,6 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 	end
 
 	-- How smooth braking should be (higher mu = more gentle braking)
-	local mu = 0
 	-- Full stop command
 	if Train.ALS_ARS.SpeedLimit < 30 then TargetBrakeRKPosition = 18 Brake = true end
 
@@ -1352,7 +1352,7 @@ function TRAIN_SYSTEM:Think(dT)
 		end
 	elseif self.State > 6 and self.State ~= 8 and self.State ~= 49 and self.State ~= 45 and self.State ~= 48 then
 		if self.VRD and (not ARS.Signal0 or ARS.Signal0 and (ARS.Signal40 or ARS.Signal60 or ARS.Signal70 or ARS.Signal80)) then self.VRD = false end
-		if self.Distance > 40 and (self.Distance + (self.Corrections[self.Station] or 0) - 4.3) < (160+35 - (ARS.SpeedLimit == 40 and 30 or 0)) then
+		if self.Distance > 40 and (self.Distance + (self.Corrections[self.Station] or 0) - 4.3) < (160+35*mu - (ARS.SpeedLimit == 40 and 30 or 0)) then
 			self.StationAutodrive = true
 		end
 		if ARS["33G"] > 0.5 then

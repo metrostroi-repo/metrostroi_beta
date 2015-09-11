@@ -258,5 +258,8 @@ local function LoadSkin()
 		path1 = "metrostroi_skins/81-717_schemes/int_orange_msk_adv",
 		path2 = "metrostroi_skins/81-717_schemes/int_orange_msk_noadv",
 	}
+	Metrostroi.Skins["717_schemes"][""] = {
+		path = "metrostroi_skins/81-717_schemes/int_blank",
+	}
 end
 timer.Simple(1,LoadSkin)
