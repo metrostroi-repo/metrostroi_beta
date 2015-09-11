@@ -186,7 +186,24 @@ function ENT:InitializeSounds()
 	}
 	self.SoundNames["relay_close2"] = "subway_trains/new/relay_4.wav"
 	self.SoundNames["relay_close3"] = "subway_trains/new/relay_5.wav"
-	self.SoundNames["relay_close4"] = "subway_trains/new/relay_6.wav"
+	self.SoundNames["relay_close4"] = {
+		"subway_trains/new/lsd_1.wav",
+		"subway_trains/new/lsd_2.wav",
+		"subway_trains/new/lsd_3.wav",
+	}
+	self.SoundNames["rvt_close"] = {
+		"subway_trains/new/brake_on_1.wav",
+		"subway_trains/new/brake_on_2.wav",
+	}
+	self.SoundNames["r1_5_close"] = {
+		"subway_trains/new/drive_on_1.wav",
+		"subway_trains/new/drive_on_2.wav",
+	}
+	self.SoundNames["rvt_r1_5_open"] = {
+		"subway_trains/new/brake_off_1.wav",
+		"subway_trains/new/brake_off_2.wav",
+		"subway_trains/new/brake_off_3.wav",
+	}
 	self.SoundNames["relay_close5"] = "subway_trains/new/relay_3.wav"
 	self.SoundNames["door_close1"] = {
 		"subway_trains/door_close_7.wav",

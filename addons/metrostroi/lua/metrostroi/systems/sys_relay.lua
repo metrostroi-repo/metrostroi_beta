@@ -253,10 +253,14 @@ function TRAIN_SYSTEM:Think(dT)
 		if self.in_cabin_alt and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close2","cabin",0.6)		end
 		if self.in_cabin_alt2 and (self.Value == 0.0) then	self.Train:PlayOnce("relay_open","cabin",0.6)		end
 		if self.in_cabin_alt2 and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close3","cabin",0.6)		end
-		if self.in_cabin_alt2 and (self.Value == 0.0) then	self.Train:PlayOnce("relay_open","cabin",0.6)		end
+		if self.in_cabin_alt3 and (self.Value == 0.0) then	self.Train:PlayOnce("relay_open","cabin",0.6)		end
 		if self.in_cabin_alt3 and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close4","cabin",0.6)		end
 		if self.in_cabin_avu and (self.Value == 0.0) then	self.Train:PlayOnce("relay_open","cabin",0.7,70)	end
 		if self.in_cabin_avu and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close","cabin",0.7,70)	end
 		if self.in_cabin_alt4 and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close5","cabin",0.6)		end
+		if self.rvt and (self.Value == 0.0) then	self.Train:PlayOnce("rvt_r1_5_open","cabin",0.6)		end
+		if self.rvt and (self.Value == 1.0) then	self.Train:PlayOnce("rvt_close","cabin",0.6)		end
+		if self.r1_5 and (self.Value == 0.0) then	self.Train:PlayOnce("rvt_r1_5_open","cabin",0.6)		end
+		if self.r1_5 and (self.Value == 1.0) then	self.Train:PlayOnce("r1_5_close","cabin",0.6)		end
 	end
 end

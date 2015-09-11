@@ -23,7 +23,7 @@ function ENT:InitializeSounds()
 	self.BaseClass.InitializeSounds(self)
 	self.SoundNames["relay_close2"] = nil
 	self.SoundNames["relay_close3"] = nil
-	self.SoundNames["relay_close4"] = "subway_trains/new/relay_7.wav"
+	self.SoundNames["relay_close4"] = {"subway_trains/new/relay_7.wav","subway_trains/new/lsd_4.wav"}
 	self.SoundNames["pneumo_switch"] = {
 		"subway_trains/pneumo_8.wav",
 		"subway_trains/pneumo_9.wav",
