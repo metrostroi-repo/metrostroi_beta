@@ -258,28 +258,35 @@ function ENT:ApplyMatrix(name,pos,ang)
 	self.ClientPropsMatrix[name]:Translate(-pos)
 	csent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[name])
 end
+function ENT:SpawnCSEnt(k)
+	local v = self.ClientProps[k]
+	if k ~= "BaseClass" and not IsValid(self.ClientEnts[k]) and not self.Hidden[k] then
+		local cent = ClientsideModel(v.model ,RENDERGROUP_OPAQUE)
+		cent:SetPos(self:LocalToWorld(v.pos))
+		cent:SetAngles(self:LocalToWorldAngles(v.ang))
+		cent:SetParent(self)
+		cent:SetColor(v.color or color_white)
+		cent:SetSkin(v.skin or 0)
+		if self.ClientPropsMatrix[k] then cent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[k]) end
+		--print(self:GetNWString("texture",nil))
+		self.ClientEnts[k] = cent
+
+		for k,v in pairs(cent:GetMaterials()) do
+			if v:find("ewagon") or v == "models/metrostroi_train/81/b01a" then
+				cent:SetSubMaterial(k-1,self:GetNWString("texture"))
+			elseif v == "models/metrostroi_train/81/int01" then
+				cent:SetSubMaterial(k-1,self:GetNWString("passtexture"))
+			else
+				cent:SetSubMaterial(k-1,"")
+			end
+		end
+		self:ShowHide(k, not self.Hidden[k],true)
+	end
+end
 function ENT:CreateCSEnts()
 	for k,v in pairs(self.ClientProps) do
 		if k ~= "BaseClass" and not IsValid(self.ClientEnts[k]) then
-			local cent = ClientsideModel(v.model ,RENDERGROUP_OPAQUE)
-			cent:SetPos(self:LocalToWorld(v.pos))
-			cent:SetAngles(self:LocalToWorldAngles(v.ang))
-			cent:SetParent(self)
-			cent:SetColor(v.color or color_white)
-			if self.ClientPropsMatrix[k] then cent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[k]) end
-			--print(self:GetNWString("texture",nil))
-			self.ClientEnts[k] = cent
-
-			for k,v in pairs(cent:GetMaterials()) do
-				if v:find("ewagon") or v == "models/metrostroi_train/81/b01a" then
-					cent:SetSubMaterial(k-1,self:GetNWString("texture"))
-				elseif v == "models/metrostroi_train/81/int01" then
-					cent:SetSubMaterial(k-1,self:GetNWString("passtexture"))
-				else
-					cent:SetSubMaterial(k-1,"")
-				end
-			end
-			self:ShowHide(k, not self.Hidden[k],true)
+			self:SpawnCSEnt(k)
 		end
 	end
 end
@@ -287,9 +294,11 @@ end
 function ENT:RemoveCSEnts()
 	if self.ClientEnts then
 		for k,v in pairs(self.ClientEnts) do
-			v:DisableMatrix("RenderMultiply")
 			local id = 0
-			if IsValid(v) then v:Remove() end
+			if IsValid(v) then 
+				v:DisableMatrix("RenderMultiply")
+				v:Remove()
+			end
 		end
 	end
 	self.ClientEnts = {}
@@ -877,29 +886,59 @@ function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
 		end
 	end
 
-	if self.ClientEnts[clientProp] then
+	if IsValid(self.ClientEnts[clientProp]) then
 		self.ClientEnts[clientProp]:SetPoseParameter("position",min + (max-min)*self["_anim_"..id])
 	end
 	--print(id,min + (max-min)*self["_anim_"..id],value, min + (max-min)*value)
 	--self["_anim_old_"..id] = min + (max-min)*self["_anim_"..id]
 	return min + (max-min)*self["_anim_"..id]
 end
+function ENT:AnimateFrom(clientProp,from)
+	if IsValid(self.ClientEnts[clientProp]) then
+		self.ClientEnts[clientProp]:SetPoseParameter("position",self["_anim_"..from])
+	end
+	return self["_anim_"..from]
+end
 
 function ENT:ShowHide(clientProp, value, over)
 	if IsValid(self.ClientEnts[clientProp]) then
 		if value == true and (self.Hidden[clientProp] or over) then
-			self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_NORMAL)
-			self.ClientEnts[clientProp]:SetColor(Color(255,255,255,255))
+			if not IsValid(self.ClientEnts[clientProp]) then
+				self:SpawnCSEnt(clientProp)
+			end
+			--self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_NORMAL)
+			--self.ClientEnts[clientProp]:SetColor(Color(255,255,255,255))
 			--self.Hidden[clientProp] = false
 		elseif value ~= true and (not self.Hidden[clientProp] or over) then
-			self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_NONE)
-			self.ClientEnts[clientProp]:SetColor(Color(0,0,0,0))
+			if IsValid(self.ClientEnts[clientProp]) then
+				self.ClientEnts[clientProp]:Remove()
+			end
+			--self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_NONE)
+			--self.ClientEnts[clientProp]:SetColor(Color(0,0,0,0))
 			--self.Hidden[clientProp] = true
 		end	
 		--self.HiddenQuele[clientProp] = nil
 	--else
 	end
 	self.Hidden[clientProp] = value ~= true
+end
+
+function ENT:ShowHideSmooth(clientProp, value)
+	if IsValid(self.ClientEnts[clientProp]) then
+		if IsValid(self.ClientEnts[clientProp]) then
+			self.ClientEnts[clientProp]:SetColor(Color(255,255,255,value*255))
+			self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_TRANSALPHA)
+		end
+		if value > 0 and not IsValid(self.ClientEnts[clientProp]) then
+			self:SpawnCSEnt(clientProp)
+		end
+		if value == 0 and IsValid(self.ClientEnts[clientProp]) then
+			self.ClientEnts[clientProp]:Remove()
+		end
+		--self.HiddenQuele[clientProp] = nil
+	--else
+	end
+	self.Hidden[clientProp] = value == 0
 end
 
 local digit_bitmap = {

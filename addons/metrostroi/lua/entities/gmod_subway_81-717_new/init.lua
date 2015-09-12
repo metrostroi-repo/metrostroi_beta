@@ -678,9 +678,11 @@ function ENT:Think()
 	self:SetLightPower(34, (self.Panel["CabinLight"] > 0.5) and (self.L_3.Value > 0.5))
 
 	-- Door button lights
-	self:SetLightPower(27,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
-	self:SetLightPower(28,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
-	self:SetLightPower(29,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 1) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
+	self:SetPackedBool("Left",(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
+	self:SetPackedBool("Right",(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 1) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
+	--self:SetLightPower(27,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
+	--self:SetLightPower(28,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
+	--self:SetLightPower(29,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 1) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
 	if self.BortLampType == 1 and self.Lights[19][2] ~=  Vector(15,   -69, 59.5) then
 		for i = 0,6 do self:SetLightPower(15+i,false) end
 		self.Lights[15][2] = Vector(15.2,   69, 59.5)
@@ -710,7 +712,7 @@ function ENT:Think()
 	
 	self:SetLightPower(17, self.Panel["TrainBrakes"] > 0.5)
 	self:SetLightPower(21, self.Panel["TrainBrakes"] > 0.5)
-	self:SetLightPower(25, self.Panel["TrainBrakes"] > 0.5)
+	self:SetPackedBool("PN", self.Panel["TrainBrakes"] > 0.5)
 	
 	-- Switch and button states
 	self:SetPackedBool(0,self:IsWrenchPresent())
@@ -847,15 +849,15 @@ function ENT:Think()
 	self:SetPackedBool(131,self.RTW18 < 100)
 	-- Green RP
 	self:SetPackedBool(36,self.Panel["GreenRP"] > 0.5)
-	self:SetLightPower(22,self.Panel["GreenRP"] > 0.5)
+	--self:SetLightPower(22,self.Panel["GreenRP"] > 0.5)
 	-- Cabin heating
 	self:SetPackedBool(37,self.Panel["KUP"] > 0.5)
-	self:SetLightPower(26,self.Panel["KUP"] > 0.5)
+	--self:SetLightPower(26,self.Panel["KUP"] > 0.5)
 	-- AVU
 	self:SetPackedBool(38,self.Panel["AVU"] > 0.5)
 	--21.3 -0.4 5.05
 		-- AVU
-	self:SetLightPower(23,self.Panel["AVU"] > 0.5)
+	--self:SetLightPower(23,self.Panel["AVU"] > 0.5)
 	-- Ring
 	self:SetPackedBool(39,self.Panel["Ring"] > 0.5)
 	-- SD
@@ -883,7 +885,7 @@ function ENT:Think()
 	-- LKVC
 	self:SetPackedBool(51,self.KVC.Value < 0.5)
 	-- BPSN
-	self:SetLightPower(24,(self.PowerSupply.XT3_1 > 0) and (self.Panel["V1"] > 0.5))
+	--self:SetLightPower(24,(self.PowerSupply.XT3_1 > 0) and (self.Panel["V1"] > 0.5))
 	self:SetPackedBool(52,self.PowerSupply.XT3_1 > 0)
 	-- LRS
 	self:SetPackedBool(54,(self.Panel["V1"] > 0.5) and 
@@ -980,7 +982,7 @@ function ENT:Think()
 		self:SetPackedRatio(10,(self.Panel["V1"] * self.Battery.Voltage) / 150.0)
 	end
 	self:SetPackedRatio(11,IGLA_Temperature)
-	self:SetLightPower(39,(self.Electric.Overheat1 > 0) or (self.Electric.Overheat2 > 0))
+	self:SetPackedBool("LSP",(self.Electric.Overheat1 > 0) or (self.Electric.Overheat2 > 0))
 
 	-- Update ARS system
 	self:SetPackedRatio(3, self.ALS_ARS.Speed/100.0)

@@ -707,8 +707,7 @@ function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated,dT)
 				self.PneumaticBrake1 = false
 			end
 		end
-		if self.Signal0 and not self.RealNoFreq and not self.Signal40 and not self.Signal60 and not self.Signal70 and not self.Signal80 then
-			if self.Special then Train["PA-KSD"].VRD = true end
+		if self.Signal0 and not self.Special and not self.RealNoFreq and not self.Signal40 and not self.Signal60 and not self.Signal70 and not self.Signal80 then
 			if not self.NonVRD and not Train["PA-KSD"].VRD then
 				self.VRDTimer = nil
 			end

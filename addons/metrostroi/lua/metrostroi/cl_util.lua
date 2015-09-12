@@ -172,8 +172,9 @@ function Metrostroi.ClientPropForButton(prop_name,config)
 		pos = Metrostroi.PositionFromPanel(config.panel,config.pos or config.button,(config.z or 0.2)),
 		ang = Metrostroi.AngleFromPanel(config.panel,config.ang),
 		color = config.color,
+		skin = config.skin or 0
 	}
-	if self.ButtonMap[config.panel] then
+	if self.ButtonMap[config.panel] and not config.ignorepanel then
 		for k,v in pairs(self.ButtonMap[config.panel].buttons) do
 			if v.ID == config.button then
 				v.PropName = prop_name
