@@ -958,6 +958,8 @@ function TRAIN_SYSTEM:Think(dT)
 			if Train:ReadTrainWire(5) < 1 then
 				ars = nil
 				self.RealNoFreq = true
+				self.NoFreq = true
+				self.CheckedNF = 2
 			end
 		
 			if IsValid(ars) then

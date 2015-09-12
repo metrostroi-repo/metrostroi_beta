@@ -823,6 +823,7 @@ function ENT:Think()
 	self:SetPackedBool("BMinus",self.BMinus.Value == 1.0)
 	self:SetPackedBool("BPlus",self.BPlus.Value == 1.0)
 	self:SetPackedBool("BEnter",self.BEnter.Value == 1.0)
+	self:SetPackedBool("VZ1",self.VZ1.Value == 1)
 	
 	-- Signal if doors are open or no to platform simulation
 	self.LeftDoorsOpen = 

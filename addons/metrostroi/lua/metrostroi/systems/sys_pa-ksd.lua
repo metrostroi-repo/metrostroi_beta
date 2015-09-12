@@ -649,7 +649,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		end
 	elseif self.State == 7 and not self.Nakat then
 		if name == "B1" then
-			if not self.AutodriveWorking and self.Train.ALS_ARS["33D"] > 0.5 then
+			if not self.AutodriveWorking and self.Train.ALS_ARS["33G"] < 0.5 then
 				self.State = 71
 			end
 		elseif name == "B2" then

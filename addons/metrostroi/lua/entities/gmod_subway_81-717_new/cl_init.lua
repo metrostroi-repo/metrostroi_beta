@@ -1096,12 +1096,14 @@ Metrostroi.ClientPropForButton("Radio13",{
 Metrostroi.ClientPropForButton("Custom1",{
 	panel = "Announcer",
 	button = "Custom1Set",
-	model = "models/metrostroi/81-717/button10.mdl"
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 5,
 })
 Metrostroi.ClientPropForButton("Custom2",{
 	panel = "Announcer",
 	button = "Custom2Set",
-	model = "models/metrostroi/81-717/button10.mdl"
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 5,
 })
 Metrostroi.ClientPropForButton("Custom3",{
 	panel = "Announcer",
@@ -1111,7 +1113,8 @@ Metrostroi.ClientPropForButton("Custom3",{
 Metrostroi.ClientPropForButton("Custom4",{
 	panel = "Announcer",
 	button = "Custom4Set",
-	model = "models/metrostroi/81-717/button09.mdl"
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 4,
 })
 
 Metrostroi.ClientPropForButton("Custom5",{
@@ -1132,7 +1135,8 @@ Metrostroi.ClientPropForButton("Custom7",{
 Metrostroi.ClientPropForButton("Custom8",{
 	panel = "Announcer",
 	button = "Custom8Set",
-	model = "models/metrostroi/81-717/button09.mdl"
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 4,
 })
 
 Metrostroi.ClientPropForButton("CustomA",{
@@ -1659,6 +1663,7 @@ function ENT:Think()
 	self:Animate("VUD1",			1-(self:GetPackedBool(12) and 1 or 0), 	0,1, 16, false)
 	self:Animate("VUD2",			self:GetPackedBool(13) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VDL",				self:GetPackedBool(14) and 1 or 0, 	0,1, 16, false)
+	self:Animate("VZ1",				self:GetPackedBool("VZ1") and 1 or 0, 	0,1, 16, false)
 	self:Animate("VDL_Main",				self:GetPackedBool(14) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("VDL_light","VDL_Main")
 	self:Animate("KDL",				self:GetPackedBool(15) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDL_light","KDL")
 	self:Animate("KDP",				self:GetPackedBool(16) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDP_light","KDP")
