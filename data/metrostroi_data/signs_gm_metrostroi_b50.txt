@@ -7272,7 +7272,7 @@
 				"ARSCodes": "046",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "TV371",
-				"RouteName": "TV-MEZD",
+				"RouteName": "TV-MJ",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -7287,7 +7287,7 @@
 				"Repeater": false,
 				"Manual": false,
 				"ARSCodes": "04",
-				"RouteName": "TV-AVUZ",
+				"RouteName": "TV-AU",
 				"Lights": "3-23-14-1b4",
 				"NextSignal": "425",
 				"Switches": "12301-",
@@ -17352,7 +17352,7 @@
 			{
 				"Manual": false,
 				"Repeater": true,
-				"RouteName": "TV-MEZD",
+				"RouteName": "TV-MJ",
 				"ARSCodes": "046",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "TV371",
@@ -17370,7 +17370,7 @@
 			{
 				"Manual": false,
 				"Repeater": true,
-				"RouteName": "TV-AVUZ",
+				"RouteName": "TV-AU",
 				"ARSCodes": "04",
 				"Lights": "3-23-14-1b4",
 				"NextSignal": "425",

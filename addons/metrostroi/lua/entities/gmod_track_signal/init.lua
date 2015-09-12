@@ -248,10 +248,12 @@ end
 
 function ENT:GetARS(ARSID, Train)
 	--print(self.Name,self.ARSNextSpeedLimit)
+	if self.OverrideTrackOccupied then return ARSID == 0 end
 	return self.ARSSpeedLimit == ARSID or (self.ARSNextSpeedLimit == ARSID and self.ARSSpeedLimit > self.ARSNextSpeedLimit and GetConVarNumber("metrostroi_ars_sfreq") > 0)
 end
 function ENT:Get325Hz()
 	--print(self.Name,self.ARSNextSpeedLimit)
+	if self.OverrideTrackOccupied then return true end
 	return self.ARSSpeedLimit == 0 and self.Approve0
 end
 function ENT:GetMaxARS()
@@ -267,7 +269,7 @@ function ENT:ARSLogic(tim)
 
 	-- Check track occuping
 	if not self.Routes[self.Route or 1].Repeater  then
-		if not self.OverrideTrackOccupied and Metrostroi.Voltage > 50 then
+		if Metrostroi.Voltage > 50 then --not self.OverrideTrackOccupied and 
 			if self.Node and  self.TrackPosition then
 				self.Occupied,self.OccupiedBy,self.OccupiedByNow = Metrostroi.IsTrackOccupied(self.Node, self.TrackPosition.x, self.TrackPosition.forward,self.ARSOnly and "ars" or "light", self)
 			end
@@ -280,7 +282,7 @@ function ENT:ARSLogic(tim)
 			end
 			--if self.Name == "AU477" then print( self.OccupiedBy) end
 		else
-			self.Occupied = self.OverrideTrackOccupied or Metrostroi.Voltage < 50
+			self.Occupied = Metrostroi.Voltage < 50 --self.OverrideTrackOccupied or 
 		end
 
 		if self.Occupied then	

@@ -805,6 +805,7 @@ Metrostroi.ClientPropForButton("KAH",{
 	panel = "Front",
 	button = "KAHSet",
 	model = "models/metrostroi_train/81/button2.mdl",
+	skin = 1,
 	z = 3,
 })
 Metrostroi.ClientPropForButton("VAH",{
@@ -887,8 +888,8 @@ Metrostroi.ClientPropForButton("KSN",{
 Metrostroi.ClientPropForButton("KRP",{
 	panel = "Front",
 	button = "KRPSet",
-	model = "models/metrostroi/81-717/button04.mdl",
-	z=4
+	model = "models/metrostroi_train/81/button2.mdl",
+	skin = 4
 })
 Metrostroi.ClientPropForButton("VDL_Main",{
 	panel = "Main",
@@ -950,14 +951,14 @@ Metrostroi.ClientPropForButton("GreenRPLight",{
 	button = "GreenRPLight",
 	model = "models/metrostroi_train/81/lamp.mdl",
 	skin = 3,
-	z = -15,
+	z = -10,
 })
 Metrostroi.ClientPropForButton("GreenRPLight_light",{
 	panel = "Main",
 	button = "GreenRPLight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
 	skin = 3,
-	z = -15,
+	z = -10,
 })
 Metrostroi.ClientPropForButton("AVULight",{
 	panel = "Main",
@@ -969,70 +970,70 @@ Metrostroi.ClientPropForButton("AVULight",{
 	button = "AVULight",
 	model = "models/metrostroi_train/81/lamp.mdl",
 	skin = 1,
-	z = -15,
+	z = -10,
 })
 Metrostroi.ClientPropForButton("AVULight_light",{
 	panel = "Main",
 	button = "AVULight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
 	skin = 1,
-	z = -15,
+	z = -10,
 })
 Metrostroi.ClientPropForButton("KVPLight",{
 	panel = "Main",
 	button = "KVPLight",
 	model = "models/metrostroi_train/81/lamp.mdl",
 	skin = 2,
-	z = -15,
+	z = -10,
 })
 Metrostroi.ClientPropForButton("KVPLight_light",{
 	panel = "Main",
 	button = "KVPLight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
 	skin = 4,
-	z = -15,
+	z = -10,
 })
 Metrostroi.ClientPropForButton("SPLight",{
 	panel = "Main",
 	button = "SPLight",
 	model = "models/metrostroi_train/81/lamp.mdl",
 	skin = 2,
-	z = -15,
+	z = -10,
 })
 Metrostroi.ClientPropForButton("SPLight_light",{
 	panel = "Main",
 	button = "SPLight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
 	skin = 1,
-	z = -15,
+	z = -10,
 })
 Metrostroi.ClientPropForButton("CabinHeatLight",{
 	panel = "Front",
 	button = "CabinHeatLight",
 	model = "models/metrostroi_train/81/lamp.mdl",
 	skin = 2,
-	z = -15,
+	z = -10,
 })
 Metrostroi.ClientPropForButton("CabinHeatLight_light",{
 	panel = "Front",
 	button = "CabinHeatLight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
 	skin = 2,
-	z = -15,
+	z = -10,
 })
 Metrostroi.ClientPropForButton("PneumoLight",{
 	panel = "Front",
 	button = "PneumoLight",
 	model = "models/metrostroi_train/81/lamp.mdl",
 	skin = 2,
-	z = -15,
+	z = -10,
 })
 Metrostroi.ClientPropForButton("PneumoLight_light",{
 	panel = "Front",
 	button = "PneumoLight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
 	skin = 4,
-	z = -15,
+	z = -10,
 })
 
 -- Placeholders

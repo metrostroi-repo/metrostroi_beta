@@ -424,7 +424,7 @@ function ENT:Initialize()
 	self.Systems = {}
 	-- Initialize train systems
 	self:InitializeSystems()
-	
+	self.Anims = {}
 	-- Create sounds
 	self:InitializeSounds()
 	self.Sounds = {}
@@ -835,69 +835,70 @@ end
 function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
 	local id = clientProp
 	if self.Hidden[id] then return 0 end
-	if not self["_anim_"..id] then
-		self["_anim_"..id] = value
-		self["_anim_"..id.."V"] = 0.0
+	if not self.Anims[id] then
+		self.Anims[id] = {}
+		self.Anims[id].val = value
+		self.Anims[id].V = 0.0
 	end
 	--if self["_anim_old_"..id] == value then return self["_anim_old_"..id] end
 	-- Generate sticky value
 	if stickyness and damping then
-		self["_anim_"..id.."_stuck"] = self["_anim_"..id.."_stuck"] or false
-		self["_anim_"..id.."P"] = self["_anim_"..id.."P"] or value
-		if (math.abs(self["_anim_"..id.."P"] - value) < stickyness) and (self["_anim_"..id.."_stuck"]) then
-			value = self["_anim_"..id.."P"]
-			self["_anim_"..id.."_stuck"] = false
+		self.Anims[id].stuck = self.Anims[id].stuck or false
+		self.Anims[id].P = self.Anims[id].P or value
+		if (math.abs(self.Anims[id].P - value) < stickyness) and (self.Anims[id].stuck) then
+			value = self.Anims[id].P
+			self.Anims[id].stuck = false
 		else
-			self["_anim_"..id.."P"] = value
+			self.Anims[id].P = value
 		end
 	end
 		
 	if damping == false then
 		local dX = speed * self.DeltaTime
-		if value > self["_anim_"..id] then
-			self["_anim_"..id] = self["_anim_"..id] + dX
+		if value > self.Anims[id].val then
+			self.Anims[id].val = self.Anims[id].val + dX
 		end
-		if value < self["_anim_"..id] then
-			self["_anim_"..id] = self["_anim_"..id] - dX
+		if value < self.Anims[id].val then
+			self.Anims[id].val = self.Anims[id].val - dX
 		end
-		if math.abs(value - self["_anim_"..id]) < dX then
-			self["_anim_"..id] = value
+		if math.abs(value - self.Anims[id].val) < dX then
+			self.Anims[id].val = value
 		end
 	else
 		-- Prepare speed limiting
-		local delta = math.abs(value - self["_anim_"..id])
+		local delta = math.abs(value - self.Anims[id].val)
 		local max_speed = 1.5*delta / self.DeltaTime
 		local max_accel = 0.5 / self.DeltaTime
 
 		-- Simulate
-		local dX2dT = (speed or 128)*(value - self["_anim_"..id]) - self["_anim_"..id.."V"] * (damping or 8.0)
+		local dX2dT = (speed or 128)*(value - self.Anims[id].val) - self.Anims[id].V * (damping or 8.0)
 		if dX2dT >  max_accel then dX2dT =  max_accel end
 		if dX2dT < -max_accel then dX2dT = -max_accel end
 		
-		self["_anim_"..id.."V"] = self["_anim_"..id.."V"] + dX2dT * self.DeltaTime
-		if self["_anim_"..id.."V"] >  max_speed then self["_anim_"..id.."V"] =  max_speed end
-		if self["_anim_"..id.."V"] < -max_speed then self["_anim_"..id.."V"] = -max_speed end
+		self.Anims[id].V = self.Anims[id].V + dX2dT * self.DeltaTime
+		if self.Anims[id].V >  max_speed then self.Anims[id].V =  max_speed end
+		if self.Anims[id].V < -max_speed then self.Anims[id].V = -max_speed end
 		
-		self["_anim_"..id] = math.max(0,math.min(1,self["_anim_"..id] + self["_anim_"..id.."V"] * self.DeltaTime))
+		self.Anims[id].val = math.max(0,math.min(1,self.Anims[id].val + self.Anims[id].V * self.DeltaTime))
 		
 		-- Check if value got stuck
 		if (math.abs(dX2dT) < 0.001) and stickyness and (self.DeltaTime > 0) then
-			self["_anim_"..id.."_stuck"] = true
+			self.Anims[id].stuck = true
 		end
 	end
 
 	if IsValid(self.ClientEnts[clientProp]) then
-		self.ClientEnts[clientProp]:SetPoseParameter("position",min + (max-min)*self["_anim_"..id])
+		self.ClientEnts[clientProp]:SetPoseParameter("position",min + (max-min)*self.Anims[id].val)
 	end
-	--print(id,min + (max-min)*self["_anim_"..id],value, min + (max-min)*value)
-	--self["_anim_old_"..id] = min + (max-min)*self["_anim_"..id]
-	return min + (max-min)*self["_anim_"..id]
+	--print(id,min + (max-min)*self.Anims[id].val,value, min + (max-min)*value)
+	--self["_anim_old_"..id] = min + (max-min)*self.Anims[id].val
+	return min + (max-min)*self.Anims[id].val
 end
 function ENT:AnimateFrom(clientProp,from)
 	if IsValid(self.ClientEnts[clientProp]) then
-		self.ClientEnts[clientProp]:SetPoseParameter("position",self["_anim_"..from])
+		self.ClientEnts[clientProp]:SetPoseParameter("position",self.Anims[from].val)
 	end
-	return self["_anim_"..from]
+	return self.Anims[from].val
 end
 
 function ENT:ShowHide(clientProp, value, over)
