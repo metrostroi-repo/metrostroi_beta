@@ -308,7 +308,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		--Train.RPB:TriggerInput("Set",1)
 		--print(Train.UOS:TriggerInput("Check"))
 		-- Check absolute stop
-		if self.RealNoFreq and (not self.PrevNoFreq) then
+		if self.RealNoFreq and (not self.PrevNoFreq) and Train:ReadTrainWire(6) < 1 then
 			self.IgnorePedal = true
 		end
 		self.PrevNoFreq = self.RealNoFreq

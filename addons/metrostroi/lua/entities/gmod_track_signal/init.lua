@@ -249,6 +249,7 @@ end
 function ENT:GetARS(ARSID, Train)
 	--print(self.Name,self.ARSNextSpeedLimit)
 	if self.OverrideTrackOccupied then return ARSID == 0 end
+	if Metrostroi.Voltage < 50 then return false end
 	return self.ARSSpeedLimit == ARSID or (self.ARSNextSpeedLimit == ARSID and self.ARSSpeedLimit > self.ARSNextSpeedLimit and GetConVarNumber("metrostroi_ars_sfreq") > 0)
 end
 function ENT:Get325Hz()
@@ -282,6 +283,7 @@ function ENT:ARSLogic(tim)
 			end
 			--if self.Name == "AU477" then print( self.OccupiedBy) end
 		else
+			self.NextSignalLink = nil
 			self.Occupied = Metrostroi.Voltage < 50 --self.OverrideTrackOccupied or 
 		end
 
