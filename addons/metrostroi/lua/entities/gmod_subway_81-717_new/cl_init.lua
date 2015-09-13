@@ -573,6 +573,10 @@ ENT.ButtonMap["FrontPneumatic"] = {
 	width = 900,
 	height = 100,
 	scale = 0.1,
+	buttons = {
+		{ID = "FrontBrakeLineIsolationToggle",x=182, y=57, radius=32, tooltip="Концевой кран тормозной магистрали"},
+		{ID = "FrontTrainLineIsolationToggle",x=710, y=60, radius=32, tooltip="Концевой кран напорной магистрали"},
+	}
 }
 ENT.ButtonMap["RearPneumatic"] = {
 	pos = Vector(-482.0,45.0,-45.0),
@@ -580,13 +584,30 @@ ENT.ButtonMap["RearPneumatic"] = {
 	width = 900,
 	height = 100,
 	scale = 0.1,
+	buttons = {
+		{ID = "RearBrakeLineIsolationToggle",x=710, y=60, radius=32, tooltip="Концевой кран тормозной магистрали"},
+		{ID = "RearTrainLineIsolationToggle",x=182, y=57, radius=32, tooltip="Концевой кран напорной магистрали"},
+	}
+}
+ENT.ButtonMap["GV"] = {
+	pos = Vector(131,68.6,-52),
+	ang = Angle(0,180,90),
+	width = 170,
+	height = 150,
+	scale = 0.1,
+	buttons = {
+		{ID = "GVToggle",x=0, y=0, w= 170,h = 150, tooltip="Главный выключатель"},
+	}
 }
 ENT.ButtonMap["AirDistributor"] = {
 	pos = Vector(-175,68.6,-50),
 	ang = Angle(0,180,90),
-	width = 80,
-	height = 40,
+	width = 170,
+	height = 80,
 	scale = 0.1,
+	buttons = {
+		{ID = "AirDistributorDisconnectToggle",x=0, y=0, w= 170,h = 80, tooltip="Выключение воздухораспределителя"},
+	}
 }
 
 -- Wagon numbers
@@ -657,10 +678,9 @@ ENT.ButtonMap["PassengerDoor"] = {
 	height = 2000,
 	scale = 0.1/2,
 	buttons = {
-		{ID = "PassengerDoor",x=0,y=0,w=642-220,h=2000, tooltip="Дверь в кабину машиниста\nCabin door"},
+		{ID = "PassengerDoor",x=0,y=0,w=642-220,h=2000, tooltip="Дверь в кабину машиниста из салона\nPass door door"},
 	}
 }
-
 --------------------------------------------------------------------------------
 ENT.ClientPropsInitialized = false
 ENT.ClientProps["brake013"] = {
@@ -1660,7 +1680,7 @@ function ENT:Think()
 	self:Animate("VMK",				self:GetPackedBool(9) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VAH",				self:GetPackedBool(10) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VAD",				self:GetPackedBool(11) and 1 or 0, 	0,1, 16, false)
-	self:Animate("VUD1",			1-(self:GetPackedBool(12) and 1 or 0), 	0,1, 16, false)
+	local A = self:Animate("VUD1",			1-(self:GetPackedBool(12) and 1 or 0), 	0,1, 16, false)
 	self:Animate("VUD2",			self:GetPackedBool(13) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VDL",				self:GetPackedBool(14) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VZ1",				self:GetPackedBool("VZ1") and 1 or 0, 	0,1, 16, false)
@@ -2010,10 +2030,7 @@ function ENT:DrawPost()
 			yalign = TEXT_ALIGN_CENTER,
 			color = Color(0,0,0,255)})
 	end)
-	
-	-- Distance cull
-	local distance = self:GetPos():Distance(LocalPlayer():GetPos())
-	if distance > 1024 then return end
+
 	self.ButtonMap["ARS"] = self.ARSMap[math.max(1,math.min(3,self:GetNWInt("ARSType",1)))]
 	self:DrawOnPanel("ARS",function()
 		if self:GetNWInt("ARSType",1) ~= 2 then return end

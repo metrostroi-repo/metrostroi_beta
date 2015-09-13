@@ -196,8 +196,8 @@ function ENT:InitializeSounds()
 		"subway_trains/new/brake_on_2.wav",
 	}
 	self.SoundNames["r1_5_close"] = {
-		"subway_trains/new/drive_on_1.wav",
-		"subway_trains/new/drive_on_2.wav",
+		"subway_trains/new/brake_on_1.wav",
+		"subway_trains/new/brake_on_2.wav",
 	}
 	self.SoundNames["rvt_r1_5_open"] = {
 		"subway_trains/new/brake_off_1.wav",
@@ -271,7 +271,7 @@ function ENT:InitializeSounds()
 	
 	for i = 1,5 do
 		self.SoundNames["st"..i.."a"] = "subway_trains/new/st"..i.."a.wav"
-		self.SoundNames["st"..i.."b"] = "subway_trains/new/st"..i.."a.wav"
+		self.SoundNames["st"..i.."b"] = "subway_trains/new/st"..i.."b.wav"
 	end
 	
 	self.SoundNames["tr"] = {

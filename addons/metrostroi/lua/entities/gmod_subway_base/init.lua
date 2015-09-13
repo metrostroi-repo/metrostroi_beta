@@ -1149,7 +1149,6 @@ end
 function ENT:IsWrenchPresent()
 	if self.DriversWrenchPresent then return true end
 	if self.DriversWrenchMissing then return false end
-	
 	for k,v in pairs(self.Seats) do
 		if IsValid(v.entity) and v.entity.GetPassenger and
 			((v.type == "driver") or (v.type == "instructor")) then
@@ -1509,14 +1508,14 @@ function ENT:Think()
 				--if v.dist > 2.91 and v.state == 0 or v.dist > 5.61 and v.state == 1 or v.dist > 19.17 and v.state == 2 or v.dist > 21.85 and v.state == 3 then
 				if v.dist > 2.26 and v.state == 0 or v.dist > 4.34 and v.state == 1 or v.dist > 14.83 and v.state == 2 or v.dist > 16.91 and v.state == 3 then
 					local Wheels = v.state > 1 and self.RearBogey.Wheels or self.FrontBogey.Wheels
-					sound.Play(self.SoundNames["st"..v.type..(v.state > 1 and "b" or "a")],Wheels:LocalToWorld(Vector(0,v.state%2 > 0 and 105/2 or 0,0)),84,nil,1)
+					sound.Play(self.SoundNames["st"..v.type..((v.state == 1 or v.state == 4) and "b" or "a")],Wheels:LocalToWorld(Vector(0,v.state%2 > 0 and 105/2 or 0,0)),84,nil,1)
 					v.state = v.state + 1
 				end
 				--if v.dist < 2.91 and v.state == 1 or v.dist < 5.61 and v.state == 2 or v.dist < 19.17 and v.state == 3 or v.dist < 21.85 and v.state == 4 then
 				if v.dist < 2.26 and v.state == 1 or v.dist < 4.34 and v.state == 2 or v.dist < 14.83 and v.state == 3 or v.dist < 16.91 and v.state == 4 then
 					local Wheels = v.state > 2 and self.RearBogey.Wheels or self.FrontBogey.Wheels
 					v.state = v.state - 1
-					sound.Play(self.SoundNames["st"..v.type..(v.state > 1 and "b" or "a")],Wheels:LocalToWorld(Vector(0,v.state%2 > 0 and 105/2 or 0,0)),84,nil,1)
+					sound.Play(self.SoundNames["st"..v.type..((v.state == 1 or v.state == 4) and "b" or "a")],Wheels:LocalToWorld(Vector(0,v.state%2 > 0 and 105/2 or 0,0)),84,nil,1)
 				end
 				if v.dist < 0 or v.dist > 19.17 then
 					local Train = v.dist > 19.17 and self.RearTrain or self.FrontTrain
@@ -1855,19 +1854,29 @@ net.Receive("metrostroi-cabin-button", function(len, ply)
 	local button = net.ReadString()
 	local eventtype = net.ReadBit()
 	local seat = ply:GetVehicle()
+	local outside = net.ReadBool()
 	local train 
 
-	if seat and IsValid(seat) then 
+	if seat and IsValid(seat) and not outside then 
 		-- Player currently driving
 		train = seat:GetNWEntity("TrainEntity")
 		if (not train) or (not train:IsValid()) then return end
-		if (seat != train.DriverSeat) and (seat != train.InstructorsSeat) and not button:find("Door") then return end
+		if (seat != train.DriverSeat) and (seat != train.InstructorsSeat) and not train:CPPICanPhysgun(ply) and not button:find("Door") then return end
 	else
 		-- Player not driving, check recent train
-		train = ply.lastVehicleDriven:GetNWEntity("TrainEntity")
+		train = ply.lastVehicleDriven and ply.lastVehicleDriven:GetNWEntity("TrainEntity") or NULL
+		if outside then
+			local trace = util.TraceLine({
+				start = ply:EyePos(),
+				endpos = ply:EyePos() + ply:EyeAngles():Forward() * 100,
+				filter = function( ent ) if ent:GetClass():find("subway") then return true end end
+			})
+			train = trace.Entity
+		end
 		if !IsValid(train) then return end
-		if ply != train.DriverSeat.lastDriver then return end
-		if CurTime() - train.DriverSeat.lastDriverTime > 1	then return end
+		if outside and not train:CPPICanPhysgun(ply) then return end
+		if not outside and ply != train.DriverSeat.lastDriver then return end
+		if not outside and train.DriverSeat.lastDriverTime and (CurTime() - train.DriverSeat.lastDriverTime) > 1 then return end
 	end
 	train:ButtonEvent(button,(eventtype > 0))
 end)

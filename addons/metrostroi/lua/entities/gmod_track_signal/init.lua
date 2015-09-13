@@ -2,6 +2,7 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 util.AddNetworkString "metrostroi-signal"
+util.AddNetworkString "metrostroi-signal-state"
 CreateConVar("metrostroi_ars_independent",0,{FCVAR_ARCHIVE},"Enable independent ARS codes")
 function ENT:SetSprite(index,active,model,scale,brightness,pos,color)
 	if active and self.Sprites[index] then return end
@@ -91,6 +92,9 @@ function ENT:SayHook(ply, comm)
 				self:CloseRoute(1) 
 			--RunConsoleCommand("say","open manual route",self.Name)
 			else
+				if not self.Close then
+					self.Close = true
+				end
 				if self.InvationSignal then
 					self.InvationSignal = false
 				end
@@ -128,6 +132,8 @@ function ENT:SayHook(ply, comm)
 				if self.Routes[1] and self.Routes[1].Manual then
 					self:OpenRoute(1) 
 				--RunConsoleCommand("say","open manual route",self.Name)
+				elseif self.Close then
+					self.Close = false
 				elseif self.Red then
 					self.InvationSignal = true
 				end
@@ -147,6 +153,7 @@ function ENT:Initialize()
 	--hook.Add( "metrostroi-signal-update-hook", "metrostroi-signal-update-hook"..self:EntIndex(), self:ARSLogic() )
 	self:SetModel("models/metrostroi/signals/ars_box.mdl")
 	self.Sprites = {}
+	self.Sig = ""
 	hook.Add("PlayerSay","metrostroi-signal-say"..self:EntIndex(), function(ply, comm) self:SayHook(ply,comm) end)
 	self.FreeBS = 1
 	self.OldBSState = 1
@@ -270,7 +277,7 @@ function ENT:ARSLogic(tim)
 
 	-- Check track occuping
 	if not self.Routes[self.Route or 1].Repeater  then
-		if Metrostroi.Voltage > 50 then --not self.OverrideTrackOccupied and 
+		if Metrostroi.Voltage > 50 and not self.Close then --not self.OverrideTrackOccupied and 
 			if self.Node and  self.TrackPosition then
 				self.Occupied,self.OccupiedBy,self.OccupiedByNow = Metrostroi.IsTrackOccupied(self.Node, self.TrackPosition.x, self.TrackPosition.forward,self.ARSOnly and "ars" or "light", self)
 			end
@@ -284,7 +291,7 @@ function ENT:ARSLogic(tim)
 			--if self.Name == "AU477" then print( self.OccupiedBy) end
 		else
 			self.NextSignalLink = nil
-			self.Occupied = Metrostroi.Voltage < 50 --self.OverrideTrackOccupied or 
+			self.Occupied = Metrostroi.Voltage < 50 or self.Close --self.OverrideTrackOccupied or 
 		end
 
 		if self.Occupied then	
@@ -473,6 +480,7 @@ function ENT:Think()
 	local index = 1
 	local offset = self.RenderOffset[self.SignalType] or Vector(0,0,0)
 	--if self.Name == "MN339" then print(self.NextSignalLink.NextSignalLink.NextSignalLink.NextSignalLink.RouteNumberOverrite) end
+	self.Sig = ""
 	for k,v in ipairs(self.Lenses) do
 		if v ~= "M" then
 			--get the some models data
@@ -485,8 +493,8 @@ function ENT:Think()
 				
 				--local InvationSignal = ((v[i] == "W" and self.InvationSignal and k == self.InS)
 				local AverageState = Route.LightsExploded[LightID]:find(tostring(index)) or ((v[i] == "W" and self.InvationSignal and k == self.InS) and 1 or 0)
-
 				local MustBlink = (((self.Lenses[#self.Lenses] ~= "W" and v[i] == "W") or v == "W") and self.InvationSignal) or (AverageState > 0 and Route.LightsExploded[LightID][AverageState+1] == "b") --Blinking, when next is "b" (or it's invasion signal')
+				self.Sig = self.Sig..(AverageState > 0 and (MustBlink and 2 or 1) or 0)
 				local TimeToOff = not (RealTime() % 1 > 0.25)
 				--if v[i] == "R" and #Route.LightsExploded[LightID] == 1 and AverageState then self.AutoEnabled = true end
 				if v[i] == "R" and AverageState > 0 then
@@ -496,27 +504,28 @@ function ENT:Think()
 					self.Red = false
 				end
 				--if v[i] == "R" and AverageState > 0 then print(self.Name,v[i] == "R",AverageState) end
-				if MustBlink and TimeToOff then AverageState = 0 end
+				--if MustBlink and TimeToOff then AverageState = 0 end
 				--Simulate signal changing delay
-				if not self.Sprites[index.."a"] and Route.LightsExploded[LightID]:find(tostring(index)) and not self.EnableDelay[index] and not MustBlink then
-					self.EnableDelay[index] = true
-				else
-					if self.EnableDelay[index] and AverageState == 0 then
-						self.EnableDelay[index] = false
-					end
+				--[=[ 
+--				if not self.Sprites[index.."a"] and Route.LightsExploded[LightID]:find(tostring(index)) and not self.EnableDelay[index] and not MustBlink then
+					--self.EnableDelay[index] = true
+				--else
+--					if self.EnableDelay[index] and AverageState == 0 then
+						--self.EnableDelay[index] = false
+					--end
 				
 					-- Overall glow
-					self:SetSprite(index.."a",AverageState > 0,
+					self:SetSprite(index.."a",fa,
 						"models/metrostroi_signals/signal_sprite_002.vmt",0.40,1.0,
 						self.BasePosition + offset + data[3][i-1], Metrostroi.Lenses[v[i]])
 
-					--[[ The LED glow
+					The LED glow
 					self:SetSprite(index.."b",false,
 						"models/metrostroi_signals/signal_sprite_002.vmt",0.25,0.6,
 						self.BasePosition + offset + data[3][i-1], Metrostroi.Lenses[ v[i] ])
 					self.EnableDelay[index] = nil
-					]]
 				end
+					]=]
 				index = index + 1
 			end
 		else
@@ -545,6 +554,17 @@ function ENT:Think()
 			end
 		end
 	end
+	self:SetNWString("Signal",self.Sig)
+	if self.Sig ~= self.Oldsig then
+		--net.Start("metrostroi-signal-state")
+--			net.WriteEntity(self)
+			--net.WriteInt(#self.Sig,16)
+			--for i = 1,#self.Sig do
+--				net.WriteInt(tonumber(self.Sig[i]),3)
+			--end
+		--net.Broadcast()
+	end
+	self.Oldsig = self.Sig
 	if not self.AutoEnabled then
 		self.InvationSignal = false
 	end
@@ -560,6 +580,7 @@ function ENT:SendUpdate(ply)
 		net.WriteInt(self.SignalType or 0,3)
 		net.WriteString(self.Name or "NOT LOADED")
 		net.WriteString(self.ARSOnly and "ARSOnly" or self.LensesStr)
+		net.WriteBool(self.Left)
 	if ply then net.Send(ply) else net.Broadcast() end
 end
 
@@ -568,4 +589,11 @@ net.Receive("metrostroi-signal", function(_, ply)
 	local ent = net.ReadEntity()
 	if not IsValid(ent) or not ent.SendUpdate then return end
 	ent:SendUpdate(ply)
+	--net.Start("metrostroi-signal-state")
+--		net.WriteEntity(ent)
+		--net.WriteInt(#ent.Sig,16)
+		--for i = 1,#ent.Sig do
+--			net.WriteInt(tonumber(ent.Sig[i]),3)
+		--end
+	--net.Broadcast()
 end)

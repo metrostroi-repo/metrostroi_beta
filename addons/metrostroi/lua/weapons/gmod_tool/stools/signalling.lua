@@ -65,7 +65,7 @@ function TOOL:SpawnSignal(ply,trace,param)
 		if IsValid(ent) then
 			if param ~= 2 then 
 				ent:SetPos(tr.centerpos - tr.up * 9.5)
-				ent:SetAngles((-tr.right):Angle() + Angle(0,(Signal.ARSOnly and Signal.Left) and 180 or 0,0))
+				ent:SetAngles((-tr.right):Angle() + Angle(0,Signal.Left and 180 or 0,0))
 			end
 			if not found then ent:Spawn() end
 			ent.SignalType = Signal.Type-1
@@ -77,7 +77,7 @@ function TOOL:SpawnSignal(ply,trace,param)
 			ent.Approve0 = Signal.Approve0
 			ent.Depot = Signal.Depot
 			ent.Routes = Signal.Routes
-			ent.Left = Signal.ARSOnly and Signal.Left
+			ent.Left = Signal.Left
 			ent.Lenses = string.Explode("-",ent.LensesStr)
 			ent.InS = nil
 			ent:SendUpdate()
@@ -363,7 +363,7 @@ function TOOL:BuildCPanelCustom()
 					Signal.Lenses = self:GetValue()
 					tool:SendSettings()
 				end
-		else
+		end
 			local VLeftC = CPanel:CheckBox("Left side")
 					VLeftC:SetTooltip("Left side")
 					VLeftC:SetValue(Signal.Left or false)
@@ -371,7 +371,6 @@ function TOOL:BuildCPanelCustom()
 						Signal.Left = self:GetChecked()
 						tool:SendSettings()
 					end
-		end
 		local VRouT,VRouN = CPanel:TextEntry("Route number:")
 				VRouT:SetTooltip("Route number. Can be empty. One digit or D.\nFor example:D")
 				VRouT:SetValue(Signal.RouteNumber or "")

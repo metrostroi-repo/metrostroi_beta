@@ -245,6 +245,7 @@ function ENT:ShouldRenderClientEnts()
 end
 
 function ENT:ApplyMatrix(name,pos,ang)
+	--[[
 	local csprop = self.ClientProps[name]
 	if not csprop then return end
 	local csent = self.ClientEnts[name]
@@ -257,6 +258,7 @@ function ENT:ApplyMatrix(name,pos,ang)
 	self.ClientPropsMatrix[name]:SetAngles(ang)
 	self.ClientPropsMatrix[name]:Translate(-pos)
 	csent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[name])
+	]]
 end
 function ENT:SpawnCSEnt(k)
 	local v = self.ClientProps[k]
@@ -267,7 +269,7 @@ function ENT:SpawnCSEnt(k)
 		cent:SetParent(self)
 		cent:SetColor(v.color or color_white)
 		cent:SetSkin(v.skin or 0)
-		if self.ClientPropsMatrix[k] then cent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[k]) end
+		--if self.ClientPropsMatrix[k] then cent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[k]) end
 		--print(self:GetNWString("texture",nil))
 		self.ClientEnts[k] = cent
 
@@ -296,7 +298,7 @@ function ENT:RemoveCSEnts()
 		for k,v in pairs(self.ClientEnts) do
 			local id = 0
 			if IsValid(v) then 
-				v:DisableMatrix("RenderMultiply")
+				--v:DisableMatrix("RenderMultiply")
 				v:Remove()
 			end
 		end
@@ -332,7 +334,6 @@ function ENT:Initialize()
 		if not IsValid(self) or isDD then
 			return
 		end
-
 		self.CLDraw = true
 
 		if not self.ShouldRenderClientEnts or not self:ShouldRenderClientEnts() then return end
@@ -455,54 +456,6 @@ function ENT:OnRemove()
 	end
 end
 
---[[
-function ENT:PositionFromPanel(panel,button_id_or_vec,z)
-	local panel = self.ButtonMap[panel]
-	if not panel then return Vector(0,0,0) end
-	if not panel.buttons then return Vector(0,0,0) end
-	
-	-- Find button or read position
-	local vec
-	if type(button_id_or_vec) == "string" then
-		local button
-		for k,v in pairs(panel.buttons) do
-			if v.ID == button_id_or_vec then
-				button = v
-				break
-			end
-		end
-		vec = Vector(button.x,button.y,z or 0)
-	else
-		vec = button_id_or_vec
-	end
-
-	-- Convert to global coords
-	vec.y = -vec.y
-	vec:Rotate(panel.ang)
-	return panel.pos + vec * panel.scale
-end
-
-function ENT:AngleFromPanel(panel,ang)
-	local panel = self.ButtonMap[panel]
-	if not panel then return Vector(0,0,0) end
-	local true_ang = panel.ang + Angle(0,0,0)
-	true_ang:RotateAroundAxis(panel.ang:Up(),ang or -90)
-	return true_ang
-end
-
-function ENT:ReloadCLPropPosAng(prop_name,panel,button_or_pos,ang,z)
-	self.ClientProps[prop_name].pos = self:PositionFromPanel(panel,button_or_pos,(z or 0.2))
-	if ang then self.ClientProps[prop_name].ang = self:AngleFromPanel(panel,ang) end
-end
-function ENT:ClientPropForButton(prop_name,config)
-	self.ClientProps[prop_name] = {
-		model = config.model or "models/metrostroi/81-717/button07.mdl",
-		pos = self:PositionFromPanel(config.panel,config.button or config.pos,(config.z or 0.2)),
-		ang = self:AngleFromPanel(config.panel,config.ang),
-		color = config.color,
-	}
-end
-]]
 --------------------------------------------------------------------------------
 -- Default think function
 --------------------------------------------------------------------------------
@@ -812,8 +765,6 @@ end
 -- Default rendering function
 --------------------------------------------------------------------------------
 function ENT:Draw()
-	self.dT = RealTime() - (self.PrevTime2 or RealTime())
-	self.PrevTime2 = RealTime()
 
 	-- Draw model
 	self:DrawModel()
@@ -990,18 +941,21 @@ local segment_poly = {
 	},
 }
 
+local polys = {}
 function ENT:DrawSegment(i,x,y,scale_x,scale_y)
-	local poly = {}
-	for k,v in pairs(segment_poly[i]) do
-		poly[k] = {
-			x = (v.x*scale_x) + x,
-			y = (v.y*scale_y) + y,		
-		}
+	if not polys[i] then polys[i] = {} end
+	if not polys[i][k] then
+		for k,v in pairs(segment_poly[i]) do
+			polys[i][k] = {
+				x = (v.x*scale_x) + x,
+				y = (v.y*scale_y) + y,		
+			}
+		end
 	end
 	
 	surface.SetDrawColor(Color(100,255,0,255))
 	draw.NoTexture()
-	surface.DrawPoly(poly)
+	surface.DrawPoly(polys[i])
 end
 
 function ENT:DrawDigit(cx,cy,digit,scalex,scaley,thickness)
@@ -1081,20 +1035,20 @@ hook.Add("CalcView", "Metrostroi_TrainView", function(ply,pos,ang,fov,znear,zfar
 		if trainAng.y >  180 then trainAng.y = trainAng.y - 360 end
 		if trainAng.y < -180 then trainAng.y = trainAng.y + 360 end
 		if trainAng.y > 0 then
-			local target_ang = (train:GetAngles() + Angle(2,8,0))
+			local target_ang = (train:GetAngles() + Angle(2,0,0))
 			target_ang:RotateAroundAxis(train:GetAngles():Up(),180)
 			return {
-				origin = train:LocalToWorld(Vector(475,95,30)),
+				origin = train:LocalToWorld(Vector(475,80,30)),
 				angles = target_ang,
 				fov = 30,
 				znear = znear,
 				zfar = zfar
 			}
 		else
-			local target_ang = (train:GetAngles() + Angle(2,-8,0))
+			local target_ang = (train:GetAngles() + Angle(2,0,0))
 			target_ang:RotateAroundAxis(train:GetAngles():Up(),180)
 			return {
-				origin = train:LocalToWorld(Vector(475,-95,30)),
+				origin = train:LocalToWorld(Vector(475,-80,30)),
 				angles = target_ang,
 				fov = 20,
 				znear = znear,
@@ -1106,9 +1060,9 @@ hook.Add("CalcView", "Metrostroi_TrainView", function(ply,pos,ang,fov,znear,zfar
 --function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
 	--print(train:GetNWFloat("Accel")*1.1,train:Animate("accel",train:GetNWFloat("Accel")*1.1+5,-0,10, 				nil, nil,  64,2,4))
 		train.HeadAcceleration = GetConVarNumber("metrostroi_disablecamaccel") == 0 and (train:Animate("accel",(train:GetNWFloat("Accel")+1)/2,-1,1, 4, 1)*20 - 5) or 0
-		local headPos = train:WorldToLocal(pos)
+		--local headPos = train:WorldToLocal(pos)
 		return {
-			origin = train:LocalToWorld(train:WorldToLocal(pos)+Vector(math.Round((train.HeadAcceleration or 0),2),0,0)),--train:LocalToWorld(Vector(math.Round(train.HeadAcceleration,2),0,0)) ,
+			origin = train:LocalToWorld(train:WorldToLocal(pos)+Vector(math.Round((GetConVarNumber("metrostroi_disablecamaccel") == 0 and (train:Animate("accel",(train:GetNWFloat("Accel")+1)/2,-1,1, 4, 1)*20 - 5) or 0),2),0,0)),--train:LocalToWorld(Vector(math.Round(train.HeadAcceleration,2),0,0)) ,
 			angles = angles,
 			fov = fov,
 			znear = znear,
@@ -1151,6 +1105,15 @@ end
 
 local function findAimButton(ply)
 	local train = isValidTrainDriver(ply)
+	if not IsValid(train) and LocalPlayer():GetActiveWeapon():GetClass() == "train_kv_wrench" then
+		local trace = util.TraceLine({
+			start = LocalPlayer():EyePos(),
+			endpos = LocalPlayer():EyePos() + LocalPlayer():EyeAngles():Forward() * 100,
+			filter = function( ent ) if ent:GetClass():find("subway") then return true end end
+		})
+		train = trace.Entity
+		
+	end
 	if IsValid(train) and train.ButtonMap != nil then
 		local foundbuttons = {}
 		for kp,panel in pairs(train.ButtonMap) do
@@ -1197,9 +1160,25 @@ hook.Add("Think","metrostroi-cabin-panel",function()
 	drawCrosshair = false
 	
 	local train = isValidTrainDriver(ply)
-	if(IsValid(train) and not ply:GetVehicle():GetThirdPersonMode() and train.ButtonMap != nil) then
+	local outside = false
+	if not IsValid(train) and LocalPlayer():GetActiveWeapon():GetClass() == "train_kv_wrench" then
+		local trace = util.TraceLine({
+			start = LocalPlayer():EyePos(),
+			endpos = LocalPlayer():EyePos() + LocalPlayer():EyeAngles():Forward() * 100,
+			filter = function( ent ) if ent:GetClass():find("subway") then  return true end end
+		})
+		train = trace.Entity
+		--print(train)
+		outside = true
+	end
+	if(IsValid(train) and train.ButtonMap != nil) then
 		
-		local plyaimvec = gui.ScreenToVector(ScrW()/2, ScrH()/2) -- ply:GetAimVector() is unreliable when in seats
+		local plyaimvec 
+		if outside then
+			plyaimvec = ply:GetAimVector()
+		else
+			plyaimvec =gui.ScreenToVector(ScrW()/2, ScrH()/2) -- ply:GetAimVector() is unreliable when in seats
+		end
 		
 		-- Loop trough every panel
 		for k2,panel in pairs(train.ButtonMap) do
@@ -1207,8 +1186,7 @@ hook.Add("Think","metrostroi-cabin-panel",function()
 			local wang = train:LocalToWorldAngles(panel.ang)
 			
 			if plyaimvec:Dot(wang:Up()) < 0 then
-				local wpos = train:LocalToWorld(panel.pos - Vector(math.Round((train.HeadAcceleration or 0),2),0,0))
-				
+				local wpos = train:LocalToWorld(panel.pos - Vector(math.Round((!outside and train.HeadAcceleration or 0),2),0,0))
 				local isectPos = LinePlaneIntersect(wpos,wang:Up(),ply:EyePos(),plyaimvec)
 				local localx,localy = WorldToScreen(isectPos,wpos,panel.scale,wang)
 				
@@ -1248,11 +1226,12 @@ end)
 
 
 -- Takes button table, sends current status
-local function sendButtonMessage(button)
+local function sendButtonMessage(button,outside)
 	if not button.ID then return end
 	net.Start("metrostroi-cabin-button")
 	net.WriteString(button.ID:find(":") and string.Explode(":",button.ID)[2] or button.ID) 
 	net.WriteBit(button.state)
+	net.WriteBool(outside)
 	net.SendToServer()
 	--RunConsoleCommand("metrostroi_button_press",button.ID..(button.state and 1 or 0))
 end
@@ -1292,11 +1271,22 @@ function ENT:HidePanel(kp,hide)
 end
 -- Args are player, IN_ enum and bool for press/release
 local function handleKeyEvent(ply,key,pressed)
-	if key ~= IN_ATTACK and key ~= 524288 then return end
+	if key ~= IN_ATTACK and key ~= 2048 and key ~= 524288 then return end
 	if key == 524288 and pressed then return end
 	if not game.SinglePlayer() and not IsFirstTimePredicted() then return end
 	if not IsValid(ply) then return end
 	local train = isValidTrainDriver(ply)
+	local outside = false
+	if not IsValid(train) and LocalPlayer():GetActiveWeapon():GetClass() == "train_kv_wrench" then
+		local trace = util.TraceLine({
+			start = LocalPlayer():EyePos(),
+			endpos = LocalPlayer():EyePos() + LocalPlayer():EyeAngles():Forward() * 100,
+			filter = function( ent ) if ent:GetClass():find("subway") then return true end end
+		})
+		train = trace.Entity
+		
+		outside = true
+	end
 	if not IsValid(train) then return end
 	if train.ButtonMap == nil then return end
 	if key == 524288 and not pressed then train:ClearButtons() end
@@ -1304,7 +1294,7 @@ local function handleKeyEvent(ply,key,pressed)
 		local button = findAimButton(ply)
 		if button and !button.state then
 			button.state = true
-			sendButtonMessage(button)
+			sendButtonMessage(button,outside)
 			lastButton = button
 
 			if train.OnButtonPressed then
@@ -1320,7 +1310,7 @@ local function handleKeyEvent(ply,key,pressed)
 		if lastButton != nil then
 			if lastButton.state == true then
 				lastButton.state = false
-				sendButtonMessage(lastButton)
+				sendButtonMessage(lastButton,outside)
 			end
 
 			if train.OnButtonReleased and button then
