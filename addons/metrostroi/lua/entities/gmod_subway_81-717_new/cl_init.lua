@@ -2031,6 +2031,8 @@ function ENT:DrawPost()
 			color = Color(0,0,0,255)})
 	end)
 
+	local distance = self:GetPos():Distance(LocalPlayer():GetPos())
+	if distance > 1024 then return end
 	self.ButtonMap["ARS"] = self.ARSMap[math.max(1,math.min(3,self:GetNWInt("ARSType",1)))]
 	self:DrawOnPanel("ARS",function()
 		if self:GetNWInt("ARSType",1) ~= 2 then return end
