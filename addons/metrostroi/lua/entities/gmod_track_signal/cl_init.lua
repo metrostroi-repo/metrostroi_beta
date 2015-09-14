@@ -36,10 +36,10 @@ function ENT:Initialize()
 	self.Models = {}
 	self.Signals = {}
 	self.Anims = {}
-	hook.Add("PlayerBindPress", "metrostroi_signal_startup"..self:EntIndex(), function()
-		self.SendReq = CurTime() + math.random(3)
-		hook.Remove("PlayerBindPress", "metrostroi_signal_startup"..self:EntIndex())
-	end)
+	--hook.Add("PlayerBindPress", "metrostroi_signal_startup"..self:EntIndex(), function()
+		--self.SendReq = CurTime() + math.random(3)
+		--hook.Remove("PlayerBindPress", "metrostroi_signal_startup"..self:EntIndex())
+	--end)
 end
 function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
 	local id = clientProp
@@ -147,7 +147,7 @@ function ENT:Think()
 	self.PrevTime = self.PrevTime or RealTime()
 	self.DeltaTime = (RealTime() - self.PrevTime)
 	self.PrevTime = RealTime()
-	if self.SendReq == nil or (self.SendReq and CurTime() - self.SendReq <= 0) then return true elseif self.SendReq then self.SendReq = false end
+	--if self.SendReq == nil or (self.SendReq and CurTime() - self.SendReq <= 0) then return true elseif self.SendReq then self.SendReq = false end
 	if not self.Models then self.Models = {} self.OldName = "++--++--++--" end
 	if LocalPlayer():GetPos().z - self:GetPos().z > 500 or LocalPlayer():GetPos():Distance(self:GetPos()) > 10000 then
 		--local x = 0

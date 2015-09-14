@@ -681,6 +681,16 @@ ENT.ButtonMap["PassengerDoor"] = {
 		{ID = "PassengerDoor",x=0,y=0,w=642-220,h=2000, tooltip="Дверь в кабину машиниста из салона\nPass door door"},
 	}
 }
+ENT.ButtonMap["Wiper"] = {
+	pos = Vector(465.80,7,58.5),
+	ang = Angle(180,90,0.0),
+	width = 750,
+	height = 300,
+	scale = 0.0185,
+	buttons = {
+		{ID = "WiperToggle",x=0,y=0,w=750,h=300, tooltip="Дворник\nWiper"},
+	}
+}
 --------------------------------------------------------------------------------
 ENT.ClientPropsInitialized = false
 ENT.ClientProps["brake013"] = {
@@ -819,7 +829,6 @@ Metrostroi.ClientPropForButton("RezMK",{
 	panel = "BPSNFront",
 	button = "RezMKSet",
 	model = "models/metrostroi_train/81/button.mdl",
-	skin = 0,
 })
 Metrostroi.ClientPropForButton("KAH",{
 	panel = "Front",
@@ -874,25 +883,27 @@ Metrostroi.ClientPropForButton("KDL",{
 	panel = "Main",
 	button = "KDLSet",
 	model = "models/metrostroi_train/81/button.mdl",
-	skin = 6,
+	skin = 7,
 })
 Metrostroi.ClientPropForButton("KDL_light",{
 	panel = "Main",
 	button = "KDLSet",
 	model = "models/metrostroi_train/81/button_light.mdl",
 	ignorepanel = true,
+	skin = 1,
 })
 Metrostroi.ClientPropForButton("KDP",{
 	panel = "Front",
 	button = "KDPSet",
 	model = "models/metrostroi_train/81/button.mdl",
-	skin = 6,
+	skin = 7,
 })
 Metrostroi.ClientPropForButton("KDP_light",{
 	panel = "Front",
 	button = "KDPSet",
 	model = "models/metrostroi_train/81/button_light.mdl",
 	ignorepanel = true,
+	skin = 1,
 })
 Metrostroi.ClientPropForButton("VZ1",{
 	panel = "Main",
@@ -915,7 +926,7 @@ Metrostroi.ClientPropForButton("VDL_Main",{
 	panel = "Main",
 	button = "VDLSet",
 	model = "models/metrostroi_train/81/button.mdl",
-	skin = 6,
+	skin = 7,
 	z=2
 })	
 Metrostroi.ClientPropForButton("VDL_light",{
@@ -923,6 +934,7 @@ Metrostroi.ClientPropForButton("VDL_light",{
 	button = "VDLSet",
 	model = "models/metrostroi_train/81/button_light.mdl",
 	ignorepanel = true,
+	skin = 1,
 	z=2
 })
 Metrostroi.ClientPropForButton("VDL",{
@@ -970,14 +982,12 @@ Metrostroi.ClientPropForButton("GreenRPLight",{
 	panel = "Main",
 	button = "GreenRPLight",
 	model = "models/metrostroi_train/81/lamp.mdl",
-	skin = 3,
 	z = -10,
 })
 Metrostroi.ClientPropForButton("GreenRPLight_light",{
 	panel = "Main",
 	button = "GreenRPLight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
-	skin = 3,
 	z = -10,
 })
 Metrostroi.ClientPropForButton("AVULight",{
@@ -1506,6 +1516,11 @@ ENT.ClientProps["UAVALever"] = {
 	pos = Vector(439.0,-58.8,-13.2),
 	ang = Angle(215,90,270)
 }
+ENT.ClientProps["wiper"] = {
+	model = "models/metrostroi_train/81/wiper.mdl",
+	pos = Vector(474,0,55),
+	ang = Angle(0,-90,0)
+}
 
 --ENT.AutoPos = {Vector(407.3,-10.5,47),Vector(419.3,-57.5,47.5)}
 --local X = Material( "metrostroi_skins/81-717/6.png")
@@ -1644,8 +1659,14 @@ function ENT:Think()
 	then self.KRUPos = self.KRUPos + (0.0 - self.KRUPos)*8.0*self.DeltaTime
 	else self.KRUPos = 1.0
 	end
+	if not self.WiperValue then self.WiperValue = 0 end
+	if self:GetPackedBool("Wiper") then
+		self.WiperValue = self.WiperValue + 3.14*self.DeltaTime
+	end
+	if self.WiperValue > math.pi*2 then self.WiperValue = 0 end
 	-- Simulate pressure gauges getting stuck a little
 	self:Animate("brake334", 		1-self:GetPackedRatio(0), 			0.00, 0.65,  256,24)
+	self:Animate("wiper", 		(math.sin(self.WiperValue)+2)/2 - 0.5, 			0, 0.34,  256,24)
 	self:Animate("brake013", 		self:GetPackedRatio(0)^0.5,			0.00, 0.65,  256,24)
 	--print(self:GetPackedBool(163))
 	self:Animate("controller",		1-self:GetPackedRatio(1),			0.38 - (self:GetPackedBool(164) and 0.04 or 0), 0.78 - (self:GetPackedBool(164) and 0.1 or 0),  2,false)
