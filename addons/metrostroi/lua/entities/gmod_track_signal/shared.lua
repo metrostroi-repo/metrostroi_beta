@@ -22,7 +22,7 @@ Metrostroi.Signal_RP = 4
 -- 3 Blue
 -- 4 Second yellow (flashing yellow)
 -- 5 White
-
+--[[
 Metrostroi.RoutePointer = {
 	[""] = {
 	false,false,false,false,false,
@@ -132,7 +132,15 @@ Metrostroi.RoutePointer = {
 	true ,true ,true ,true ,true ,
 	true ,false,false,false,true ,
 	},
+}]]
+Metrostroi.RoutePointer = {
+	[""] = 0,
+	["0"] = 10,
+	["D"] = 11,
 }
+for i = 1,9 do
+	Metrostroi.RoutePointer[tostring(i)] = i
+end
 Metrostroi.Lenses = {
 	["R"] = Color(255,0,0),
 	["Y"] = Color(255,127,0),
@@ -169,7 +177,7 @@ ENT.TrafficLightModels[0] = {
 				[2] = Vector(8,6.1,14), 
 				}},
 
-	[4] = { 18, "models/metrostroi/signals/light_path.mdl",  Vector(13.1,2, 19.5), 1.75, 2.05, 4},
+	[4] = { 18, "models/metrostroi/signals/light_pathindicator.mdl",  Vector(13.1,2, 19.5), 1.75, 2.05, 4},
 }
 
 
@@ -193,7 +201,7 @@ ENT.TrafficLightModels[1] = {
 	[3] = { 25, "models/metrostroi/signals/light_outside_1.mdl" , {
 				[0] = Vector(0,15, 8)
 				}},
-	[4] = { 40, "models/metrostroi/signals/light_outside_path.mdl",  Vector(7,11, 25), 3.6, 3.4, 5},
+	[4] = { 40, "models/metrostroi/signals/light_outside_path",  Vector(7,11, 25), 3.6, 3.4, 5},
 }
 
 
@@ -215,7 +223,7 @@ ENT.TrafficLightModels[2] = {
 				[2] = Vector(10,4.1,16),
 				}},
 
-	[4] = { 20, "models/metrostroi/signals/light_outside2_path.mdl",  Vector(13.8,2, 22.8), 1.8, 2.1, 4},
+	[4] = { 20, "models/metrostroi/signals/light_pathindicator_outside.mdl",  Vector(13.8,2, 22.8), 1.8, 2.1, 4},
 }
 ENT.SignalConverter = {
 	R = 1,

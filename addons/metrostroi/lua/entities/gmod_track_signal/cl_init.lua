@@ -199,13 +199,21 @@ function ENT:Think()
 	-- Create new clientside models
 	if not self.ARSOnly then
 		self.Sig = self:GetNWString("Signal")
+		self.Num = self:GetNWString("Number",nil)
 		if self.OldSig ~= self.Sig then
-			self.NextSignalWork = CurTime() + 0.6
+			self.NextSignalWork = CurTime() + 0.7
 		end
 		self.OldSig = self.Sig
+		if self.OldNum ~= self.Num then
+			self.NextNumWork = CurTime() + 1
+		end
+		self.OldNum = self.Num
 		
 		if (self.NextSignalWork or CurTime()) - CurTime() >= 0 then
 			self.Sig = ""
+		end
+		if (self.NextNumWork or CurTime()) - CurTime() >= 0 then
+			self.Num = ""
 		end
 		if self.Lenses ~= self.OldLenses then
 			for k,v in pairs(self.Models) do
@@ -243,6 +251,7 @@ function ENT:Think()
 			if v ~= "M" then
 				data = #v ~= 1 and self.TrafficLightModels[self.LightType][#v-1] or self.TrafficLightModels[self.LightType][Metrostroi.Signal_IS]
 			else
+				self.RouteNumber = ID
 				data = self.TrafficLightModels[self.LightType][Metrostroi.Signal_RP]
 			end
 			if not data then continue end
@@ -281,6 +290,8 @@ function ENT:Think()
 						end
 					end
 				end
+			else
+				self.Models[self.RouteNumber]:SetSkin(Metrostroi.RoutePointer[self.Num])
 			end
 			ID = ID + 1
 		end

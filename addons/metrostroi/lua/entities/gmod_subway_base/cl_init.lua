@@ -1277,7 +1277,7 @@ local function handleKeyEvent(ply,key,pressed)
 	if not IsValid(ply) then return end
 	local train = isValidTrainDriver(ply)
 	local outside = false
-	if not IsValid(train) and LocalPlayer():GetActiveWeapon():GetClass() == "train_kv_wrench" then
+	if not IsValid(train) and IsValid(LocalPlayer():GetActiveWeapon()) and LocalPlayer():GetActiveWeapon():GetClass() == "train_kv_wrench" then
 		local trace = util.TraceLine({
 			start = LocalPlayer():EyePos(),
 			endpos = LocalPlayer():EyePos() + LocalPlayer():EyeAngles():Forward() * 100,

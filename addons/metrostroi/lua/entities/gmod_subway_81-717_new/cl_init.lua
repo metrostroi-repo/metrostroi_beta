@@ -1013,21 +1013,21 @@ Metrostroi.ClientPropForButton("KVPLight",{
 	panel = "Main",
 	button = "KVPLight",
 	model = "models/metrostroi_train/81/lamp.mdl",
-	skin = 2,
+	skin = 3,
 	z = -10,
 })
 Metrostroi.ClientPropForButton("KVPLight_light",{
 	panel = "Main",
 	button = "KVPLight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
-	skin = 4,
+	skin = 3,
 	z = -10,
 })
 Metrostroi.ClientPropForButton("SPLight",{
 	panel = "Main",
 	button = "SPLight",
 	model = "models/metrostroi_train/81/lamp.mdl",
-	skin = 2,
+	skin = 1,
 	z = -10,
 })
 Metrostroi.ClientPropForButton("SPLight_light",{
@@ -1055,7 +1055,7 @@ Metrostroi.ClientPropForButton("PneumoLight",{
 	panel = "Front",
 	button = "PneumoLight",
 	model = "models/metrostroi_train/81/lamp.mdl",
-	skin = 2,
+	skin = 4,
 	z = -10,
 })
 Metrostroi.ClientPropForButton("PneumoLight_light",{

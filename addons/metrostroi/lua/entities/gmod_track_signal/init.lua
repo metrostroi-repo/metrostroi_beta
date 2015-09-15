@@ -529,6 +529,8 @@ function ENT:Think()
 				index = index + 1
 			end
 		else
+			if number then self:SetNWString("Number",self.Red and "" or number) end
+			--[[
 			--Get the some models data
 			local data = self.TrafficLightModels[self.SignalType][Metrostroi.Signal_RP]
 			offset = offset - Vector(0,0,data[1])
@@ -552,6 +554,7 @@ function ENT:Think()
 					"models/metrostroi_signals/signal_sprite_002.vmt",data[6]/100,0.6,
 					self.BasePosition + offset + data[3] - Vector(i1*data[4],0,i2*data[5]), Color(255,255,255))
 			end
+			]]
 		end
 	end
 	self:SetNWString("Signal",self.Sig)

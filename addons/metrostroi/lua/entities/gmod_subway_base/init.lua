@@ -1508,14 +1508,14 @@ function ENT:Think()
 				--if v.dist > 2.91 and v.state == 0 or v.dist > 5.61 and v.state == 1 or v.dist > 19.17 and v.state == 2 or v.dist > 21.85 and v.state == 3 then
 				if v.dist > 2.26 and v.state == 0 or v.dist > 4.34 and v.state == 1 or v.dist > 14.83 and v.state == 2 or v.dist > 16.91 and v.state == 3 then
 					local Wheels = v.state > 1 and self.RearBogey.Wheels or self.FrontBogey.Wheels
-					sound.Play(self.SoundNames["st"..v.type..((v.state == 1 or v.state == 4) and "b" or "a")],Wheels:LocalToWorld(Vector(0,v.state%2 > 0 and 105/2 or 0,0)),84,nil,1)
+					sound.Play(self.SoundNames["st"..v.type..((v.state == 1 or v.state == 2) and "b" or "a")],Wheels:LocalToWorld(Vector(0,v.state%2 > 0 and 105/2 or 0,0)),84,nil,1)
 					v.state = v.state + 1
 				end
 				--if v.dist < 2.91 and v.state == 1 or v.dist < 5.61 and v.state == 2 or v.dist < 19.17 and v.state == 3 or v.dist < 21.85 and v.state == 4 then
 				if v.dist < 2.26 and v.state == 1 or v.dist < 4.34 and v.state == 2 or v.dist < 14.83 and v.state == 3 or v.dist < 16.91 and v.state == 4 then
 					local Wheels = v.state > 2 and self.RearBogey.Wheels or self.FrontBogey.Wheels
 					v.state = v.state - 1
-					sound.Play(self.SoundNames["st"..v.type..((v.state == 1 or v.state == 4) and "b" or "a")],Wheels:LocalToWorld(Vector(0,v.state%2 > 0 and 105/2 or 0,0)),84,nil,1)
+					sound.Play(self.SoundNames["st"..v.type..((v.state == 1 or v.state == 2) and "b" or "a")],Wheels:LocalToWorld(Vector(0,v.state%2 > 0 and 105/2 or 0,0)),84,nil,1)
 				end
 				if v.dist < 0 or v.dist > 19.17 then
 					local Train = v.dist > 19.17 and self.RearTrain or self.FrontTrain
