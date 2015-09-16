@@ -61,27 +61,35 @@ function TRAIN_SYSTEM:Initialize()
 end
 
 function TRAIN_SYSTEM:Inputs()
-	return { "WeightLoadRatio" }
+	return { "WeightLoadRatio", "Slope" }
+end
+function TRAIN_SYSTEM:Outputs()
+	return { "Slope" }
 end
 
 function TRAIN_SYSTEM:TriggerInput(name,value)
 	if name == "WeightLoadRatio" then
 		self.WeightLoadRatio = value
 	end
+	if name == "Slope" then
+		self.Slope = value
+	end
 end
 
 function TRAIN_SYSTEM:Think()
 	local Train = self.Train
-	
 	-- Zero relay operation
 	Train.NR:TriggerInput("Close",Train.Electric.Aux750V > 360) -- 360 - 380 V 
 	Train.NR:TriggerInput("Open", Train.Electric.Aux750V < 150) -- 120 - 190 V
-	
+	local del = 1
+	if self.Slope then
+		del = 1.5
+	end
 	-- Overload relays operation
-	Train.RP1_3:TriggerInput("Set",math.abs(Train.Electric.I13))
-	Train.RP2_4:TriggerInput("Set",math.abs(Train.Electric.I24))
+	Train.RP1_3:TriggerInput("Set",math.abs(Train.Electric.I13/del))
+	Train.RP2_4:TriggerInput("Set",math.abs(Train.Electric.I24/del))
 	--Train.RPL:TriggerInput("Set",Train.Electric.Itotal)
-	
+	if Train.RP1_3.Value > 0 or Train.RP2_4.Value > 0 then print(Train.RP1_3.Value,Train.Electric.I13/del,Train.RP2_4.Value,Train.Electric.I24/del,math.floor(Train.PositionSwitch.Position + 0.5) , math.floor(Train.RheostatController.Position + 0.5),del) end
 	-- RUT operation
 	self.RUTCurrent = (math.abs(Train.Electric.I13) + math.abs(Train.Electric.I24))/2
 	self.RUTTarget = 250 + 150*self.WeightLoadRatio

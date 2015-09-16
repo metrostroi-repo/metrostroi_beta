@@ -168,13 +168,13 @@ ENT.TrafficLightModels[0] = {
 	["m2"]	= "models/metrostroi/signals/pole_2.mdl",
 	["name"]	= Vector(-2,2.5,-25),
 	[1]	= { 32, "models/metrostroi/signals/light_2.mdl", {
-				[0] = Vector(8,6.1,25),
-				[1] = Vector(8,6.1,14), 
+				[0] = Vector(7.5,6.1,24.5),
+				[1] = Vector(7.5,6.1,14.2), 
 				}},
 	[2]	= { 40, "models/metrostroi/signals/light_3.mdl", {
-				[0] = Vector(8,6.1,35),
-				[1] = Vector(8,6.1,25),
-				[2] = Vector(8,6.1,14), 
+				[0] = Vector(7.5,6.1,35),
+				[1] = Vector(7.5,6.1,24.8),
+				[2] = Vector(7.5,6.1,14.2), 
 				}},
 
 	[4] = { 18, "models/metrostroi/signals/light_pathindicator.mdl",  Vector(13.1,2, 19.5), 1.75, 2.05, 4},
@@ -190,12 +190,12 @@ ENT.TrafficLightModels[1] = {
 	["name"]	= Vector(0,2,-15),
 	[1]	= { 50, "models/metrostroi/signals/light_outside_2.mdl", {
 				[0] = Vector(0,15,20),
-				[1] = Vector(0,15, 9),
+				[1] = Vector(0,15, 8.8),
 				}},
 	[2]	= { 60, "models/metrostroi/signals/light_outside_3.mdl", {
-				[0] = Vector(0,15,31), 
+				[0] = Vector(0,15,30.8), 
 				[1] = Vector(0,15,20), 			
-				[2] = Vector(0,15, 9),
+				[2] = Vector(0,15, 8.8),
 				} },
 
 	[3] = { 25, "models/metrostroi/signals/light_outside_1.mdl" , {
@@ -214,13 +214,13 @@ ENT.TrafficLightModels[2] = {
 	["m2"]	= "models/metrostroi/signals/pole_3.mdl",
 	["name"]	= Vector(-4,2.5,-20),
 	[1]	= { 32, "models/metrostroi/signals/light_outside2_2.mdl", {
-				[0] = Vector(10,4.1,28),
-				[1] = Vector(10,4.1,16),
+				[0] = Vector(10,4.1,27.5),
+				[1] = Vector(10,4.1,15.9),
 				}},
 	[2]	= { 45, "models/metrostroi/signals/light_outside2_3.mdl", {
-				[0] = Vector(10,4.1,38),
-				[1] = Vector(10,4.1,28), 		
-				[2] = Vector(10,4.1,16),
+				[0] = Vector(9.5,4.1,39),
+				[1] = Vector(9.5,4.1,27.2), 		
+				[2] = Vector(9.5,4.1,15.8),
 				}},
 
 	[4] = { 20, "models/metrostroi/signals/light_pathindicator_outside.mdl",  Vector(13.8,2, 22.8), 1.8, 2.1, 4},

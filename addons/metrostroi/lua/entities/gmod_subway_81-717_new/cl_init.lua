@@ -30,7 +30,9 @@ ENT.ButtonMap["Main"] = {
 		
 		{ID = "VUD1Toggle",		x=49, y=105, radius=40, tooltip="ВУД: Выключатель управления дверьми\nVUD: Door control toggle (close doors)"},
 		{ID = "KDLSet",			x=50, y=180, radius=20, tooltip="КДЛ: Кнопка левых дверей\nKDL: Left doors open"},
+		{ID = "KDLKToggle",			x=30, y=200, w=40,h=20, tooltip="Крышечка"},
 		{ID = "VDLSet",			x=153, y=180, radius=20, tooltip="ВДЛ: Выключатель левых дверей\nVDL: Left doors open"},
+		{ID = "VDLKToggle",			x=133, y=200, w=40,h=20, tooltip="Крышечка"},
 		{ID = "DoorSelectToggle",x=105, y=183, radius=20, tooltip="Выбор стороны открытия дверей\nSelect side on which doors will open"},
 		{ID = "KRZDSet",		x=153, y=83, radius=20, tooltip="КРЗД: Кнопка резервного закрытия дверей\nKRZD: Emergency door closing"},
 		{ID = "VozvratRPSet",	x=105, y=132, radius=20, tooltip="Возврат реле перегрузки\nReset overload relay"},
@@ -76,6 +78,7 @@ ENT.ButtonMap["Front"] = {
 		{ID = "L_4Toggle",x=53, y=200, radius=20, tooltip="Выключатель фар\nHeadlights toggle"},
 		{ID = "CabinHeatLight",x=90, y=145, radius=20, tooltip="Контроль печи\nCabin heater active"},
 		{ID = "KDPSet",x=130, y=145, radius=32, tooltip="КДП: Кнопка правых дверей\nKDP: Right doors open"},
+		{ID = "VDLKToggle",			x=110, y=165, w=40,h=20, tooltip="Крышечка"},
 		
 		{ID = "PneumoLight",x=170, y=145, radius=20, tooltip="Контроль пневмотормоза\nPneumatic brake control"},
 	}
@@ -1352,6 +1355,21 @@ for x=0,11 do
 	end
 end
 
+ENT.ClientProps["KDLK"] ={	
+	model = "models/metrostroi_train/81/krishka.mdl",
+	pos = Vector(458,12.55+1.35-3,-3.3),
+	ang = Angle(180,90,70)
+}
+ENT.ClientProps["VDLK"] ={	
+	model = "models/metrostroi_train/81/krishka.mdl",
+	pos = Vector(458,12.55+1.35-9.5,-3.3),
+	ang = Angle(180,90,70)
+}
+ENT.ClientProps["KDPK"] ={	
+	model = "models/metrostroi_train/81/krishka.mdl",
+	pos = Vector(459,-24,-1.0),
+	ang = Angle(180,90,80)
+}
 ENT.ClientProps["L_5"] ={	
 	model = "models/metrostroi/81-717/circuit_breaker.mdl",
 	pos = Vector(407.3,-10.5+1*3.26,47-3*10.6),
@@ -1666,7 +1684,7 @@ function ENT:Think()
 	if self.WiperValue > math.pi*2 then self.WiperValue = 0 end
 	-- Simulate pressure gauges getting stuck a little
 	self:Animate("brake334", 		1-self:GetPackedRatio(0), 			0.00, 0.65,  256,24)
-	self:Animate("wiper", 		(math.sin(self.WiperValue)+2)/2 - 0.5, 			0, 0.34,  256,24)
+	self:Animate("wiper", 		(math.sin(self.WiperValue-math.pi/2)+2)/2 - 0.5, 			0, 0.34,  256,24)
 	self:Animate("brake013", 		self:GetPackedRatio(0)^0.5,			0.00, 0.65,  256,24)
 	--print(self:GetPackedBool(163))
 	self:Animate("controller",		1-self:GetPackedRatio(1),			0.38 - (self:GetPackedBool(164) and 0.04 or 0), 0.78 - (self:GetPackedBool(164) and 0.1 or 0),  2,false)
@@ -1708,6 +1726,9 @@ function ENT:Think()
 	self:Animate("VDL_Main",				self:GetPackedBool(14) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("VDL_light","VDL_Main")
 	self:Animate("KDL",				self:GetPackedBool(15) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDL_light","KDL")
 	self:Animate("KDP",				self:GetPackedBool(16) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDP_light","KDP")
+	self:Animate("KDLK",				self:GetPackedBool("KDLK") and 1 or 0, 	0,0.57, 4, false)
+	self:Animate("VDLK",				self:GetPackedBool("VDLK") and 1 or 0, 	0,0.57, 4, false)
+	self:Animate("KDPK",				self:GetPackedBool("KDPK") and 1 or 0, 	0,0.57, 4, false)
 	
 	
 	local An = self:Animate("VDLr",self:GetPackedBool("Left") and 1 or 0,0,1,10,false)

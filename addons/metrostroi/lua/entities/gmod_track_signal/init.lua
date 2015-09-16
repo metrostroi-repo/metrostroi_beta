@@ -306,7 +306,7 @@ function ENT:ARSLogic(tim)
 		--if not self.NextSignalLink then print(self.Name) end
 		if self.FreeBS - (self.OldBSState or self.FreeBS) > 1 then
 			local Free = self.FreeBS
-			timer.Simple(tim+0.05,function()
+			timer.Simple(tim+0.1,function()
 				if not IsValid(self) then return end
 				if self.NextSignalLink and self.NextSignalLink.FreeBS + 1 - self.OldBSState > 1 then
 					self.FreeBS = Free

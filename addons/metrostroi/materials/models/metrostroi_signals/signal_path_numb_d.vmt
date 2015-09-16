@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/metrostroi_signals/signal_path_numb_d"
+	"$selfillum" 1
+}

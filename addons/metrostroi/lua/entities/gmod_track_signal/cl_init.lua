@@ -4,14 +4,14 @@ include("shared.lua")
 hook.Add("PostDrawOpaqueRenderables", "metrostroi_signal_draw", function(isDD)
 	if isDD then return end
 	for _,self in pairs(ents.FindByClass("gmod_track_signal")) do
-		if not IsValid(self) or not self.Name or self.ARSOnly or self.NotDraw then continue end
+		if not IsValid(self) or not self.Name or self.ARSOnly or not self.Models[2] then continue end
 
 		--if LocalPlayer():GetPos():Distance(self:GetPos()) > 1000 then continue end
 		for i = 0,#self.Name-1 do
-			if self.Name[i+1] == " " or not IsValid(self.Models["names_"..i]) then continue end
+			if self.Name[i+1] == " " or not IsValid(self.Models[2][i]) then continue end
 
-			local pos = self.Models["names_"..i]:LocalToWorld(Vector(0,0.3,0))
-			local angle = self.Models["names_"..i]:LocalToWorldAngles(Angle(0,180,90))
+			local pos = self.Models[2][i]:LocalToWorld(Vector(0,0.3,0))
+			local angle = self.Models[2][i]:LocalToWorldAngles(Angle(0,180,90))
 			local offset = (self.RenderOffset[self.LightType] or Vector(0,0,0)) + (self.TrafficLightModels[self.LightType]["name"] or Vector(0,0,0))
 			if self.LightType == 1 then
 				for i = 1,#self.TrafficLightModels[self.LightType] do
@@ -33,7 +33,7 @@ end)
 function ENT:Initialize()
 	self.Sig = {}
 	self.OldName = ""
-	self.Models = {}
+	self.Models = {{},{},{}}
 	self.Signals = {}
 	self.Anims = {}
 	--hook.Add("PlayerBindPress", "metrostroi_signal_startup"..self:EntIndex(), function()
@@ -113,10 +113,10 @@ function ENT:OnRemove()
 	--hook.Remove("PostDrawOpaqueRenderables")
 end
 function ENT:RemoveModels()
-	if self.Models then
-		for k,v in pairs(self.Models) do v:Remove() end
+	if self.Models and  self.Models.have then
+		for k,v in pairs(self.Models) do if type(v) == "table" then for _,v1 in pairs(v) do v1:Remove() end end end
 	end
-	self.Models = {}
+	self.Models = {{},{},{}}
 end
 
 net.Receive("metrostroi-signal", function()
@@ -148,39 +148,23 @@ function ENT:Think()
 	self.DeltaTime = (RealTime() - self.PrevTime)
 	self.PrevTime = RealTime()
 	--if self.SendReq == nil or (self.SendReq and CurTime() - self.SendReq <= 0) then return true elseif self.SendReq then self.SendReq = false end
-	if not self.Models then self.Models = {} self.OldName = "++--++--++--" end
+	--if not self.Models then self.Models = {{},{},{}} self.OldName = "++--++--++--" end
 	if LocalPlayer():GetPos().z - self:GetPos().z > 500 or LocalPlayer():GetPos():Distance(self:GetPos()) > 10000 then
-		--local x = 0
-		for k,v in pairs(self.Models) do
-			if IsValid(v) then
-				v:Remove()
-				self.Models[k] = nil
-			end
-		end
-		--if x > 0 then
-			--print(#self.Models)
-			--self.Models = {}	
-		--end
-		self.NotDraw  = true
-	else
-		self.NotDraw  = false
+		self:RemoveModels()
+		return
 	end
-	if self.NotDraw then return end
 	
-	--if self.Name == "37" then print(self.Name) end
-	--self.LightType = self:GetNWInt("LightType",nil)
-	--self.Name = self:GetNWString("Name",nil)
-	--self.Lenses = self:GetNWString("Lenses",nil)
-	--self.ARSOnly = self.Lenses == "ARSOnly"
-	--self.LensesTBL = string.Explode("-",self.Lenses)
+
 	if not self.Name then
-		if not self.sended  then
+		if self.sended and (CurTime() - self.sended) > 0 then 
+			self.sended = nil
+		end
+		if not self.sended then
 			--print((self.Name or tostring(self))..", require update")
 			net.Start("metrostroi-signal")
 				net.WriteEntity(self)
 			net.SendToServer()
-			self.sended = true
-			timer.Simple(1.5,function() self.sended = false end)
+			self.sended = CurTime() + 1.5
 		end
 		return
 	end
@@ -189,11 +173,6 @@ function ENT:Think()
 	or (self.LightType > 0 and self.Name == "") or (self.LightType == 1 and self.Name ~= "")
 	or (self.Name ~= "" and self.Lenses == "") or (self.Name == "" and self.Lenses ~= "") or self.LightType < 1)
 	]]
-	--self.LightType = self.LightType - 2
-	--self.ARSOnly = self.Lenses == "ARSOnly"
-	--print(self.ARSOnly)
-	--self.RouteNumber = self:GetNWString("RouteNumber")
-	local models = self.TrafficLightModels[self.LightType] or {}
 	local ID = 0
 	local ID2 = 0
 	-- Create new clientside models
@@ -216,34 +195,28 @@ function ENT:Think()
 			self.Num = ""
 		end
 		if self.Lenses ~= self.OldLenses then
-			for k,v in pairs(self.Models) do
-				if IsValid(v) then
-					v:Remove()
-				end
-				self.Models[k] = nil
-			end
+			self:RemoveModels()
 		end
 		--if not self.LensesTBL or self.Lenses ~= self.OldLenses then
 			--self.LensesTBL = string.Explode("-",self.Lenses)
 		--end
 		
 		--self.SigStop = (self.NextSignalWork or CurTime()) - CurTime() >= 0
-
-		
-		for k,v in pairs(models) do
+		for k,v in pairs(self.TrafficLightModels[self.LightType]) do
 			if type(v) == "string" then
-				if not IsValid(self.Models[v]) then
-					self.Models[v] = ClientsideModel(v,RENDERGROUP_OPAQUE)
-					self.Models[v]:SetPos(self:LocalToWorld(self.BasePosition))
-					self.Models[v]:SetAngles(self:GetAngles())
-					self.Models[v]:SetParent(self)
-				end
+				if IsValid(self.Models[1][v]) then break end
+				--if not IsValid(self.Models[1][v]) then
+					self.Models[1][v] = ClientsideModel(v,RENDERGROUP_OPAQUE)
+					self.Models[1][v]:SetPos(self:LocalToWorld(self.BasePosition))
+					self.Models[1][v]:SetAngles(self:GetAngles())
+					self.Models[1][v]:SetParent(self)
+				--end
 			end
 		end
 		self.NamesOffset = Vector(0,0,0)
 		-- Create traffic light models
-		if self.LightType > 2 then self.LightType = 2 end
-		if self.LightType < 0 then self.LightType = 0 end
+		--if self.LightType > 2 then self.LightType = 2 end
+		--if self.LightType < 0 then self.LightType = 0 end
 
 		local offset = self.RenderOffset[self.LightType] or Vector(0,0,0)
 		for k,v in ipairs(self.LensesTBL) do
@@ -256,13 +229,13 @@ function ENT:Think()
 			end
 			if not data then continue end
 			offset = offset - Vector(0,0,data[1])
-			if not IsValid(self.Models[ID]) then
+			if not IsValid(self.Models[1][ID]) then
 				self.NamesOffset = self.NamesOffset + Vector(0,0,data[1])
 				if self.Left then print(data[2]:Replace(".mdl","_mirror.mdl")) end
-				self.Models[ID] = ClientsideModel(self.Left and data[2]:Replace(".mdl","_mirror.mdl") or data[2],RENDERGROUP_OPAQUE)
-				self.Models[ID]:SetPos(self:LocalToWorld(self.BasePosition + offset))
-				self.Models[ID]:SetAngles(self:LocalToWorldAngles(Angle(0,self.Left and 180 or 0,0)))
-				self.Models[ID]:SetParent(self)
+				self.Models[1][ID] = ClientsideModel(self.Left and data[2]:Replace(".mdl","_mirror.mdl") or data[2],RENDERGROUP_OPAQUE)
+				self.Models[1][ID]:SetPos(self:LocalToWorld(self.BasePosition + offset))
+				self.Models[1][ID]:SetAngles(self:LocalToWorldAngles(Angle(0,self.Left and 180 or 0,0)))
+				self.Models[1][ID]:SetParent(self)
 			end
 			if v ~= "M" then
 				for i = 1,#v do
@@ -272,43 +245,45 @@ function ENT:Think()
 					--if self.Sig[ID2] == "1" or (self.Sig[ID2] == "2" and (RealTime() % 2 > 0.25)) then 
 					--else
 					--end
-					local State = self:Animate(ID.."/"..i,	((tonumber(self.Sig[ID2]) == 1 or (tonumber(self.Sig[ID2]) == 2 and (RealTime() % 1.2 > 0.5))) and not self.SigStop) and 1 or 0, 	0,1, 9.8, false)
-					if IsValid(self.Models[ID.."sign"..i]) then 
+					local State = self:Animate(ID.."/"..i,	((tonumber(self.Sig[ID2]) == 1 or (tonumber(self.Sig[ID2]) == 2 and (RealTime() % 1.2 > 0.5))) and not self.SigStop) and 1 or 0, 	0,1, 256)
+					if IsValid(self.Models[3][ID..ID2]) then 
 						if State > 0 then
-							self.Models[ID.."sign"..i]:SetColor(Color(255,255,255,State*255))
+							self.Models[3][ID..ID2]:SetColor(Color(255,255,255,State*255))
 						else
-							self.Models[ID.."sign"..i]:Remove()
+							self.Models[3][ID..ID2]:Remove()
+							if self.Name == "23" then print(self.Name,State) end
 						end
 					else
 						if State >0 then
-							self.Models[ID.."sign"..i] = ClientsideModel("models/metrostroi/train/sign_lense.mdl",RENDERGROUP_OPAQUE)
-							self.Models[ID.."sign"..i]:SetPos(self:LocalToWorld(self.BasePosition + offset + data[3][i-1]*Vector(1,self.Left and -1.1 or 1,1)+Vector(0,0.1,0)))
-							self.Models[ID.."sign"..i]:SetAngles(self:LocalToWorldAngles(Angle(0,90*(self.Left and -1 or 1),0)))
-							self.Models[ID.."sign"..i]:SetSkin(self.SignalConverter[v[i]])
-							self.Models[ID.."sign"..i]:SetParent(self)
-							self.Models[ID.."sign"..i]:SetRenderMode(RENDERMODE_TRANSALPHA)
+							self.Models[3][ID..ID2] = ClientsideModel("models/metrostroi/train/sign_lense.mdl",RENDERGROUP_OPAQUE)
+							self.Models[3][ID..ID2]:SetPos(self:LocalToWorld(self.BasePosition + offset + data[3][i-1]*Vector(1,self.Left and -1.1 or 1,1)+Vector(0,0.1,0)))
+							self.Models[3][ID..ID2]:SetAngles(self:LocalToWorldAngles(Angle(0,90*(self.Left and -1 or 1),0)))
+							self.Models[3][ID..ID2]:SetSkin(self.SignalConverter[v[i]])
+							self.Models[3][ID..ID2]:SetParent(self)
+							self.Models[3][ID..ID2]:SetRenderMode(RENDERMODE_TRANSALPHA)
+							self.Models[3][ID..ID2]:SetColor(Color(255,255,255,0))
 						end
 					end
 				end
 			else
-				self.Models[self.RouteNumber]:SetSkin(Metrostroi.RoutePointer[self.Num])
+				self.Models[1][self.RouteNumber]:SetSkin(Metrostroi.RoutePointer[self.Num])
 			end
 			ID = ID + 1
 		end
 		for i = 0,#self.Name-1 do
 			if self.Name[i+1] == " " then continue end
-			if not IsValid(self.Models["names_"..i]) then
+			if not IsValid(self.Models[2][i]) then
 				self.OldName = ""
 				break
 			end
 		end
 
 		if self.OldName ~= self.Name then
-			for i = 0,#self.Name-1 do
+			for i = 0,#self.OldName-1 do
 				if self.Name[i+1] == " " then continue end
-				if self.Models["names_"..i] then
-					self.Models["names_"..i]:Remove()
-					self.Models["names_"..i] = nil
+				if self.Models[2][i] then
+					self.Models[2][i]:Remove()
+					self.Models[2][i] = nil
 				end
 			end
 
@@ -318,25 +293,26 @@ function ENT:Think()
 			end
 			for i = 0,#self.Name-1 do
 				if self.Name[i+1] == " " then continue end
-				if not IsValid(self.Models["names_"..i]) then
-					self.Models["names_"..i] = ClientsideModel("models/metrostroi/signals/letter.mdl",RENDERGROUP_OPAQUE)
-					self.Models["names_"..i]:SetAngles(self:GetAngles()+Angle(0,self.Left and 180 or 0,0))
-					self.Models["names_"..i]:SetPos(self:LocalToWorld(self.BasePosition + offset*Vector(1,self.Left and -1 or 1,1) - Vector(0,0,i*5.5)))
-					self.Models["names_"..i]:SetParent(self)
+				if not IsValid(self.Models[2][i]) then
+					self.Models[2][i] = ClientsideModel("models/metrostroi/signals/letter.mdl",RENDERGROUP_OPAQUE)
+					self.Models[2][i]:SetAngles(self:GetAngles()+Angle(0,self.Left and 180 or 0,0))
+					self.Models[2][i]:SetPos(self:LocalToWorld(self.BasePosition + offset*Vector(1,self.Left and -1 or 1,1) - Vector(0,0,i*5.5)))
+					self.Models[2][i]:SetParent(self)
 				end
 			end
 		end
 	else
 		local k = "m1"
-		local v = self.TrafficLightModels[self.LightType]["m1"]
 
 		if not IsValid(self.Models[k]) then
+			local v = self.TrafficLightModels[self.LightType]["m1"]
 			self.Models[k] = ClientsideModel(v,RENDERGROUP_OPAQUE)
 			self.Models[k]:SetPos(self:LocalToWorld(self.BasePosition))
 			self.Models[k]:SetAngles(self:GetAngles())
 			self.Models[k]:SetParent(self)
 		end
 	end
+	self.Models.have = true
 	self.OldLenses = self.Lenses
 	self.OldName = self.Name
 end
