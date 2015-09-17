@@ -14,41 +14,37 @@ function ENT:SetupDataTables()
 	self._NetData = {}
 end
 function ENT:GetSpeed()
-	return self:GetNWFloat("Speed")
+	return self:GetNWInt("Speed")/5
 end
 function ENT:GetMotorPower()
-	return self:GetNWFloat("MotorPower")
+	return self:GetNWInt("MotorPower")/50
 end
 function ENT:GetdPdT()
-	return self:GetNWFloat("dPdT")
+	return self:GetNWInt("dPdT")/10
 end
 function ENT:GetBrakeSqueal()
-	return self:GetNWFloat("BrakeSqueal")
+	return self:GetNWInt("BrakeSqueal")/10
 end
 
 if SERVER then
 	function ENT:SetSpeed(val)
-		local val = math.Round(val,0.5)
-		if self._NetData[1] == val then return end
-		self:SetNWFloat("Speed",val)
+		if self._NetData[1] == math.floor(val*5) then return end
+		self:SetNWInt("Speed",math.floor(val*5))
 	end
 
 	function ENT:SetMotorPower(val)
-		local val = math.Round(val,1.5)
-		if self._NetData[2] == val then return end
-		self:SetNWFloat("MotorPower",val)
+		if self._NetData[2] == math.floor(val*50) then return end
+		self:SetNWInt("MotorPower",math.floor(val*50))
 	end
 
 	function ENT:SetdPdT(val)
-		local val = math.Round(val,2)
-		if self._NetData[3] == val then return end
-		self:SetNWFloat("dPdT",val)
+		if self._NetData[3] == math.floor(val*10) then return end
+		self:SetNWInt("dPdT",math.floor(val*10))
 	end
 
 	function ENT:SetBrakeSqueal(val)
-		local val = math.Round(val,2)
-		if self._NetData[4] == val then return end
-		self:SetNWFloat("BrakeSqueal",val)
+		if self._NetData[4] == math.floor(val*10) then return end
+		self:SetNWInt("BrakeSqueal",math.floor(val*10))
 	end
 end
 

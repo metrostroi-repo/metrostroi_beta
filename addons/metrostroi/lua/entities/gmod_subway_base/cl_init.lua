@@ -329,11 +329,16 @@ end
 --------------------------------------------------------------------------------
 -- Clientside initialization
 --------------------------------------------------------------------------------
+function ENT:CanDrawThings()
+	return not IsValid(LocalPlayer():GetVehicle()) or self == LocalPlayer():GetVehicle():GetNWEntity("TrainEntity")
+end
 function ENT:Initialize()
 	hook.Add("PostDrawOpaqueRenderables", "metrostroi_base_draw_"..self:EntIndex(), function(isDD)
 		if not IsValid(self) or isDD then
 			return
 		end
+		if self.DrawPost then self:DrawPost(not self:CanDrawThings()) end
+		if not self:CanDrawThings() then return end
 		self.CLDraw = true
 
 		if not self.ShouldRenderClientEnts or not self:ShouldRenderClientEnts() then return end
@@ -350,7 +355,6 @@ function ENT:Initialize()
 				self:DrawSchedule(panel)
 			end)
 		end
-		if self.DrawPost then self:DrawPost() end
 
 		-- Debug draw for buttons
 		if (GetConVarNumber("metrostroi_drawdebug") > 0) and (self.ButtonMap ~= nil) then
@@ -377,7 +381,7 @@ function ENT:Initialize()
 							if self.HiddenPanels[kp] then surface.SetAlphaMultiplier(0.1) end
 							
 							for kb,button in pairs(panel.buttons) do
-								if self.Hidden[button.PropName] then
+								if self.Hidden[button.PropName] or self.HiddenButton[button.PropName] then
 									surface.SetDrawColor(255,255,0)
 								elseif self.Hidden[kb] then
 									surface.SetDrawColor(255,255,0)
@@ -420,6 +424,7 @@ function ENT:Initialize()
 	self.PassengerPositions = {}
 	self.HiddenPanels = {}
 	self.Hidden = {}
+	self.HiddenButton = {}
 	--self.HiddenQuele = {}
 	-- Systems defined in the train
 	self.Systems = {}
@@ -875,6 +880,9 @@ function ENT:ShowHide(clientProp, value, over)
 	self.Hidden[clientProp] = value ~= true
 end
 
+function ENT:HideButton(clientProp, value)
+	self.HiddenButton[clientProp] = value
+end
 function ENT:ShowHideSmooth(clientProp, value)
 	if IsValid(self.ClientEnts[clientProp]) then
 		if IsValid(self.ClientEnts[clientProp]) then
@@ -1123,8 +1131,8 @@ local function findAimButton(ply)
 				
 				--Loop trough every button on it
 				for kb,button in pairs(panel.buttons) do
-					if train.Hidden[button.PropName] then continue end
-					if train.Hidden[button.ID] then  continue end
+					if train.Hidden[button.PropName] or train.HiddenButton[button.PropName] then continue end
+					if train.Hidden[button.ID] or train.HiddenButton[button.ID] then  continue end
 					if button.w and button.h then
 						if panel.aimX >= button.x and panel.aimX <= (button.x + button.w) and
 								panel.aimY >= button.y and panel.aimY <= (button.y + button.h) then
@@ -1208,7 +1216,7 @@ hook.Add("Think","metrostroi-cabin-panel",function()
 		if ttdelay and ttdelay >= 0 then
 			local button = findAimButton(ply)
 			--print(train.ClientProps[button.ID].button)
-			if button and (train.Hidden[button.ID] or train.Hidden[button.PropName]) then return end
+			if button and (train.Hidden[button.ID] or train.Hidden[button.PropName] or train.HiddenButton[button.ID] or train.HiddenButton[button.PropName]) then return end
 			if button != lastAimButton then
 				lastAimButtonChange = CurTime()
 				lastAimButton = button

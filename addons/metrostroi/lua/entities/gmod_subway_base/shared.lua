@@ -471,12 +471,12 @@ end
 -- Sends and get float via NWVars
 ---------------------------------------------------------------------------------------
 function ENT:SetPackedRatio(idx,value)
-	if self._NetData[2][idx] ~= nil and self._NetData[2][idx] == math.Round(value,3) then return end
-	self:SetNWFloat(999-idx,math.Round(value,3))
+	if self._NetData[2][idx] ~= nil and self._NetData[2][idx] == math.floor(value*100) then return end
+	self:SetNWInt(999-idx,math.floor(value*500))
 end
 
 function ENT:GetPackedRatio(idx)
-	return self:GetNWFloat(999-idx)
+	return self:GetNWInt(999-idx)/500
 end
 
 --------------------------------------------------------------------------------

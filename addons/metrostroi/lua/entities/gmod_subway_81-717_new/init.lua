@@ -14,6 +14,7 @@ function ENT:Initialize()
 	-- Set model and initialize
 	self.MaskType = 1
 	self.LampType = 1
+	self.WorkingLights = 6
 	self:SetModel("models/metrostroi_train/81/81-717.mdl")
 	self.BaseClass.Initialize(self)
 	self:SetPos(self:GetPos() + Vector(0,0,140))
@@ -189,8 +190,6 @@ function ENT:Initialize()
 	self.Lights = {
 		-- Headlight glow
 		[1] = { "headlight",		Vector(465,0,-20), Angle(0,0,0), Color(216,161,92), fov = 100 },
-		-- Headlight glow ДУВ
-		[110] = { "headlight",		Vector(465,0,-20), Angle(0,0,0), Color(127,255,255), fov = 100 },
 		
 		-- Head (type 1)
 		[2] = { "glow",				Vector(470,-51,-19), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 1.0 },
@@ -208,9 +207,9 @@ function ENT:Initialize()
 		[10] = { "dynamiclight",	Vector( 440, 0, 40), Angle(0,0,0), Color(255,255,255), brightness = 0.05, distance = 550 },
 		
 		-- Interior
-		[11] = { "dynamiclight",	Vector( 294, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400 },
-		[12] = { "dynamiclight",	Vector(   0, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400 },
-		[13] = { "dynamiclight",	Vector(-294, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400 },
+		[11] = { "dynamiclight",	Vector( 200, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400 , fov=180,farz = 128 },
+		[12] = { "dynamiclight",	Vector(   0, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400, fov=180,farz = 128 },
+		[13] = { "dynamiclight",	Vector(-200, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400 , fov=180,farz = 128 },
 		
 		-- Side lights
 		[14] = { "light",			Vector(-50, 69, 59.5), Angle(0,0,0), Color(255,0,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
@@ -226,22 +225,6 @@ function ENT:Initialize()
 	--self.Lights[22]
 		--self.Lights[26]
 	--self.Lights[23]
-		-- Green RP
-		[22] = { "light",			Vector(461,12.55+1.5-9.6,-0.8), Angle(0,0,0), Color(0,255,0), brightness = 1.0, scale = 0.020 },
-		-- AVU
-		[23] = { "light",			Vector(463.0,12.4+1.5-20.3,1.15), Angle(0,0,0), Color(255,40,0), brightness = 1.0, scale = 0.020 },
-		-- LKVP
-		[24] = { "light",			Vector(463.0,12.3+1.5-23.1,1.15), Angle(0,0,0), math.random() > 0.3 and Color(0,0,255) or math.random() > 0.5 and Color(100,255,100) or Color(255,160,0), brightness = 1.0, scale = 0.020 },
-		-- Pneumatic brake
-		[25] = { "light",			Vector(460,-26.5,-0.3), Angle(0,0,0), Color(255,160,0), brightness = 1.0, scale = 0.020 },
-		-- Cabin heating
-		[26] = { "light",			Vector(460,-21.5,-0.3), Angle(0,0,0), Color(255,160,0), brightness = 1.0, scale = 0.020 },
-		-- Door left open (#1)
-		[27] = { "light",			Vector(459.3,4.4,-2.9), Angle(0,0,0), Color(255,160,0), brightness = 1.0, scale = 0.024 },
-		-- Door left open (#2)
-		[28] = { "light",			Vector(459.3,10.8,-2.9), Angle(0,0,0), Color(255,160,0), brightness = 1.0, scale = 0.024 },
-		-- Door right open 
-		[29] = { "light",			Vector(460.1,-24.0,-0.25), Angle(0,0,0), Color(255,160,0), brightness = 1.0, scale = 0.024 },
 
 		-- Cabin texture light
 		[30] = { "headlight", 		Vector(412.0,15,50), Angle(60,-50,0), Color(176,161,132), farz = 128, nearz = 1, shadows = 0, brightness = 0.20, fov = 140 },
@@ -298,6 +281,17 @@ function ENT:Initialize()
 		[60+7] = { "headlight", Vector(270-230*1,0,20), Angle(-90,0,0), Color(255,255,255), farz = 120, nearz = 1, shadows = 0, brightness = 0.1, fov = 170 },
 		[60+8] = { "headlight", Vector(270-230*2,0,20), Angle(-90,0,0), Color(255,255,255), farz = 120, nearz = 1, shadows = 0, brightness = 0.1, fov = 170 },
 		[60+9] = { "headlight", Vector(270-230*3,0,20), Angle(-90,0,0), Color(255,255,255), farz = 120, nearz = 1, shadows = 0, brightness = 0.1, fov = 170 },
+		
+		--[[2-2
+		[97] = { "headlight",		Vector(465,-45,-19), Angle(0,-20,0), Color(216,161,92), fov = 70 },
+		[98] = { "headlight",		Vector(465,45,-19), Angle(0,20,0), Color(216,161,92), fov = 70 },
+		1-4-1
+		2-2-2
+		1-3-1
+		[97] = { "headlight",		Vector(460,-45,-10), Angle(-5,-20,0), Color(216,161,92), fov = 70 },
+		[98] = { "headlight",		Vector(465,0,-10), Angle(-5,0,0), Color(216,161,92), fov = 70 },
+		[99] = { "headlight",		Vector(460,45,-10), Angle(-5,20,0), Color(216,161,92), fov = 70 },
+		]]
 	}
 	for i = 1,23 do
 		self.Lights[69+i] = { "light", Vector(-470 + 35.8*i, 0, 70), Angle(180,0,0), Color(255,220,180), brightness = 1, scale = 0.75}
@@ -463,7 +457,7 @@ function ENT:Think()
 						math.min(1,self.Panel["HeadLights2"])*0.25 + 
 						math.min(1,self.Panel["HeadLights3"])*0.25)
 						or 0
-	self:SetLightPower(1,self.Panel["HeadLights3"] and (self.Panel["HeadLights3"] > 0.5) and (self.L_4.Value > 0.5),brightness)
+	self:SetLightPower(1,self.Panel["HeadLights3"] and (self.Panel["HeadLights3"] > 0.5) and (self.L_4.Value > 0.5),brightness*self.WorkingLights/6)
 	
 	if self.LED and self.Lights[1][4] ~= Color(127,255,255) then
 		for i = 1,7 do self:SetLightPower(i,false) end
@@ -491,15 +485,17 @@ function ENT:Think()
 		 self.Lights[5][2] = Vector(477, 6, 60)
 		 self.Lights[6][2] = Vector(477, 40, -19)
 		 self.Lights[7][2] = Vector(477, 51,-19)
+		 self.WorkingLights = 6
 	end
-	if self.MaskType == 1 and self.Lights[3][2] ~= Vector(472,-40, -19) then
+	if self.MaskType == 1 and self.Lights[3][2] ~= Vector(476,-40, -19) then
 		for i = 1,7 do self:SetLightPower(i,false) end
-		 self.Lights[2][2] = Vector(470,-51,-19)
-		 self.Lights[3][2] = Vector(472,-40, -19)
+		 self.Lights[2][2] = Vector(474,-51,-19)
+		 self.Lights[3][2] = Vector(476,-40, -19)
 		 self.Lights[4][2] = Vector(0,0, 0)
 		 self.Lights[5][2] = Vector(0, 0, 0)
-		 self.Lights[6][2] = Vector(472, 41, -19)
-		 self.Lights[7][2] = Vector(470, 53,-19)
+		 self.Lights[6][2] = Vector(476, 41, -19)
+		 self.Lights[7][2] = Vector(474, 53,-19)
+		 self.WorkingLights = 4
 	end
 	if (self.MaskType == 3 or self.MaskType == 5) and self.Lights[4][2] ~= Vector(477,-7, -19) then
 		for i = 1,7 do self:SetLightPower(i,false) end
@@ -509,6 +505,7 @@ function ENT:Think()
 		 self.Lights[5][2] = Vector(477, 7, -19)
 		 self.Lights[6][2] = Vector(477, 18,-19)
 		 self.Lights[7][2] = Vector(477, 51,-19)
+		 self.WorkingLights = 6
 	end
 	if self.MaskType == 4 and self.Lights[4][2] ~= Vector(477,1, -19) then
 		for i = 1,7 do self:SetLightPower(i,false) end
@@ -518,15 +515,17 @@ function ENT:Think()
 		 self.Lights[5][2] = Vector(0, 0, -0)
 		 self.Lights[6][2] = Vector(477, 12,-19)
 		 self.Lights[7][2] = Vector(477, 51,-19)
+		 self.WorkingLights = 5
 	end
-	if self.MaskType == 6 and self.Lights[3][2] ~= Vector(472,-45, -19) then
+	if self.MaskType == 6 and self.Lights[3][2] ~= Vector(476,-45, -19) then
 		for i = 1,7 do self:SetLightPower(i,false) end
 		 self.Lights[2][2] = Vector(0,0,0)
-		 self.Lights[3][2] = Vector(472,-45, -19)
+		 self.Lights[3][2] = Vector(476,-45, -19)
 		 self.Lights[4][2] = Vector(0,0, 0)
 		 self.Lights[5][2] = Vector(0, 0, 0)
-		 self.Lights[6][2] = Vector(472, 48, -19)
+		 self.Lights[6][2] = Vector(476, 48, -19)
 		 self.Lights[7][2] = Vector(0, 0,0)
+		 self.WorkingLights = 2
 		for i = 1,7 do self:SetLightPower(i,true) end
 	end
 	if self.Panel["HeadLights1"] and self.Panel["HeadLights2"] then
@@ -584,7 +583,7 @@ function ENT:Think()
 				self:SetLightPower(3, (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
 				self:SetLightPower(4, false)
 				self:SetLightPower(5, false)
-				self:SetLightPower(6, (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
+				self:SetLightPower(6, (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
 				self:SetLightPower(7, false)
 		end
 	end
@@ -663,7 +662,7 @@ function ENT:Think()
 	if not self.LightsActive then self.LightsActive = 0 end
 	if (lightsActive1 and not lightsActive2) and self.LightsActive ~= 1 or lightsActive2 and self.LightsActive ~= 2 or (not lightsActive1 and not lightsActive2) and self.LightsActive ~= 0 or self.LightsReload then
 		self:SetLightPower(11, lightsActive1, 0.2*self:ReadTrainWire(34) + 0.8*self:ReadTrainWire(33))
-		self:SetLightPower(12, lightsActive2, 0.2*self:ReadTrainWire(34) + 0.8*self:ReadTrainWire(33))
+		self:SetLightPower(12, lightsActive1, 0.2*self:ReadTrainWire(34) + 0.8*self:ReadTrainWire(33))
 		self:SetLightPower(13, lightsActive1, 0.2*self:ReadTrainWire(34) + 0.8*self:ReadTrainWire(33))
 		self.LightsReload = nil
 		local Ip = self.LampType == 1 and 5 or 3
@@ -690,6 +689,9 @@ function ENT:Think()
 	-- Door button lights
 	self:SetPackedBool("Left",(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
 	self:SetPackedBool("Right",(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 1) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
+	self:SetPackedBool("KDLK",self.KDLK.Value > 0)
+	self:SetPackedBool("VDLK",self.VDLK.Value > 0)
+	self:SetPackedBool("KDPK",self.KDPK.Value > 0)
 	--self:SetLightPower(27,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
 	--self:SetLightPower(28,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
 	--self:SetLightPower(29,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 1) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))

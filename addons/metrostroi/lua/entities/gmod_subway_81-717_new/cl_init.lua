@@ -78,7 +78,7 @@ ENT.ButtonMap["Front"] = {
 		{ID = "L_4Toggle",x=53, y=200, radius=20, tooltip="Выключатель фар\nHeadlights toggle"},
 		{ID = "CabinHeatLight",x=90, y=145, radius=20, tooltip="Контроль печи\nCabin heater active"},
 		{ID = "KDPSet",x=130, y=145, radius=32, tooltip="КДП: Кнопка правых дверей\nKDP: Right doors open"},
-		{ID = "VDLKToggle",			x=110, y=165, w=40,h=20, tooltip="Крышечка"},
+		{ID = "KDPKToggle",			x=110, y=165, w=40,h=20, tooltip="Крышечка"},
 		
 		{ID = "PneumoLight",x=170, y=145, radius=20, tooltip="Контроль пневмотормоза\nPneumatic brake control"},
 	}
@@ -1729,6 +1729,9 @@ function ENT:Think()
 	self:Animate("KDLK",				self:GetPackedBool("KDLK") and 1 or 0, 	0,0.57, 4, false)
 	self:Animate("VDLK",				self:GetPackedBool("VDLK") and 1 or 0, 	0,0.57, 4, false)
 	self:Animate("KDPK",				self:GetPackedBool("KDPK") and 1 or 0, 	0,0.57, 4, false)
+	self:HideButton("KDLSet",self:GetPackedBool("KDLK"))
+	self:HideButton("VDLSet",self:GetPackedBool("VDLK"))
+	self:HideButton("KDPSet",self:GetPackedBool("KDPK"))
 	
 	
 	local An = self:Animate("VDLr",self:GetPackedBool("Left") and 1 or 0,0,1,10,false)
@@ -1865,50 +1868,6 @@ function ENT:Think()
 	self:ShowHide("gv_wrench",	CurTime() < self.ResetTime)
 	self.TextureTime = self.TextureTime or CurTime()
 	if (CurTime() - self.TextureTime) > 5.0 and self:GetNWString("texture",nil) then
-		--print(1)
-	--Vector(407.3,-10.5,47)+ps
-	--Vector(417.3,-57.5,47.5)
-	--[[
-		if not self.ClientProps["a0"] or self.ClientProps["a0"].pos ~= self.AutoPos[self.Breakers and 2 or 1] then
-			print(1)
-			self:RemoveCSEnts()
-			self.Breakers = self:GetNWBool("Breakers")
-
-			self:SetAutobreakersPos(self:GetNWBool("Breakers") and Vector(12,-47,0.5) or Vector())
-		
-			self.ButtonMap["Battery"] = self.BatteryMap[self.Breakers and 2 or 1]
-			
-			self:ClientPropForButton("battery",{
-				panel = "Battery",
-				button = "VBToggle",	
-				model = "models/metrostroi/81-717/rc.mdl",
-			})
-			self:ClientPropForButton("RC1",{
-				panel = "Battery",
-				button = "RC1Toggle",	
-				model = "models/metrostroi/81-717/rc.mdl",
-			})
-
-			self:ClientPropForButton("UOS",{
-				panel = "Battery",
-				button = "UOSToggle",	
-				model = "models/metrostroi/81-717/rc.mdl",
-			})
-
-			self:ClientPropForButton("BPS",{
-				panel = "Battery",
-				button = "BPSToggle",	
-				model = "models/metrostroi/81-717/rc.mdl",
-			})
-			--PrintTable(self.ButtonMap["Battery"])
-			--self:ReloadCLPropPosAng("battery","Battery","VBToggle")
-			--self:ReloadCLPropPosAng("RC1","Battery","RC1Toggle")
-			--self:ReloadCLPropPosAng("UOS","Battery","UOSToggle")
-			--self:ReloadCLPropPosAng("BPS","Battery","BPSToggle")
-			self:CreateCSEnts()
-			self.Reloaded = false
-		end
-		]]
 		self.TextureTime = CurTime()
 		for tex,ent in pairs(self.ClientEnts) do
 			if tex:find("door") then
@@ -1930,19 +1889,8 @@ function ENT:Think()
 		for k=0,1 do
 			local n_l = "door"..i.."x"..k.."a"
 			local n_r = "door"..i.."x"..k.."b"
-			--local animation = self:Animate(n_l,self:GetPackedBool(21+(1-k)*4) and 1 or 0,0,1, 0.8 + (-0.2+0.4*math.random()),0)
-			--local offset_l = Vector(math.abs(31*animation),0,0)
-			--local offset_r = Vector(math.abs(32*animation),0,0)
 			self:Animate(n_l,self:GetPackedBool(21+(1-k)*4) and 1 or 0,0,1, 0.8 + (-0.2+0.4*math.random()),0)
 			self:Animate(n_r,self:GetPackedBool(21+(1-k)*4) and 1 or 0,0,1, 0.8 + (-0.2+0.4*math.random()),0)
-			if self.ClientEnts[n_l] then
-				
-				--self.ClientEnts[n_l]:SetSkin(self:GetSkin())
-			end
-			if self.ClientEnts[n_r] then
-				--self.ClientEnts[n_r]:SetPos(self:LocalToWorld(self.ClientProps[n_r].pos - (1.0 - 2.0*k)*offset_r))
-				--self.ClientEnts[n_r]:SetSkin(self:GetSkin())
-			end
 		end
 	end
 	--if self.ClientEnts["door1"] then self.ClientEnts["door1"]:SetSkin(self:GetSkin()) end
@@ -2037,12 +1985,10 @@ function ENT:Draw()
 	self.BaseClass.Draw(self)
 end
 ENT.ParkingBrakeMaterial = Material( "models/metrostroi_train/parking_brake.png", "vertexlitgeneric unlitgeneric mips" )
-function ENT:DrawPost()
+function ENT:DrawPost(special)
 	--local dc = render.GetLightColor(self:LocalToWorld(Vector(460.0,0.0,5.0)))
 	self:DrawOnPanel("InfoTable",function()
 	end)
-	self:DrawOnPanel("PAKSD1",function(...) self["PA-KSD"]:PAKSD1(self,...) end)
-	self:DrawOnPanel("PAKSD2",function(...) self["PA-KSD"]:PAKSD2(self,...) end)
 
 	if self.InfoTableTimeout and (CurTime() < self.InfoTableTimeout) then
 		self:DrawOnPanel("InfoTableSelect",function()
@@ -2074,7 +2020,9 @@ function ENT:DrawPost()
 	end)
 
 	local distance = self:GetPos():Distance(LocalPlayer():GetPos())
-	if distance > 1024 then return end
+	if distance > 1024 or special then return end
+	self:DrawOnPanel("PAKSD1",function(...) self["PA-KSD"]:PAKSD1(self,...) end)
+	self:DrawOnPanel("PAKSD2",function(...) self["PA-KSD"]:PAKSD2(self,...) end)
 	self.ButtonMap["ARS"] = self.ARSMap[math.max(1,math.min(3,self:GetNWInt("ARSType",1)))]
 	self:DrawOnPanel("ARS",function()
 		if self:GetNWInt("ARSType",1) ~= 2 then return end

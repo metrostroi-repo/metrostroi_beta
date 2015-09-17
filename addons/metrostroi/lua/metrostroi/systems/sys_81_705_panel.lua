@@ -92,6 +92,9 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("A75","Relay","VA21-29",{ normally_closed = false})
 	self.Train:LoadSystem("A80","Relay","VA21-29")
 	self.Train:LoadSystem("VU","Relay","VA21-29")
+	self.Train:LoadSystem("KDLK","Relay","Switch", { normally_closed = true })
+	self.Train:LoadSystem("VDLK","Relay","Switch", { normally_closed = true })
+	self.Train:LoadSystem("KDPK","Relay","Switch", { normally_closed = true })
 	
 	-- 81-717 special
 	self.Train:LoadSystem("BPSNon","Relay","Switch")

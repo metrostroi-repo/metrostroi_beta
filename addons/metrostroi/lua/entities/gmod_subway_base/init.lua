@@ -1464,20 +1464,24 @@ function ENT:Think()
 			--self.rep = 0
 			--self.rep = nil
 			if not self.rep or self.rep <= 0 then
-				if math.random() < 0.4 then
+				if math.random() < 0.3 and self.Last ~= 1 then
 					--print("25")
 					self.TargetDist = 25
-					self.rep = math.floor(math.random(1,3))
-				elseif math.random() < 0.4 then
+					self.Last = 1
+					self.rep = math.floor(math.random(1,2))
+				elseif math.random() < 0.3 and self.Last ~= 2 then
 					self.TargetDist = 50
 					--print("50")
-					self.rep = math.floor(math.random(1,4))
-				elseif math.random() < 0.5 then
+					self.Last = 2
+					self.rep = math.floor(math.random(1,2))
+				elseif math.random() < 0.4 and self.Last ~= 3 then
 					--print("12")
+					self.Last = 3
 					self.TargetDist = 12.5
 					self.rep = math.floor(math.random(1,3))
-				else
+				elseif self.Last ~= 4 then
 					self.TargetDist = 75
+					self.Last = 4
 					--print("100")
 					self.rep = math.floor(math.random(1,3))
 				end

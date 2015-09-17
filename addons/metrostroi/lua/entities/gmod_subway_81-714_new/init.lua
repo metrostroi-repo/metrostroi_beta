@@ -83,6 +83,7 @@ function ENT:Initialize()
 	
 	
 	self.InteractionZones = {
+		--[[
 		{	Pos = Vector(460,-26,-47),
 			Radius = 16,
 			ID = "FrontBrakeLineIsolationToggle" },
@@ -107,6 +108,7 @@ function ENT:Initialize()
 		{	Pos = Vector(-180,61,-53),
 			Radius = 20,
 			ID = "AirDistributorDisconnectToggle" },
+		]]
 		{	Pos = Vector(-475, -25, 20),
 			Radius = 32,
 			ID = "1:RearDoor" },
@@ -236,6 +238,7 @@ function ENT:Think()
 		self.LightsReload = true
 	end
 
+
 	if (self.PassTexture ~= self.OldTexture or self.Adverts ~= self.OldAdverts) then
 		for k,v in pairs(self:GetMaterials()) do
 			if v == "models/metrostroi_train/81/int02" then
@@ -255,13 +258,16 @@ function ENT:Think()
 	end
 	self.TextureTime = self.TextureTime or CurTime()
 	if (CurTime() - self.TextureTime) > 1.0 then
-		if self.Texture or self.PassTexture then
+		self.TextureTime = CurTime()
+		if self.Texture or self.PassTexture or self.SignsList	 then
 			for k,v in pairs(self:GetMaterials()) do
 				if v == "models/metrostroi_train/81/b01a" then
 					if self.Texture then self:SetSubMaterial(k-1,self.Texture) end
 				elseif v == "models/metrostroi_train/81/int01" then
 					if self.PassTexture then self:SetSubMaterial(k-1,self.PassTexture) end
-				else
+					--print(self.PassTexture)
+					--if self.SignsList then print(self.SignsList[self.SignsIndex][1]) end
+				elseif v ~= "models/metrostroi_train/81/int02" then
 					self:SetSubMaterial(k-1,"")
 				end
 			end

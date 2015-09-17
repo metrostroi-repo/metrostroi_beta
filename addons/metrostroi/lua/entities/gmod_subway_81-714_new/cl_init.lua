@@ -4,12 +4,19 @@
 --------------------------------------------------------------------------------
 ENT.ClientProps = {}
 ENT.ButtonMap = {}
+
+-- Temporary panels (possibly temporary)
 ENT.ButtonMap["FrontPneumatic"] = {
 	pos = Vector(475.0,-45.0,-47.0),
 	ang = Angle(0,90,90),
-	width = 900,
+	width = 1100,
 	height = 100,
 	scale = 0.1,
+	buttons = {
+		{ID = "FrontBrakeLineIsolationToggle",x=182, y=57, radius=32, tooltip="Концевой кран тормозной магистрали"},
+		{ID = "FrontTrainLineIsolationToggle",x=710, y=60, radius=32, tooltip="Концевой кран напорной магистрали"},
+		{ID = "ParkingBrakeToggle",x=1000, y=60, radius=32, tooltip="Стояночный тормоз"},
+	}
 }
 ENT.ButtonMap["RearPneumatic"] = {
 	pos = Vector(-482.0,45.0,-45.0),
@@ -17,13 +24,30 @@ ENT.ButtonMap["RearPneumatic"] = {
 	width = 900,
 	height = 100,
 	scale = 0.1,
+	buttons = {
+		{ID = "RearBrakeLineIsolationToggle",x=710, y=60, radius=32, tooltip="Концевой кран тормозной магистрали"},
+		{ID = "RearTrainLineIsolationToggle",x=182, y=57, radius=32, tooltip="Концевой кран напорной магистрали"},
+	}
+}
+ENT.ButtonMap["GV"] = {
+	pos = Vector(131,68.6,-52),
+	ang = Angle(0,180,90),
+	width = 170,
+	height = 150,
+	scale = 0.1,
+	buttons = {
+		{ID = "GVToggle",x=0, y=0, w= 170,h = 150, tooltip="Главный выключатель"},
+	}
 }
 ENT.ButtonMap["AirDistributor"] = {
 	pos = Vector(-175,68.6,-50),
 	ang = Angle(0,180,90),
-	width = 80,
-	height = 40,
+	width = 170,
+	height = 80,
 	scale = 0.1,
+	buttons = {
+		{ID = "AirDistributorDisconnectToggle",x=0, y=0, w= 170,h = 80, tooltip="Выключение воздухораспределителя"},
+	}
 }
 
 -- Battery panel
@@ -371,8 +395,11 @@ function ENT:Think()
 	self:Animate("volt1", 			self:GetPackedRatio(10),			0.38,0.64)
 	
 	self:ShowHide("pmp_wrench",		self:GetPackedBool(0))
-	self:ShowHide("brake013",		self:GetPackedBool(22))
-	self:ShowHide("brake334",		not self:GetPackedBool(22))
+	self:HidePanel("AV_Left", not self:GetPackedBool(0))
+	self:HidePanel("AV_Right", not self:GetPackedBool(0))
+	self:HidePanel("Main", not self:GetPackedBool(0))
+	self:ShowHide("brake013",		self:GetPackedBool(22) and self:GetPackedBool(0))
+	self:ShowHide("brake334",		not self:GetPackedBool(22) and self:GetPackedBool(0))
 	
 	self:Animate("brake_line",		self:GetPackedRatio(4),				0.16, 0.84,  256,2)--,,0.01)
 	self:Animate("train_line",		self:GetPackedRatio(5),				0.16, 0.84,  256,2)--,,0.01)
