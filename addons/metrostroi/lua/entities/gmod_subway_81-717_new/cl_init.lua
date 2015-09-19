@@ -77,7 +77,7 @@ ENT.ButtonMap["Front"] = {
 		
 		{ID = "L_4Toggle",x=53, y=200, radius=20, tooltip="Выключатель фар\nHeadlights toggle"},
 		{ID = "CabinHeatLight",x=90, y=145, radius=20, tooltip="Контроль печи\nCabin heater active"},
-		{ID = "KDPSet",x=130, y=145, radius=32, tooltip="КДП: Кнопка правых дверей\nKDP: Right doors open"},
+		{ID = "KDPSet",x=130, y=145, radius=20, tooltip="КДП: Кнопка правых дверей\nKDP: Right doors open"},
 		{ID = "KDPKToggle",			x=110, y=165, w=40,h=20, tooltip="Крышечка"},
 		
 		{ID = "PneumoLight",x=170, y=145, radius=20, tooltip="Контроль пневмотормоза\nPneumatic brake control"},
@@ -895,6 +895,12 @@ Metrostroi.ClientPropForButton("KDL_light",{
 	ignorepanel = true,
 	skin = 1,
 })
+Metrostroi.ClientPropForButton("KDLK",{
+	panel = "Main",
+	button = "KDLKToggle",
+	model = "models/metrostroi_train/81/krishka.mdl",
+	ang = 0,
+})
 Metrostroi.ClientPropForButton("KDP",{
 	panel = "Front",
 	button = "KDPSet",
@@ -907,6 +913,12 @@ Metrostroi.ClientPropForButton("KDP_light",{
 	model = "models/metrostroi_train/81/button_light.mdl",
 	ignorepanel = true,
 	skin = 1,
+})
+Metrostroi.ClientPropForButton("KDPK",{
+	panel = "Front",
+	button = "KDPKToggle",
+	model = "models/metrostroi_train/81/krishka.mdl",
+	ang = 0,
 })
 Metrostroi.ClientPropForButton("VZ1",{
 	panel = "Main",
@@ -939,6 +951,12 @@ Metrostroi.ClientPropForButton("VDL_light",{
 	ignorepanel = true,
 	skin = 1,
 	z=2
+})
+Metrostroi.ClientPropForButton("VDLK",{
+	panel = "Main",
+	button = "VDLKToggle",
+	model = "models/metrostroi_train/81/krishka.mdl",
+	ang = 0,
 })
 Metrostroi.ClientPropForButton("VDL",{
 	panel = "HelperPanel",
@@ -1726,9 +1744,9 @@ function ENT:Think()
 	self:Animate("VDL_Main",				self:GetPackedBool(14) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("VDL_light","VDL_Main")
 	self:Animate("KDL",				self:GetPackedBool(15) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDL_light","KDL")
 	self:Animate("KDP",				self:GetPackedBool(16) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDP_light","KDP")
-	self:Animate("KDLK",				self:GetPackedBool("KDLK") and 1 or 0, 	0,0.57, 4, false)
-	self:Animate("VDLK",				self:GetPackedBool("VDLK") and 1 or 0, 	0,0.57, 4, false)
-	self:Animate("KDPK",				self:GetPackedBool("KDPK") and 1 or 0, 	0,0.57, 4, false)
+	self:Animate("KDLK",				self:GetPackedBool("KDLK") and 1 or 0, 	0.3,0.69, 4, false)
+	self:Animate("VDLK",				self:GetPackedBool("VDLK") and 1 or 0, 	0.3,0.69, 4, false)
+	self:Animate("KDPK",				self:GetPackedBool("KDPK") and 1 or 0, 	0.31,0.69, 4, false)
 	self:HideButton("KDLSet",self:GetPackedBool("KDLK"))
 	self:HideButton("VDLSet",self:GetPackedBool("VDLK"))
 	self:HideButton("KDPSet",self:GetPackedBool("KDPK"))

@@ -145,7 +145,7 @@ function Metrostroi.PositionFromPanel(panel,button_id_or_vec,z)
 				break
 			end
 		end
-		vec = Vector(button.x,button.y,z or 0)
+		vec = Vector(button.x + (button.radius and 0 or (button.w or 0)/2),button.y + (button.radius and 0 or (button.h or 0)/2),z or 0)
 	else
 		vec = button_id_or_vec
 	end

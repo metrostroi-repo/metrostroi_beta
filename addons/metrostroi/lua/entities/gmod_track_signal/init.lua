@@ -444,6 +444,8 @@ function ENT:Think()
 				self.Sprites = nil
 			end
 		end
+		self:SetNWString("Signal","")
+		self.AutoEnabled = not self.ARSOnly and Metrostroi.Voltage <= 50
 		return
 	end
 	--[[

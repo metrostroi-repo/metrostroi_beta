@@ -83,7 +83,7 @@ function TRAIN_SYSTEM:Think()
 	Train.NR:TriggerInput("Open", Train.Electric.Aux750V < 150) -- 120 - 190 V
 	local del = 1
 	if self.Slope then
-		del = 1.5
+		del = 2
 	end
 	-- Overload relays operation
 	Train.RP1_3:TriggerInput("Set",math.abs(Train.Electric.I13/del))
