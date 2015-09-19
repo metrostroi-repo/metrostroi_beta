@@ -73,6 +73,7 @@ ENT.ButtonMap["Front"] = {
 		{ID = "VADToggle",x=127, y=200, radius=20, tooltip="ВАД: Включение аварийного закрытия дверей (неисправность реле контроля дверей)\nVAD: Emergency door close override (failure of KD relay)"},		
 		--{ID = "RezMKSet",x=53,  y=98, radius=20, tooltip="Резервное включение мотор-компрессора\nEmergency motor-compressor startup"},
 		{ID = "KAHSet",x=53,  y=98, radius=20, tooltip="КАХ: Кнопка аварийного хода\nEmergency drive button"},
+		{ID = "KAHKToggle",			x=33, y=108, w=40,h=20, tooltip="Крышечка"},
 		{ID = "KRPSet",x=53, y=33, radius=20, tooltip="КРП: Кнопка резервного пуска\nKRP: Emergency start button"},
 		
 		{ID = "L_4Toggle",x=53, y=200, radius=20, tooltip="Выключатель фар\nHeadlights toggle"},
@@ -839,6 +840,13 @@ Metrostroi.ClientPropForButton("KAH",{
 	model = "models/metrostroi_train/81/button2.mdl",
 	skin = 1,
 	z = 3,
+})
+Metrostroi.ClientPropForButton("KAHK",{
+	panel = "Front",
+	button = "KAHKToggle",
+	model = "models/metrostroi_train/81/krishka.mdl",
+	ang = 0,
+	z = -2
 })
 Metrostroi.ClientPropForButton("VAH",{
 	panel = "Front",
@@ -1735,9 +1743,11 @@ function ENT:Think()
 	self:Animate("KDLK",				self:GetPackedBool("KDLK") and 1 or 0, 	0.32,0.67, 4, false)
 	self:Animate("VDLK",				self:GetPackedBool("VDLK") and 1 or 0, 	0.32,0.67, 4, false)
 	self:Animate("KDPK",				self:GetPackedBool("KDPK") and 1 or VAD*0.17, 	0.34,0.69, 4, false)
+	self:Animate("KAHK",				self:GetPackedBool("KAHK") and 1 or 0, 	0.32,0.68, 4, false)
 	self:HideButton("KDLSet",self:GetPackedBool("KDLK"))
 	self:HideButton("VDLSet",self:GetPackedBool("VDLK"))
 	self:HideButton("KDPSet",self:GetPackedBool("KDPK"))
+	self:HideButton("KAHSet",self:GetPackedBool("KAHK"))
 	
 	
 	local An = self:Animate("VDLr",self:GetPackedBool("Left") and 1 or 0,0,1,10,false)
