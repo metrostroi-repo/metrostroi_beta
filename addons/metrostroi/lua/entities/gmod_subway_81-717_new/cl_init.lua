@@ -900,6 +900,7 @@ Metrostroi.ClientPropForButton("KDLK",{
 	button = "KDLKToggle",
 	model = "models/metrostroi_train/81/krishka.mdl",
 	ang = 0,
+	z = -6
 })
 Metrostroi.ClientPropForButton("KDP",{
 	panel = "Front",
@@ -919,6 +920,7 @@ Metrostroi.ClientPropForButton("KDPK",{
 	button = "KDPKToggle",
 	model = "models/metrostroi_train/81/krishka.mdl",
 	ang = 0,
+	z = -2
 })
 Metrostroi.ClientPropForButton("VZ1",{
 	panel = "Main",
@@ -957,6 +959,7 @@ Metrostroi.ClientPropForButton("VDLK",{
 	button = "VDLKToggle",
 	model = "models/metrostroi_train/81/krishka.mdl",
 	ang = 0,
+	z = -5
 })
 Metrostroi.ClientPropForButton("VDL",{
 	panel = "HelperPanel",
@@ -1373,21 +1376,6 @@ for x=0,11 do
 	end
 end
 
-ENT.ClientProps["KDLK"] ={	
-	model = "models/metrostroi_train/81/krishka.mdl",
-	pos = Vector(458,12.55+1.35-3,-3.3),
-	ang = Angle(180,90,70)
-}
-ENT.ClientProps["VDLK"] ={	
-	model = "models/metrostroi_train/81/krishka.mdl",
-	pos = Vector(458,12.55+1.35-9.5,-3.3),
-	ang = Angle(180,90,70)
-}
-ENT.ClientProps["KDPK"] ={	
-	model = "models/metrostroi_train/81/krishka.mdl",
-	pos = Vector(459,-24,-1.0),
-	ang = Angle(180,90,80)
-}
 ENT.ClientProps["L_5"] ={	
 	model = "models/metrostroi/81-717/circuit_breaker.mdl",
 	pos = Vector(407.3,-10.5+1*3.26,47-3*10.6),
@@ -1736,7 +1724,7 @@ function ENT:Think()
 	self:Animate("RezMK",			self:GetPackedBool(8) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VMK",				self:GetPackedBool(9) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VAH",				self:GetPackedBool(10) and 1 or 0, 	0,1, 16, false)
-	self:Animate("VAD",				self:GetPackedBool(11) and 1 or 0, 	0,1, 16, false)
+	local VAD = self:Animate("VAD",				self:GetPackedBool(11) and 1 or 0, 	0,1, 16, false)
 	local A = self:Animate("VUD1",			1-(self:GetPackedBool(12) and 1 or 0), 	0,1, 16, false)
 	self:Animate("VUD2",			self:GetPackedBool(13) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VDL",				self:GetPackedBool(14) and 1 or 0, 	0,1, 16, false)
@@ -1744,9 +1732,9 @@ function ENT:Think()
 	self:Animate("VDL_Main",				self:GetPackedBool(14) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("VDL_light","VDL_Main")
 	self:Animate("KDL",				self:GetPackedBool(15) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDL_light","KDL")
 	self:Animate("KDP",				self:GetPackedBool(16) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDP_light","KDP")
-	self:Animate("KDLK",				self:GetPackedBool("KDLK") and 1 or 0, 	0.3,0.69, 4, false)
-	self:Animate("VDLK",				self:GetPackedBool("VDLK") and 1 or 0, 	0.3,0.69, 4, false)
-	self:Animate("KDPK",				self:GetPackedBool("KDPK") and 1 or 0, 	0.31,0.69, 4, false)
+	self:Animate("KDLK",				self:GetPackedBool("KDLK") and 1 or 0, 	0.32,0.67, 4, false)
+	self:Animate("VDLK",				self:GetPackedBool("VDLK") and 1 or 0, 	0.32,0.67, 4, false)
+	self:Animate("KDPK",				self:GetPackedBool("KDPK") and 1 or VAD*0.18, 	0.34,0.69, 4, false)
 	self:HideButton("KDLSet",self:GetPackedBool("KDLK"))
 	self:HideButton("VDLSet",self:GetPackedBool("VDLK"))
 	self:HideButton("KDPSet",self:GetPackedBool("KDPK"))
