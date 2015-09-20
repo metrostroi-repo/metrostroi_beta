@@ -50,7 +50,9 @@ ENT.ButtonMap["Main"] = {
 		{ID = "ALSToggle",		x=268, y=130, radius=20, tooltip="АЛС: Включение системы автоматической локомотивной сигнализации\nALS: Automatic locomotive signalling"},
 		
 		{ID = "OtklAVUToggle",	x=283, y=183, radius=20, tooltip="Отключение автоматического выключения управления (неисправность АВУ)\nTurn off automatic control disable relay (failure of AVU)"},
+		{ID = "OtklAVUP",x=283, y=210, radius=20, tooltip="Пломба крышки ОтклАВУ\nOtklAVU plomb"},
 		{ID = "PS2",			x=238, y=183, radius=20, tooltip="(placeholder) Emergency brake toggle"},
+		{ID = "PS2P",x=238, y=210, radius=20, tooltip="(placeholder) Пломба крышки Торможение АТ\nEmergency brake toggle plomb"},
 		{ID = "L_1Toggle",		x=321, y=183, radius=20, tooltip="Освещение салона\nWagon lighting"},
 		{ID = "L_2Toggle",		x=357, y=183, radius=20, tooltip="Освещение кабины\nCabin lighting"},
 		{ID = "L_3Toggle",		x=399, y=183, radius=20, tooltip="Освещение пульта\nPanel lighting"},
@@ -70,9 +72,12 @@ ENT.ButtonMap["Front"] = {
 	buttons = {
 		{ID = "VUSToggle",x=90, y=200, radius=20, tooltip="ВУС: Выключатель усиленого света ходовых фар\nVUS: Head lights bright/dim"},
 		{ID = "VAHToggle",x=170, y=200, radius=20, tooltip="ВАХ: Включение аварийного хода (неисправность реле педали безопасности)\nVAH: Emergency driving mode (failure of RPB relay)"},
+		{ID = "VAHP",x=170, y=227, radius=20, tooltip="Пломба кнопки ВАХ\nVAH plomb"},
 		{ID = "VADToggle",x=127, y=200, radius=20, tooltip="ВАД: Включение аварийного закрытия дверей (неисправность реле контроля дверей)\nVAD: Emergency door close override (failure of KD relay)"},		
+		{ID = "VADP",x=127, y=227, radius=20, tooltip="Пломба кнопки ВАД\nVAD plomb"},
 		--{ID = "RezMKSet",x=53,  y=98, radius=20, tooltip="Резервное включение мотор-компрессора\nEmergency motor-compressor startup"},
 		{ID = "KAHSet",x=53,  y=98, radius=20, tooltip="КАХ: Кнопка аварийного хода\nEmergency drive button"},
+		{ID = "KAHP",x=37, y=68, radius=20, tooltip="Пломба крышки КАХ\nKAH plomb"},
 		{ID = "KAHKToggle",			x=33, y=108, w=40,h=20, tooltip="Крышечка"},
 		{ID = "KRPSet",x=53, y=33, radius=20, tooltip="КРП: Кнопка резервного пуска\nKRP: Emergency start button"},
 		
@@ -841,6 +846,12 @@ Metrostroi.ClientPropForButton("KAH",{
 	skin = 1,
 	z = 3,
 })
+Metrostroi.ClientPropForButton("KAHP",{
+	panel = "Front",
+	button = "KAHP",
+	model = "models/metrostroi_train/81/plomb_b.mdl",
+	ang = 110,
+})
 Metrostroi.ClientPropForButton("KAHK",{
 	panel = "Front",
 	button = "KAHKToggle",
@@ -848,15 +859,31 @@ Metrostroi.ClientPropForButton("KAHK",{
 	ang = 0,
 	z = -2
 })
+Metrostroi.ClientPropForButton("KAHP",{
+	panel = "Front",
+	button = "KAHP",
+	model = "models/metrostroi/81-717/plomb_b.mdl",
+})
 Metrostroi.ClientPropForButton("VAH",{
 	panel = "Front",
 	button = "VAHToggle",
 	model = "models/metrostroi/81-717/switch04.mdl",
 })
+Metrostroi.ClientPropForButton("VAHP",{
+	panel = "Front",
+	button = "VAHP",
+	model = "models/metrostroi/81-717/plomb.mdl",
+})
+
 Metrostroi.ClientPropForButton("VAD",{
 	panel = "Front",
 	button = "VADToggle",
 	model = "models/metrostroi/81-717/switch04.mdl",
+})
+Metrostroi.ClientPropForButton("VADP",{
+	panel = "Front",
+	button = "VADP",
+	model = "models/metrostroi/81-717/plomb.mdl",
 })
 Metrostroi.ClientPropForButton("ALS",{
 	panel = "Main",
@@ -872,6 +899,11 @@ Metrostroi.ClientPropForButton("OtklAVU",{
 	panel = "Main",
 	button = "OtklAVUToggle",
 	model = "models/metrostroi/81-717/switch04.mdl",
+})
+Metrostroi.ClientPropForButton("OtklAVUP",{
+	panel = "Main",
+	button = "OtklAVUP",
+	model = "models/metrostroi_train/81/plomb.mdl",
 })
 Metrostroi.ClientPropForButton("KRZD",{
 	panel = "Main",
@@ -1114,6 +1146,11 @@ Metrostroi.ClientPropForButton("PS2",{
 	panel = "Main",
 	button = "PS2",
 	model = "models/metrostroi/81-717/switch04.mdl"
+})
+Metrostroi.ClientPropForButton("PS2P",{
+	panel = "Main",
+	button = "PS2P",
+	model = "models/metrostroi_train/81/plomb.mdl",
 })
 Metrostroi.ClientPropForButton("L_1",{
 	panel = "Main",

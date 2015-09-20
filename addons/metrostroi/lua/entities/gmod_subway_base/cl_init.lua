@@ -269,6 +269,11 @@ function ENT:SpawnCSEnt(k)
 		cent:SetParent(self)
 		cent:SetColor(v.color or color_white)
 		cent:SetSkin(v.skin or 0)
+		if v.bodygroup then
+			for k,v in pairs(v.bodygroup) do
+				cent:SetBodygroup(v,k)
+			end
+		end
 		--if self.ClientPropsMatrix[k] then cent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[k]) end
 		--print(self:GetNWString("texture",nil))
 		self.ClientEnts[k] = cent
@@ -284,6 +289,11 @@ function ENT:SpawnCSEnt(k)
 		end
 		self:ShowHide(k, not self.Hidden[k],true)
 	end
+end
+function ENT:SetCSBodygroup(csent,id,value)
+	if not self.ClientProps[csent].bodygroup then self.ClientProps[csent].bodygroup = {} end
+	self.ClientProps[csent].bodygroup[id] = value
+	if IsValid(self.ClientEnts[csent]) then self.ClientEnts[csent]:SetBodygroup(id,value) end
 end
 function ENT:CreateCSEnts()
 	for k,v in pairs(self.ClientProps) do
