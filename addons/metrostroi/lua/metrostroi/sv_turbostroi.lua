@@ -51,6 +51,8 @@ if not TURBOSTROI then
 					Turbostroi.SendMessage(train,3,"","",i,train:ReadTrainWire(i))
 				--end
 			end
+			Turbostroi.SendMessage(train,3,"","",35,train:ReadTrainWire(35))
+			Turbostroi.SendMessage(train,3,"","",36,train:ReadTrainWire(36))
 			for sys_name,system in pairs(train.Systems) do
 				if system.OutputsList and system.DontAccelerateSimulation then
 					for _,name in pairs(system.OutputsList) do

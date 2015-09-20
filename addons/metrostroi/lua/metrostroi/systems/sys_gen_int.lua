@@ -429,7 +429,7 @@ function TRAIN_SYSTEM.Solve81_717(Train,Triggers)
 	S["U0"] = S["10/4"]*Train.A27.Value
 	S["U0a"] = S["U0"]*1+(-10*S["10AN"])
 	S["s10"] = S["U0"]*Train.DIPoff.Value
-	S["s3"] = S["U0"]*Train.BPSNon.Value
+	S["s3"] = S["U0"]*Train.BPSNon.Value*(1-Train:ReadTrainWire(35))
 	S["L_1'"] = S["U0"]*Train.L_1.Value
 	S["L_5'"] = S["U0"]*Train.L_5.Value
 	S["F1"] = S["10/4"]*Train.KV["10/4-F1"]
@@ -658,7 +658,7 @@ function TRAIN_SYSTEM.Solve81_714(Train,Triggers)
 	S["D6/1"] = S["D4/3"]*Train.BD.Value
 	S["U0"] = S["10/4"]*Train.A27.Value
 	S["U0a"] = S["U0"]*1+(-10*S["10AN"])
-	S["s3"] = S["U0"]*Train.BPSNon.Value
+	S["s3"] = S["U0"]*Train.BPSNon.Value*(1-Train:ReadTrainWire(35))
 	S["1K"] = S["1Zh"]*C((P == 1) or (P == 2))
 	S["1-7R-29"] = S["U0"]*Train.A23.Value*Train.RezMK.Value
 	S["17/1p"] = S["10AK"]*(1.0-Train.KRP.Value)*Train.VozvratRP.Value
@@ -829,7 +829,7 @@ function TRAIN_SYSTEM.SolveEma508(Train,Triggers)
 	S["D6/1"] = S["D4/3"]*Train.BD.Value
 	S["U0"] = S["10/4"]*Train.A27.Value
 	S["U0a"] = S["U0"]*1+(-10*S["10AN"])
-	S["s3"] = S["U0"]*Train.BPSNon.Value
+	S["s3"] = S["U0"]*Train.BPSNon.Value*(1-Train:ReadTrainWire(35))
 	S["1K"] = S["1Zh"]*C((P == 1) or (P == 2))
 	S["1N"] = S["1Zh"]*C((P == 1) or (P == 3))
 	S["10AG"] = S["10AYa"]*S["10E-10AG"]*S["10AYa-10E"]

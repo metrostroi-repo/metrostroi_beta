@@ -313,10 +313,13 @@ function ENT:Initialize()
 	-- KV wrench mode
 	self.KVWrenchMode = 0
 	
+	self.KVPType = self.KVPType or 0+math.floor(math.random()*4+1.5)
+	if self.KVPType == 1 then self.KVPType = 0 end
 	-- BPSN type
 	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*5+0.5)
 	self:SetNWInt("BPSNType",self.BPSNType)
-	
+	self:SetNWInt("KVPType",self.KVPType)
+
 	-- ARS type
 	self.ARSType = 1
 	self:SetNWInt("ARSType",1)
@@ -431,7 +434,6 @@ function ENT:Think()
 	self:SetBodygroup(10,math.min(3,self.Adverts or 1)-1)
 	self:SetBodygroup(13,2-self.Pneumatic.ValveType)
 	self:SetBodygroup(14,self.ARSType == 3 and 1 or 0)
-
 	--self:SetSubMaterial(0,"metrostroi_skins/81-717/6.pnqw")
 	--PrintTable(self:GetMaterials())
 	--print(self.DeltaTime)
@@ -838,6 +840,8 @@ function ENT:Think()
 	self:SetPackedBool("BEnter",self.BEnter.Value == 1.0)
 	self:SetPackedBool("VZ1",self.VZ1.Value == 1)
 	self:SetPackedBool("Wiper",self.Wiper.Value == 1)
+	self:SetPackedBool("ConverterProtection",self.ConverterProtection.Value == 1)
+	self:SetPackedBool("RZP",self:ReadTrainWire(35) == 1)
 	
 	-- Signal if doors are open or no to platform simulation
 	self.LeftDoorsOpen = 
@@ -1105,9 +1109,13 @@ function ENT:Check2Cab(button,breaker,func,isbreaker)
 				if self[(isbreaker and breaker or button)] and v[button].Value*v[breaker].Value > 0.5 then
 					v:TriggerInput((isbreaker and button or breaker).."Set",0)
 					v:PlayOnce("av_off","cabin")
+					if button:find("BPSN") then v.RZP:TriggerInput("Close",1) end
+					if breaker:find("BPSN") then v.RZP:TriggerInput("Close",1) end
 				end
 			end
 			self:TriggerInput((isbreaker and button or breaker).."OpenBypass")
+			if button:find("BPSN") then self.RZP:TriggerInput("Close",1) end
+			if breaker:find("BPSN") then self.RZP:TriggerInput("Close",1) end
 			self:PlayOnce("av_off","cabin")
 		end
 	end

@@ -107,7 +107,7 @@ function ENT:Initialize()
 	self:SetUseType(SIMPLE_USE)
 	
 	-- Possible number of train wires
-	self.TrainWireCount = self.TrainWireCount or 32
+	self.TrainWireCount = self.TrainWireCount or 36
 	-- Train wires
 	self:ResetTrainWires()
 	-- Systems defined in the train
@@ -1662,6 +1662,8 @@ function ENT:Think()
 	for i=1,32 do
 		self.TriggerOutput(self,"TrainWire"..i,readTrainWire(self,i))
 	end
+	self.TriggerOutput(self,"TrainWire35",readTrainWire(self,35))
+	self.TriggerOutput(self,"TrainWire36",readTrainWire(self,36))
 	
 	-- Calculate own speed and acceleration
 	local speed,acceleration = 0,0

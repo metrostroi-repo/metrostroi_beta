@@ -42,7 +42,7 @@ ENT.ButtonMap["Main"] = {
 		{ID = "KVPLight",		x=372, y=92, radius=20, tooltip="КВП: Контроль высоковольного преобразователя\nKVP: High-voltage converter control"},
 		{ID = "SPLight",		x=413, y=30, radius=20, tooltip="ЛСП: Лампа сигнализации пожара\nLSP: Fire emergency (rheostat overheat)"},
 		
-		{ID = "PS6",			x=330, y=130, radius=20, tooltip="(placeholder) Converter protection"},
+		{ID = "ConverterProtectionSet",			x=330, y=130, radius=20, tooltip="Converter protection"},
 		{ID = "KSNSet",			x=375, y=130, radius=20, tooltip="КСН: Кнопка сигнализации неисправности\nKSN: Failure indication button"},
 		{ID = "DIPoffSet",		x=420, y=130, radius=20, tooltip="Звонок\nRing"},
 
@@ -1020,6 +1020,7 @@ Metrostroi.ClientPropForButton("GreenRPLight_light",{
 	panel = "Main",
 	button = "GreenRPLight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
+	ignorepanel = true,
 	z = -10,
 })
 Metrostroi.ClientPropForButton("AVULight",{
@@ -1038,6 +1039,7 @@ Metrostroi.ClientPropForButton("AVULight_light",{
 	panel = "Main",
 	button = "AVULight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
+	ignorepanel = true,
 	skin = 1,
 	z = -10,
 })
@@ -1052,6 +1054,7 @@ Metrostroi.ClientPropForButton("KVPLight_light",{
 	panel = "Main",
 	button = "KVPLight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
+	ignorepanel = true,
 	skin = 3,
 	z = -10,
 })
@@ -1066,6 +1069,7 @@ Metrostroi.ClientPropForButton("SPLight_light",{
 	panel = "Main",
 	button = "SPLight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
+	ignorepanel = true,
 	skin = 1,
 	z = -10,
 })
@@ -1080,6 +1084,7 @@ Metrostroi.ClientPropForButton("CabinHeatLight_light",{
 	panel = "Front",
 	button = "CabinHeatLight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
+	ignorepanel = true,
 	skin = 2,
 	z = -10,
 })
@@ -1094,6 +1099,7 @@ Metrostroi.ClientPropForButton("PneumoLight_light",{
 	panel = "Front",
 	button = "PneumoLight",
 	model = "models/metrostroi_train/81/lamp_on.mdl",
+	ignorepanel = true,
 	skin = 4,
 	z = -10,
 })
@@ -1124,11 +1130,17 @@ Metrostroi.ClientPropForButton("L_3",{
 	button = "L_3Toggle",
 	model = "models/metrostroi/81-717/switch04.mdl"
 })
-Metrostroi.ClientPropForButton("PS6",{
+Metrostroi.ClientPropForButton("ConverterProtection",{
 	panel = "Main",
-	button = "PS6",
+	button = "ConverterProtectionSet",
 	model = "models/metrostroi_train/81/button.mdl",
 	skin = 2,
+})
+Metrostroi.ClientPropForButton("ConverterProtection_light",{
+	panel = "Main",
+	button = "ConverterProtectionSet",
+	model = "models/metrostroi_train/81/button_light.mdl",
+	ignorepanel = true,
 })
 Metrostroi.ClientPropForButton("DIPoff",{
 	panel = "Main",
@@ -1594,6 +1606,14 @@ function ENT:Think()
 		self:HidePanel("PAKSD1",self.ARSType < 3)
 		self:HidePanel("PAKSD2",self.ARSType < 3)
 	end
+	if self.ClientProps["KVPLight_light"] and self.ClientProps["KVPLight_light"].skin ~= self:GetNWInt("KVPType") then
+		self.ClientProps["KVPLight_light"].skin = self:GetNWInt("KVPType")
+		if IsValid(self.ClientEnts["KVPLight_light"]) then self.ClientEnts["KVPLight_light"]:SetSkin(self:GetNWInt("KVPType")) end
+	end
+	if self.ClientProps["KVPLight"] and self.ClientProps["KVPLight"].skin ~= self:GetNWInt("KVPType") then
+		self.ClientProps["KVPLight"].skin = self:GetNWInt("KVPType")
+		if IsValid(self.ClientEnts["KVPLight"]) then self.ClientEnts["KVPLight"]:SetSkin(self:GetNWInt("KVPType")) end
+	end
 	--Vector(407.3,-10.5,47)+ps
 	--Vector(417.3,-57.5,47.5)
 	--[[
@@ -1825,6 +1845,8 @@ function ENT:Think()
 	self:Animate("BMinus",self:GetPackedBool("BMinus") and 1 or 0,0,1,8,false)
 	self:Animate("BPlus",self:GetPackedBool("BPlus") and 1 or 0,0,1,8,false)
 	self:Animate("BEnter",self:GetPackedBool("BEnter") and 1 or 0,0,1,8,false)
+	self:Animate("ConverterProtection",self:GetPackedBool("ConverterProtection") and 1 or 0,0,1,8,false)
+	self:Animate("ConverterProtection_light",self:GetPackedBool("ConverterProtection") and 1 or 0,0,1,8,false)
 	if self:GetPackedBool(156) and not self.Door1 then self.Door1 = 0.99 end
 	if self:GetPackedBool(158) and not self.Door2 then self.Door2 = 0.99 end
 	if self:GetPackedBool(159) and not self.Door3 then self.Door3 = 0.99 end
@@ -1838,6 +1860,7 @@ function ENT:Think()
 	self:ShowHideSmooth("KVPLight_light",self:Animate("KVPl",self:GetPackedBool(52) and 1 or 0,0,1,10,false))
 	self:ShowHideSmooth("SPLight_light",self:Animate("SPl",self:GetPackedBool("LSP") and 1 or 0,0,1,10,false))
 	self:ShowHideSmooth("PneumoLight_light",self:Animate("Pneumol",self:GetPackedBool("PN") and 1 or 0,0,1,10,false))
+	self:ShowHideSmooth("ConverterProtection_light",self:Animate("ConverterProtectionl",self:GetPackedBool("RZP") and 1 or 0,0,1,10,false))
 	local accel = self:GetNWFloat("Accel")
 	
 	if math.abs(accel) > 0.1 then
