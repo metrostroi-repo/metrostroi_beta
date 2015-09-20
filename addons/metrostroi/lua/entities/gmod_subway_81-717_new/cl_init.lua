@@ -859,11 +859,6 @@ Metrostroi.ClientPropForButton("KAHK",{
 	ang = 0,
 	z = -2
 })
-Metrostroi.ClientPropForButton("KAHP",{
-	panel = "Front",
-	button = "KAHP",
-	model = "models/metrostroi/81-717/plomb_b.mdl",
-})
 Metrostroi.ClientPropForButton("VAH",{
 	panel = "Front",
 	button = "VAHToggle",
