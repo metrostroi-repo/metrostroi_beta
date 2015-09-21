@@ -74,7 +74,6 @@ ENT.ButtonMap["Front"] = {
 		{ID = "VAHToggle",x=170, y=200, radius=20, tooltip="ВАХ: Включение аварийного хода (неисправность реле педали безопасности)\nVAH: Emergency driving mode (failure of RPB relay)"},
 		{ID = "VAHP",x=170, y=227, radius=20, tooltip="Пломба кнопки ВАХ\nVAH plomb"},
 		{ID = "VADToggle",x=127, y=200, radius=20, tooltip="ВАД: Включение аварийного закрытия дверей (неисправность реле контроля дверей)\nVAD: Emergency door close override (failure of KD relay)"},		
-		{ID = "VADP",x=127, y=227, radius=20, tooltip="Пломба кнопки ВАД\nVAD plomb"},
 		--{ID = "RezMKSet",x=53,  y=98, radius=20, tooltip="Резервное включение мотор-компрессора\nEmergency motor-compressor startup"},
 		{ID = "KAHSet",x=53,  y=98, radius=20, tooltip="КАХ: Кнопка аварийного хода\nEmergency drive button"},
 		{ID = "KAHP",x=37, y=68, radius=20, tooltip="Пломба крышки КАХ\nKAH plomb"},
@@ -867,18 +866,13 @@ Metrostroi.ClientPropForButton("VAH",{
 Metrostroi.ClientPropForButton("VAHP",{
 	panel = "Front",
 	button = "VAHP",
-	model = "models/metrostroi/81-717/plomb.mdl",
+	model = "models/metrostroi_train/81/plomb.mdl",
 })
 
 Metrostroi.ClientPropForButton("VAD",{
 	panel = "Front",
 	button = "VADToggle",
 	model = "models/metrostroi/81-717/switch04.mdl",
-})
-Metrostroi.ClientPropForButton("VADP",{
-	panel = "Front",
-	button = "VADP",
-	model = "models/metrostroi/81-717/plomb.mdl",
 })
 Metrostroi.ClientPropForButton("ALS",{
 	panel = "Main",
