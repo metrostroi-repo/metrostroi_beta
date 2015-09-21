@@ -123,23 +123,11 @@ ENT.ButtonMap["Announcer"] = {
 		{ID = "DURAToggleChannel", x=110, y=217, radius=20, tooltip="DURA Toggle Channel"}, -- NEEDS TRANSLATING
 		{ID = "DURAPowerToggle", x=110, y=187, radius=20, tooltip="DURA Power"}, -- NEEDS TRANSLATING
 		
-		{ID = "CustomAToggle", x=40, y=100, radius=20, tooltip="A"},
-		{ID = "CustomBToggle", x=40, y=135, radius=20, tooltip="B"},
 		{ID = "CustomCToggle", x=220, y=45, radius=20, tooltip="C"},
-		
-		{ID = "CustomD", x=95+29*0, y=18, radius=20, tooltip="D"},
-		{ID = "CustomE", x=95+29*1, y=18, radius=20, tooltip="E"},
-		{ID = "CustomF", x=95+29*2, y=18, radius=20, tooltip="F"},
-		{ID = "CustomG", x=95+29*3, y=18, radius=20, tooltip="G"},
 		
 		{ID = "Custom1Set", x=95+40*0, y=84+45*0, radius=20, tooltip="1"},
 		{ID = "Custom2Set", x=95+40*1, y=84+45*0, radius=20, tooltip="2"},
 		{ID = "Custom3Set", x=95+40*2, y=84+45*0, radius=20, tooltip="3"},
-		{ID = "Custom4Set", x=95+40*3, y=84+45*0, radius=20, tooltip="4"},
-		{ID = "Custom5Set", x=95+40*0, y=84+45*1, radius=20, tooltip="5"},
-		{ID = "Custom6Set", x=95+40*1, y=84+45*1, radius=20, tooltip="6"},
-		{ID = "Custom7Set", x=95+40*2, y=84+45*1, radius=20, tooltip="7"},
-		{ID = "Custom8Set", x=95+40*3, y=84+45*1, radius=20, tooltip="8"},
 	}
 }
 -- Announcer panel
@@ -1215,70 +1203,10 @@ Metrostroi.ClientPropForButton("Custom3",{
 	button = "Custom3Set",
 	model = "models/metrostroi_train/81/button.mdl"
 })
-Metrostroi.ClientPropForButton("Custom4",{
-	panel = "Announcer",
-	button = "Custom4Set",
-	model = "models/metrostroi_train/81/button.mdl",
-	skin = 4,
-})
-
-Metrostroi.ClientPropForButton("Custom5",{
-	panel = "Announcer",
-	button = "Custom5Set",
-	model = "models/metrostroi_train/81/button.mdl"
-})
-Metrostroi.ClientPropForButton("Custom6",{
-	panel = "Announcer",
-	button = "Custom6Set",
-	model = "models/metrostroi_train/81/button.mdl"
-})
-Metrostroi.ClientPropForButton("Custom7",{
-	panel = "Announcer",
-	button = "Custom7Set",
-	model = "models/metrostroi_train/81/button.mdl"
-})
-Metrostroi.ClientPropForButton("Custom8",{
-	panel = "Announcer",
-	button = "Custom8Set",
-	model = "models/metrostroi_train/81/button.mdl",
-	skin = 4,
-})
-
-Metrostroi.ClientPropForButton("CustomA",{
-	panel = "Announcer",
-	button = "CustomAToggle",
-	model = "models/metrostroi/81-717/switch04.mdl",
-})
-Metrostroi.ClientPropForButton("CustomB",{
-	panel = "Announcer",
-	button = "CustomBToggle",
-	model = "models/metrostroi/81-717/switch04.mdl",
-})
 Metrostroi.ClientPropForButton("CustomC",{
 	panel = "Announcer",
 	button = "CustomCToggle",
 	model = "models/metrostroi/81-717/switch04.mdl",
-})
-
-Metrostroi.ClientPropForButton("CustomD",{
-	panel = "Announcer",
-	button = "CustomD",
-	model = "models/metrostroi/81-717/light01.mdl",
-})
-Metrostroi.ClientPropForButton("CustomE",{
-	panel = "Announcer",
-	button = "CustomE",
-	model = "models/metrostroi/81-717/light03.mdl",
-})
-Metrostroi.ClientPropForButton("CustomF",{
-	panel = "Announcer",
-	button = "CustomF",
-	model = "models/metrostroi/81-717/light04.mdl",
-})
-Metrostroi.ClientPropForButton("CustomG",{
-	panel = "Announcer",
-	button = "CustomG",
-	model = "models/metrostroi/81-717/light02.mdl",
 })
 --Metrostroi.ClientPropForButton("Autodrive",{
 --	panel = "Main",

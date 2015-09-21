@@ -338,11 +338,9 @@ function ENT:Initialize()
 	self.FrontDoor = false
 	self.CabinDoor = false
 	self.PassengerDoor = false
-	if not self.Announcer.AnnMap:find("metrostroi") then
+	if not self.Map:find("metrostroi") then
 		self.A45:TriggerInput("Set",0)
 	end
-	self.L_5:TriggerInput("Set",1)
-	self.A5:TriggerInput("Set",0)
 	self.OldTexture = 0
 end
 
@@ -792,18 +790,7 @@ function ENT:Think()
 	self:SetPackedBool(114,self.Custom1.Value == 1.0)
 	self:SetPackedBool(115,self.Custom2.Value == 1.0)
 	self:SetPackedBool(116,self.Custom3.Value == 1.0)
-	self:SetPackedBool(117,self.Custom4.Value == 1.0)
-	self:SetPackedBool(118,self.Custom5.Value == 1.0)
-	self:SetPackedBool(119,self.Custom6.Value == 1.0)
-	self:SetPackedBool(120,self.Custom7.Value == 1.0)
-	self:SetPackedBool(121,self.Custom8.Value == 1.0)
-	self:SetPackedBool(122,self.CustomA.Value == 1.0)
-	self:SetPackedBool(123,self.CustomB.Value == 1.0)
 	self:SetPackedBool(124,self.CustomC.Value == 1.0)
-	self:SetLightPower(35,self.ARSType < 3 and self.CustomD.Value == 1.0)
-	self:SetLightPower(36,self.ARSType < 3 and self.CustomE.Value == 1.0)
-	self:SetLightPower(37,self.ARSType < 3 and self.CustomF.Value == 1.0)
-	self:SetLightPower(38,self.ARSType < 3 and self.CustomG.Value == 1.0)
 	self:SetPackedBool(125,self.R_G.Value == 1.0)
 	self:SetPackedBool(126,self.R_Radio.Value == 1.0)
 	self:SetPackedBool(127,self.R_UNch.Value == 1.0)
@@ -1409,9 +1396,13 @@ function ENT:OnButtonPress(button,state)
 	end
 	if (button == "VDL") or (button == "KDL") then
 		self.DoorSelect:TriggerInput("Open",1)
+		self.KDLK:TriggerInput("Open",1)
+		self.KDPK:TriggerInput("Close",1)
 	end
 	if (button == "KDP") then
 		self.DoorSelect:TriggerInput("Close",1)
+		self.KDLK:TriggerInput("Close",1)
+		self.KDPK:TriggerInput("Open",1)
 	end
 	if (button == "VUD1Set") or (button == "VUD1Toggle") or
 	   (button == "VUD2Set") or (button == "VUD2Toggle") then
