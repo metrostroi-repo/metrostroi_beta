@@ -1279,7 +1279,7 @@ function TRAIN_SYSTEM:Announcer2()
 			self.AnnNext = Metrostroi.WorkingStations[self.AnnMap][self.AnnRoute][self.AnnNextT]
 			self.NextNonWorkingStation = ((Metrostroi.WorkingStations[self.AnnMap][self.AnnRoute][self.AnnStationT] or 0) + (self.AnnPath == 1 and 1 or -1) == 120)
 			and self.AnnStation + (self.AnnPath == 1 and 1 or -1) or nil
-			self.Train:TriggerInput("CustomGSet", self.ScheduleAnnouncement > 0)
+			self.Train:TriggerInput("CustomGSet", self.ScheduleAnnouncement > 2)
 		end
 
 		if (self.AnnState == 7 or self.AnnState == 17 or self.AnnState == 27 or self.AnnState == 37 or self.AnnState == 87 or self.AnnState == 97) and self.AnnState7NeedRedraw then

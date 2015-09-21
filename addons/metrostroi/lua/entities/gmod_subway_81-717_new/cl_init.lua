@@ -128,6 +128,11 @@ ENT.ButtonMap["Announcer"] = {
 		{ID = "Custom1Set", x=95+40*0, y=84+45*0, radius=20, tooltip="1"},
 		{ID = "Custom2Set", x=95+40*1, y=84+45*0, radius=20, tooltip="2"},
 		{ID = "Custom3Set", x=95+40*2, y=84+45*0, radius=20, tooltip="3"},
+
+		{ID = "CustomD", x=95+29*0, y=18, radius=20, tooltip="D"},
+		{ID = "CustomE", x=95+29*1, y=18, radius=20, tooltip="E"},
+		{ID = "CustomF", x=95+29*2, y=18, radius=20, tooltip="F"},
+		{ID = "CustomG", x=95+29*3, y=18, radius=20, tooltip="G"},
 	}
 }
 -- Announcer panel
@@ -476,7 +481,7 @@ ENT.ButtonMap["ParkingBrake"] = {
 	scale = 0.0625,
 	
 	buttons = {
-		{ID = "ParkingBrakeToggle", x=0, y=0, w=200, h=120, tooltip="Ствояночный тормоз\nParking brake"},
+		{ID = "ParkingBrakeToggle", x=0, y=0, w=200, h=120, tooltip="Стояночный тормоз\nParking brake"},
 	}
 }
 ENT.ButtonMap["EPKDisconnect"] = {
@@ -1203,10 +1208,70 @@ Metrostroi.ClientPropForButton("Custom3",{
 	button = "Custom3Set",
 	model = "models/metrostroi_train/81/button.mdl"
 })
+
 Metrostroi.ClientPropForButton("CustomC",{
 	panel = "Announcer",
 	button = "CustomCToggle",
 	model = "models/metrostroi/81-717/switch04.mdl",
+})
+Metrostroi.ClientPropForButton("CustomD",{
+	panel = "Announcer",
+	button = "CustomD",
+	model = "models/metrostroi_train/81/lamp.mdl",
+	z = -10,
+	skin = 1,
+})
+Metrostroi.ClientPropForButton("CustomE",{
+	panel = "Announcer",
+	button = "CustomE",
+	model = "models/metrostroi_train/81/lamp.mdl",
+	z = -10,
+	skin = 2,
+})
+Metrostroi.ClientPropForButton("CustomF",{
+	panel = "Announcer",
+	button = "CustomF",
+	model = "models/metrostroi_train/81/lamp.mdl",
+	z = -10,
+	skin = 4,
+})
+Metrostroi.ClientPropForButton("CustomG",{
+	panel = "Announcer",
+	button = "CustomG",
+	model = "models/metrostroi_train/81/lamp.mdl",
+	z = -10,
+})
+
+Metrostroi.ClientPropForButton("CustomD_light",{
+	panel = "Announcer",
+	button = "CustomD",
+	model = "models/metrostroi_train/81/lamp_on.mdl",
+	ignorepanel = true,
+	z = -10,
+	skin = 1,
+})
+Metrostroi.ClientPropForButton("CustomE_light",{
+	panel = "Announcer",
+	button = "CustomE",
+	model = "models/metrostroi_train/81/lamp_on.mdl",
+	ignorepanel = true,
+	z = -10,
+	skin = 2,
+})
+Metrostroi.ClientPropForButton("CustomF_light",{
+	panel = "Announcer",
+	button = "CustomF",
+	model = "models/metrostroi_train/81/lamp_on.mdl",
+	ignorepanel = true,
+	z = -10,
+	skin = 4,
+})
+Metrostroi.ClientPropForButton("CustomG_light",{
+	panel = "Announcer",
+	button = "CustomG",
+	model = "models/metrostroi_train/81/lamp_on.mdl",
+	ignorepanel = true,
+	z = -10,
 })
 --Metrostroi.ClientPropForButton("Autodrive",{
 --	panel = "Main",
@@ -1891,6 +1956,11 @@ function ENT:Think()
 	self:ShowHideSmooth("SPLight_light",self:Animate("SPl",self:GetPackedBool("LSP") and 1 or 0,0,1,10,false))
 	self:ShowHideSmooth("PneumoLight_light",self:Animate("Pneumol",self:GetPackedBool("PN") and 1 or 0,0,1,10,false))
 	self:ShowHideSmooth("ConverterProtection_light",self:Animate("ConverterProtectionl",self:GetPackedBool("RZP") and 1 or 0,0,1,10,false))
+	
+	self:ShowHideSmooth("CustomD_light",self:Animate("CustomD",self:GetPackedBool("CustomD") and 1 or 0,0,1,10,false))
+	self:ShowHideSmooth("CustomE_light",self:Animate("CustomE",self:GetPackedBool("CustomE") and 1 or 0,0,1,10,false))
+	self:ShowHideSmooth("CustomF_light",self:Animate("CustomF",self:GetPackedBool("CustomF") and 1 or 0,0,1,10,false))
+	self:ShowHideSmooth("CustomG_light",self:Animate("CustomG",self:GetPackedBool("CustomG") and 1 or 0,0,1,10,false))
 	local accel = self:GetNWFloat("Accel")
 	
 	if math.abs(accel) > 0.1 then

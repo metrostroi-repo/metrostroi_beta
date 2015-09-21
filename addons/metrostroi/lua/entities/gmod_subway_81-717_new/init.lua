@@ -346,6 +346,7 @@ end
 
 --------------------------------------------------------------------------------
 function ENT:Think()
+
 	if self.Plombs and self.Plombs.Init then
 		self.Plombs.Init = nil
 		for k,v in pairs(self.Plombs) do self[k]:TriggerInput("Block",true) end
@@ -707,6 +708,11 @@ function ENT:Think()
 	self:SetPackedBool("KDLRK",self.KDLRK.Value > 0)
 	self:SetPackedBool("KDPK",self.KDPK.Value > 0)
 	self:SetPackedBool("KAHK",self.KAHK.Value > 0)
+	
+	self:SetPackedBool("CustomD",self.CustomD.Value > 0)
+	self:SetPackedBool("CustomE",self.CustomE.Value > 0)
+	self:SetPackedBool("CustomF",self.CustomF.Value > 0)
+	self:SetPackedBool("CustomG",self.CustomG.Value > 0)
 	--self:SetLightPower(27,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
 	--self:SetLightPower(28,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
 	--self:SetLightPower(29,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 1) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
@@ -1188,6 +1194,11 @@ function ENT:OnButtonPress(button,state)
 		local drv = self:GetDriverName()
 		local state = self.UAVA.TargetValue < 0.5 and "enabled" or "disabled"
 		RunConsoleCommand("say",drv.." "..state.." UAVA!")
+	end
+	if button == "A45Toggle" then
+		local drv = self:GetDriverName()
+		local state = self.A45.TargetValue < 0.5 and "enabled" or "disabled"
+		RunConsoleCommand("say",drv.." "..state.." A45!")
 	end
 	if button == "BPSToggle" then
 		local drv = self:GetDriverName()

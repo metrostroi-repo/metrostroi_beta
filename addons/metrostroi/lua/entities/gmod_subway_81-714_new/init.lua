@@ -373,7 +373,7 @@ function ENT:Think()
 		(self.Pneumatic.RightDoorState[2] > 0.5) or
 		(self.Pneumatic.RightDoorState[3] > 0.5) or
 		(self.Pneumatic.RightDoorState[4] > 0.5)
-	self:WriteTrainWire(35,(self.Pneumatic.BrakeCylinderPressure > 0.1) and 1 or 0)
+	--self:WriteTrainWire(35,(self.Pneumatic.BrakeCylinderPressure > 0.1) and 1 or 0)
 		
 	-- Is there a driver
 	--self:SetBodygroup(1,(self:GetDriver() ~= nil) and 1 or 0)
@@ -409,12 +409,11 @@ function ENT:Think()
 		self:SetPackedRatio(9, self.Pneumatic.BrakeLinePressure_dPdT or 0)
 	end
 	self:SetPackedRatio(10,(self.VB.Value * self.Battery.Voltage) / 120.0)
-
+	
 	-- RUT test
 	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNWFloat("PassengerCount",0)/300)))
 	if math.abs(self:GetAngles().pitch) > 2.5 then weightRatio = weightRatio + 1.00 end
 	self.YAR_13A:TriggerInput("WeightLoadRatio",math.max(0,math.min(2.50,weightRatio)))
-	
 	-- Exchange some parameters between engines, pneumatic system, and real world
 	self.Engines:TriggerInput("Speed",self.Speed)
 	if IsValid(self.FrontBogey) and IsValid(self.RearBogey) then

@@ -115,6 +115,11 @@ function TRAIN_SYSTEM:Initialize()
 	
 	self.Train:LoadSystem("CustomC","Relay","Switch",{switch = true})
 	
+	self.Train:LoadSystem("CustomD","Relay","Switch")
+	self.Train:LoadSystem("CustomE","Relay","Switch")
+	self.Train:LoadSystem("CustomF","Relay","Switch")
+	self.Train:LoadSystem("CustomG","Relay","Switch")
+	
 	self.Train:LoadSystem("Wiper","Relay","Switch")
 	
 	-- Map of AV switches to indexes on panel
