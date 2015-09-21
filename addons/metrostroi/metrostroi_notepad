@@ -93,6 +93,7 @@
             <File name="lua\metrostroi\systems\sys_yak_36.lua" />
             <File name="lua\metrostroi\systems\sys_yak_37e.lua" />
             <File name="lua\metrostroi\systems\sys_yap_57.lua" />
+            <File name="lua\metrostroi\systems\sys_81_717_panel.lua" />
             <File name="lua\metrostroi\systems\sys_yar_13a.lua" />
             <File name="lua\metrostroi\systems\sys_yar_27.lua" />
             <File name="lua\metrostroi\systems\sys_yard_2.lua" />

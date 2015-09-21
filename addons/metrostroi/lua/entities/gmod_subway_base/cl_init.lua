@@ -391,7 +391,7 @@ function ENT:Initialize()
 							if self.HiddenPanels[kp] then surface.SetAlphaMultiplier(0.1) end
 							
 							for kb,button in pairs(panel.buttons) do
-								if self.Hidden[button.PropName] or self.HiddenButton[button.PropName] then
+								if self.Hidden[button.PropName] or self.Hidden[button.ID] or self.HiddenButton[button.PropName] or self.HiddenButton[button.ID] then
 									surface.SetDrawColor(255,255,0)
 								elseif self.Hidden[kb] then
 									surface.SetDrawColor(255,255,0)

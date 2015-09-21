@@ -65,8 +65,8 @@ function TRAIN_SYSTEM:Initialize()
 	-- Воздухораспределитель
 	self.Train:LoadSystem("AirDistributorDisconnect","Relay","Switch")
 	--УАВА
-	self.Train:LoadSystem("UAVA","Relay","Switch")
-	self.Train:LoadSystem("UAVAContact","Relay","Switch")
+	self.Train:LoadSystem("UAVA","Relay","Switch",{uava = true})
+	self.Train:LoadSystem("UAVAContact","Relay","Switch",{button = true})
 	--Стояночный тормоз
 	self.Train:LoadSystem("ParkingBrake","Relay","Switch")
 	self.Train:LoadSystem("ParkingBrakeSign","Relay","Switch")

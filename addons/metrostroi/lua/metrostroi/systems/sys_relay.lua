@@ -164,7 +164,7 @@ function TRAIN_SYSTEM:TriggerInput(name,value)
 		return
 	end
 		
-	if self.Blocked > 0 and name ~= "Block" and (name == "Close" or self.rkr) then return end
+	if self.Blocked > 0 and name ~= "Block" and (name == "Close" and self.relay_type == "PK-162" or self.relay_type ~= "PK-162") then return end
 	
 	-- Open/close coils of the relay
 	if (name == "Block") then
@@ -262,5 +262,25 @@ function TRAIN_SYSTEM:Think(dT)
 		if self.rvt and (self.Value == 1.0) then	self.Train:PlayOnce("rvt_close","cabin",0.6)		end
 		if self.r1_5 and (self.Value == 0.0) then	self.Train:PlayOnce("rvt_r1_5_open","cabin",0.6)		end
 		if self.r1_5 and (self.Value == 1.0) then	self.Train:PlayOnce("r1_5_close","cabin",0.6)		end
+		if self.relay_type == "VA21-29" and (self.Value == 0.0) then	self.Train:PlayOnce("av_off","cabin",0.6)		end
+		if self.relay_type == "VA21-29" and (self.Value == 1.0) then	self.Train:PlayOnce("av_on","cabin",0.6)		end
+		if self.relay_type == "VB-11" and (self.Value == 0.0) then	self.Train:PlayOnce("switch2","cabin",0.6)		end
+		if self.relay_type == "VB-11" and (self.Value == 1.0) then	self.Train:PlayOnce("switch2","cabin",0.6)		end
+		if self.relay_type == "Switch" then
+			if self.Value == 1.0 then
+				if self.button then self.Train:PlayOnce("button_press","cabin",0.6) end
+				if self.vud then self.Train:PlayOnce("vu22_on","cabin",0.6) end
+				if self.uava then self.Train:PlayOnce("uava_on","cabin",0.6) end
+				if self.programm then self.Train:PlayOnce("inf_on","cabin",0.6) end
+			end
+			if self.Value == 0.0 then
+				if self.button then self.Train:PlayOnce("button_release","cabin",0.6) end
+				if self.vud then self.Train:PlayOnce("vu22_off","cabin",0.6) end
+				if self.uava then self.Train:PlayOnce("uava_off","cabin",0.6) end
+				if self.pb then self.Train:PlayOnce("switch6_off","cabin",0.6) end
+				if self.programm then self.Train:PlayOnce("inf_off","cabin",0.6) end
+			end
+			if self.switch or self.rc then self.Train:PlayOnce("switch2","cabin",0.6) end
+		end
 	end
 end

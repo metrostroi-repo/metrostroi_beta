@@ -25,8 +25,8 @@ if CreateConVar then
 end
 
 function TRAIN_SYSTEM:Initialize()
-	self.Train:LoadSystem("UOS","Relay","Switch")
-	self.Train:LoadSystem("BPS","Relay","Switch",{ normally_closed = true })
+	self.Train:LoadSystem("UOS","Relay","Switch", {rc = true})
+	self.Train:LoadSystem("BPS","Relay","Switch",{ rc = true,normally_closed = true })
 	-- ALS state
 	self.Signal80 = false
 	self.Signal70 = false
@@ -69,14 +69,6 @@ function TRAIN_SYSTEM:Initialize()
 	-- Lamps
 	---self.LKT = false
 	self.LVD = false
-
-	 if not TURBOSTROI then
-		self.Train:SetNWString("CustomStr6" ,"BCCD")
-		self.Train:SetNWString("CustomStr10","Disable auto opening doors")
-		self.Train:SetNWString("CustomStr11","Autodrive")
-		self.Train:SetNWString("CustomStr13","Auto")
-		self.Train:SetNWString("CustomStr12","Announcer")
-	end
 end
 
 function TRAIN_SYSTEM:Outputs()

@@ -19,7 +19,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.XT3_1ext = 0 -- External
 	self.Active = 0
 	self.LightsActive = 0
-	self.Train:LoadSystem("ConverterProtection","Relay","Switch")
+	self.Train:LoadSystem("ConverterProtection","Relay","Switch", {button = true})
 end
 
 function TRAIN_SYSTEM:Inputs()

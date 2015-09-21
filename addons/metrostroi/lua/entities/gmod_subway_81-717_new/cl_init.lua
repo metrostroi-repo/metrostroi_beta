@@ -31,8 +31,8 @@ ENT.ButtonMap["Main"] = {
 		{ID = "VUD1Toggle",		x=49, y=105, radius=40, tooltip="ВУД: Выключатель управления дверьми\nVUD: Door control toggle (close doors)"},
 		{ID = "KDLSet",			x=50, y=180, radius=20, tooltip="КДЛ: Кнопка левых дверей\nKDL: Left doors open"},
 		{ID = "KDLKToggle",			x=30, y=190, w=40,h=20, tooltip="Крышечка"},
-		{ID = "VDLSet",			x=153, y=180, radius=20, tooltip="ВДЛ: Выключатель левых дверей\nVDL: Left doors open"},
-		{ID = "VDLKToggle",			x=133, y=190, w=40,h=20, tooltip="Крышечка"},
+		{ID = "KDLRSet",			x=153, y=180, radius=20, tooltip="ВДЛ: Выключатель левых дверей\nVDL: Left doors open"},
+		{ID = "KDLRKToggle",			x=133, y=190, w=40,h=20, tooltip="Крышечка"},
 		{ID = "DoorSelectToggle",x=105, y=183, radius=20, tooltip="Выбор стороны открытия дверей\nSelect side on which doors will open"},
 		{ID = "KRZDSet",		x=153, y=83, radius=20, tooltip="КРЗД: Кнопка резервного закрытия дверей\nKRZD: Emergency door closing"},
 		{ID = "VozvratRPSet",	x=105, y=132, radius=20, tooltip="Возврат реле перегрузки\nReset overload relay"},
@@ -50,9 +50,9 @@ ENT.ButtonMap["Main"] = {
 		{ID = "ALSToggle",		x=268, y=130, radius=20, tooltip="АЛС: Включение системы автоматической локомотивной сигнализации\nALS: Automatic locomotive signalling"},
 		
 		{ID = "OtklAVUToggle",	x=283, y=183, radius=20, tooltip="Отключение автоматического выключения управления (неисправность АВУ)\nTurn off automatic control disable relay (failure of AVU)"},
-		{ID = "OtklAVUP",x=283, y=210, radius=20, tooltip="Пломба крышки ОтклАВУ\nOtklAVU plomb"},
+		{ID = "OtklAVUPl",x=283, y=210, radius=20, tooltip="Пломба крышки ОтклАВУ\nOtklAVU plomb"},
 		{ID = "PS2",			x=238, y=183, radius=20, tooltip="(placeholder) Emergency brake toggle"},
-		{ID = "PS2P",x=238, y=210, radius=20, tooltip="(placeholder) Пломба крышки Торможение АТ\nEmergency brake toggle plomb"},
+		{ID = "PS2Pl",x=238, y=210, radius=20, tooltip="(placeholder) Пломба крышки Торможение АТ\nEmergency brake toggle plomb"},
 		{ID = "L_1Toggle",		x=321, y=183, radius=20, tooltip="Освещение салона\nWagon lighting"},
 		{ID = "L_2Toggle",		x=357, y=183, radius=20, tooltip="Освещение кабины\nCabin lighting"},
 		{ID = "L_3Toggle",		x=399, y=183, radius=20, tooltip="Освещение пульта\nPanel lighting"},
@@ -72,11 +72,11 @@ ENT.ButtonMap["Front"] = {
 	buttons = {
 		{ID = "VUSToggle",x=90, y=200, radius=20, tooltip="ВУС: Выключатель усиленого света ходовых фар\nVUS: Head lights bright/dim"},
 		{ID = "VAHToggle",x=170, y=200, radius=20, tooltip="ВАХ: Включение аварийного хода (неисправность реле педали безопасности)\nVAH: Emergency driving mode (failure of RPB relay)"},
-		{ID = "VAHP",x=170, y=227, radius=20, tooltip="Пломба кнопки ВАХ\nVAH plomb"},
+		{ID = "VAHPl",x=170, y=227, radius=20, tooltip="Пломба кнопки ВАХ\nVAH plomb"},
 		{ID = "VADToggle",x=127, y=200, radius=20, tooltip="ВАД: Включение аварийного закрытия дверей (неисправность реле контроля дверей)\nVAD: Emergency door close override (failure of KD relay)"},		
 		--{ID = "RezMKSet",x=53,  y=98, radius=20, tooltip="Резервное включение мотор-компрессора\nEmergency motor-compressor startup"},
 		{ID = "KAHSet",x=53,  y=98, radius=20, tooltip="КАХ: Кнопка аварийного хода\nEmergency drive button"},
-		{ID = "KAHP",x=37, y=68, radius=20, tooltip="Пломба крышки КАХ\nKAH plomb"},
+		{ID = "KAHPl",x=37, y=68, radius=20, tooltip="Пломба крышки КАХ\nKAH plomb"},
 		{ID = "KAHKToggle",			x=33, y=108, w=40,h=20, tooltip="Крышечка"},
 		{ID = "KRPSet",x=53, y=33, radius=20, tooltip="КРП: Кнопка резервного пуска\nKRP: Emergency start button"},
 		
@@ -357,6 +357,7 @@ ENT.ButtonMap["AV"] = {
 		{ID = "A62Toggle", x=16+52*0,  y=60+167*2, radius=30, tooltip="A62 Radio communications"},
 		{ID = "A29Toggle", x=16+52*1,  y=60+167*2, radius=30, tooltip="A29 Radio broadcasting"},
 		{ID = "A5Toggle",  x=16+52*2,  y=60+167*2, radius=30, tooltip="A5 Interim wagon"},
+		{ID = "A5Pl",  x=13+52*2,  y=95+167*2, radius=30, tooltip="A5 Plomb"},
 		{ID = "A6Toggle",  x=16+52*3,  y=60+167*2, radius=30, tooltip="A6  T-1"},
 		{ID = "A8Toggle",  x=16+52*4,  y=60+167*2, radius=30, tooltip="A8  Pneumatic valves #1, #2"},
 		{ID = "A20Toggle", x=16+52*5,  y=60+167*2, radius=30, tooltip="A20 Drive/brake circuit control, train wire 20"},
@@ -402,7 +403,9 @@ ENT.ButtonMap["Battery"] = {
 	buttons = {
 		{ID = "BPSToggle", x=64, y=71, radius=70, tooltip="РЦ-БПС: Блок ПротивоСкатывания\nRC-BPS: Against Rolling System"},
 		{ID = "RC1Toggle", x=64, y=185, radius=70, tooltip="РЦ-1: Разъединитель цепей АРС\nRC-1: ARS circuits disconnect"},
+		{ID = "RC1Pl",x=45, y=225, radius=20, tooltip="Пломба РЦ-1\nRC-1 plomb"},
 		{ID = "UOSToggle", x=185, y=185, radius=70, tooltip="РЦ-УОС: Устройство ограничения скорости\nRC-UOS: Speed Limitation Device"}, 
+		{ID = "UOSPl",x=165, y=225, radius=20, tooltip="Пломба РЦ-УОС\nRC-UOS plomb"},
 		{ID = "VBToggle", x=64, y=299, radius=70, tooltip="ВБ: Выключатель батареи\nVB: Battery on/off"},
 		{ID = "VPAToggle",		x=185, y=185, radius=70, tooltip="ВПА: Включение поездной аппаратуры комплексной системы движения(АРС)\nVPA: Train equipment enable(ARS)"},
 	}
@@ -416,9 +419,11 @@ ENT.ButtonMap["Battery_2"] = {
 	
 	buttons = {
 		{ID = "RC1Toggle", x=64, y=68, radius=70, tooltip="РЦ-1: Разъединитель цепей АРС\nRC-1: ARS circuits disconnect"},
+		{ID = "1:RC1Pl",x=45, y=108, radius=20, tooltip="Пломба РЦ-1\nRC-1 plomb"},
 		{ID = "VBToggle", x=220, y=68, radius=70, tooltip="ВБ: Выключатель батареи\nVB: Battery on/off"},
 		{ID = "BPSToggle", x=356, y=68, radius=70, tooltip=" РЦ-БПС: Блок ПротивоСкатывания\nRC-BPS: Against Rolling System"},
 		{ID = "UOSToggle", x=215, y=215, radius=70, tooltip="РЦ-УОС: Устройство ограничения скорости\nRC-UOS: Speed Limitation Device"},
+		{ID = "1:UOSPl",x=195, y=255, radius=20, tooltip="Пломба РЦ-УОС\nRC-UOS plomb"},
 		{ID = "VPAToggle",		x=215, y=215, radius=70, tooltip="ВПА: Включение поездной аппаратуры комплексной системы движения(АРС)\nVPA: Train equipment enable(ARS)"},
 	}
 }
@@ -845,9 +850,9 @@ Metrostroi.ClientPropForButton("KAH",{
 	skin = 1,
 	z = 3,
 })
-Metrostroi.ClientPropForButton("KAHP",{
+Metrostroi.ClientPropForButton("KAHPl",{
 	panel = "Front",
-	button = "KAHP",
+	button = "KAHPl",
 	model = "models/metrostroi_train/81/plomb_b.mdl",
 	ang = 110,
 })
@@ -863,9 +868,9 @@ Metrostroi.ClientPropForButton("VAH",{
 	button = "VAHToggle",
 	model = "models/metrostroi/81-717/switch04.mdl",
 })
-Metrostroi.ClientPropForButton("VAHP",{
+Metrostroi.ClientPropForButton("VAHPl",{
 	panel = "Front",
-	button = "VAHP",
+	button = "VAHPl",
 	model = "models/metrostroi_train/81/plomb.mdl",
 })
 
@@ -889,9 +894,9 @@ Metrostroi.ClientPropForButton("OtklAVU",{
 	button = "OtklAVUToggle",
 	model = "models/metrostroi/81-717/switch04.mdl",
 })
-Metrostroi.ClientPropForButton("OtklAVUP",{
+Metrostroi.ClientPropForButton("OtklAVUPl",{
 	panel = "Main",
-	button = "OtklAVUP",
+	button = "OtklAVUPl",
 	model = "models/metrostroi_train/81/plomb.mdl",
 })
 Metrostroi.ClientPropForButton("KRZD",{
@@ -968,24 +973,24 @@ Metrostroi.ClientPropForButton("KRP",{
 	model = "models/metrostroi_train/81/button2.mdl",
 	skin = 4
 })
-Metrostroi.ClientPropForButton("VDL_Main",{
+Metrostroi.ClientPropForButton("KDLR",{
 	panel = "Main",
-	button = "VDLSet",
+	button = "KDLRSet",
 	model = "models/metrostroi_train/81/button.mdl",
 	skin = 7,
 	z=2
 })	
-Metrostroi.ClientPropForButton("VDL_light",{
+Metrostroi.ClientPropForButton("KDLR_light",{
 	panel = "Main",
-	button = "VDLSet",
+	button = "KDLRSet",
 	model = "models/metrostroi_train/81/button_light.mdl",
 	ignorepanel = true,
 	skin = 1,
 	z=2
 })
-Metrostroi.ClientPropForButton("VDLK",{
+Metrostroi.ClientPropForButton("KDLRK",{
 	panel = "Main",
-	button = "VDLKToggle",
+	button = "KDLRKToggle",
 	model = "models/metrostroi_train/81/krishka.mdl",
 	ang = 0,
 	z = -5
@@ -1136,9 +1141,9 @@ Metrostroi.ClientPropForButton("PS2",{
 	button = "PS2",
 	model = "models/metrostroi/81-717/switch04.mdl"
 })
-Metrostroi.ClientPropForButton("PS2P",{
+Metrostroi.ClientPropForButton("PS2Pl",{
 	panel = "Main",
-	button = "PS2P",
+	button = "PS2Pl",
 	model = "models/metrostroi_train/81/plomb.mdl",
 })
 Metrostroi.ClientPropForButton("L_1",{
@@ -1427,7 +1432,14 @@ ENT.ClientProps["L_5"] ={
 	pos = Vector(407.3,-10.5+1*3.26,47-3*10.6),
 	ang = Angle(90,0,0)
 }
+ENT.ClientProps["A5Pl"] ={	
+	model = "models/metrostroi_train/81/plomb_b.mdl",
+	pos = Vector(408.4,-10.5+2*3.26,44.55-2*10.6),
+	ang = Angle(46,0,0)
+}
+
 Metrostroi.InsertHide("AV","L_5")
+Metrostroi.InsertHide("AV","A5Pl")
 
 for x=0,11 do
 	for y=0,3 do
@@ -1446,7 +1458,13 @@ ENT.ClientProps["L_5_1"] ={
 	pos = Vector(407.3,-10.5+1*3.26,47-3*10.6)+ Vector(12,-47,0.5),
 	ang = Angle(90,0,0)
 }
+ENT.ClientProps["A5Pl_1"] ={	
+	model = "models/metrostroi_train/81/plomb_b.mdl",
+	pos = Vector(408.5,-10.5+2*3.26,44.55-2*10.6)+ Vector(12,-47.05,0.65),
+	ang = Angle(42,0,0)
+}
 Metrostroi.InsertHide("AV_1","L_5_1")
+Metrostroi.InsertHide("AV_1","A5Pl_1")
 --[[
 ]]
 Metrostroi.ClientPropForButton("battery",{
@@ -1464,6 +1482,19 @@ Metrostroi.ClientPropForButton("UOS",{
 	panel = "Battery",
 	button = "UOSToggle",	
 	model = "models/metrostroi/81-717/rc.mdl",
+})
+Metrostroi.ClientPropForButton("RC1Pl",{
+	panel = "Battery",
+	button = "RC1Pl",	
+	model = "models/metrostroi_train/81/plomb.mdl",
+	z = 2,
+})
+
+Metrostroi.ClientPropForButton("UOSPl",{
+	panel = "Battery",
+	button = "UOSPl",	
+	model = "models/metrostroi_train/81/plomb.mdl",
+	z = 2,
 })
 
 Metrostroi.ClientPropForButton("VPA",{
@@ -1493,6 +1524,19 @@ Metrostroi.ClientPropForButton("UOS_2",{
 	panel = "Battery_2",
 	button = "UOSToggle",	
 	model = "models/metrostroi/81-717/rc.mdl",
+})
+Metrostroi.ClientPropForButton("RC1Pl_2",{
+	panel = "Battery_2",
+	button = "1:RC1Pl",	
+	model = "models/metrostroi_train/81/plomb.mdl",
+	z = 2,
+})
+
+Metrostroi.ClientPropForButton("UOSPl_2",{
+	panel = "Battery_2",
+	button = "1:UOSPl",	
+	model = "models/metrostroi_train/81/plomb.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("VPA_2",{
 	panel = "Battery_2",
@@ -1783,22 +1827,54 @@ function ENT:Think()
 	self:Animate("VUD2",			self:GetPackedBool(13) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VDL",				self:GetPackedBool(14) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VZ1",				self:GetPackedBool("VZ1") and 1 or 0, 	0,1, 16, false)
-	self:Animate("VDL_Main",				self:GetPackedBool(14) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("VDL_light","VDL_Main")
+	self:Animate("KDLR",				self:GetPackedBool("KDLR") and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDLR_light","KDLR")
 	self:Animate("KDL",				self:GetPackedBool(15) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDL_light","KDL")
 	self:Animate("KDP",				self:GetPackedBool(16) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDP_light","KDP")
 	self:Animate("KDLK",				self:GetPackedBool("KDLK") and 1 or 0, 	0.32,0.67, 4, false)
-	self:Animate("VDLK",				self:GetPackedBool("VDLK") and 1 or 0, 	0.32,0.67, 4, false)
+	self:Animate("KDLRK",				self:GetPackedBool("KDLRK") and 1 or 0, 	0.32,0.67, 4, false)
+	self:Animate("KDLRK",				self:GetPackedBool("KDLRK") and 1 or 0, 	0.32,0.67, 4, false)
 	self:Animate("KDPK",				self:GetPackedBool("KDPK") and 1 or VAD*0.17, 	0.34,0.69, 4, false)
 	self:Animate("KAHK",				self:GetPackedBool("KAHK") and 1 or 0, 	0.32,0.68, 4, false)
 	self:HideButton("KDLSet",self:GetPackedBool("KDLK"))
-	self:HideButton("VDLSet",self:GetPackedBool("VDLK"))
+	self:HideButton("KDLRSet",self:GetPackedBool("KDLRK"))
 	self:HideButton("KDPSet",self:GetPackedBool("KDPK"))
 	self:HideButton("KAHSet",self:GetPackedBool("KAHK"))
+
+	self:SetCSBodygroup("UOSPl",1,self:GetPackedBool("UOSPl") and 0 or 1)
+	self:SetCSBodygroup("VAHPl",1,self:GetPackedBool("VAHPl") and 0 or 1)
+	self:SetCSBodygroup("OtklAVUPl",1,self:GetPackedBool("OtklAVUPl") and 0 or 1)
+	self:SetCSBodygroup("RC1Pl",1,self:GetPackedBool("RC1Pl") and 0 or 1)
+	self:SetCSBodygroup("KAHPl",1,self:GetPackedBool("KAHPl") and 0 or 1)
+	self:SetCSBodygroup("A5Pl",1,self:GetPackedBool("A5Pl") and 0 or 1)
+	self:SetCSBodygroup("RC1Pl_2",1,self:GetPackedBool("RC1Pl") and 0 or 1)
+	self:SetCSBodygroup("UOSPl_2",1,self:GetPackedBool("UOSPl") and 0 or 1)
+	self:SetCSBodygroup("A5Pl_1",1,self:GetPackedBool("A5Pl") and 0 or 1)
+	
+	self:HideButton("UOS",self:GetPackedBool("UOSPl"))
+	self:HideButton("VAH",self:GetPackedBool("VAHPl"))
+	self:HideButton("OtklAVU",self:GetPackedBool("OtklAVUPl"))
+	self:HideButton("RC1",self:GetPackedBool("RC1Pl"))
+	self:HideButton("KAH",self:GetPackedBool("KAHPl"))
+	self:HideButton("KAHK",self:GetPackedBool("KAHPl"))
+	self:HideButton("1:A5Toggle",self:GetPackedBool("A5Pl"))
+	self:HideButton("RC1_2",self:GetPackedBool("RC1Pl"))
+	self:HideButton("UOS_2",self:GetPackedBool("UOSPl"))
+	self:HideButton("2:A5Toggle",self:GetPackedBool("A5Pl"))
+		
+	self:HideButton("UOSPl",not self:GetPackedBool("UOSPl"))
+	self:HideButton("VAHPl",not self:GetPackedBool("VAHPl"))
+	self:HideButton("OtklAVUPl",not self:GetPackedBool("OtklAVUPl"))
+	self:HideButton("RC1Pl",not self:GetPackedBool("RC1Pl"))
+	self:HideButton("KAHPl",not self:GetPackedBool("KAHPl"))
+	self:HideButton("1:A5Pl",not self:GetPackedBool("A5Pl"))
+	self:HideButton("RC1Pl_2",not self:GetPackedBool("RC1Pl"))
+	self:HideButton("UOSPl_2",not self:GetPackedBool("UOSPl"))
+	self:HideButton("2:A5Pl",not self:GetPackedBool("A5Pl"))
 	
 	
-	local An = self:Animate("VDLr",self:GetPackedBool("Left") and 1 or 0,0,1,10,false)
+	local An = self:Animate("KDLRr",self:GetPackedBool("Left") and 1 or 0,0,1,10,false)
 	self:ShowHideSmooth("KDL_light",An)
-	self:ShowHideSmooth("VDL_light",An)
+	self:ShowHideSmooth("KDLR_light",An)
 	local An = self:Animate("KDPr",self:GetPackedBool("Right") and 1 or 0,0,1,10,false)
 	self:ShowHideSmooth("KDP_light",An)
 	

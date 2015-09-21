@@ -325,7 +325,7 @@ function TRAIN_SYSTEM.Solve81_717(Train,Triggers)
 	Triggers["SDRK_Shunt"]( 1.0 - (0.20+0.20*C((RK >= 2) and (RK <= 7))*C(P == 1))*Train.LK2.Value )
 	S["33-33Aa"] = Train.KD.Value+Train.VAD.Value
 	S["U2-20"] = Train.KV["U2-20a"]+Train.KV["U2-20b"]
-	S["31V'-31V"] = (Train.KDL.Value+Train.VDL.Value)
+	S["31V'-31V"] = (Train.KDL.Value+Train.KDLR.Value+Train.VDL.Value)
 	S["10AK-VAH1"] = Train.VAH.Value+Train.RPB.Value
 	S["33B-33AVU"] = Train.AVU.Value+Train.OtklAVU.Value
 	S["1T-1P"] = Train.NR.Value+Train.RPU.Value

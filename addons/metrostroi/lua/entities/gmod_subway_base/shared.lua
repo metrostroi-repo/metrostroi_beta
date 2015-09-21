@@ -72,6 +72,8 @@ function ENT:InitializeSounds()
 		"subway_trains/switch_6.wav",
 		"subway_trains/switch_7.wav",
 	}
+	
+	self.SoundNames["kurlik"]		= "subway_trains/new/kurlik.wav"
 	self.SoundNames["switch4"]		= "subway_trains/switch_4.wav"
 	self.SoundNames["switch5"]		= "subway_trains/switch_8.wav"
 	self.SoundNames["switch6"]		= "subway_trains/switch_9.wav"
@@ -417,7 +419,7 @@ function ENT:LoadSystem(a,b,...)
 	if SERVER and Turbostroi then
 		-- Load system into turbostroi
 		if (not GLOBAL_SKIP_TRAIN_SYSTEMS) then
-			Turbostroi.LoadSystem(sys_name,name)
+			Turbostroi.LoadSystem(sys_name,name,...)
 		end
 		
 		-- Load system locally (this may load any systems nested in the initializer)

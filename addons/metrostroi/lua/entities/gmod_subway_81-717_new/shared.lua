@@ -60,7 +60,7 @@ function ENT:InitializeSystems()
 	-- Пневмосистема 81-705
 	self:LoadSystem("Pneumatic","81_717_Pneumatic")
 	-- Панель управления 81-705
-	self:LoadSystem("Panel","81_705_Panel")
+	self:LoadSystem("Panel","81_717_Panel")
 	-- Everything else
 	self:LoadSystem("Battery")
 	self:LoadSystem("PowerSupply","BPSN")
@@ -69,38 +69,4 @@ function ENT:InitializeSystems()
 	self:LoadSystem("PA-KSD")
 	self:LoadSystem("Horn")
 	self:LoadSystem("Announcer")
-	
-	
-	-- Extra switches not on Ezh3
-	self:LoadSystem("L_1","Relay","Switch", { normally_closed = true })
-	self:LoadSystem("L_2","Relay","Switch", { normally_closed = true })
-	self:LoadSystem("L_3","Relay","Switch", { normally_closed = true })
-	self:LoadSystem("L_4","Relay","Switch", { normally_closed = true })
-	self:LoadSystem("L_5","Relay","Switch", { normally_closed = true })
-	self:LoadSystem("DoorSelect","Relay","Switch", { normally_closed = false })
-	self:LoadSystem("VZ1","Relay","Switch")
-	self:LoadSystem("KAH","Relay","Switch")
-	
-	self:LoadSystem("Custom1","Relay","Switch")
-	self:LoadSystem("Custom2","Relay","Switch")
-	self:LoadSystem("Custom3","Relay","Switch")
-	self:LoadSystem("Custom4","Relay","Switch")
-	self:LoadSystem("Custom5","Relay","Switch")
-	self:LoadSystem("Custom6","Relay","Switch")
-	self:LoadSystem("Custom7","Relay","Switch")
-	self:LoadSystem("Custom8","Relay","Switch")
-	
-	self:LoadSystem("CustomA","Relay","Switch")
-	self:LoadSystem("CustomB","Relay","Switch")
-	self:LoadSystem("CustomC","Relay","Switch")
-	self:LoadSystem("CustomD","Relay","Switch")
-	self:LoadSystem("CustomE","Relay","Switch")
-	self:LoadSystem("CustomF","Relay","Switch")
-	self:LoadSystem("CustomG","Relay","Switch")
-	
-	self:LoadSystem("Autodrive","Relay","Switch")
-	
-	self:LoadSystem("Wiper","Relay","Switch")
-	
-
 end

@@ -11,6 +11,16 @@ function ENT:Initialize()
 		Type = "81",
 		Name = "81-717",
 	}
+	self.Plombs = {
+		VAH = true,
+		OtklAVU = true,
+		KAH = true,
+		KAHK = true,
+		RC1 = true,
+		UOS = true,
+		A5 = true,
+		Init = true,
+	}
 	-- Set model and initialize
 	self.MaskType = 1
 	self.LampType = 1
@@ -338,6 +348,10 @@ end
 
 --------------------------------------------------------------------------------
 function ENT:Think()
+	if self.Plombs and self.Plombs.Init then
+		self.Plombs.Init = nil
+		for k,v in pairs(self.Plombs) do self[k]:TriggerInput("Block",true) end
+	end
 	if self.YAR_13A.Slope == 0 and self:GetAngles().pitch <= -1 then
 		self.YAR_13A:TriggerInput("Slope",true)
 	end
@@ -692,7 +706,7 @@ function ENT:Think()
 	self:SetPackedBool("Left",(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
 	self:SetPackedBool("Right",(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 1) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
 	self:SetPackedBool("KDLK",self.KDLK.Value > 0)
-	self:SetPackedBool("VDLK",self.VDLK.Value > 0)
+	self:SetPackedBool("KDLRK",self.KDLRK.Value > 0)
 	self:SetPackedBool("KDPK",self.KDPK.Value > 0)
 	self:SetPackedBool("KAHK",self.KAHK.Value > 0)
 	--self:SetLightPower(27,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
@@ -745,6 +759,7 @@ function ENT:Think()
 	self:SetPackedBool(12,self.VUD1.Value == 1.0)
 	self:SetPackedBool(13,self.VUD2.Value == 1.0)
 	self:SetPackedBool(14,self.VDL.Value == 1.0)
+	self:SetPackedBool("KDLR",self.KDLR.Value == 1.0)
 	self:SetPackedBool(15,self.KDL.Value == 1.0)
 	self:SetPackedBool(16,self.KDP.Value == 1.0)
 	self:SetPackedBool(17,self.KRZD.Value == 1.0)
@@ -842,7 +857,10 @@ function ENT:Think()
 	self:SetPackedBool("Wiper",self.Wiper.Value == 1)
 	self:SetPackedBool("ConverterProtection",self.ConverterProtection.Value == 1)
 	self:SetPackedBool("RZP",self:ReadTrainWire(35) == 1)
-	
+	for k,v in pairs(self.Plombs) do
+		self:SetPackedBool(k.."Pl",v)
+		if not v then v = nil end
+	end
 	-- Signal if doors are open or no to platform simulation
 	self.LeftDoorsOpen = 
 		(self.Pneumatic.LeftDoorState[1] > 0.5) or
@@ -1086,7 +1104,7 @@ function ENT:Think()
 		if self:ReadTrainWire(5)*self:ReadTrainWire(4) > 0 then
 			self:TriggerInput("VUOpenBypass")
 			if self.VU.TargetValue == 0 then
-				self:PlayOnce("av_off","cabin")
+				--self:PlayOnce("av_off","cabin")
 			end
 		end
 		self.RevCheck = nil
@@ -1116,7 +1134,7 @@ function ENT:Check2Cab(button,breaker,func,isbreaker)
 			self:TriggerInput((isbreaker and button or breaker).."OpenBypass")
 			if button:find("BPSN") then self.RZP:TriggerInput("Close",1) end
 			if breaker:find("BPSN") then self.RZP:TriggerInput("Close",1) end
-			self:PlayOnce("av_off","cabin")
+			--self:PlayOnce("av_off","cabin")
 		end
 	end
 end
@@ -1129,10 +1147,23 @@ function ENT:PhysicsCollide( colData, collider )
 		--print(collider)
 	end
 end
+function ENT:BrokePlomb(but,nosnd)
+	self[but]:TriggerInput("Block",false) 
+	self.Plombs[but] = false
+	local drv = self:GetDriverName()
+	if not nosnd then RunConsoleCommand("say",drv.." broke seal om "..but.."!") end
+end
 --------------------------------------------------------------------------------
 function ENT:OnButtonPress(button,state)
 	if button:find(":") then
 		button = string.Explode(":",button)[2]
+	end
+	if button:sub(-2,-1) == "Pl" and self.Plombs[button:sub(1,-3)]  then
+		self:BrokePlomb(button:sub(1,-3))
+		if button:sub(1,-3) == "KAH" then
+			self:BrokePlomb("KAHK",true)
+		end
+		self:PlayOnce("kurlik","cabin",0.7)
 	end
 	--self["PA-KSD"]:TriggerInput("Press",button)
 	if button == "BPSNonToggle" then
@@ -1161,30 +1192,10 @@ function ENT:OnButtonPress(button,state)
 	if button == "CabinDoor" then
 		self.CabinDoor = not self.CabinDoor
 	end
-	if button == "VAHToggle" then
-		local drv = self:GetDriverName()
-		local state = self.VAH.TargetValue < 0.5 and "enabled" or "disabled"
-		RunConsoleCommand("say",drv.." "..state.." VAH!")
-	end
-	if button == "OtklAVUToggle" then
-		local drv = self:GetDriverName()
-		local state = self.OtklAVU.TargetValue < 0.5 and "enabled" or "disabled"
-		RunConsoleCommand("say",drv.." "..state.." OtklAVU!")
-	end
 	if button == "VADToggle" then
 		local drv = self:GetDriverName()
 		local state = self.VAD.TargetValue < 0.5 and "enabled" or "disabled"
 		RunConsoleCommand("say",drv.." "..state.." VAD!")
-	end
-	if button == "RC1Toggle" then
-		local drv = self:GetDriverName()
-		local state = self.RC1.TargetValue < 0.5 and "enabled" or "disabled"
-		RunConsoleCommand("say",drv.." "..state.." RC1!")
-	end
-	if button == "UOSToggle" then
-		local drv = self:GetDriverName()
-		local state = self.UOS.TargetValue < 0.5 and "enabled" or "disabled"
-		RunConsoleCommand("say",drv.." "..state.." UOS!")
 	end
 	if button == "UAVAToggle" then
 		local drv = self:GetDriverName()
@@ -1195,11 +1206,6 @@ function ENT:OnButtonPress(button,state)
 		local drv = self:GetDriverName()
 		local state = self.BPS.TargetValue < 0.5 and "enabled" or "disabled"
 		RunConsoleCommand("say",drv.." "..state.." BPS!")
-	end
-	if button == "A5Toggle" then
-		local drv = self:GetDriverName()
-		local state = self.A5.TargetValue < 0.5 and "enabled" or "disabled"
-		RunConsoleCommand("say",drv.." "..state.." A5!")
 	end
 	if button == "AirDistributorDisconnectToggle" then return end
 	if button == "NextSign" then
@@ -1419,9 +1425,9 @@ function ENT:OnButtonPress(button,state)
 		local name = string.sub(button,1,(string.find(button,"Toggle") or 0)-1)
 		if self[name] then
 			if self[name].Value > 0.5 then
-				self:PlayOnce("av_off","cabin")
+				--self:PlayOnce("av_off","cabin")
 			else
-				self:PlayOnce("av_on","cabin")
+				--self:PlayOnce("av_on","cabin")
 			end
 		end
 		return
@@ -1430,14 +1436,14 @@ function ENT:OnButtonPress(button,state)
 	if (button == "UAVAToggle") then
 		if self.UAVA then
 			if self.UAVA.Value > 0.5 then
-				self:PlayOnce("uava_off","cabin")
+				--self:PlayOnce("uava_off","cabin")
 			else
-				self:PlayOnce("uava_off","cabin")
+				--self:PlayOnce("uava_off","cabin")
 			end
 		end
 		return
 	end
-	if button == "PBSet" then self:PlayOnce("switch6","cabin",0.55,100) return end
+	--if button == "PBSet" then self:PlayOnce("switch6","cabin",0.55,100) return end
 	if button == "GVToggle" then
 		if self.GV.Value > 0.5 then
 			self:PlayOnce("revers_f",nil,0.7)
@@ -1449,30 +1455,30 @@ function ENT:OnButtonPress(button,state)
 
 	if button == "VUD1Toggle" then 
 		if self.VUD1.Value > 0.5 then
-			self:PlayOnce("vu22_off","cabin")
+			--self:PlayOnce("vu22_off","cabin")
 		else
-			self:PlayOnce("vu22_on","cabin")
+			--self:PlayOnce("vu22_on","cabin")
 		end
 		return
 	end
 	if button == "VUD2Toggle" then 
 		if self.VUD2.Value > 0.5 then
-			self:PlayOnce("vu22_off","instructor")
+			--self:PlayOnce("vu22_off","instructor")
 		else
-			self:PlayOnce("vu22_on","instructor")
+			--self:PlayOnce("vu22_on","instructor")
 		end
 		return
 	end
 	if button == "VUD1Set" then 
-		self:PlayOnce("vu22_on","cabin")
+		--self:PlayOnce("vu22_on","cabin")
 		return
 	end
 	if button == "VUD2Set" then 
-		self:PlayOnce("vu22_on","instructor")
+		--self:PlayOnce("vu22_on","instructor")
 		return
 	end
 	if button == "VDLSet" then
-		self:PlayOnce("vu22_on","instructor")
+		--self:PlayOnce("vu22_on","instructor")
 		return
 	end
 	
@@ -1491,25 +1497,25 @@ function ENT:OnButtonPress(button,state)
 
 	if button == "R_Program1Helper" then
 		self.R_Program1:TriggerInput("Set",1)
-		self:PlayOnce("inf_on","instructor",0.7)
+		--self:PlayOnce("inf_on","instructor",0.7)
 		return
 	end
 	if button == "R_Program2Helper" then
 		self.R_Program2:TriggerInput("Set",1)
-		self:PlayOnce("inf_on","instructor",0.7)
+		--self:PlayOnce("inf_on","instructor",0.7)
 		return
 	end
 	if string.find(button,"R_Program") then
-		self:PlayOnce("inf_on","cabin",0.7)
+		--self:PlayOnce("inf_on","cabin",0.7)
 		return
 	end
 	
 	-- Generic button or switch sound
 	if string.find(button,"Set") or string.find(button,"DURASelect") then
-		self:PlayOnce("button_press","cabin")
+		--self:PlayOnce("button_press","cabin")
 	end
 	if string.find(button,"Toggle") then
-		self:PlayOnce("switch2","cabin",0.7)
+		--self:PlayOnce("switch2","cabin",0.7)
 	end
 end
 
@@ -1529,7 +1535,7 @@ function ENT:OnButtonRelease(button)
 		self:OnButtonRelease("KRPSet")
 	end
 
-	if button == "PBSet" then self:PlayOnce("switch6_off","cabin",0.55,100) return end
+	--if button == "PBSet" then self:PlayOnce("switch6_off","cabin",0.55,100) return end
 	--[[
 	if (button == "PneumaticBrakeDown") and (self.Pneumatic.DriverValvePosition == 1) then
 		self.Pneumatic:TriggerInput("BrakeSet",2)
@@ -1541,38 +1547,38 @@ function ENT:OnButtonRelease(button)
 	end
 	]]
 	if button == "VUD1Set" then 
-		self:PlayOnce("vu22_off","cabin")
+		----self:PlayOnce("vu22_off","cabin")
 		return
 	end
 	if button == "VUD2Set" then 
-		self:PlayOnce("vu22_off","cabin")
+		----self:PlayOnce("vu22_off","cabin")
 		return
 	end
 	if button == "VDLSet" then
-		self:PlayOnce("vu22_off","instructor")
+		----self:PlayOnce("vu22_off","instructor")
 		return
 	end
 	
-	if (not string.find(button,"KVT")) and string.find(button,"KV") then return end
-	if string.find(button,"KRU") then return end
+	--if (not string.find(button,"KVT")) and string.find(button,"KV") then return end
+	--if string.find(button,"KRU") then return end
 
 	if button == "R_Program1Helper" then
 		self.R_Program1:TriggerInput("Set",0)
-		self:PlayOnce("inf_off","instructor",0.7)
-		return
+		----self:PlayOnce("inf_off","instructor",0.7)
+		--return
 	end
 	if button == "R_Program2Helper" then
 		self.R_Program2:TriggerInput("Set",0)
-		self:PlayOnce("inf_off","instructor",0.7)
-		return
+		----self:PlayOnce("inf_off","instructor",0.7)
+		--return
 	end
-	if string.find(button,"R_Program") then
-		self:PlayOnce("inf_off","cabin",0.7)
-		return
-	end
+	--if string.find(button,"R_Program") then
+		----self:PlayOnce("inf_off","cabin",0.7)
+		--return
+	--end
 
-	if string.find(button,"Set") or string.find(button,"DURASelect") then
-		self:PlayOnce("button_release","cabin")
+	if string.find(button,"DURASelect") then --string.find(button,"Set") or 
+		----self:PlayOnce("button_release","cabin")
 	end
 end
 
@@ -1591,6 +1597,6 @@ end
 function ENT:OnTrainWireError(k)
 	if k == 4 then
 		--self.VU:TriggerInput("Open",1.0)
-		--self:PlayOnce("av_off","cabin")
+		----self:PlayOnce("av_off","cabin")
 	end
 end

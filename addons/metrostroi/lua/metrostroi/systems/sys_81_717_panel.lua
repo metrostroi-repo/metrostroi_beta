@@ -1,11 +1,11 @@
 ﻿--------------------------------------------------------------------------------
 -- Панель управления Еж3, Ем508Т, Ема
 --------------------------------------------------------------------------------
-Metrostroi.DefineSystem("81_705_Panel")
+Metrostroi.DefineSystem("81_717_Panel")
 
 function TRAIN_SYSTEM:Initialize()
 	-- Выключатель батареи (ВБ)
-	self.Train:LoadSystem("VB","Relay","VB-11", {RC = true})
+	self.Train:LoadSystem("VB","Relay","VB-11")
 
 	-- Buttons on the panel
 	self.Train:LoadSystem("DIPon","Relay","Switch", {button = true})
@@ -18,8 +18,9 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("VUS","Relay","Switch", {switch = true})
 	self.Train:LoadSystem("VUD1","Relay","Switch", { normally_closed = true, vud = true })
 	self.Train:LoadSystem("VUD2","Relay","Switch", { normally_closed = true, vud = true }) -- Doors close
-	self.Train:LoadSystem("VDL","Relay","Switch", {switch = true}) -- Doors left open
+	self.Train:LoadSystem("VDL","Relay","Switch", {vud = true}) -- Doors left open
 	self.Train:LoadSystem("KDL","Relay","Switch", {button = true})
+	self.Train:LoadSystem("KDLR","Relay","Switch", {button = true})
 	self.Train:LoadSystem("KDP","Relay","Switch", {button = true})
 	self.Train:LoadSystem("KRZD","Relay","Switch", {button = true})
 	self.Train:LoadSystem("KSN","Relay","Switch", {button = true})
@@ -36,7 +37,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("R_Radio","Relay","Switch", {switch = true})
 	self.Train:LoadSystem("R_Program1","Relay","Switch", {programm = true})
 	self.Train:LoadSystem("R_Program2","Relay","Switch", {programm = true})
-	self.Train:LoadSystem("RC1","Relay","Switch",{ normally_closed = true })
+	self.Train:LoadSystem("RC1","Relay","Switch",{ rc = true,normally_closed = true })
 	
 	self.Train:LoadSystem("Radio13","Relay","Switch", {button = true})
 	self.Train:LoadSystem("ARS13","Relay","Switch", {button = true})
@@ -93,12 +94,41 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("A80","Relay","VA21-29")
 	self.Train:LoadSystem("VU","Relay","VA21-29")
 	self.Train:LoadSystem("KDLK","Relay","Switch", { normally_closed = true })
-	self.Train:LoadSystem("VDLK","Relay","Switch", { normally_closed = true })
+	self.Train:LoadSystem("KDLRK","Relay","Switch", { normally_closed = true })
 	self.Train:LoadSystem("KDPK","Relay","Switch", { normally_closed = true })
 	self.Train:LoadSystem("KAHK","Relay","Switch", { normally_closed = true })
 	
 	-- 81-717 special
 	self.Train:LoadSystem("BPSNon","Relay","Switch", { switch = true })
+	self.Train:LoadSystem("L_1","Relay","Switch",{switch = true})
+	self.Train:LoadSystem("L_2","Relay","Switch",{switch = true})
+	self.Train:LoadSystem("L_3","Relay","Switch",{switch = true})
+	self.Train:LoadSystem("L_4","Relay","Switch",{switch = true})
+	self.Train:LoadSystem("L_5","Relay","VA21-29")
+	self.Train:LoadSystem("DoorSelect","Relay","Switch", { switch = true, normally_closed = false })
+	self.Train:LoadSystem("VZ1","Relay","Switch", {button = true})
+	self.Train:LoadSystem("KAH","Relay","Switch", {button = true})
+	
+	self.Train:LoadSystem("Custom1","Relay","Switch")
+	self.Train:LoadSystem("Custom2","Relay","Switch")
+	self.Train:LoadSystem("Custom3","Relay","Switch")
+	self.Train:LoadSystem("Custom4","Relay","Switch")
+	self.Train:LoadSystem("Custom5","Relay","Switch")
+	self.Train:LoadSystem("Custom6","Relay","Switch")
+	self.Train:LoadSystem("Custom7","Relay","Switch")
+	self.Train:LoadSystem("Custom8","Relay","Switch")
+	
+	self.Train:LoadSystem("CustomA","Relay","Switch")
+	self.Train:LoadSystem("CustomB","Relay","Switch")
+	self.Train:LoadSystem("CustomC","Relay","Switch")
+	self.Train:LoadSystem("CustomD","Relay","Switch")
+	self.Train:LoadSystem("CustomE","Relay","Switch")
+	self.Train:LoadSystem("CustomF","Relay","Switch")
+	self.Train:LoadSystem("CustomG","Relay","Switch")
+	
+	self.Train:LoadSystem("Autodrive","Relay","Switch")
+	
+	self.Train:LoadSystem("Wiper","Relay","Switch")
 	
 	-- Map of AV switches to indexes on panel
 	self:InitializeAVMap()
