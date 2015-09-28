@@ -199,10 +199,10 @@ function ENT:CreateJointSound(sndnum)
 end
 --------------------------------------------------------------------------------
 function ENT:Think()
-	if self.YAR_13A.Slope == 0 and self:GetAngles().pitch <= -1 then
+	if self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
 		self.YAR_13A:TriggerInput("Slope",true)
 	end
-	if self.YAR_13A.Slope > 0 and self:GetAngles().pitch > -1 then
+	if self.YAR_13A.Slope > 0 and self:GetAngles().pitch*self.SpeedSign > -1 then
 		self.YAR_13A:TriggerInput("Slope",false)
 	end
 	if self.Lights[70] and self.LampType and self.LampType == 1 and self.Lights[70][4] ~= Color(255,175,50) then
