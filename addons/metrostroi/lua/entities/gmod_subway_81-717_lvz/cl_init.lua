@@ -158,6 +158,59 @@ ENT.ButtonMap["PAKSD2"] = {
 	scale = 0.0185,
 	props = {},
 }
+ENT.ButtonMap["PAM"] = {
+	pos = Vector(455.3,30.8,7.0), --31.4
+	ang = Angle(0,-90,57.0),
+	width = 265,
+	height = 245,
+	scale = 0.0625,
+	
+	buttons = {
+		{ID = "BCCDSet", x=160, y=220, radius=20, tooltip="ПА-М:КСЗД"},
+		{ID = "VZPToggle", x=190, y=220, radius=20, tooltip="ПА-М:ВЗП"},
+	}
+}
+ENT.ButtonMap["PAM1"] = {
+	pos = Vector(453.5,30.8,6.2), --31.4
+	ang = Angle(0,-90,58.0),
+	width = 50,
+	height = 200,
+	scale = 0.0625,
+	
+	buttons = {
+		
+		{ID = "BPSet", x=11 +14*2, y=45, radius=10, tooltip="ПА-М:P"},
+		
+		{ID = "BFSet", x=11 +14*0, y=71 + 17*0, radius=10, tooltip="ПА-М:F"},
+		{ID = "BUpSet", x=11 +14*1, y=71 + 17*0, radius=10, tooltip="ПА-М:Вверх"},
+		{ID = "BMSet", x=11 +14*2, y=71 + 17*0, radius=10, tooltip="ПА-М:M"},
+		{ID = "BLeftSet", x=11 +14*0, y=71 + 17*1, radius=10, tooltip="ПА-М:Влево"},
+		{ID = "BDownSet", x=11 +14*1, y=71 + 17*1, radius=10, tooltip="ПА-М:Вниз"},
+		{ID = "BRightSet", x=11 +14*2, y=71 + 17*1, radius=10, tooltip="ПА-М:Вправо"},
+		
+		
+		{ID = "B1Set", x=11 +14*0, y=113 + 17*0, radius=10, tooltip="ПА-М:1"},
+		{ID = "B2Set", x=11 +14*1, y=113 + 17*0, radius=10, tooltip="ПА-М:2"},
+		{ID = "B3Set", x=11 +14*2, y=113 + 17*0, radius=10, tooltip="ПА-М:3"},
+		{ID = "B4Set", x=11 +14*0, y=113 + 17*1, radius=10, tooltip="ПА-М:4"},
+		{ID = "B5Set", x=11 +14*1, y=113 + 17*1, radius=10, tooltip="ПА-М:5"},
+		{ID = "B6Set", x=11 +14*2, y=113 + 17*1, radius=10, tooltip="ПА-М:6"},
+		{ID = "B7Set", x=11 +14*0, y=113 + 17*2, radius=10, tooltip="ПА-М:7"},
+		{ID = "B8Set", x=11 +14*1, y=113 + 17*2, radius=10, tooltip="ПА-М:8"},
+		{ID = "B9Set", x=11 +14*2, y=113 + 17*2, radius=10, tooltip="ПА-М:9"},
+		{ID = "BEscSet", x=11 +14*0, y=113 + 17*3, radius=10, tooltip="ПА-М:Отмена"},
+		{ID = "B0Set", x=11 +14*1, y=113 + 17*3, radius=10, tooltip="ПА-М:0"},
+		{ID = "BEnterSet", x=11 +14*2, y=113 + 17*3, radius=10, tooltip="ПА-М:Ввод"},
+	}
+}
+ENT.ButtonMap["PAM2"] = {
+	pos = Vector(454.65,28.4,5.65),
+	ang = Angle(0,-90,57.0),
+	width = 323,
+	height = 113,
+	scale = 0.0305,
+	props = {},
+}
 ENT.ButtonMap["ARS"] = {
 	pos = Vector(459.49,10.98,13.09),
 	ang = Angle(0,-90-0.2,56.3),
@@ -1072,8 +1125,137 @@ Metrostroi.ClientPropForButton("Radio13",{
 --Metrostroi.ClientPropForButton("Autodrive",{
 --	panel = "Main",
 --	button = "AutodriveToggle",
---	model = "models/metrostroi/81-717/switch04.mdl",
+--	model = "models/metrostroi_train/81/tumbler2.mdl",
 --})
+
+Metrostroi.ClientPropForButton("PAM_BCCD",{
+	panel = "PAM",
+	button = "BCCDSet",	
+	model = "models/metrostroi_train/81/button.mdl",
+})
+Metrostroi.ClientPropForButton("PAM_VZP",{
+	panel = "PAM",
+	button = "VZPToggle",	
+	model = "models/metrostroi_train/81/tumbler2.mdl",
+	ang = 90
+})
+Metrostroi.ClientPropForButton("PAM_BP",{
+	panel = "PAM1",
+	button = "BPSet",	
+	model = "models/metrostroi_train/81/pamp.mdl",
+	ang = 0,
+})
+
+Metrostroi.ClientPropForButton("PAM_BF",{
+	panel = "PAM1",
+	button = "BFSet",	
+	model = "models/metrostroi_train/81/pamf.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_BUp",{
+	panel = "PAM1",
+	button = "BUpSet",	
+	model = "models/metrostroi_train/81/pamup.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_BM",{
+	panel = "PAM1",
+	button = "BMSet",	
+	model = "models/metrostroi_train/81/pamM.mdl",
+	ang = 0,
+})
+
+Metrostroi.ClientPropForButton("PAM_BRight",{
+	panel = "PAM1",
+	button = "BRightSet",	
+	model = "models/metrostroi_train/81/pamright.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_BDown",{
+	panel = "PAM1",
+	button = "BDownSet",	
+	model = "models/metrostroi_train/81/pamdown.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_BLeft",{
+	panel = "PAM1",
+	button = "BLeftSet",	
+	model = "models/metrostroi_train/81/pamleft.mdl",
+	ang = 0,
+})
+
+Metrostroi.ClientPropForButton("PAM_B1",{
+	panel = "PAM1",
+	button = "B1Set",	
+	model = "models/metrostroi_train/81/pam1.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_B2",{
+	panel = "PAM1",
+	button = "B2Set",	
+	model = "models/metrostroi_train/81/pam2.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_B3",{
+	panel = "PAM1",
+	button = "B3Set",	
+	model = "models/metrostroi_train/81/pam3.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_B4",{
+	panel = "PAM1",
+	button = "B4Set",	
+	model = "models/metrostroi_train/81/pam4.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_B5",{
+	panel = "PAM1",
+	button = "B5Set",	
+	model = "models/metrostroi_train/81/pam5.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_B6",{
+	panel = "PAM1",
+	button = "B6Set",	
+	model = "models/metrostroi_train/81/pam6.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_B7",{
+	panel = "PAM1",
+	button = "B7Set",	
+	model = "models/metrostroi_train/81/pam7.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_B8",{
+	panel = "PAM1",
+	button = "B8Set",	
+	model = "models/metrostroi_train/81/pam8.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_B9",{
+	panel = "PAM1",
+	button = "B9Set",	
+	model = "models/metrostroi_train/81/pam9.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_BEsc",{
+	panel = "PAM1",
+	button = "BEscSet",	
+	model = "models/metrostroi_train/81/pamesc.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_B0",{
+	panel = "PAM1",
+	button = "B0Set",	
+	model = "models/metrostroi_train/81/pam0.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAM_BEnter",{
+	panel = "PAM1",
+	button = "BEnterSet",	
+	model = "models/metrostroi_train/81/pamenter.mdl",
+	ang = 0,
+})
 
 --PA-KSD
 Metrostroi.ClientPropForButton("Indicate",{
@@ -1091,7 +1273,8 @@ Metrostroi.ClientPropForButton("BCCD",{
 Metrostroi.ClientPropForButton("VZP",{
 	panel = "PAKSD",
 	button = "VZPToggle",	
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler2.mdl",
+	ang = 90
 })
 Metrostroi.ClientPropForButton("B7",{
 	panel = "PAKSD",
@@ -1425,6 +1608,7 @@ function ENT:Think()
 		self:HidePanel("PAKSD2",not self.Blok or self.Blok ~= 2)
 		self:HidePanel("PAM",not self.Blok or self.Blok ~= 3)
 		self:HidePanel("PAM1",not self.Blok or self.Blok ~= 3)
+		self:HidePanel("PAM2",not self.Blok or self.Blok ~= 3)
 	end
 	if self.ClientProps["KVPLight_light"] and self.ClientProps["KVPLight_light"].skin ~= self:GetNWInt("KVPType") then
 		self.ClientProps["KVPLight_light"].skin = self:GetNWInt("KVPType")
@@ -1671,43 +1855,71 @@ function ENT:Think()
 	self:Animate("UAVALever",	self:GetPackedBool(152) and 1 or 0, 	0,0.25, 128,  3,false)
 	self:Animate("EPK_disconnect",	self:GetPackedBool(155) and 0 or 1,0,0.5, 3, false)
 	self:Animate("ParkingBrake",	self:GetPackedBool(160) and 0 or 1,0,0.5, 3, false)
-	self:Animate("Indicate",self:GetPackedBool("Indicate3") and 0.4 or self:GetPackedBool("Indicate2") and 0.29 or self:GetPackedBool("Indicate1") and 0.17 or 0,0.0,1,2,false)
-	self:Animate("BCCD",self:GetPackedBool("BCCD") and 1 or 0,0,1,8,false)
-	self:Animate("VZP",self:GetPackedBool("VZP") and 1 or 0,0,1,8,false)
-	self:Animate("B7",self:GetPackedBool("B7") and 1 or 0,0,1,8,false)
-	self:Animate("B8",self:GetPackedBool("B8") and 1 or 0,0,1,8,false)
-	self:Animate("B9",self:GetPackedBool("B9") and 1 or 0,0,1,8,false)
-	self:Animate("BLeft",self:GetPackedBool("BLeft") and 1 or 0,0,1,8,false)
-	self:Animate("B4",self:GetPackedBool("B4") and 1 or 0,0,1,8,false)
-	self:Animate("B5",self:GetPackedBool("B5") and 1 or 0,0,1,8,false)
-	self:Animate("B6",self:GetPackedBool("B6") and 1 or 0,0,1,8,false)
-	self:Animate("BUp",self:GetPackedBool("BUp") and 1 or 0,0,1,8,false)
-	self:Animate("B1",self:GetPackedBool("B1") and 1 or 0,0,1,8,false)
-	self:Animate("B2",self:GetPackedBool("B2") and 1 or 0,0,1,8,false)
-	self:Animate("B3",self:GetPackedBool("B3") and 1 or 0,0,1,8,false)
-	self:Animate("BDown",self:GetPackedBool("BDown") and 1 or 0,0,1,8,false)
-	self:Animate("B0",self:GetPackedBool("B0") and 1 or 0,0,1,8,false)
-	self:Animate("BMinus",self:GetPackedBool("BMinus") and 1 or 0,0,1,8,false)
-	self:Animate("BPlus",self:GetPackedBool("BPlus") and 1 or 0,0,1,8,false)
-	self:Animate("BEnter",self:GetPackedBool("BEnter") and 1 or 0,0,1,8,false)
-	self:Animate("BCCD",self:GetPackedBool("BCCD") and 1 or 0,0,1,8,false)
-	self:Animate("VZP",self:GetPackedBool("VZP") and 1 or 0,0,1,8,false)
-	self:Animate("B7",self:GetPackedBool("B7") and 1 or 0,0,1,8,false)
-	self:Animate("B8",self:GetPackedBool("B8") and 1 or 0,0,1,8,false)
-	self:Animate("B9",self:GetPackedBool("B9") and 1 or 0,0,1,8,false)
-	self:Animate("BLeft",self:GetPackedBool("BLeft") and 1 or 0,0,1,8,false)
-	self:Animate("B4",self:GetPackedBool("B4") and 1 or 0,0,1,8,false)
-	self:Animate("B5",self:GetPackedBool("B5") and 1 or 0,0,1,8,false)
-	self:Animate("B6",self:GetPackedBool("B6") and 1 or 0,0,1,8,false)
-	self:Animate("BUp",self:GetPackedBool("BUp") and 1 or 0,0,1,8,false)
-	self:Animate("B1",self:GetPackedBool("B1") and 1 or 0,0,1,8,false)
-	self:Animate("B2",self:GetPackedBool("B2") and 1 or 0,0,1,8,false)
-	self:Animate("B3",self:GetPackedBool("B3") and 1 or 0,0,1,8,false)
-	self:Animate("BDown",self:GetPackedBool("BDown") and 1 or 0,0,1,8,false)
-	self:Animate("B0",self:GetPackedBool("B0") and 1 or 0,0,1,8,false)
-	self:Animate("BMinus",self:GetPackedBool("BMinus") and 1 or 0,0,1,8,false)
-	self:Animate("BPlus",self:GetPackedBool("BPlus") and 1 or 0,0,1,8,false)
-	self:Animate("BEnter",self:GetPackedBool("BEnter") and 1 or 0,0,1,8,false)
+	if self.Blok == 2 then
+		self:Animate("Indicate",self:GetPackedBool("Indicate3") and 0.4 or self:GetPackedBool("Indicate2") and 0.29 or self:GetPackedBool("Indicate1") and 0.17 or 0,0.0,1,2,false)
+		self:Animate("BCCD",self:GetPackedBool("BCCD") and 1 or 0,0,1,8,false)
+		self:Animate("VZP",self:GetPackedBool("VZP") and 1 or 0,0,1,8,false)
+		self:Animate("B7",self:GetPackedBool("B7") and 1 or 0,0,1,8,false)
+		self:Animate("B8",self:GetPackedBool("B8") and 1 or 0,0,1,8,false)
+		self:Animate("B9",self:GetPackedBool("B9") and 1 or 0,0,1,8,false)
+		self:Animate("BLeft",self:GetPackedBool("BLeft") and 1 or 0,0,1,8,false)
+		self:Animate("B4",self:GetPackedBool("B4") and 1 or 0,0,1,8,false)
+		self:Animate("B5",self:GetPackedBool("B5") and 1 or 0,0,1,8,false)
+		self:Animate("B6",self:GetPackedBool("B6") and 1 or 0,0,1,8,false)
+		self:Animate("BUp",self:GetPackedBool("BUp") and 1 or 0,0,1,8,false)
+		self:Animate("B1",self:GetPackedBool("B1") and 1 or 0,0,1,8,false)
+		self:Animate("B2",self:GetPackedBool("B2") and 1 or 0,0,1,8,false)
+		self:Animate("B3",self:GetPackedBool("B3") and 1 or 0,0,1,8,false)
+		self:Animate("BDown",self:GetPackedBool("BDown") and 1 or 0,0,1,8,false)
+		self:Animate("B0",self:GetPackedBool("B0") and 1 or 0,0,1,8,false)
+		self:Animate("BMinus",self:GetPackedBool("BMinus") and 1 or 0,0,1,8,false)
+		self:Animate("BPlus",self:GetPackedBool("BPlus") and 1 or 0,0,1,8,false)
+		self:Animate("BEnter",self:GetPackedBool("BEnter") and 1 or 0,0,1,8,false)
+		self:Animate("BCCD",self:GetPackedBool("BCCD") and 1 or 0,0,1,8,false)
+		self:Animate("VZP",self:GetPackedBool("VZP") and 1 or 0,0,1,8,false)
+		self:Animate("B7",self:GetPackedBool("B7") and 1 or 0,0,1,8,false)
+		self:Animate("B8",self:GetPackedBool("B8") and 1 or 0,0,1,8,false)
+		self:Animate("B9",self:GetPackedBool("B9") and 1 or 0,0,1,8,false)
+		self:Animate("BLeft",self:GetPackedBool("BLeft") and 1 or 0,0,1,8,false)
+		self:Animate("B4",self:GetPackedBool("B4") and 1 or 0,0,1,8,false)
+		self:Animate("B5",self:GetPackedBool("B5") and 1 or 0,0,1,8,false)
+		self:Animate("B6",self:GetPackedBool("B6") and 1 or 0,0,1,8,false)
+		self:Animate("BUp",self:GetPackedBool("BUp") and 1 or 0,0,1,8,false)
+		self:Animate("B1",self:GetPackedBool("B1") and 1 or 0,0,1,8,false)
+		self:Animate("B2",self:GetPackedBool("B2") and 1 or 0,0,1,8,false)
+		self:Animate("B3",self:GetPackedBool("B3") and 1 or 0,0,1,8,false)
+		self:Animate("BDown",self:GetPackedBool("BDown") and 1 or 0,0,1,8,false)
+		self:Animate("B0",self:GetPackedBool("B0") and 1 or 0,0,1,8,false)
+		self:Animate("BMinus",self:GetPackedBool("BMinus") and 1 or 0,0,1,8,false)
+		self:Animate("BPlus",self:GetPackedBool("BPlus") and 1 or 0,0,1,8,false)
+		self:Animate("BEnter",self:GetPackedBool("BEnter") and 1 or 0,0,1,8,false)
+	end
+	if self.Blok == 3 then
+		self:Animate("PAM_BCCD",self:GetPackedBool("BCCD") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_VZP",self:GetPackedBool("VZP") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_BP",self:GetPackedBool("BP") and 1 or 0,0,0.8,8,false)
+		
+		self:Animate("PAM_BF",self:GetPackedBool("BF") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_BUp",self:GetPackedBool("BUp") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_BM",self:GetPackedBool("BM") and 1 or 0,0,0.8,8,false)
+		
+		self:Animate("PAM_BLeft",self:GetPackedBool("BLeft") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_BDown",self:GetPackedBool("BDown") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_BRight",self:GetPackedBool("BRight") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_B1",self:GetPackedBool("B1") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_B2",self:GetPackedBool("B2") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_B3",self:GetPackedBool("B3") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_B4",self:GetPackedBool("B4") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_B5",self:GetPackedBool("B5") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_B6",self:GetPackedBool("B6") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_B7",self:GetPackedBool("B7") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_B8",self:GetPackedBool("B8") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_B9",self:GetPackedBool("B9") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_B0",self:GetPackedBool("B0") and 1 or 0,0,0.8,8,false)
+		
+		self:Animate("PAM_BEnter",self:GetPackedBool("BEnter") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAM_BEsc",self:GetPackedBool("BEsc") and 1 or 0,0,0.8,8,false)
+	end
 	self:Animate("ConverterProtection",self:GetPackedBool("ConverterProtection") and 1 or 0,0,1,8,false)
 	if self:GetPackedBool(156) and not self.Door1 then self.Door1 = 0.99 end
 	if self:GetPackedBool(158) and not self.Door2 then self.Door2 = 0.99 end

@@ -470,7 +470,7 @@ function TRAIN_SYSTEM:Think(dT)
 		if self.Signal80 then Vlimit = 80 end
 
 		self.Overspeed = false
-		if self.Train["PA-KSD"].VRD and not self.Signal0 and not self.RealNoFreq then
+		if PAKSD and self.Train["PA-KSD"].VRD and not self.Signal0 and not self.RealNoFreq then
 			self.Train["PA-KSD"].VRD = false
 		end
 		if self.AttentionPedal then
@@ -576,8 +576,8 @@ function TRAIN_SYSTEM:Think(dT)
  			self.PneumaticBrake1 = true
 		end
 		-- Parking brake limit
-		local BPSWorking = (Train.BPS ~= nil and Train.BPS.Value > 0.5) and Train:ReadTrainWire(5) > 0 and not Train["PA-KSD"].Nakat
-		if BPSWorking then
+		local BPSWorking = (Train.BPS ~= nil and Train.BPS.Value > 0.5) and Train:ReadTrainWire(5) > 0 and (not PAKSD or not Train["PA-KSD"].Nakat)
+		if BPSWorking and PAKSD then
 			if self.Nakat ~= nil then
 				self.PneumaticBrake1 = true
 				self.AntiRolling = self.Nakat and true or nil
@@ -600,7 +600,7 @@ function TRAIN_SYSTEM:Think(dT)
 			end
 		else
 			self.AntiRolling = nil
-			if Train["PA-KSD"].Nakat then self.PneumaticBrake1 = false end
+			if PAKSD and Train["PA-KSD"].Nakat then self.PneumaticBrake1 = false end
 		end
 		--if BPSWorking and EPKActivated and not Train["PA-KSD"].Stancionniy and Train:ReadTrainWire(5) > 0 and self.Speed*self.Train.SpeedSign <  -5 and not Train.Pneumatic.EmergencyValveEPK then
 			--Train.Pneumatic.EmergencyValveEPK = true
@@ -612,20 +612,20 @@ function TRAIN_SYSTEM:Think(dT)
 			self.StoppedOnSlopeByRP = false
 			self.BPSActive = false
 		end
-		if (Train.BPS == nil or Train.BPS.Value < 0.5) then self.AntiRolling = false end
+		if (Train.BPS == nil or Train.BPS.Value < 0.5) then self.AntiRolling = nil end
 		-- Check cancel pneumatic brake 1 command
 		if ((Train:ReadTrainWire(1) > 0) or (Train.RRP and Train.RRP.Value > 0 and not self.ElectricBrake1)) then
 			if (Train:ReadTrainWire(1) > 0 or (Train.RRP and Train.RRP.Value > 0 and not self.ElectricBrake1)) and self.PneumaticBrake1 and not self.Overspeed then
 				self.PneumaticBrake1 = false
 			end
 		end
-		if self.Signal0 and not self.Special and not self.RealNoFreq and not self.Signal40 and not self.Signal60 and not self.Signal70 and not self.Signal80 then
+		if self.Signal0 and not self.Special and not self.RealNoFreq and not self.Signal40 and not self.Signal60 and not self.Signal70 and not self.Signal80 and PAKSD then
 			if not self.NonVRD and not Train["PA-KSD"].VRD then
 				self.VRDTimer = nil
 			end
 				
 			self.NonVRD = not Train["PA-KSD"].VRD
-			if self.NonVRD then
+			if self.NonVRD and PAKSD then
 				if self.VRDTimer and CurTime() - self.VRDTimer > 0 then
 					self.VRDTimer = false
 				elseif self.VRDTimer ~= false then
@@ -633,15 +633,18 @@ function TRAIN_SYSTEM:Think(dT)
 					if self.VRDTimer and not self.KVT then self.VRDTimer = nil end
 				end
 			end
-		else
+		elseif PAKSD then
 			if self.NonVRD then self.NonVRD = false end
+			self.VRDTimer = false
+		else
+			self.NonVRD = nil
 			self.VRDTimer = false
 		end
 
-		if (self.Train:ReadTrainWire(15) < 1.0) and (self.Speed < 1.0) and not Train["PA-KSD"].KD then
+		if (self.Train:ReadTrainWire(15) < 1.0) and (self.Speed < 1.0) and not Train["PA-KSD"].KD and PAKSD then
 			self.KD = true
 		end
-		if Train["PA-KSD"].KD or self.Train:ReadTrainWire(15) > 0.0 then
+		if Train["PA-KSD"].KD or self.Train:ReadTrainWire(15) > 0.0 and PAKSD then
 			self.KD = false
 		end
 		-- Door close cancel pneumatic brake 1 command trigger
@@ -694,7 +697,7 @@ function TRAIN_SYSTEM:Think(dT)
 			self.EPKTimer = nil
 		end
 		if self.KVT and self.EPKTimer4 then self.EPKTimer4 = false end
-		if EPKActivated and not self.LKT and self.Speed < 0.05 and Train:ReadTrainWire(1) == 0 and not Train["PA-KSD"].Nakat then -- or (self.AntiRolling ~= nil and Train:ReadTrainWire(1) > 0) then
+		if EPKActivated and not self.LKT and self.Speed < 0.05 and Train:ReadTrainWire(1) == 0 and (not PAKSD or not Train["PA-KSD"].Nakat) then -- or (self.AntiRolling ~= nil and Train:ReadTrainWire(1) > 0) then
 			if not self.EPKTimer2 then
 				self.EPKTimer2 = CurTime()+1
 			end
@@ -735,7 +738,7 @@ function TRAIN_SYSTEM:Think(dT)
 	end
 	-- RC1 operation
 	if self.Train.RC1 and (self.Train.RC1.Value == 0) then
-		if not Train["PA-KSD"].UOS then 
+		if PAKSD and not Train["PA-KSD"].UOS then 
 			Train["PA-KSD"].UOS = true
 		end
 		local KAH = (Train.KAH ~= nil and Train.KAH.Value > 0.5) and 1 or 0
@@ -750,10 +753,10 @@ function TRAIN_SYSTEM:Think(dT)
 		self["31"] = 0
 		self["32"] = 0
 		--self["8"] = KRUEnabled and (1-Train.RPB.Value) or 0
-		self["33D"] = (self.Speed + 0.5 > 35 and Train["PA-KSD"].State > 0) and 0 or 1
+		self["33D"] = (self.Speed + 0.5 > 35 and (not PAKSD or Train["PA-KSD"].State > 0)) and 0 or 1
 		--self["33G"] = (self.Speed + 0.5 > 35) and 1 or KRUEnabled and (1-Train.RPB.Value) or 0
 		--self["33Zh"] = 1--(self.Speed + 0.5 > 40) and 0 or KAH
-		self["8"] = (self.Speed + 0.5 > 35 and Train["PA-KSD"].State > 0) and 1 or KRUEnabled and (1-Train.RPB.Value) or 0
+		self["8"] = (self.Speed + 0.5 > 35 and (not PAKSD or Train["PA-KSD"].State > 0)) and 1 or KRUEnabled and (1-Train.RPB.Value) or 0
 	else
 		if (not EPKActivated) then
 			self["33D"] = 0
