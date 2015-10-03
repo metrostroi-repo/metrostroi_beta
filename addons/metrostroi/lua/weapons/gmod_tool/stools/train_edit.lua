@@ -16,7 +16,7 @@ TOOL.ClientConVar["adv"] = 1
 TOOL.ClientConVar["led"] = 0
 TOOL.ClientConVar["cran"] = 0
 TOOL.ClientConVar["bpsn"] = 1
-TOOL.ClientConVar["oldkv"] = 0
+TOOL.ClientConVar["kvsnd"] = 1
 TOOL.ClientConVar["oldkvpos"] = 0
 TOOL.ClientConVar["horn"] = 0
 TOOL.ClientConVar["ars"] = 1
@@ -57,21 +57,23 @@ function TOOL:LeftClick(trace)
 	train.Adverts = self:GetClientNumber("adv")
 	--train:SetNWInt("ARSType",train.ARSType)
 	train:SetNWInt("BPSNType",train.BPSNType+1)
-	if self:GetClientNumber("oldkv") > 0 then
-		for k,v in pairs(train.SoundNames) do
-			if type(v) ~= "string" then continue end
-			if not v:find("kv_") then continue end
-			if v:find("ezh") then continue end
-			train.SoundNames[k] = string.Replace(v,"/new/kv","/kv")
-		end
-	else
-		for k,v in pairs(train.SoundNames) do
-			if type(v) ~= "string" then continue end
-			if not v:find("kv_") then continue end
-			if v:find("ezh") then continue end
-			train.SoundNames[k] = string.Replace(v,"subway_trains/kv","subway_trains/new/kv")
-		end
+	--if self:GetClientNumber("kvsnd") > 0 then
+	for k,v in pairs(train.SoundNames) do
+		if type(v) ~= "string" then continue end
+		if not k:find("kv_") then continue end
+		if k:find("ezh") then continue end
+		train.SoundNames[k] = string.gsub(v,"kv%d","kv"..self:GetClientNumber("kvsnd"))
+		train.NewKV = self:GetClientNumber("kvsnd") > 1
+		train:SetNWBool("NewKV",train.NewKV)
 	end
+	--else
+		--for k,v in pairs(train.SoundNames) do
+--			if type(v) ~= "string" then continue end
+			--if not v:find("kv_") then continue end
+			--if v:find("ezh") then continue end
+			--train.SoundNames[k] = string.Replace(v,"subway_trains/kv","subway_trains/new/kv")
+		--end
+	--end
 	
 	if train.Horn then train.Horn:TriggerInput("NewType",self:GetClientNumber("horn")) end
 	if not train:GetClass():find("81") then
@@ -107,7 +109,7 @@ function TOOL:RightClick(trace)
 end
 
 local SettingTypes = {
-	"Train,Texture,PassTexture,ARS,Cran,Mask,LED,BPSN,OldKV,Horn,OldKVPos,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv",
+	"Train,Texture,PassTexture,ARS,Cran,Mask,LED,BPSN,KVSnd,Horn,OldKVPos,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv",
 	"Train,Texture,Cran,Horn",
 	"Train",
 }
@@ -127,7 +129,7 @@ function TOOL:LoadConCMD()
 		Cran = 1,
 		Mask = 1,
 		BPSN = 1,
-		OldKV = 0,
+		KVSnd = 1,
 		OldKVPos = 0,
 		Horn = 0,
 		LED = 0,
@@ -238,7 +240,7 @@ function TOOL:BuildCPanelCustom()
 	self:CreateList("Lamp","Lamp type",{"Type1","Type2","Type3"})
 	self:CreateCheckBox("Breakers","Right-syde breakers")
 	self:CreateCheckBox("LED","LED")
-	self:CreateCheckBox("OldKV","Old KV snd")
+	self:CreateList("KVSnd","KV snd",{"Dildo","Type2","Type3"})
 	self:CreateCheckBox("OldKVPos","Old KV pos")
 	self:CreateCheckBox("Horn","Piter horn")
 	self:CreateCheckBox("MVM","MVM icon")

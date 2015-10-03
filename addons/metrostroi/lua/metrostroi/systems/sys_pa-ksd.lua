@@ -6,14 +6,12 @@ TRAIN_SYSTEM.DontAccelerateSimulation = true
 
 function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("Indicate","Relay","Switch",{switch = true,maxvalue = 3,defaultvalue = 1})
-	self.Train:LoadSystem("VPA","Relay","Switch",{rc = true,defaultvalue = 1})
-
+	self.Train:LoadSystem("VPA","Relay","Switch",{programm = true,defaultvalue = 1,maxvalue = 2})
 	self.Train:LoadSystem("BCCD","Relay","Switch",{button = true})
 	self.Train:LoadSystem("VZP","Relay","Switch",{switch = true})
 	self.Train:LoadSystem("B7","Relay","Switch",{button = true})
 	self.Train:LoadSystem("B8","Relay","Switch",{button = true})
 	self.Train:LoadSystem("B9","Relay","Switch",{button = true})
-	self.Train:LoadSystem("BLeft","Relay","Switch",{button = true})
 	self.Train:LoadSystem("B4","Relay","Switch",{button = true})
 	self.Train:LoadSystem("B5","Relay","Switch",{button = true})
 	self.Train:LoadSystem("B6","Relay","Switch",{button = true})
@@ -22,12 +20,11 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("B2","Relay","Switch",{button = true})
 	self.Train:LoadSystem("B3","Relay","Switch",{button = true})
 	self.Train:LoadSystem("BDown","Relay","Switch",{button = true})
+	self.Train:LoadSystem("BLeft","Relay","Switch",{button = true})
 	self.Train:LoadSystem("B0","Relay","Switch",{button = true})
 	self.Train:LoadSystem("BMinus","Relay","Switch,{button = true}")
 	self.Train:LoadSystem("BPlus","Relay","Switch",{button = true})
 	self.Train:LoadSystem("BEnter","Relay","Switch",{button = true})
-	self.Train:LoadSystem("PAKSD_DOOR","Relay","Switch")
-	self.Train:LoadSystem("PAKSD_VUD","Relay","Switch")
 
 	self.Train:LoadSystem("R25p","Relay","KPD-110E", { in_cabin_alt4 = true })
 
@@ -783,10 +780,57 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				end
 			elseif self.State74 == 8 and not self.Arrived then
 				self.Arrived = true
-				local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
-				self:AnnPlayArriving(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
+				if self.Train.R_UPO.Value > 0 then
+					local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
+					self:AnnPlayArriving(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
+				end
 			end
 			if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self.State = 7 end
+		end
+		if self.State74 > 6 then
+			if name == "B7" then
+				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Station] then
+					self.FirstStation = tostring(self.Station)
+					if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self.State = 7 end
+				end
+			end
+			if name == "B8"  and not self.Arrived == nil then
+				self.Arrived = true
+				if self.Train.R_UPO.Value > 0 then
+					local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
+					self:AnnPlayArriving(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
+				end
+				if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self.State = 7 end
+			end
+		elseif self.State74 > 3 then
+			if name == "B4" then
+				self.Transit = not self.Transit
+				self.AutodriveWorking = false
+				if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self.State = 7 end
+			end
+			if name == "B5" then
+				self.State = 76
+				if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self.State = 7 end
+			end
+			if name == "B6" then
+				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Station] then
+					self.LastStation = tostring(self.Station)
+					if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self.State = 7 end
+				end
+			end
+		else
+			if name == "B1" and self.Train.Speed < 0.5 and self.Train.ALS_ARS.SpeedLimit > 20 then
+				self.State = 77
+				if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self.State = 7 end
+			end
+			if name == "B2" then
+				self.KD = not self.KD
+				if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self.State = 7 end
+			end
+			if name == "B3" then
+				self.State = 3
+				if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self.State = 7 end
+			end
 		end
 	elseif self.State == 75 then
 		if name == "BUp" then
@@ -799,11 +843,11 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			self.State = 7
 		end
 		if name == "BEnter" then
-			self:AnnII(self.State75)
+			if self.Train.R_UPO.Value > 0 then self:AnnII(self.State75) end
 			self.State = 7
 		end
 		local Char = tonumber(name:sub(2,2))
-		if Char and Char > 0 and Char < 5 then
+		if Char and Char > 0 and Char < 5 and self.Train.R_UPO.Value > 0 then
 			self:AnnII(Char)
 			self.State = 7
 		end
@@ -1010,7 +1054,7 @@ function TRAIN_SYSTEM:STR2(str,notchange)
 	end
 end
 function TRAIN_SYSTEM:ClientThink()
-	if not self.Train.ARSType or self.Train.ARSType < 3 then return end
+	if not self.Train.Blok or self.Train.Blok ~= 2 then return end
 	self.Time = self.Time or CurTime()
 	if (CurTime() - self.Time) > 0.5 then
 		--print(1)
@@ -1020,12 +1064,13 @@ function TRAIN_SYSTEM:ClientThink()
 		self:STR1(true)
 		self:STR2(true)
 		local State = self.Train:GetNWInt("PAKSD:State",0)
-		if State == -1 or State >= 1 and State < 6 then
+		if State == -1 or State == -9 or State >= 1 and State < 6 then
 			self:STR2("<*>")
 		end
 		local Announcer = self.Train.Announcer
 		if State == 8 then
 			self:STR1("<*>")
+			self:STR2("<*>")
 		elseif State == -2 then
 			self:STR2("_")
 		elseif State == 1 then
@@ -1212,7 +1257,7 @@ function TRAIN_SYSTEM:ClientThink()
 						self:STR1(typ.."="..pos..string.rep(" ",6-#typ-#pos)..VZ..string.rep(" ",20-5-#VZ-6-1).."Vd="..spd)
 						self.VRDTimer = nil
 					end
-				elseif State7 == 1 then
+				elseif State7 == 1 and Metrostroi.AnnouncerData then
 					local path =  self.Train:GetNWInt("PAKSD:Path",0)
 					local bt = tostring(self.Train:GetNWInt("PAKSD:BoardTime",0))
 					local date = os.date("!*t",os_time)
@@ -1265,13 +1310,33 @@ function TRAIN_SYSTEM:SetTimer(mod)
 end
 
 function TRAIN_SYSTEM:Think(dT)
-	if self.Train.ARSType ~= self.ARSTypeOld and self.Train.PAKSD_VUD then
-		self.Train.PAKSD_VUD:TriggerInput("Set",self.Train.ARSType == 3)
-		self.ARSTypeOld = self.Train.ARSType
-	end
 	--print(self.Train.PAKSD_VUD.Value)
-	if self.Train.ARSType < 3 then self.State = 0 return end
-	if self.Train.VB.Value > 0.5 and self.Train.Battery.Voltage > 55 and self.Train.VPA.Value > 0.5 and self.State >= -1  then
+	if self.Train.Blok ~= 2 then self.State = 0 return end
+	if self.VPA and self.Train.VPA.Value < 1 and not self.OffTimer then
+		self.OffTimer = CurTime() + 1
+		self.OnTimer = nil
+	end
+	if self.Train.VPA.Value == 1 and self.OffTimer then
+		self.OffTimer = nil
+		self.OnTimer = nil
+	end
+	if not self.VPA and self.Train.VPA.Value > 1 and not self.OnTimer then
+		self.OffTimer = nil
+		self.OnTimer = CurTime() + 1
+	end
+	if self.OnTimer and (CurTime() - self.OnTimer) > 0 then
+		for k,v in pairs(self.Train.WagonList) do
+			if v["PA-KSD"] then v["PA-KSD"].VPA = true end
+		end
+		self.OnTimer = nil
+	end
+	if self.OffTimer and (CurTime() - self.OffTimer) > 0 then
+		for k,v in pairs(self.Train.WagonList) do
+			if v["PA-KSD"] then v["PA-KSD"].VPA = false end
+		end
+		self.OffTimer = nil
+	end
+	if self.Train.VB.Value > 0.5 and self.Train.Battery.Voltage > 55 and self.VPA and self.State >= -1  then
 		for k,v in pairs(self.TriggerNames) do
 			if self.Train[v] and (self.Train[v].Value > 0.5) ~= self.Triggers[v] then
 				if self.Train[v].Value > 0.5 then
@@ -1289,9 +1354,11 @@ function TRAIN_SYSTEM:Think(dT)
 	self.Path = Metrostroi.PathConverter[self.Train:ReadCell(65510)] or 0
 	self.Distance = self.Train:ReadCell(49165) + (self.Corrections[self.Station] or 0) - 4.3
 	--print(self.Train.VB.Value < 0.5 or self.Train.Battery.Voltage < 55)
-	if self.Train.VB.Value < 0.5 or self.Train.Battery.Voltage < 55 or self.Train.VPA.Value < 0.5  then self.State = 0 elseif self.State == 0 then self.State = -2 end
+	if self.Train.VB.Value < 0.5 or self.Train.Battery.Voltage < 55 or not self.VPA  then self.State = 0 elseif self.State == 0 then self.State = -2 end
 	--if not ARS.EnableARS and self.State > 6 then self.State = -1 end
 	if self.Train.KV.ReverserPosition == 0 and self.State > 6 and self.State ~= 8 then self.State = 8 end
+	if self.Train.KV.ReverserPosition == 0 and self.State > 0 and self.State < 6 and self.State ~= -9 then self.State = -9 end
+	if self.Train.KV.ReverserPosition ~= 0 and self.State == -9 then self.State = 1 end
 	if self.Train.KV.ReverserPosition ~= 0 and self.State > 6 and self.State == 8 then 
 		self.State = 7
 		for k,v in pairs(self.Train.WagonList) do
@@ -1322,18 +1389,25 @@ function TRAIN_SYSTEM:Think(dT)
 	elseif self.State == -1 then
 		self:SetTimer(0.5)
 		if self:GetTimer(10) then
-			self.State = 1
+			self.State = -8
 			self:SetTimer()
+			self:SetTimer(0.5)
+			self.Train:PlayOnce("paksd","cabin",0.75,200.0)
 			return
 		end
-	elseif self.State == 1 and self.RealState ~= 1 then
-		self:SetTimer(0.5)
-		self.Train:PlayOnce("paksd","cabin",0.75,200.0)
-	elseif self.State == 1 then
+	elseif self.State == -8 then
 		if self:GetTimer(0.1) then
 			self.Train:PlayOnce("paksd","cabin",0.75,200.0)
 			self:SetTimer()
+			if self.Train.KV.ReverserPosition == 0 then
+				self.State = 1
+			else
+				self.State = -9
+			end
 		end
+	elseif self.State == -1 then
+	elseif self.State == 1 and self.RealState ~= 1 then
+	elseif self.State == 1 then
 	elseif self.State == 5 then
 		if self.Check == nil then ARS:TriggerInput("Ring",1) end
 		--print(ARS.KVT)
@@ -1370,14 +1444,18 @@ function TRAIN_SYSTEM:Think(dT)
 			if (self.RealState == 8 or self.RealState == 6 or self.RealState == 49) and not self.Transit then
 				if self.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][self.Station] and ARS.Speed <= 1 then
 					self.Arrived = true
-					local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
-					self:AnnPlayArriving(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
+					if self.Train.R_UPO.Value > 0 then
+						local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
+						self:AnnPlayArriving(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
+					end
 				end
 			end
 			if not self.Transit and 45 < self.Distance and self.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][self.Station] then
 				self.Arrived = true
-				local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
-				self:AnnPlayArriving(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
+				if self.Train.R_UPO.Value > 0 then
+					local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
+					self:AnnPlayArriving(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
+				end
 			end
 			if self.Transit then self.Arrived = nil end
 			if self.Distance > 75 then
@@ -1399,8 +1477,10 @@ function TRAIN_SYSTEM:Think(dT)
 			if self.Arrived then
 				if self.BoardTime and math.floor((self.BoardTime or CurTime()) - CurTime()) < (self.Train.Horlift and 15 or 8) and self.Arrived then
 					if not self:AnnEnd(self.Station,self.Path) then
-						local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
-						self:AnnPlayDepeate(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
+						if self.Train.R_UPO.Value > 0 then
+							local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
+							self:AnnPlayDepeate(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
+						end
 					else
 						self.Ring = 2
 					end
@@ -1413,7 +1493,11 @@ function TRAIN_SYSTEM:Think(dT)
 				self.Ring = 1
 			end
 			if (self.Train:ReadCell(1) > 0 or ARS.Speed > 1) and self.Arrived == false then self.Arrived = nil end
-			if self.Train:ReadCell(48) == 218 and self.Ring == false then
+			if self.Train:ReadCell(48) == 218  then
+				self.ODZ = true
+			end
+			if self.ODZ and self.Train:ReadCell(48) ~= 218  then
+				self.ODZ = false
 				self.Ring = 2
 			end
 			if self.Ring == 2 and self.Train.Panel.SD > 0.5 then
@@ -1475,6 +1559,7 @@ function TRAIN_SYSTEM:Think(dT)
 	end
 	if self.State <= 6 then
 		self.BoardTime = nil
+		self.ODZ = nil
 	end
 	if self.State ~= self.RealState then
 		self.RealState = self.State

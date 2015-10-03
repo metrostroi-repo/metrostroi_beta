@@ -8,14 +8,17 @@ local Settings = {
 	Adv = 1,
 	WagNum = 3,
 	Texture = 1,
+	Lighter = 1,
 	PassTexture = 1,
+	CabTexture = 1,
 	ARS = 1,
 	Cran = 1,
 	Prom = 1,
 	Mask = 1,
+	PiterMsk = 1,
 	LED = 0,
 	BPSN = 1,
-	OldKV = 0,
+	KVSnd = 1,
 	OldKVPos = 0,
 	Horn = 0,
 	NM = 8.2,
@@ -32,9 +35,11 @@ local Settings = {
 	Lamp = 1,
 	Seat = 1,
 	Breakers = 0,
+	Blok = 1,
 }
 local Types = {
-	"Train,WagNum,PassTexture,Texture,ARS,Cran,Mask,LED,BPSN,OldKV,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,OldKVPos,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv",
+	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,ARS,Cran,Mask,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv",
+	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,Blok,Cran,PiterMsk,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,Hand,Seat,Lamp,Breakers,Adv",
 	"Train,WagNum,Texture,Prom,Cran,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB",
 	"Train,WagNum",
 }
@@ -143,10 +148,11 @@ end
 
 local function UpdateTrainList()
 	Pos = 0
-	if Settings.Train < 3 then
-		if #Metrostroi.Skins[Settings.Train == 1 and "717" or "ezh3"] < Settings.Texture then Settings.Texture = 1 end
+	if Settings.Train < 4 then
+		if #Metrostroi.Skins[Settings.Train == 1 and "717" or Settings.Train == 2 and "717p" or "ezh3"] < Settings.Texture then Settings.Texture = 1 end
 		VGUI.Texture:Clear()
-		for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717" or "ezh3"]) do
+		PrintTable(Metrostroi.Skins[Settings.Train == 1 and "717" or Settings.Train == 2 and "717p" or "ezh3"])
+		for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717" or Settings.Train == 2 and "717p" or "ezh3"]) do
 			if not v.path:find("/16") or LocalPlayer():IsAdmin() then
 				VGUI.Texture:AddChoice(v.name, k, k == Settings.Texture)	
 				--Texture[k] = v.name
@@ -155,7 +161,21 @@ local function UpdateTrainList()
 				VGUI.Texture:ChooseOptionID(1)
 			end	
 		end
-		for i=1,#Metrostroi.Skins[Settings.Train == 1 and "717" or "ezh3"] do
+	end
+	if Settings.Train < 3 then
+		if #Metrostroi.Skins[Settings.Train == 1 and "717_pass" or Settings.Train == 2 and "717_passp"] < Settings.PassTexture then Settings.PassTexture = 1 end
+		VGUI.PassTexture:Clear()
+		for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717_pass" or Settings.Train == 2 and "717_passp"]) do
+			VGUI.PassTexture:AddChoice(v.name, k, k == Settings.PassTexture)	
+			--Texture[k] = v.name
+		end
+	end
+	if Settings.Train < 3 then
+		if #Metrostroi.Skins[Settings.Train == 1 and "717_cab" or Settings.Train == 2 and "717_cabp"] < Settings.CabTexture then Settings.CabTexture = 1 end
+		VGUI.CabTexture:Clear()
+		for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717_cab" or Settings.Train == 2 and "717_cabp"]) do
+			VGUI.CabTexture:AddChoice(v.name, k, k == Settings.CabTexture)	
+			--Texture[k] = v.name
 		end
 	end
 	for k,v in ipairs(VGUI) do
@@ -168,26 +188,33 @@ local function UpdateTrainList()
 end
 local function Draw()
 	local Texture = {}
-	for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717" or "ezh3"]) do
+	for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717" or Settings.Train == 2 and "717p" or "ezh3"]) do
 		if not v.path:find("/16") or LocalPlayer():IsAdmin() then
 			Texture[k] = v.name
 		end
 	end
 	local PassTexture = {}
-	for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717_pass" or "717_pass"]) do
+	for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717_pass" or Settings.Train == 2 and "717_passp" or "ezh3"]) do
 		--print(v)
 		PassTexture[k] = v.name
 	end
-	CreateList("Train","Train("..GetGlobalInt("metrostroi_train_count").."/"..MaxWagons.."):\nMax for you:"..MaxWagonsOnPlayer,{"81-71x","Ezh","81-703x"},UpdateTrainList)
+	local CabTexture = {}
+	for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717_cab" or Settings.Train == 2 and "717_cabp" or "ezh3_cab"]) do
+		CabTexture[k] = v.name
+	end
+	CreateList("Train","Train("..GetGlobalInt("metrostroi_train_count").."/"..MaxWagons.."):\nMax for you:"..MaxWagonsOnPlayer,{"81-71x MVM","81-71x LVZ","Ezh","81-703x"},UpdateTrainList)
 	CreateSlider("WagNum",0,1, GetGlobalInt("metrostroi_maxwagons"),"Wagons")
 	CreateList("Texture","Texture",Texture)
-	CreateList("PassTexture","PassTexture",PassTexture)
+	CreateList("PassTexture","Passenger texture",PassTexture)
+	CreateList("CabTexture","Cabin texture",CabTexture)
 	CreateList("Adv","Adverts",{"Type1","Type2","Type3","No adverts"})
 	CreateList("Cran","Cran type",{"334","013"})
 	CreateSlider("NM",1,0.1,9,"Train Line Pressure")
-	CreateList("ARS","ARS Type",{"Standart(square lamps)","Standart(round lamps)","Kiev/St.Petersburg"})
-	CreateList("Mask","Mask",{"2-2","2-2-2","1-4-1 bumper 1","1-3-1","1-4-1 bumper2","1-1"})
-	CreateList("BPSN","BPSN type",{"Normal","Old high tone","Old medium tone","Normal2(from St.Petersburg)","Normal3(from wiki)","No sound"})
+	CreateList("ARS","ARS Type",{"Standart(square lamps)","Standart(round lamps)","Kiev/St.Petersburg","Old ARS"})
+	CreateList("Blok","Autodrive panel",{"PUAV","PA-KSD","PA-M"})
+	CreateList("Mask","Mask",{"2-2","2-2-2","1-4-1 bumper 1","1-4-1 bumper 2","1-1","Retro"})
+	CreateList("PiterMsk","PiterMsk",{"1-4-1","2-2 Down-2","2-2","2-2-2","2-3-2"})
+	CreateList("BPSN","BPSN type",{"Normal","Old high tone","Old medium tone","Normal2(from St.Petersburg)","Normal3(from wiki)","Normal4","No sound"})
 	CreateList("Seat","Seat type",{"Old","New"})
 	CreateList("Hand","Hand rail type",{"Old","New"})
 	CreateList("Bort","Bort",{"Vertical","Horisontal"})
@@ -209,7 +236,7 @@ local function Draw()
 	CreateCheckBox("Prom","Interim wags")
 	CreateCheckBox("Breakers","Right-syde breakers")
 	CreateCheckBox("LED","LED")
-	CreateCheckBox("OldKV","Old KV snd")
+	CreateList("KVSnd","KV snd",{"Dildo","Type2","Type3"})
 	CreateCheckBox("OldKVPos","Old KV pos")
 	CreateCheckBox("Horn","Piter horn")
 	

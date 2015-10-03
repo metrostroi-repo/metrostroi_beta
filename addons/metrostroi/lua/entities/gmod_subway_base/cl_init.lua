@@ -262,7 +262,7 @@ function ENT:ApplyMatrix(name,pos,ang)
 end
 function ENT:SpawnCSEnt(k)
 	local v = self.ClientProps[k]
-	if k ~= "BaseClass" and not IsValid(self.ClientEnts[k]) and not self.Hidden[k] then
+	if k ~= "BaseClass" and not IsValid(self.ClientEnts[k]) and not self.Hidden[k] and not self.HiddenAnim[id] then
 		local cent = ClientsideModel(v.model ,RENDERGROUP_OPAQUE)
 		cent:SetPos(self:LocalToWorld(v.pos))
 		cent:SetAngles(self:LocalToWorldAngles(v.ang))
@@ -391,9 +391,9 @@ function ENT:Initialize()
 							if self.HiddenPanels[kp] then surface.SetAlphaMultiplier(0.1) end
 							
 							for kb,button in pairs(panel.buttons) do
-								if self.Hidden[button.PropName] or self.Hidden[button.ID] or self.HiddenButton[button.PropName] or self.HiddenButton[button.ID] then
+								if self.Hidden[button.PropName] or self.Hidden[button.ID] or self.HiddenAnim[button.PropName] or self.HiddenAnim[button.ID] or self.HiddenButton[button.PropName] or self.HiddenButton[button.ID] then
 									surface.SetDrawColor(255,255,0)
-								elseif self.Hidden[kb] then
+								elseif self.Hidden[kb] or self.HiddenAnim[kb] then
 									surface.SetDrawColor(255,255,0)
 								elseif self.HiddenPanels[kp] then
 									surface.SetDrawColor(100,0,0)
@@ -434,6 +434,7 @@ function ENT:Initialize()
 	self.PassengerPositions = {}
 	self.HiddenPanels = {}
 	self.Hidden = {}
+	self.HiddenAnim = {}
 	self.HiddenButton = {}
 	--self.HiddenQuele = {}
 	-- Systems defined in the train
@@ -800,7 +801,7 @@ end
 --------------------------------------------------------------------------------
 function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
 	local id = clientProp
-	if self.Hidden[id] then return 0 end
+	if self.Hidden[id] or self.HiddenAnim[id] then return 0 end
 	if not self.Anims[id] then
 		self.Anims[id] = {}
 		self.Anims[id].val = value
@@ -908,7 +909,7 @@ function ENT:ShowHideSmooth(clientProp, value)
 		--self.HiddenQuele[clientProp] = nil
 	--else
 	end
-	self.Hidden[clientProp] = value == 0
+	self.HiddenAnim[clientProp] = value == 0
 end
 
 local digit_bitmap = {

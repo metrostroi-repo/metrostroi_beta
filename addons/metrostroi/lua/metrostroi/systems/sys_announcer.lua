@@ -206,8 +206,8 @@ Metrostroi.AnnouncerData =
 Metrostroi.PathConverter = {
 	[1] = 1,
 	[2] = 2,
-	[29] = 1,
-	[30] = 2,
+	[29] = 2,
+	[30] = 1,
 }
 Metrostroi.WorkingStations = {
 	["gm_metrostroi"] = {
@@ -1524,7 +1524,7 @@ function TRAIN_SYSTEM:Think()
 	-- Build-in Black Phoenix Announcer logic
 	--	self:Announcer1()
 	-- Build-in glebqip Announcer logic
-	if self.Train.Custom3 and (not self.Train.ARSType or self.Train.ARSType < 3) then
+	if self.Train.Custom3 then
 		self:Announcer2()
 	end
 	-- Check if new announcement must be started from train wire
@@ -1586,7 +1586,7 @@ function TRAIN_SYSTEM:Think()
 
 	-- Check if schedule announcement is playing
 	if self.ScheduleAnnouncement ~= 0 then
-		if self.Train.DriverSeat and (self.Train.R_UNch.Value < 0.5) then
+		if self.Train.DriverSeat and ((self.Train.R_UNch and self.Train.R_UNch.Value < 0.5) or (self.Train.UPO and self.Train.UPO.Value < 0.5)) then
 			self.Fake48 = self.ScheduleAnnouncement
 		else
 			self.Train:WriteTrainWire(48,self.ScheduleAnnouncement)

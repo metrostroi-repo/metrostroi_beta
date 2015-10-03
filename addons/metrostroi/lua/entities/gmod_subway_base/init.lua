@@ -1492,7 +1492,7 @@ function ENT:Think()
 				self.CurrentDist = self.CurrentDist + self.DeltaTime * self.Speed * self.SpeedSign / 3.6
 				if self.rep > 0 and (self.TargetDist < self.CurrentDist and self.TargetDist > 0 or self.TargetDist > self.CurrentDist and self.TargetDist < 0) then
 					self.rep = self.rep - 1
-					self:CreateJointSound(math.ceil(math.random(1,5)))
+					self:CreateJointSound(math.ceil(math.random(1,10)))
 					self.CurrentDist = 0
 				end
 			end
@@ -1669,7 +1669,7 @@ function ENT:Think()
 	local speed,acceleration = 0,0
 	if IsValid(self.FrontBogey) and IsValid(self.RearBogey) then
 		self.Speed = (self.FrontBogey.Speed + self.RearBogey.Speed)/2
-		self.SpeedSign = self.FrontBogey.SpeedSign
+		self.SpeedSign = self.FrontBogey.SpeedSign or 1
 		self.Acceleration = (self.FrontBogey.Acceleration + self.RearBogey.Acceleration)/2
 	else
 		self.Acceleration = 0
