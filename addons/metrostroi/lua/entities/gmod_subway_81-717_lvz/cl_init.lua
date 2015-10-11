@@ -20,7 +20,7 @@ ENT.ButtonMap["Main"] = {
 		
 		--{ID = "1:KVTSet",			x=247, y=33, radius=20, tooltip="КВТ: Кнопка восприятия торможения\nKVT: ARS Brake cancel button"},
 		{ID = "2:KVTSet",		x=290, y=27, radius=20, tooltip="КБ: Кнопка Бдительности\nKB: Attention button"},
-		{ID = "OhrSigLight",		x=320, y=25, radius=20, tooltip="Лапа охранной сигнализации\nSecure signalisation lamp"},
+		{ID = "OhrSigLight",		x=320, y=25, radius=20, tooltip="Лампа охранной сигнализации\nSecure signalisation lamp"},
 		{ID = "VZ1Set",			x=360, y=27, radius=20, tooltip="ВЗ1: Вентиль замещения №1\nVZ1: Pneumatic valve #1"},
 		
 		--{ID = "AutodriveToggle",x=420, y=92, radius=20, tooltip="Автоматическая остановка\nAutomatic stop"},
@@ -108,8 +108,45 @@ ENT.ButtonMap["BPSNFront"] = {
 		
 		--{ID = "RezMKSet",		x=126,  y=80, radius=20, tooltip="Резервное включение мотор-компрессора\nEmergency motor-compressor startup"},
 		--{ID = "Radio13Set", x=83, y=80, radius=20, tooltip="Радио 13В: Проверка батареи радиостанции\nRadio 13V: Radiostation battery check"},
-		{ID = "ARS13Set",x=83, y=80, radius=20, tooltip="АРС 13В: Проверка стабилизированого напряжения АРС\nARS 13V: ARS stabilized voltage check"},
+		--{ID = "ARS13Set",x=83, y=80, radius=20, tooltip="АРС 13В: Проверка стабилизированого напряжения АРС\nARS 13V: ARS stabilized voltage check"},
 	}
+}
+ENT.ButtonMap["PUAV"] = {
+	pos = Vector(455.3,30.8,7.0), --31.4
+	ang = Angle(0,-90,57.0),
+	width = 265,
+	height = 245,
+	scale = 0.0625,
+	
+	buttons = {
+		{ID = "KHSet", x=108, y=116, radius=20, tooltip="ПУАВ:КХ"},
+		{ID = "BCCDSet", x=158, y=116, radius=20, tooltip="ПУАВ:КСЗД"},
+		{ID = "VAVToggle", x=89, y=147, radius=20, tooltip="ПУАВ:ВАВ"},
+		{ID = "VZPToggle", x=178, y=147, radius=20, tooltip="ПУАВ:ВЗП"},
+	}
+}
+
+ENT.ButtonMap["PUAV1"] = {
+	pos = Vector(453.65,25.38,5.75), --31.4
+	ang = Angle(0,-90,57.0),
+	width = 100,
+	height = 57,
+	scale = 0.0625,
+	
+	buttons = {
+		{ID = "P1Set", x=18, y=46, radius=5},
+		{ID = "P2Set", x=57, y=46, radius=5, tooltip = "Линия"},
+		{ID = "P3Set", x=69, y=46, radius=5, tooltip = "Начальная станция"},
+		{ID = "P4Set", x=81, y=46, radius=5, tooltip = "Конечная станция"},
+		{ID = "P5Set", x=93, y=46, radius=5},
+	}
+}
+ENT.ButtonMap["PUAV2"] = {
+	pos = Vector(454.66,28,5.981), --31.4
+	ang = Angle(0,-90,57.2),
+	width = 178*3,
+	height = 82*3,
+	scale = 0.0625/3,
 }
 
 ENT.ButtonMap["PAKSD"] = {
@@ -204,11 +241,11 @@ ENT.ButtonMap["PAM1"] = {
 	}
 }
 ENT.ButtonMap["PAM2"] = {
-	pos = Vector(454.65,28.4,5.65),
+	pos = Vector(454.21,30.8-3.31,5.3), --31.4
 	ang = Angle(0,-90,57.0),
-	width = 323,
-	height = 113,
-	scale = 0.0305,
+	width = 512,
+	height = 427,
+	scale = 0.02202,
 	props = {},
 }
 ENT.ButtonMap["ARS"] = {
@@ -622,7 +659,7 @@ ENT.ButtonMap["PassengerDoor"] = {
 	height = 2000,
 	scale = 0.1/2,
 	buttons = {
-		{ID = "PassengerDoor",x=0,y=0,w=642-220,h=2000, tooltip="Дверь в кабину машиниста из салона\nPass door door"},
+		{ID = "PassengerDoor",x=0,y=0,w=642-220,h=2000, tooltip="Дверь в кабину машиниста из салона\nPass door"},
 	}
 }
 ENT.ButtonMap["Wiper"] = {
@@ -1109,11 +1146,11 @@ Metrostroi.ClientPropForButton("KB",{
 	model = "models/metrostroi_train/81/button.mdl",
 	skin = 5,
 })
-Metrostroi.ClientPropForButton("ARS13",{
-	panel = "BPSNFront",
-	button = "ARS13Set",
-	model = "models/metrostroi_train/81/button.mdl"
-})
+--Metrostroi.ClientPropForButton("ARS13",{--
+	--panel = "BPSNFront",
+	--button = "ARS13Set",
+	--model = "models/metrostroi_train/81/button.mdl"
+--})
 --[[
 Metrostroi.ClientPropForButton("Radio13",{
 	panel = "BPSNFront",
@@ -1127,6 +1164,56 @@ Metrostroi.ClientPropForButton("Radio13",{
 --	button = "AutodriveToggle",
 --	model = "models/metrostroi_train/81/tumbler2.mdl",
 --})
+
+Metrostroi.ClientPropForButton("PUAV_KH",{
+	panel = "PUAV",
+	button = "KHSet",	
+	model = "models/metrostroi_train/81/button.mdl",
+})
+Metrostroi.ClientPropForButton("PUAV_BCCD",{
+	panel = "PUAV",
+	button = "BCCDSet",	
+	model = "models/metrostroi_train/81/button.mdl",
+})
+Metrostroi.ClientPropForButton("PUAV_VAV",{
+	panel = "PUAV",
+	button = "VAVToggle",	
+	model = "models/metrostroi_train/81/tumbler2.mdl",
+	ang = 90
+})
+Metrostroi.ClientPropForButton("PUAV_VZP",{
+	panel = "PUAV",
+	button = "VZPToggle",	
+	model = "models/metrostroi_train/81/tumbler2.mdl",
+	ang = 90
+})
+
+
+Metrostroi.ClientPropForButton("PUAV_P1",{
+	panel = "PUAV1",
+	button = "P1Set",	
+	model = "models/metrostroi_train/81/puavb.mdl",
+})
+Metrostroi.ClientPropForButton("PUAV_P2",{
+	panel = "PUAV1",
+	button = "P2Set",	
+	model = "models/metrostroi_train/81/puavb.mdl",
+})
+Metrostroi.ClientPropForButton("PUAV_P3",{
+	panel = "PUAV1",
+	button = "P3Set",	
+	model = "models/metrostroi_train/81/puavb.mdl",
+})
+Metrostroi.ClientPropForButton("PUAV_P4",{
+	panel = "PUAV1",
+	button = "P4Set",	
+	model = "models/metrostroi_train/81/puavb.mdl",
+})
+Metrostroi.ClientPropForButton("PUAV_P5",{
+	panel = "PUAV1",
+	button = "P5Set",	
+	model = "models/metrostroi_train/81/puavb.mdl",
+})
 
 Metrostroi.ClientPropForButton("PAM_BCCD",{
 	panel = "PAM",
@@ -1597,12 +1684,17 @@ function ENT:Think()
 	if self.Blok ~= self:GetNWBool("Blok",1) then
 		self.Blok = self:GetNWBool("Blok",1)
 		self:ShowHide("VPA",self.Blok and self.Blok == 2)
+		self:ShowHide("VPAOn",self.Blok and self.Blok == 2)
+		self:ShowHide("VPAOff",self.Blok and self.Blok == 2)
 		self:ShowHide("ARS",not self.Blok or self.Blok ~= 2)
 		self:ShowHide("ALS",not self.Blok or self.Blok ~= 2)
 		self:ShowHide("VAU",not self.Blok or self.Blok ~= 2 and not self.Breakers)
 		self:ShowHide("VAU_2",not self.Blok or self.Blok ~= 2 and self.Breakers)
 		self:ShowHide("RC2",not self.Blok or self.Blok ~= 2 and not self.Breakers)
 		self:ShowHide("RC2_2",not self.Blok or self.Blok ~= 2 and self.Breakers)
+		self:HidePanel("PUAV",self.Blok and self.Blok ~= 1)
+		self:HidePanel("PUAV1",self.Blok and self.Blok ~= 1)
+		self:HidePanel("PUAV2",self.Blok and self.Blok ~= 1)
 		self:HidePanel("PAKSD",not self.Blok or self.Blok ~= 2)
 		self:HidePanel("PAKSD1",not self.Blok or self.Blok ~= 2)
 		self:HidePanel("PAKSD2",not self.Blok or self.Blok ~= 2)
@@ -1855,6 +1947,15 @@ function ENT:Think()
 	self:Animate("UAVALever",	self:GetPackedBool(152) and 1 or 0, 	0,0.25, 128,  3,false)
 	self:Animate("EPK_disconnect",	self:GetPackedBool(155) and 0 or 1,0,0.5, 3, false)
 	self:Animate("ParkingBrake",	self:GetPackedBool(160) and 0 or 1,0,0.5, 3, false)
+	if not self.Blok or self.Blok == 1 then
+		self:Animate("PUAV_BCCD",self:GetPackedBool("BCCD") and 1 or 0,0,1,8,false)
+		self:Animate("PUAV_KH",self:GetPackedBool("KH") and 1 or 0,0,1,8,false)
+		self:Animate("PUAV_VAV",self:GetPackedBool("VAV") and 1 or 0,0,1,8,false)
+		self:Animate("PUAV_VZP",self:GetPackedBool("VZP") and 1 or 0,0,1,8,false)
+		for i = 1,5 do
+			self:Animate("PUAV_P"..i,self:GetPackedBool("P"..i) and 1 or 0,0,1,8,false)
+		end
+	end
 	if self.Blok == 2 then
 		self:Animate("Indicate",self:GetPackedBool("Indicate3") and 0.4 or self:GetPackedBool("Indicate2") and 0.29 or self:GetPackedBool("Indicate1") and 0.17 or 0,0.0,1,2,false)
 		self:Animate("BCCD",self:GetPackedBool("BCCD") and 1 or 0,0,1,8,false)
@@ -2060,7 +2161,7 @@ function ENT:Think()
 	self:SetSoundState("compressor",state and 1 or 0,1,nil,0.75)
 	
 	-- ARS/ringer alert
-	local state = self:GetPackedBool(39) or self:GetPackedBool(163)
+	local state = self:GetPackedBool(39) or self:GetPackedBool(164)
 	self.PreviousAlertState = self.PreviousAlertState or false
 	if self.PreviousAlertState ~= state then
 		self.PreviousAlertState = state
@@ -2125,21 +2226,29 @@ function ENT:DrawPost(special)
 	end
 
 	self:DrawOnPanel("InfoRoute",function()
-		surface.SetDrawColor(142,132,101) --255*dc.x,250*dc.y,220*dc.z)
-		surface.DrawRect(0,100,88,70)
+		surface.SetDrawColor(0,0,0) --255*dc.x,250*dc.y,220*dc.z)
+		surface.DrawRect(-10,100,108,70)
 		draw.Text({
 			text = self:GetNWString("RouteNumber",""),
 			font = "MetrostroiSubway_InfoRoute",--..self:GetNWInt("Style",1),
 			pos = { 44, 135 },
 			xalign = TEXT_ALIGN_CENTER,
 			yalign = TEXT_ALIGN_CENTER,
-			color = Color(0,0,0,255)})
+			color = Color(255,255,255,255)})
 	end)
 
 	local distance = self:GetPos():Distance(LocalPlayer():GetPos())
 	if distance > 1024 or special then return end
-	self:DrawOnPanel("PAKSD1",function(...) self["PA-KSD"]:PAKSD1(self,...) end)
-	self:DrawOnPanel("PAKSD2",function(...) self["PA-KSD"]:PAKSD2(self,...) end)
+	if not self.Blok or self.Blok == 1 then
+		self:DrawOnPanel("PUAV1",function(...) self.PUAV.PUAV1(self,...) end)
+		self:DrawOnPanel("PUAV2",function(...) self.PUAV.PUAV2(self,...) end)
+	elseif self.Blok == 2 then
+		self:DrawOnPanel("PAKSD1",function(...) self["PA-KSD"]:PAKSD1(self,...) end)
+		self:DrawOnPanel("PAKSD2",function(...) self["PA-KSD"]:PAKSD2(self,...) end)
+	elseif self.Blok == 3 then
+		self:DrawOnPanel("PAM2",function(...) self["PA-M"]:PAM	(self,...) end)
+	end
+		
 	self:DrawOnPanel("ARSKyiv",function()
 		if not self:GetPackedBool(32) then return end
 		

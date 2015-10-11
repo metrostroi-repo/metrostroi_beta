@@ -36,9 +36,10 @@ local Settings = {
 	Seat = 1,
 	Breakers = 0,
 	Blok = 1,
+	PNM = 0,
 }
 local Types = {
-	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,ARS,Cran,Mask,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv",
+	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,ARS,Cran,Mask,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv,PNM",
 	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,Blok,Cran,PiterMsk,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,Hand,Seat,Lamp,Breakers,Adv",
 	"Train,WagNum,Texture,Prom,Cran,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB",
 	"Train,WagNum",
@@ -213,12 +214,13 @@ local function Draw()
 	CreateList("ARS","ARS Type",{"Standart(square lamps)","Standart(round lamps)","Kiev/St.Petersburg","Old ARS"})
 	CreateList("Blok","Autodrive panel",{"PUAV","PA-KSD","PA-M"})
 	CreateList("Mask","Mask",{"2-2","2-2-2","1-4-1 bumper 1","1-4-1 bumper 2","1-1","Retro"})
-	CreateList("PiterMsk","PiterMsk",{"1-4-1","2-2 Down-2","2-2","2-2-2","2-3-2"})
-	CreateList("BPSN","BPSN type",{"Normal","Old high tone","Old medium tone","Normal2(from St.Petersburg)","Normal3(from wiki)","Normal4","No sound"})
+	CreateList("PiterMsk","PiterMsk",{"1-4-1","2-2 Down-2","2-2","2-2-2","1-3-1"})
+	CreateList("BPSN","BPSN type",{"Old high tone","Old medium tone","Normal(from St.Petersburg)","Normal","No sound"})
 	CreateList("Seat","Seat type",{"Old","New"})
 	CreateList("Hand","Hand rail type",{"Old","New"})
 	CreateList("Bort","Bort",{"Vertical","Horisontal"})
 	CreateList("Lamp","Lamp type",{"Type1","Type2","Type3"})
+	CreateCheckBox("PNM","PNM Informer")
 	CreateCheckBox("MVM","MVM icon")
 	CreateCheckBox("GV","Main Switch")
 	CreateCheckBox("Battery","Battery")

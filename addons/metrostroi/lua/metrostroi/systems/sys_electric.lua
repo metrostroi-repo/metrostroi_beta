@@ -63,7 +63,9 @@ function TRAIN_SYSTEM:Initialize()
 	-- Need many iterations for engine simulation to converge
 	self.SubIterations = 16
 	-- Главный выключатель
+	
 	self.Train:LoadSystem("GV","Relay","GV_10ZH")
+	self.Train:LoadSystem("ENDis","Relay","Switch")
 	
 	-- Thyristor contrller
 	if self.ThyristorController then
@@ -443,7 +445,7 @@ function TRAIN_SYSTEM:SolvePS(Train)
 	-- Calculate total resistance of the entire series circuit
 	local Rtotal = self.Ranchor13 + self.Ranchor24 + self.Rstator13 + self.Rstator24 +
 		self.R1 + self.R2 + self.R3 + self.ExtraResistanceLK5
-	local CircuitClosed = (self.Power750V > 0) and 1 or 0
+	local CircuitClosed = (self.Power750V > 0  and Train.ENDis.Value < 0.5) and 1 or 0
 		
 	-- Calculate total current
 	self.Utotal = (self.Power750V - Train.Engines.E13 - Train.Engines.E24)*Train.LK1.Value
@@ -471,7 +473,7 @@ function TRAIN_SYSTEM:SolvePP(Train,inTransition)
 	local R1 = self.Ranchor13 + self.Rstator13 + self.R1 + extraR + self.ExtraResistanceLK5
 	local R2 = self.Ranchor24 + self.Rstator24 + self.R2 + extraR + self.ExtraResistanceLK5
 	local R3 = 0
-	local CircuitClosed = (self.Power750V > 0) and 1 or 0
+	local CircuitClosed = (self.Power750V > 0  and Train.ENDis.Value < 0.5) and 1 or 0
 	
 	-- Main circuit parameters
 	local V = self.Power750V*Train.LK1.Value

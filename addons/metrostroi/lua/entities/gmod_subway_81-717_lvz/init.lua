@@ -114,6 +114,14 @@ function ENT:Initialize()
 			[KEY_9] = "KVWrenchKV", 
 			[KEY_0] = "KVWrench0",
 			[KEY_6] = "KVSetT1A",
+
+			[KEY_PAD_7] = "BFSet",
+			[KEY_PAD_8] = "BUpSet",
+			[KEY_PAD_9] = "BMSet",
+			[KEY_PAD_4] = "BLeftSet",
+			[KEY_PAD_5] = "BDownSet",
+			[KEY_PAD_6] = "BRightSet",
+			[KEY_PAD_ENTER] = "BPSet",
 		},
 		
 		[KEY_RSHIFT] = {
@@ -124,6 +132,7 @@ function ENT:Initialize()
 			[KEY_L] = "DriverValveDisconnectToggle",
 			[KEY_F] = "BCCDSet",
 			[KEY_R] = "VZPSet",
+
 		},
 		[KEY_LALT] = {
 			[KEY_V] = "VUD1Toggle",
@@ -138,12 +147,15 @@ function ENT:Initialize()
 			[KEY_PAD_8] = "B8Set",
 			[KEY_PAD_9] = "B9Set",
 			[KEY_PAD_0] = "B0Set",
-			[KEY_PAD_DIVIDE] = "BLeftSet",
-			[KEY_PAD_MULTIPLY] = "BUpSet",
-			[KEY_PAD_DECIMAL] = "BDownSet",
-			[KEY_PAD_PLUS] = "BPlusSet",
-			[KEY_PAD_MINUS] = "BMinusSet",
+			[KEY_PAD_DECIMAL] = "BEscSet",
 			[KEY_PAD_ENTER] = "BEnterSet",
+			[KEY_UP] = "BUpSet",
+			[KEY_LEFT] = "BLeftSet",
+			[KEY_DOWN] = "BDownSet",
+			[KEY_RIGHT] = "BRightSet",
+			[KEY_PAD_MINUS] = "BFSet",
+			[KEY_PAD_PLUS] = "BMSet",
+			[KEY_PAD_MULTIPLY] = "BPSet",
 		},
 		[KEY_RALT] = {
 			[KEY_L] = "EPKToggle",
@@ -347,6 +359,7 @@ function ENT:Initialize()
 end
 --------------------------------------------------------------------------------
 function ENT:Think()
+	if self.PAKSD_VUD.Value == 0 then self.PAKSD_VUD:TriggerInput("Set",1) end
 	for k,v in pairs(self:GetMaterials()) do
 		if v == "models/metrostroi_train/81/int02" then
 			if self.Map == "" then
@@ -410,6 +423,7 @@ function ENT:Think()
 		self.TextureTime = CurTime()
 		self:SetNWInt("Blok",(self.Blok or 1))
 		self:SetNWBool("Breakers",(self.Breakers or 0) > 0)
+		self:SetNWBool("BPSNBuzzType",self.PNM)
 		if self.Texture or self.PassTexture or self.SignsList	 then
 			for k,v in pairs(self:GetMaterials()) do
 				if v == "models/metrostroi_train/81/b01a" then
@@ -464,7 +478,7 @@ function ENT:Think()
 	self:SetBodygroup(8,(self.HandRail or 1)-1)
 	self:SetBodygroup(9,2)
 	self:SetBodygroup(10,(self.BortLampType or 1)-1)
-	self:SetBodygroup(12,1)
+	self:SetBodygroup(12,0)
 	self:SetBodygroup(13,1-(self.Lighter or 0))
 	self:SetBodygroup(16,2-self.Pneumatic.ValveType)
 	self:SetBodygroup(17,self.Blok)
@@ -653,7 +667,19 @@ function ENT:Think()
 	self:SetPackedBool("KDLRK",self.KDLRK.Value > 0)
 	self:SetPackedBool("KDPK",self.KDPK.Value > 0)
 	self:SetPackedBool("KAHK",self.KAHK.Value > 0)
-	
+	if not self.Blok or self.Blok == 1 then
+		self:SetPackedBool("W16",self:ReadTrainWire(16) > 0)
+		self:SetPackedBool("ARS",self.ALS_ARS.EnableARS)
+		self:SetPackedBool("AVT",self.Autodrive.AutodriveEnabled)
+		self:SetPackedBool("LOS",self.RC1.Value < 0.5 and not self.ALS_ARS.EnableARS and self.KV.ReverserPosition ~= 0.0)
+		self:SetPackedBool("KH",self.KH.Value > 0.5)
+		self:SetPackedBool("VAV",self.VAV.Value > 0.5)
+		self:SetPackedBool("P1",self.P1.Value > 0.5)
+		self:SetPackedBool("P2",self.P2.Value > 0.5)
+		self:SetPackedBool("P3",self.P3.Value > 0.5)
+		self:SetPackedBool("P4",self.P4.Value > 0.5)
+		self:SetPackedBool("P5",self.P5.Value > 0.5)
+	end
 	--self:SetLightPower(27,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
 	--self:SetLightPower(28,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
 	--self:SetLightPower(29,(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 1) and (self.ARSType < 3 or self.ARSType == 3 and self:ReadTrainWire(16) < 1))
@@ -694,10 +720,8 @@ function ENT:Think()
 		if v.OhrSig and v.OhrSig.Value > 0 then OhrSigWork = true break end
 	end
 	self.Panel.OhrSig = 0
-	if OhrSigWork then
-		for k,v in pairs(self.WagonList) do
-			if v.PassengerDoor then self.Panel.OhrSig = 1 end
-		end
+	for k,v in pairs(self.WagonList) do
+		if v.PassengerDoor then self.Panel.OhrSig = 1 end
 	end
 	-- Switch and button states
 	self:SetPackedBool(0,self:IsWrenchPresent())
@@ -770,6 +794,7 @@ function ENT:Think()
 	self:SetPackedBool(161,self.ParkingBrakeSign.Value > 0)
 	self:SetPackedBool(162,self.KB.Value == 1.0)
 	self:SetPackedBool(163,self.Panel.OhrSig == 1.0)
+	self:SetPackedBool(164,OhrSigWork and self.Panel.OhrSig == 1.0)
 	self:SetPackedBool(165,self.PB.Value > 0)
 	self:SetPackedBool("VPA1",self.VPA.Value == 2)
 	self:SetPackedBool("VPA2",self.VPA.Value == 0)
@@ -778,7 +803,7 @@ function ENT:Think()
 	self:SetPackedBool("Indicate3",self.Indicate.Value == 3.0)
 	self:SetPackedBool("BCCD",self.BCCD.Value == 1.0)
 	self:SetPackedBool("VZP",self.VZP.Value == 1.0)
-	if self.Blok > 2 then
+	if self.Blok > 1 then
 		self:SetPackedBool("B7",self.B7.Value == 1.0)
 		self:SetPackedBool("B8",self.B8.Value == 1.0)
 		self:SetPackedBool("B9",self.B9.Value == 1.0)
@@ -831,7 +856,7 @@ function ENT:Think()
 	self:SetPackedBool(34,(self.NR.Value == 1.0) or (self.RPU.Value == 1.0))
 	-- Red RP
 	self.RTW18 = self:GetTrainWire18Resistance()
-	if (self.KV.ControllerPositionAutodrive == 0 and self.KV.ControllerPosition == 0) or (self.Panel["V1"] < 0.5) then self.RTW18 = 1e9 end
+	if (self:ReadTrainWire(20) == 0) or (self.Panel["V1"] < 0.5) then self.RTW18 = 1e9 end
 	self:SetPackedBool(35,self.RTW18 < 1.39-0.208*self:GetWagonCount())
 	self:SetPackedBool(131,self.RTW18 < 100)
 	-- Green RP
@@ -1043,11 +1068,11 @@ function ENT:Check2Cab(button,breaker,func,isbreaker)
 	end
 end
 function ENT:PhysicsCollide( colData, collider )
-	print(self.Owner)
 	if colData.HitEntity == Entity(0) then
 		--PrintTable(colData)
 		file.Append("collides.txt",tostring(self:WorldToLocal(colData.HitPos)).."\n")
 		print("COLLIDE")
+		print(self.Owner)
 		print(self:WorldToLocal(colData.HitPos))
 		--print(collider)
 	end
@@ -1056,7 +1081,11 @@ function ENT:BrokePlomb(but,nosnd)
 	self[but]:TriggerInput("Block",false) 
 	self.Plombs[but] = false
 	local drv = self:GetDriverName()
-	if not nosnd then RunConsoleCommand("say",drv.." broke seal on "..but.."!") end
+	if not nosnd then
+		hook.Run("MetrostroiPlombBroken",self,but,drv)
+		RunConsoleCommand("say",drv.." broke seal on "..but.."!")
+	end
+	
 end
 --------------------------------------------------------------------------------
 function ENT:OnButtonPress(button,state)

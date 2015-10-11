@@ -698,7 +698,7 @@ function TRAIN_SYSTEM:Think(dT)
 				end
 			end
 
-			if Train:ReadTrainWire(5) < 1 then
+			if not OverrideState and Train:ReadTrainWire(5) < 1 then
 				ars = nil
 				self.RealNoFreq = true
 				self.NoFreq = true
@@ -855,7 +855,7 @@ function TRAIN_SYSTEM:Think(dT)
 		if Train.Pneumatic and Train.Pneumatic.EmergencyValveEPK then
 			Train.Pneumatic.EmergencyValveEPK = false
 		end
-		if Train.KV.ReverserPosition == 0.0 then
+		if Train.KV and Train.KV.ReverserPosition == 0.0 then
 			self.AntiRolling = false
 		end
 		if not EnableARS then

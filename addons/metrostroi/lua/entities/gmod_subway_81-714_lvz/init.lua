@@ -53,6 +53,17 @@ function ENT:Initialize()
 		[KEY_9] = "PMPDown",
 		[KEY_F] = "PneumaticBrakeUp",
 		[KEY_R] = "PneumaticBrakeDown",
+		[KEY_PAD_PLUS] = "PMPUp",
+		[KEY_PAD_MINUS] = "PMPDown",
+		[KEY_PAD_1] = "PneumaticBrakeSet1",
+		[KEY_PAD_2] = "PneumaticBrakeSet2",
+		[KEY_PAD_3] = "PneumaticBrakeSet3",
+		[KEY_PAD_4] = "PneumaticBrakeSet4",
+		[KEY_PAD_5] = "PneumaticBrakeSet5",
+		[KEY_PAD_6] = "PneumaticBrakeSet6",
+		[KEY_PAD_7] = "PneumaticBrakeSet7",
+		[KEY_PAD_DIVIDE] = "KRPSet",
+		[KEY_PAD_0] = "DriverValveDisconnectToggle",
 		
 		[KEY_LSHIFT] = {
 			[KEY_L] = "DriverValveDisconnectToggle",
@@ -70,15 +81,6 @@ function ENT:Initialize()
 			--[KEY_0] = "KVWrench0",
 			[KEY_L] = "DriverValveDisconnectToggle",
 		},
-
-		[KEY_PAD_1] = "PneumaticBrake1",
-		[KEY_PAD_2] = "PneumaticBrake2",
-		[KEY_PAD_3] = "PneumaticBrake3",
-		[KEY_PAD_4] = "PneumaticBrake4",
-		[KEY_PAD_5] = "PneumaticBrake5",
-		[KEY_PAD_6] = "PneumaticBrake6",
-		[KEY_PAD_7] = "PneumaticBrake7",
-		
 	}
 	
 	
@@ -495,9 +497,9 @@ function ENT:OnButtonPress(button)
 	if button == "AirDistributorDisconnectToggle" then return end
 	if button == "GVToggle" then
 		if self.GV.Value > 0.5 then
-			self:PlayOnce("revers_f",nil,0.7)
+			--self:PlayOnce("revers_f",nil,0.7)
 		else
-			self:PlayOnce("revers_b",nil,0.7)
+			--self:PlayOnce("revers_b",nil,0.7)
 		end
 		return
 	end
@@ -505,9 +507,9 @@ function ENT:OnButtonPress(button)
 		local name = string.sub(button,1,(string.find(button,"Toggle") or 0)-1)
 		if self[name] then
 			if self[name].Value > 0.5 then
-				self:PlayOnce("av_off","cabin")
+				--self:PlayOnce("av_off","cabin")
 			else
-				self:PlayOnce("av_on","cabin")
+				--self:PlayOnce("av_on","cabin")
 			end
 		end
 		return
@@ -523,24 +525,28 @@ function ENT:OnButtonPress(button)
 		end
 		return
 	end
+	if string.find(button,"PneumaticBrakeSet") then
+		self.Pneumatic:TriggerInput("BrakeSet",tonumber(button:sub(-1,-1)))
+		return
+	end
 	if (not string.find(button,"KVT")) and string.find(button,"KV") then return end
 	if string.find(button,"KRU") then return end
 	
 
 	if button == "VBToggle" then 
 		if self.VUD1.Value > 0.5 then
-			self:PlayOnce("vu22_off","cabin")
+			--self:PlayOnce("vu22_off","cabin")
 		else
-			self:PlayOnce("vu22_on","cabin")
+			--self:PlayOnce("vu22_on","cabin")
 		end
 		return
 	end
 	-- Generic button or switch sound
 	if string.find(button,"Set") then
-		self:PlayOnce("button_press","cabin")
+		--self:PlayOnce("button_press","cabin")
 	end
 	if string.find(button,"Toggle") then
-		self:PlayOnce("switch2","cabin",0.7)
+		--self:PlayOnce("switch2","cabin",0.7)
 	end
 end
 
@@ -564,6 +570,6 @@ function ENT:OnButtonRelease(button)
 	if string.find(button,"KRU") then return end
 
 	if string.find(button,"Set") then
-		self:PlayOnce("button_release","cabin")
+		--self:PlayOnce("button_release","cabin")
 	end
 end

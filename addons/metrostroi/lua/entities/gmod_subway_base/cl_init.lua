@@ -149,7 +149,7 @@ surface.CreateFont("MetrostroiSubway_InfoRoute", {
   size = 80,
   weight = 800,
   blursize = 0,
-  scanlines = 10,
+  scanlines = 0,
   antialias = true,
   underline = false,
   italic = false,
@@ -268,6 +268,7 @@ function ENT:SpawnCSEnt(k)
 		cent:SetAngles(self:LocalToWorldAngles(v.ang))
 		cent:SetParent(self)
 		cent:SetColor(v.color or color_white)
+
 		cent:SetSkin(v.skin or 0)
 		if v.bodygroup then
 			for k,v in pairs(v.bodygroup) do
@@ -285,6 +286,15 @@ function ENT:SpawnCSEnt(k)
 				cent:SetSubMaterial(k-1,self:GetNWString("passtexture"))
 			else
 				cent:SetSubMaterial(k-1,"")
+			end
+		end
+		if self.Anims[k] and self.Anims[k].alpha then
+			if self.Anims[k].alpha > 0 then		
+				cent:SetColor(Color(255,255,255,self.Anims[k].alpha*255))
+				cent:SetRenderMode(RENDERMODE_TRANSALPHA)
+			else
+				cent:Remove()
+				self:ShowHide(k, false,true)
 			end
 		end
 		self:ShowHide(k, not self.Hidden[k],true)
@@ -806,6 +816,16 @@ function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
 		self.Anims[id] = {}
 		self.Anims[id].val = value
 		self.Anims[id].V = 0.0
+		self.Anims[id].block = false
+	end
+	if value ~= self.Anims[id].oldival then
+		self.Anims[id].block = false
+	end
+	if self.Anims[id].block then
+		if IsValid(self.ClientEnts[clientProp]) then
+			self.ClientEnts[clientProp]:SetPoseParameter("position",min + (max-min)*self.Anims[id].val)
+		end
+		return min + (max-min)*self.Anims[id].val
 	end
 	--if self["_anim_old_"..id] == value then return self["_anim_old_"..id] end
 	-- Generate sticky value
@@ -857,8 +877,19 @@ function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
 	if IsValid(self.ClientEnts[clientProp]) then
 		self.ClientEnts[clientProp]:SetPoseParameter("position",min + (max-min)*self.Anims[id].val)
 	end
+	if self.Anims[id].val == self.Anims[id].oldval and value == self.Anims[id].oldival and self.Anims[id].timer and CurTime() - self.Anims[id].timer > 0 then
+		self.Anims[id].block = true
+	end
+	if self.Anims[id].val == self.Anims[id].oldval and value == self.Anims[id].oldival and not self.Anims[id].timer then
+		self.Anims[id].timer = CurTime() + 0.1
+	end
+	if (self.Anims[id].val ~= self.Anims[id].oldval or value ~= self.Anims[id].oldival) and self.Anims[id].timer then
+		self.Anims[id].timer = nil
+	end
 	--print(id,min + (max-min)*self.Anims[id].val,value, min + (max-min)*value)
 	--self["_anim_old_"..id] = min + (max-min)*self.Anims[id].val
+	self.Anims[id].oldval = self.Anims[id].val
+	self.Anims[id].oldival = value
 	return min + (max-min)*self.Anims[id].val
 end
 function ENT:AnimateFrom(clientProp,from)
@@ -895,17 +926,23 @@ function ENT:HideButton(clientProp, value)
 	self.HiddenButton[clientProp] = value
 end
 function ENT:ShowHideSmooth(clientProp, value)
+	if not self.Anims[clientProp] then
+		self.Anims[clientProp] = {}
+		self.Anims[clientProp].val = value
+		self.Anims[clientProp].V = 0.0
+		self.Anims[clientProp].block = false
+		if IsValid(self.ClientEnts[clientProp]) then self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_TRANSALPHA) end
+	end
+	if self.Anims[clientProp].alpha == value then return end
+	if value > 0 and not IsValid(self.ClientEnts[clientProp]) then
+		self:SpawnCSEnt(clientProp)
+	end
+	if value == 0 and IsValid(self.ClientEnts[clientProp]) then
+		self.ClientEnts[clientProp]:Remove()
+	end
 	if IsValid(self.ClientEnts[clientProp]) then
-		if IsValid(self.ClientEnts[clientProp]) then
-			self.ClientEnts[clientProp]:SetColor(Color(255,255,255,value*255))
-			self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_TRANSALPHA)
-		end
-		if value > 0 and not IsValid(self.ClientEnts[clientProp]) then
-			self:SpawnCSEnt(clientProp)
-		end
-		if value == 0 and IsValid(self.ClientEnts[clientProp]) then
-			self.ClientEnts[clientProp]:Remove()
-		end
+		self.ClientEnts[clientProp]:SetColor(Color(255,255,255,value*255))
+		self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_TRANSALPHA)
 		--self.HiddenQuele[clientProp] = nil
 	--else
 	end

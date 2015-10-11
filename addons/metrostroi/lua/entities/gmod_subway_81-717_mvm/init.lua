@@ -411,6 +411,7 @@ function ENT:Think()
 		self.TextureTime = CurTime()
 		self:SetNWInt("ARSType",(self.ARSType or 1))
 		self:SetNWBool("Breakers",(self.Breakers or 0) > 0)
+		self:SetNWBool("BPSNBuzzType",self.PNM)
 		if self.Texture or self.PassTexture or self.SignsList	 then
 			for k,v in pairs(self:GetMaterials()) do
 				if v == "models/metrostroi_train/81/b01a" then
@@ -1060,11 +1061,11 @@ function ENT:Check2Cab(button,breaker,func,isbreaker)
 	end
 end
 function ENT:PhysicsCollide( colData, collider )
-	print(self.Owner)
 	if colData.HitEntity == Entity(0) then
 		--PrintTable(colData)
 		file.Append("collides.txt",tostring(self:WorldToLocal(colData.HitPos)).."\n")
 		print("COLLIDE")
+		print(self.Owner)
 		print(self:WorldToLocal(colData.HitPos))
 		--print(collider)
 	end
@@ -1073,7 +1074,10 @@ function ENT:BrokePlomb(but,nosnd)
 	self[but]:TriggerInput("Block",false) 
 	self.Plombs[but] = false
 	local drv = self:GetDriverName()
-	if not nosnd then RunConsoleCommand("say",drv.." broke seal on "..but.."!") end
+	if not nosnd then
+		hook.Run("MetrostroiPlombBroken",self,but,drv)
+		RunConsoleCommand("say",drv.." broke seal on "..but.."!")
+	end
 end
 --------------------------------------------------------------------------------
 function ENT:OnButtonPress(button,state)

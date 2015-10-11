@@ -659,11 +659,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "MK1-1",
 				"Switches": "1280+",
+				"ARSCodes": "046",
 				"Lights": "3-32-2-24-4",
 				"NextSignal": "MK41",
-				"ARSCodes": "046",
+				"RouteName": "MK1-1",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -677,11 +677,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"ARSCodes": "1",
 				"RouteName": "MK1-2",
-				"Switches": "1280-",
 				"Lights": "3-3-1",
 				"NextSignal": "MKPREOP",
-				"ARSCodes": "1",
+				"Switches": "1280-",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -946,11 +946,11 @@
 			{
 				"Repeater": true,
 				"Manual": false,
+				"IsOpened": false,
 				"Switches": "1400-,14/5-,14/1-",
-				"ARSCodes": "04",
 				"Lights": "1",
 				"NextSignal": "OK63",
-				"IsOpened": false,
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "1"
@@ -1088,11 +1088,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "OK4-1",
 				"Switches": "14/1-,14/5-,1400-",
+				"ARSCodes": "04",
 				"Lights": "1-1-2",
 				"NextSignal": "OK57",
-				"ARSCodes": "04",
+				"RouteName": "OK4-1",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -1102,13 +1102,13 @@
 			},
 			"2": 
 			{
-				"Switches": "14/1+,14/5+,22261-",
-				"Manual": false,
 				"RouteName": "OK4-2",
+				"Manual": false,
+				"ARSCodes": "04",
 				"Repeater": false,
 				"Lights": "1-1-2",
 				"NextSignal": "OK356",
-				"ARSCodes": "04",
+				"Switches": "14/1+,14/5+,22261-",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -1601,11 +1601,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "046",
 				"RouteName": "PM1-1",
+				"Switches": "1620+,22038+",
 				"Lights": "3-32-2-24-4",
 				"NextSignal": "PM103",
-				"Switches": "1620+,22038+",
+				"ARSCodes": "046",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -1619,11 +1619,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"ARSCodes": "004",
 				"Switches": "1620-,22038-,22036-",
-				"RouteName": "PM1-PTO",
 				"Lights": "3-3-1",
 				"NextSignal": "PM101",
-				"ARSCodes": "004",
+				"RouteName": "PM1-PTO",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -1682,21 +1682,21 @@
 					"2": "2"
 				},
 				"Manual": false,
-				"IsOpened": false,
+				"Repeater": false,
 				"Lights": "1-2",
-				"RouteName": "OK1-4",
+				"IsOpened": false,
 				"Switches": "1400-,14/5-,14/1-",
-				"Repeater": false
+				"RouteName": "OK1-4"
 			},
 			"2": 
 			{
 				"Repeater": false,
 				"Manual": false,
+				"ARSCodes": "04",
 				"Switches": "1400-,14/5+,14/1+",
-				"RouteName": "OK1-3",
 				"Lights": "1-2",
 				"NextSignal": "OK346",
-				"ARSCodes": "04",
+				"RouteName": "OK1-3",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -1855,11 +1855,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "PM2-PTO",
 				"Switches": "22036-",
+				"ARSCodes": "04",
 				"Lights": "1-1-2",
 				"NextSignal": "PM1",
-				"ARSCodes": "04",
+				"RouteName": "PM2-PTO",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -2217,11 +2217,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "1767+",
 				"ARSCodes": "046",
+				"RouteName": "VK1-1",
 				"Lights": "3-32-2-42-4",
 				"NextSignal": "VK139",
-				"RouteName": "VK1-1",
+				"Switches": "1767+",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -2235,11 +2235,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"ARSCodes": "04",
 				"RouteName": "VK1-3",
-				"Switches": "1767-,52+,76+",
 				"Lights": "3-3-1",
 				"NextSignal": "VK127",
-				"ARSCodes": "04",
+				"Switches": "1767-,52+,76+",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -2251,11 +2251,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"Switches": "1767-,52-,76-",
 				"RouteName": "VK1-4",
-				"ARSCodes": "04",
 				"Lights": "3-1-1",
 				"NextSignal": "VK280",
-				"Switches": "1767-,52-,76-",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -2390,11 +2390,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "52-,76-,21898-",
 				"ARSCodes": "04",
+				"RouteName": "VK3-2",
 				"Lights": "2-2-1",
 				"NextSignal": "VK276",
-				"RouteName": "VK3-2",
+				"Switches": "52-,76-,21898-",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -2406,11 +2406,11 @@
 			{
 				"Repeater": false,
 				"Manual": false,
+				"ARSCodes": "04",
 				"RouteName": "VK3-1",
-				"Switches": "52+,76+,1767-",
 				"Lights": "2-2-1",
 				"NextSignal": "VK135",
-				"ARSCodes": "04",
+				"Switches": "52+,76+,1767-",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -2611,11 +2611,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "04",
 				"RouteName": "NV1-2",
+				"Switches": "1708-,21971-",
 				"Lights": "1-2",
 				"NextSignal": "NV298",
-				"Switches": "1708-,21971-",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -2632,11 +2632,11 @@
 					"2": "2"
 				},
 				"Manual": false,
-				"RouteName": "NV1-1",
+				"IsOpened": false,
 				"Lights": "1-2",
-				"Repeater": false,
+				"RouteName": "NV1-1",
 				"Switches": "1708+,21971+",
-				"IsOpened": false
+				"Repeater": false
 			}
 		},
 		"Pos": "[1650.9186 -10005.6904 -2844.4956]",
@@ -3269,11 +3269,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "1960+,1963+",
 				"ARSCodes": "046",
+				"RouteName": "KM1-1",
 				"Lights": "2-21-1-13-3",
 				"NextSignal": "KM167",
-				"RouteName": "KM1-1",
+				"Switches": "1960+,1963+",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -3287,11 +3287,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"Switches": "1960+,1963-",
 				"ARSCodes": "0",
-				"RouteName": "KM1-PTO",
 				"Lights": "2-24b",
 				"NextSignal": "B",
-				"Switches": "1960+,1963-",
+				"RouteName": "KM1-PTO",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -3345,11 +3345,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "04",
 				"RouteName": "EL1-2",
+				"Switches": "11059-,21587-",
 				"Lights": "1-1-2",
 				"NextSignal": "EL230",
-				"Switches": "11059-,21587-",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -3361,11 +3361,11 @@
 			{
 				"Repeater": false,
 				"Manual": false,
+				"Switches": "11059+,21587+",
 				"ARSCodes": "04",
-				"RouteName": "EL1-1",
 				"Lights": "1-2",
 				"NextSignal": "EL187",
-				"Switches": "11059+,21587+",
+				"RouteName": "EL1-1",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -4447,7 +4447,7 @@
 				}
 			}
 		},
-		"Pos": "[13082.7461 -11628.5674 -7592.5005]",
+		"Pos": "[13081.1543 -11631.9912 -7592.501]",
 		"Name": "255"
 	},
 	"142": 
@@ -4463,7 +4463,7 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "046",
+				"ARSCodes": "04678",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "259",
 				"Switches": "",
@@ -4477,7 +4477,7 @@
 				}
 			}
 		},
-		"Pos": "[13464.0137 -4524.8965 -8020.7813]",
+		"Pos": "[13464.0137 -4537.7524 -8019.2026]",
 		"Name": "257"
 	},
 	"143": 
@@ -4493,7 +4493,7 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "046",
+				"ARSCodes": "04678",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "261",
 				"Switches": "",
@@ -4507,7 +4507,7 @@
 				}
 			}
 		},
-		"Pos": "[13395.627 3112.4719 -8603.4961]",
+		"Pos": "[13394.5293 3122.627 -8603.4971]",
 		"Name": "259"
 	},
 	"144": 
@@ -4523,7 +4523,7 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "046",
+				"ARSCodes": "0467",
 				"Lights": "3-1-12",
 				"NextSignal": "265",
 				"Switches": "",
@@ -4535,7 +4535,7 @@
 				}
 			}
 		},
-		"Pos": "[-1007.1885 9880.207 -8603.5059]",
+		"Pos": "[-1007.0496 9880.207 -8603.5059]",
 		"Name": "263"
 	},
 	"145": 
@@ -4551,7 +4551,7 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "046",
+				"ARSCodes": "04678",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "263",
 				"Switches": "",
@@ -4565,7 +4565,7 @@
 				}
 			}
 		},
-		"Pos": "[8238.5127 9547.2373 -8603.5039]",
+		"Pos": "[8224.7393 9550.5762 -8603.5039]",
 		"Name": "261"
 	},
 	"146": 
@@ -4998,11 +4998,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "LN1-2",
 				"Switches": "11774-,2880-",
+				"ARSCodes": "04",
 				"Lights": "1-2",
 				"NextSignal": "LN124",
-				"ARSCodes": "04",
+				"RouteName": "LN1-2",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -5797,11 +5797,11 @@
 					"3": "3"
 				},
 				"Manual": true,
-				"Repeater": false,
+				"IsOpened": false,
 				"Lights": "2-1-3",
-				"RouteName": "DEPOT",
+				"Repeater": false,
 				"Switches": "",
-				"IsOpened": false
+				"RouteName": "DEPOT"
 			}
 		},
 		"ARSOnly": false,
@@ -7282,11 +7282,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "TV-MJ",
 				"Switches": "12301+",
+				"ARSCodes": "046",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "TV371",
-				"ARSCodes": "046",
+				"RouteName": "TV-MJ",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -7300,11 +7300,11 @@
 			{
 				"Repeater": false,
 				"Manual": false,
+				"ARSCodes": "04",
 				"RouteName": "TV-AU",
-				"Switches": "12301-",
 				"Lights": "3-31-14-1b4",
 				"NextSignal": "425",
-				"ARSCodes": "04",
+				"Switches": "12301-",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -8774,11 +8774,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "MJ-TSVO",
 				"Switches": "2345+",
+				"ARSCodes": "046",
 				"Lights": "2-21-1-13-3",
 				"NextSignal": "TV48",
-				"ARSCodes": "046",
+				"RouteName": "MJ-TSVO",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -9867,11 +9867,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"RouteName": "MN3-2",
 				"Switches": "22/1-,22/5-,2574-",
-				"ARSCodes": "004",
 				"Lights": "1-1-2",
 				"NextSignal": "MN80",
-				"RouteName": "MN3-2",
+				"ARSCodes": "004",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -9890,11 +9890,11 @@
 					"3": "2"
 				},
 				"Repeater": false,
-				"Switches": "22/1+,22/5+,12088-",
+				"IsOpened": false,
 				"Lights": "1-1-2",
-				"Manual": false,
+				"Switches": "22/1+,22/5+,12088-",
 				"RouteName": "MN3-1",
-				"IsOpened": false
+				"Manual": false
 			}
 		},
 		"ARSOnly": false,
@@ -12268,11 +12268,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "EL2-1",
 				"Switches": "21587-,11059-",
+				"ARSCodes": "04",
 				"Lights": "1-2",
 				"NextSignal": "193",
-				"ARSCodes": "04",
+				"RouteName": "EL2-1",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -12534,11 +12534,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "KM1-2",
 				"Switches": "1960-,21693-",
+				"ARSCodes": "04",
 				"Lights": "1-2",
 				"NextSignal": "250",
-				"ARSCodes": "04",
+				"RouteName": "KM1-2",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -12787,11 +12787,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "KM2-1",
 				"Switches": "21693-,1960-,1963+",
+				"ARSCodes": "04",
 				"Lights": "1-1-2",
 				"NextSignal": "PTOR",
-				"ARSCodes": "04",
+				"RouteName": "KM2-1",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -12802,11 +12802,11 @@
 			"2": 
 			{
 				"Manual": false,
-				"RouteName": "KM2-PTO",
 				"Switches": "21693-,1960-,1963-",
+				"ARSCodes": "04",
 				"Lights": "1-1-2",
 				"NextSignal": "PTOR",
-				"ARSCodes": "04",
+				"RouteName": "KM2-PTO",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -13531,11 +13531,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "04",
 				"RouteName": "VK2-4",
+				"Switches": "21898-,52+,76+",
 				"Lights": "1-1-2",
 				"NextSignal": "VK280",
-				"Switches": "21898-,52+,76+",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -13547,11 +13547,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"ARSCodes": "04",
 				"Switches": "21898-,52-,76-",
-				"RouteName": "VK2-3",
 				"Lights": "1-1-2",
 				"NextSignal": "VK127",
-				"ARSCodes": "04",
+				"RouteName": "VK2-3",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -14116,11 +14116,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "22036-,22038+,1620+",
 				"ARSCodes": "04",
+				"RouteName": "PTO-2",
 				"Lights": "2-2-1",
 				"NextSignal": "PM310",
-				"RouteName": "PTO-2",
+				"Switches": "22036-,22038+,1620+",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -14132,11 +14132,11 @@
 			{
 				"Repeater": false,
 				"Manual": false,
+				"Switches": "22036-,22038-,1620-",
 				"RouteName": "PTO-1",
-				"ARSCodes": "04",
 				"Lights": "2-2-1",
 				"NextSignal": "PM105",
-				"Switches": "22036-,22038-,1620-",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -14297,11 +14297,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "22036+,22038+",
 				"ARSCodes": "046",
+				"RouteName": "PM2-2",
 				"Lights": "2-21-1-13-3",
 				"NextSignal": "PM310",
-				"RouteName": "PM2-2",
+				"Switches": "22036+,22038+",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -14315,11 +14315,11 @@
 			{
 				"Repeater": false,
 				"Manual": false,
+				"Switches": "22036+,22038-",
 				"RouteName": "PM2-1",
-				"ARSCodes": "04",
 				"Lights": "2-21-4",
 				"NextSignal": "PM105",
-				"Switches": "22036+,22038-",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -14763,11 +14763,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "22261+",
 				"ARSCodes": "046",
+				"RouteName": "OK2-2",
 				"Lights": "3-32-2-42-4",
 				"NextSignal": "OK360",
-				"RouteName": "OK2-2",
+				"Switches": "22261+",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -14781,11 +14781,11 @@
 			{
 				"Repeater": false,
 				"Manual": false,
+				"RouteName": "OK2-3",
 				"Switches": "22261-,14/5-,14/1-",
-				"ARSCodes": "04",
 				"Lights": "3-1",
 				"NextSignal": "OK346",
-				"RouteName": "OK2-3",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -14796,11 +14796,11 @@
 			{
 				"Repeater": false,
 				"Manual": false,
+				"RouteName": "OK2-4",
 				"Switches": "22261-,14/5+,14/1+",
-				"ARSCodes": "04",
 				"Lights": "3-1",
 				"NextSignal": "OK63",
-				"RouteName": "OK2-4",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -14880,11 +14880,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "OK3-1",
 				"Switches": "14/1+,14/5+,1400-",
+				"ARSCodes": "04",
 				"Lights": "1-1-2",
 				"NextSignal": "OK57",
-				"ARSCodes": "04",
+				"RouteName": "OK3-1",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -14894,13 +14894,13 @@
 			},
 			"2": 
 			{
-				"Switches": "14/1-,14/5-,22261-",
-				"Manual": false,
 				"RouteName": "OK3-2",
+				"Manual": false,
+				"ARSCodes": "04",
 				"Repeater": false,
 				"Lights": "1-1-2",
 				"NextSignal": "OK356",
-				"ARSCodes": "04",
+				"Switches": "14/1-,14/5-,22261-",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -15629,11 +15629,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "046",
 				"RouteName": "MK2-2",
+				"Switches": "22376+",
 				"Lights": "3-32-2-24-4",
 				"NextSignal": "376",
-				"Switches": "22376+",
+				"ARSCodes": "046",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -16897,11 +16897,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "046",
 				"RouteName": "MN1-1",
+				"Switches": "12088+",
 				"Lights": "2-21-1-13-3",
 				"NextSignal": "341",
-				"Switches": "12088+",
+				"ARSCodes": "046",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -16915,11 +16915,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"RouteName": "MN1-3",
 				"ARSCodes": "04",
-				"Switches": "12088-,22/5+,22/1+",
 				"Lights": "2-2-4",
 				"NextSignal": "D1",
-				"RouteName": "MN1-3",
+				"Switches": "12088-,22/5+,22/1+",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -16931,11 +16931,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"RouteName": "MN1-4",
 				"Switches": "12088-,22/5-,22/1-",
-				"ARSCodes": "04",
 				"Lights": "2-2-4",
 				"NextSignal": "D2",
-				"RouteName": "MN1-4",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -17007,11 +17007,11 @@
 			{
 				"Manual": false,
 				"Repeater": true,
+				"IsOpened": false,
 				"Switches": "22/1+,22/5+,12088-",
-				"ARSCodes": "004",
 				"Lights": "1-1-2",
 				"NextSignal": "951",
-				"IsOpened": false,
+				"ARSCodes": "004",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -17066,11 +17066,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "",
 				"RouteName": "",
+				"Switches": "",
 				"Lights": "",
 				"NextSignal": "",
-				"Switches": "",
+				"ARSCodes": "",
 				"LightsExploded": 
 				{
 					"1": ""
@@ -17095,11 +17095,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "1",
 				"RouteName": "",
+				"Switches": "",
 				"Lights": "",
 				"NextSignal": "",
-				"Switches": "",
+				"ARSCodes": "1",
 				"LightsExploded": 
 				{
 					"1": ""
@@ -17234,11 +17234,11 @@
 			{
 				"Repeater": true,
 				"Manual": false,
+				"Switches": "12301+",
 				"RouteName": "TV-MJ",
-				"ARSCodes": "046",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "TV371",
-				"Switches": "12301+",
+				"ARSCodes": "046",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -17252,11 +17252,11 @@
 			{
 				"Repeater": true,
 				"Manual": false,
+				"Switches": "12301-",
 				"RouteName": "TV-AU",
-				"ARSCodes": "04",
 				"Lights": "3-23-14-1b4",
 				"NextSignal": "425",
-				"Switches": "12301-",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -17400,11 +17400,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "AU-TSVO",
 				"Switches": "2345-",
+				"ARSCodes": "046",
 				"Lights": "3-31-1-12-2",
 				"NextSignal": "TV48",
-				"ARSCodes": "046",
+				"RouteName": "AU-TSVO",
 				"LightsExploded": 
 				{
 					"1": "3",
@@ -17691,13 +17691,13 @@
 		{
 			"1": 
 			{
-				"ARSCodes": "046",
-				"Repeater": true,
 				"Switches": "12088+",
+				"Repeater": true,
+				"RouteName": "MN1-1",
 				"Manual": false,
 				"Lights": "2-21-1-13-3",
 				"NextSignal": "341",
-				"RouteName": "MN1-1",
+				"ARSCodes": "046",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -17711,11 +17711,11 @@
 			{
 				"Manual": false,
 				"Repeater": true,
+				"RouteName": "MN1-D1",
 				"ARSCodes": "04",
-				"Switches": "12088-,22/5+,22/1+",
 				"Lights": "2-2-4",
 				"NextSignal": "D1",
-				"RouteName": "MN1-D1",
+				"Switches": "12088-,22/5+,22/1+",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -17727,11 +17727,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"RouteName": "MN1-D2",
 				"Switches": "12088-,22/5-,22/1-",
-				"ARSCodes": "04",
 				"Lights": "2-2-4",
 				"NextSignal": "D2",
-				"RouteName": "MN1-D2",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -17851,11 +17851,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"ARSCodes": "",
 				"RouteName": "",
+				"Switches": "1620+",
 				"Lights": "",
 				"NextSignal": "",
-				"Switches": "1620+",
+				"ARSCodes": "",
 				"LightsExploded": 
 				{
 					"1": ""
@@ -17865,11 +17865,11 @@
 			{
 				"Repeater": false,
 				"Manual": false,
+				"ARSCodes": "",
 				"Switches": "1620-",
-				"RouteName": "",
 				"Lights": "1b",
 				"NextSignal": "",
-				"ARSCodes": "",
+				"RouteName": "",
 				"LightsExploded": 
 				{
 					"1": "1b"
@@ -18067,11 +18067,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "",
 				"ARSCodes": "004",
+				"Switches": "1963-",
 				"Lights": "1-1-2",
 				"NextSignal": "KMG",
-				"Switches": "1963-",
+				"RouteName": "",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -18095,13 +18095,13 @@
 		{
 			"1": 
 			{
-				"RouteName": "",
-				"Manual": false,
 				"Switches": "",
+				"Manual": false,
+				"ARSCodes": "04",
 				"Repeater": true,
 				"Lights": "1-2",
 				"NextSignal": "KMG",
-				"ARSCodes": "04",
+				"RouteName": "",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -18233,11 +18233,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"Switches": "2574-,22/5+,22/1+",
 				"RouteName": "MN2-4",
-				"ARSCodes": "04",
 				"Lights": "1-1-2",
 				"NextSignal": "D2",
-				"Switches": "2574-,22/5+,22/1+",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -18249,11 +18249,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"ARSCodes": "04",
 				"RouteName": "MN2-3",
-				"Switches": "2574-,22/5-,22/1-",
 				"Lights": "1-1-2",
 				"NextSignal": "D1",
-				"ARSCodes": "04",
+				"Switches": "2574-,22/5-,22/1-",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -18307,11 +18307,11 @@
 			{
 				"Repeater": true,
 				"Manual": false,
+				"ARSCodes": "04",
 				"Switches": "2574-,22/5+,22/1+",
-				"RouteName": "",
 				"Lights": "1-1-2",
 				"NextSignal": "D2",
-				"ARSCodes": "04",
+				"RouteName": "",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -18323,11 +18323,11 @@
 			{
 				"Repeater": true,
 				"Manual": false,
+				"Switches": "2574-,22/5-,22/1-",
 				"ARSCodes": "04",
-				"RouteName": "",
 				"Lights": "1-1-2",
 				"NextSignal": "D1",
-				"Switches": "2574-,22/5-,22/1-",
+				"RouteName": "",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -18583,11 +18583,11 @@
 			{
 				"Repeater": false,
 				"Manual": false,
+				"Switches": "22/1-,22/5-,12088-",
 				"ARSCodes": "004",
-				"RouteName": "MN4-1",
 				"Lights": "1-1-2",
 				"NextSignal": "951",
-				"Switches": "22/1-,22/5-,12088-",
+				"RouteName": "MN4-1",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -18606,11 +18606,11 @@
 					"3": "2"
 				},
 				"Repeater": false,
-				"Manual": false,
+				"Switches": "22/1+,22/5+,2574-",
 				"Lights": "1-1-2",
-				"IsOpened": false,
+				"Manual": false,
 				"RouteName": "MN4-2",
-				"Switches": "22/1+,22/5+,2574-"
+				"IsOpened": false
 			}
 		},
 		"ARSOnly": false,
@@ -18645,13 +18645,13 @@
 			},
 			"2": 
 			{
-				"ARSCodes": "004",
-				"Manual": false,
 				"IsOpened": false,
+				"Manual": false,
+				"Switches": "22/1+,22/5+,12088-",
 				"Repeater": true,
 				"Lights": "1-1-2",
 				"NextSignal": "951",
-				"Switches": "22/1+,22/5+,12088-",
+				"ARSCodes": "004",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -18853,13 +18853,13 @@
 			},
 			"2": 
 			{
-				"ARSCodes": "1",
-				"Manual": false,
 				"Switches": "12301+",
+				"Manual": false,
+				"RouteName": "",
 				"Repeater": false,
 				"Lights": "",
 				"NextSignal": "",
-				"RouteName": "",
+				"ARSCodes": "1",
 				"LightsExploded": 
 				{
 					"1": ""
@@ -18894,13 +18894,13 @@
 			},
 			"2": 
 			{
-				"ARSCodes": "1",
-				"Manual": false,
 				"Switches": "12301+",
+				"Manual": false,
+				"RouteName": "",
 				"Repeater": false,
 				"Lights": "",
 				"NextSignal": "",
-				"RouteName": "",
+				"ARSCodes": "1",
 				"LightsExploded": 
 				{
 					"1": ""
@@ -19144,11 +19144,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "NV2-1",
 				"Switches": "1708-,21971-",
+				"ARSCodes": "04",
 				"Lights": "1-2",
 				"NextSignal": "117",
-				"ARSCodes": "04",
+				"RouteName": "NV2-1",
 				"LightsExploded": 
 				{
 					"1": "1",
@@ -19171,11 +19171,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"RouteName": "VK4-2",
 				"Switches": "52+,76+,21898-",
+				"ARSCodes": "04",
 				"Lights": "2-2-1",
 				"NextSignal": "VK276",
-				"ARSCodes": "04",
+				"RouteName": "VK4-2",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -19187,11 +19187,11 @@
 			{
 				"Manual": false,
 				"Repeater": false,
+				"RouteName": "VK4-1",
 				"Switches": "52-,76-,1767-",
-				"ARSCodes": "04",
 				"Lights": "2-2-1",
 				"NextSignal": "VK135",
-				"RouteName": "VK4-1",
+				"ARSCodes": "04",
 				"LightsExploded": 
 				{
 					"1": "2",
@@ -19290,11 +19290,11 @@
 			"1": 
 			{
 				"Manual": false,
-				"Switches": "",
 				"ARSCodes": "1",
+				"RouteName": "",
 				"Lights": "",
 				"NextSignal": "MKOP",
-				"RouteName": "",
+				"Switches": "",
 				"LightsExploded": 
 				{
 					"1": ""
@@ -24420,22 +24420,13 @@
 	"1192": 
 	{
 		"YOffset": 0,
-		"Angles": "{2.6432 313.8347 0}",
-		"Class": "gmod_track_signs",
-		"ZOffset": 0,
-		"SignType": 2,
-		"Pos": "[-7501.75 -9169.0986 -2844.4978]"
-	},
-	"1193": 
-	{
-		"YOffset": 0,
 		"Angles": "{0 315 0}",
 		"Class": "gmod_track_signs",
 		"ZOffset": 0,
 		"SignType": 3,
 		"Pos": "[-2606.9766 -10370.042 -3868.5056]"
 	},
-	"1194": 
+	"1193": 
 	{
 		"YOffset": 0,
 		"Angles": "{359.5348 272.5592 0}",
@@ -24444,7 +24435,7 @@
 		"SignType": 2,
 		"Pos": "[-12638.375 -7215.5337 -4893.4985]"
 	},
-	"1195": 
+	"1194": 
 	{
 		"YOffset": 0,
 		"Angles": "{356.531 218.191 0}",
@@ -24453,7 +24444,7 @@
 		"SignType": 3,
 		"Pos": "[-12427.7461 12144.79 -14417.5039]"
 	},
-	"1196": 
+	"1195": 
 	{
 		"YOffset": 0,
 		"Angles": "{0 121.374 0}",
@@ -24462,7 +24453,7 @@
 		"SignType": 2,
 		"Pos": "[4246.0601 1464.4321 -13394.4063]"
 	},
-	"1197": 
+	"1196": 
 	{
 		"YOffset": 15,
 		"Angles": "{0.723 265.0181 0}",
@@ -24471,7 +24462,7 @@
 		"SignType": 7,
 		"Pos": "[15429.3398 -10820.5088 -372.5831]"
 	},
-	"1198": 
+	"1197": 
 	{
 		"YOffset": 0,
 		"Angles": "{0 90 0}",
@@ -24480,7 +24471,7 @@
 		"SignType": 19,
 		"Pos": "[14451.7949 -9645.5498 -481.5056]"
 	},
-	"1199": 
+	"1198": 
 	{
 		"YOffset": 0,
 		"Angles": "{0 270 0}",
@@ -24489,7 +24480,7 @@
 		"SignType": 6,
 		"Pos": "[15459.7939 -10098.0918 -422.8867]"
 	},
-	"1200": 
+	"1199": 
 	{
 		"YOffset": 0,
 		"Angles": "{0 90 0}",
@@ -24498,7 +24489,7 @@
 		"SignType": 6,
 		"Pos": "[14451.7949 -10073.2412 -481.5056]"
 	},
-	"1201": 
+	"1200": 
 	{
 		"YOffset": 0,
 		"Angles": "{0 90 0}",
@@ -24507,7 +24498,7 @@
 		"SignType": 10,
 		"Pos": "[14824.0938 -15174.6514 -609.5056]"
 	},
-	"1202": 
+	"1201": 
 	{
 		"YOffset": 0,
 		"Angles": "{0 270 0}",
@@ -24516,7 +24507,7 @@
 		"SignType": 19,
 		"Pos": "[15458.3496 -3139.929 -481.5056]"
 	},
-	"1203": 
+	"1202": 
 	{
 		"YOffset": 0,
 		"Angles": "{0 270 0}",
@@ -24524,7 +24515,7 @@
 		"SignType": 6,
 		"Pos": "[9473.2061 10212.292 -2331.5056]"
 	},
-	"1204": 
+	"1203": 
 	{
 		"YOffset": 0,
 		"Angles": "{356.8426 153.972 0}",
@@ -24532,7 +24523,7 @@
 		"SignType": 6,
 		"Pos": "[6686.2959 13893.8975 -2331.5027]"
 	},
-	"1205": 
+	"1204": 
 	{
 		"YOffset": 0,
 		"Angles": "{3.279 330.8285 0}",
@@ -24540,7 +24531,7 @@
 		"SignType": 6,
 		"Pos": "[6770.4878 13852.5771 -2331.5015]"
 	},
-	"1206": 
+	"1205": 
 	{
 		"YOffset": 0,
 		"Angles": "{0 270.0001 0}",
@@ -24548,7 +24539,7 @@
 		"SignType": 6,
 		"Pos": "[-9863.6055 10738.1221 -3319.489]"
 	},
-	"1207": 
+	"1206": 
 	{
 		"YOffset": 0,
 		"Angles": "{360 90.0001 0}",
@@ -24556,7 +24547,7 @@
 		"SignType": 6,
 		"Pos": "[-10872.1055 10622.082 -3308.9561]"
 	},
-	"1208": 
+	"1207": 
 	{
 		"YOffset": 0,
 		"Angles": "{0 360 0}",
@@ -24564,7 +24555,7 @@
 		"SignType": 6,
 		"Pos": "[-145.4721 16046.793 -3868.5056]"
 	},
-	"1209": 
+	"1208": 
 	{
 		"YOffset": 0,
 		"Angles": "{359.9998 180 0}",
@@ -24572,7 +24563,7 @@
 		"SignType": 6,
 		"Pos": "[3096.8064 15038.9873 -3887.7334]"
 	},
-	"1210": 
+	"1209": 
 	{
 		"YOffset": 0,
 		"Angles": "{0.2348 181.5137 0}",
@@ -24580,7 +24571,7 @@
 		"SignType": 6,
 		"Pos": "[7816.5796 -15150.7305 -10126.499]"
 	},
-	"1211": 
+	"1210": 
 	{
 		"YOffset": 0,
 		"Angles": "{359.9999 348.8751 0}",
@@ -24589,7 +24580,7 @@
 		"SignType": 6,
 		"Pos": "[9085.3154 14096.3535 -14683.4785]"
 	},
-	"1212": 
+	"1211": 
 	{
 		"YOffset": 0,
 		"Angles": "{1.9282 349.5944 0}",
@@ -24598,7 +24589,7 @@
 		"SignType": 6,
 		"Pos": "[9382.6201 13766.7822 -14413.502]"
 	},
-	"1213": 
+	"1212": 
 	{
 		"YOffset": 0,
 		"Angles": "{0.0001 168.875 0}",
@@ -24607,7 +24598,7 @@
 		"SignType": 6,
 		"Pos": "[9361.1846 12685.8906 -14687.5078]"
 	},
-	"1214": 
+	"1213": 
 	{
 		"YOffset": 0,
 		"Angles": "{358.0693 169.5872 0}",
@@ -24615,6 +24606,33 @@
 		"ZOffset": 28,
 		"SignType": 6,
 		"Pos": "[9347.542 13504.9639 -14421.748]"
+	},
+	"1214": 
+	{
+		"YOffset": 0,
+		"Angles": "{2.9642 247.7244 0}",
+		"Class": "gmod_track_signs",
+		"ZOffset": 0,
+		"SignType": 5,
+		"Pos": "[13114.2773 -11552.4248 -7592.5034]"
+	},
+	"1215": 
+	{
+		"YOffset": 0,
+		"Angles": "{2.2856 346.3855 0}",
+		"Class": "gmod_track_signs",
+		"ZOffset": 0,
+		"SignType": 3,
+		"Pos": "[8110.5845 9578.2461 -8603.501]"
+	},
+	"1216": 
+	{
+		"YOffset": 0,
+		"Angles": "{1.1275 276.1758 0}",
+		"Class": "gmod_track_signs",
+		"ZOffset": 0,
+		"SignType": 4,
+		"Pos": "[13381.1738 3246.3179 -8603.501]"
 	},
 	"Version": 1
 }

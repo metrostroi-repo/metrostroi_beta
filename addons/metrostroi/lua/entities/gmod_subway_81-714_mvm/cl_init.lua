@@ -7,7 +7,7 @@ ENT.ButtonMap = {}
 
 -- Temporary panels (possibly temporary)
 ENT.ButtonMap["FrontPneumatic"] = {
-	pos = Vector(475.0,-45.0,-47.0),
+	pos = Vector(465.0,-45.0,-46.5),
 	ang = Angle(0,90,90),
 	width = 1100,
 	height = 100,
@@ -19,7 +19,7 @@ ENT.ButtonMap["FrontPneumatic"] = {
 	}
 }
 ENT.ButtonMap["RearPneumatic"] = {
-	pos = Vector(-482.0,45.0,-45.0),
+	pos = Vector(-472.0,45.0,-45.5),
 	ang = Angle(0,270,90),
 	width = 900,
 	height = 100,
@@ -30,7 +30,7 @@ ENT.ButtonMap["RearPneumatic"] = {
 	}
 }
 ENT.ButtonMap["GV"] = {
-	pos = Vector(131,68.6,-52),
+	pos = Vector(128,66,-52),
 	ang = Angle(0,180,90),
 	width = 170,
 	height = 150,
@@ -40,7 +40,7 @@ ENT.ButtonMap["GV"] = {
 	}
 }
 ENT.ButtonMap["AirDistributor"] = {
-	pos = Vector(-175,68.6,-50),
+	pos = Vector(-168,68.6,-50),
 	ang = Angle(0,180,90),
 	width = 170,
 	height = 80,
@@ -52,7 +52,7 @@ ENT.ButtonMap["AirDistributor"] = {
 
 -- Battery panel
 ENT.ButtonMap["Battery"] = {
-	pos = Vector(461.0,4,62.0+6),
+	pos = Vector(452.0,4,62.0+6),
 	ang = Angle(0,-90,90),
 	width = 100,
 	height = 100,
@@ -65,7 +65,7 @@ ENT.ButtonMap["Battery"] = {
 
 -- AV panel
 ENT.ButtonMap["AV_Left"] = {
-	pos = Vector(449+16.0,50.0,-3.0+6),
+	pos = Vector(439.7+16.0,50.0,-3.0+6),
 	ang = Angle(0,-82,90),
 	width = 460,
 	height = 340,
@@ -83,7 +83,7 @@ ENT.ButtonMap["AV_Left"] = {
 
 -- AV panel
 ENT.ButtonMap["AV_Right"] = {
-	pos = Vector(453.0+16,-21.0,-3+6),
+	pos = Vector(443.7+16,-21.0,-3+6),
 	ang = Angle(0,-98,90),
 	width = 460,
 	height = 340,
@@ -124,7 +124,7 @@ ENT.ButtonMap["AV_Right"] = {
 
 -- Everything else panel
 ENT.ButtonMap["Main"] = {
-	pos = Vector(453+16.0,-21.0,-3+6),
+	pos = Vector(443.7+16.0,-21.0,-3+6),
 	ang = Angle(0,-98,90),
 	width = 460,
 	height = 340,
@@ -157,7 +157,7 @@ ENT.ButtonMap["TrainNumber2"] = {
 }
 
 ENT.ButtonMap["FrontDoor"] = {
-	pos = Vector(455+16,16,48.4+6),
+	pos = Vector(445+16,16,48.4+6),
 	ang = Angle(0,-90,90),
 	width = 642,
 	height = 1900,
@@ -168,7 +168,7 @@ ENT.ButtonMap["FrontDoor"] = {
 }
 
 ENT.ButtonMap["RearDoor"] = {
-	pos = Vector(-480+1,16,48.4+6),
+	pos = Vector(-470+1,16,48.4+6),
 	ang = Angle(0,-90,90),
 	width = 642,
 	height = 1900,
@@ -182,80 +182,80 @@ ENT.ButtonMap["RearDoor"] = {
 ENT.ClientPropsInitialized = false
 ENT.ClientProps["brake013"] = {
 	model = "models/metrostroi/81-717/brake.mdl",
-	pos = Vector(453.0+16,25.9,-6+6),
+	pos = Vector(443.0+16,25.9,-6+6),
 	ang = Angle(0,-90,20)
 }
 ENT.ClientProps["brake334"] = {
 	model = "models/metrostroi/81-717/brake334.mdl",
-	pos = Vector(453.5+16,25.9,-7+6),
+	pos = Vector(443.5+16,25.9,-7+6),
 	ang = Angle(0,-90,20)
 }
 ENT.ClientProps["brake334_body"] = {
 	model = "models/metrostroi/81-717/brake334_body.mdl",
-	pos = Vector(453.5+16,30,-10+6),
+	pos = Vector(443.5+16,30,-10+6),
 	ang = Angle(0,98,-20)
 }
 ENT.ClientProps["brake_disconnect"] = {
 	model = "models/metrostroi/81-717/uava.mdl",
-	pos = Vector(449.5+16,42,-20+6),
+	pos = Vector(439.5+16,42,-20+6),
 	ang = Angle(0,-90,0)
 }
 ENT.ClientProps["train_line"] = {
 	model = "models/metrostroi/81-717/black_arrow.mdl",
-	pos = Vector(447.10+16,-14.4,58+6),
+	pos = Vector(437.10+16,-14.4,58+6),
 	ang = Angle(90,0,180)
 }
 ENT.ClientProps["brake_line"] = {
 	model = "models/metrostroi/81-717/red_arrow.mdl",
-	pos = Vector(447.00+16,-14.4,58+6),
+	pos = Vector(437.00+16,-14.4,58+6),
 	ang = Angle(90,0,180)
 }
 ENT.ClientProps["brake_cylinder"] = {
 	model = "models/metrostroi/81-717/black_arrow.mdl",
-	pos =Vector(447.10+16,-18.8,57.9+6),
+	pos =Vector(437.10+16,-18.8,57.9+6),
 	ang = Angle(90,0,180)
 }
 
 ENT.ClientProps["pmp"] = {
 	model = "models/metrostroi/81-717/gv.mdl",
-	pos = Vector(449.6+16,43,-12+6),
+	pos = Vector(439.6+16,43,-12+6),
 	ang = Angle(90,-90+8,90)
 }
 ENT.ClientProps["pmp_wrench"] = {
 	model = "models/metrostroi/81-717/reverser.mdl",
-	pos = Vector(449.6+16,43,-12+6),
+	pos = Vector(439.6+16,43,-12+6),
 	ang = Angle(135,98,0)
 }
 --------------------------------------------------------------------------------
 ENT.ClientProps["ampermeter"] = {
 	model = "models/metrostroi/81-717/black_arrow.mdl",
-	pos = Vector(447.00+16,11.0,57.3+6),
+	pos = Vector(437.00+16,11.0,57.3+6),
 	ang = Angle(90,0,180)
 }
 ENT.ClientProps["voltmeter"] = {
 	model = "models/metrostroi/81-717/black_arrow.mdl",
-	pos = Vector(447.00+16,15.5,57.3+6),
+	pos = Vector(437.00+16,15.5,57.3+6),
 	ang = Angle(90,0,180)
 }
 ENT.ClientProps["volt1"] = {
 	model = "models/metrostroi/81-717/black_arrow.mdl",
-	pos = Vector(447.00+16,-9.4,57.9+6),
+	pos = Vector(437.00+16,-9.4,57.9+6),
 	ang = Angle(90,0,180)
 }
 --------------------------------------------------------------------------------
 ENT.ClientProps["battery"] = {
 	model = "models/metrostroi/81-717/switch01.mdl",
-	pos = Vector(446.0+16,0.0,58+6),
+	pos = Vector(436.0+16,0.0,58+6),
 	ang = Angle(90,0,180)
 }
 ENT.ClientProps["gv"] = {
 	model = "models/metrostroi/81-717/gv.mdl",
-	pos = Vector(123,62.5+1.0,-65),
+	pos = Vector(120,62.0+0.0,-60),
 	ang = Angle(-90,0,-90)
 }
 ENT.ClientProps["gv_wrench"] = {
 	model = "models/metrostroi/81-717/reverser.mdl",
-	pos = Vector(123,62.5+1.0,-65),
+	pos = Vector(120,62.0+0.0,-60),
 	ang = Angle(0,0,0)
 }
 --------------------------------------------------------------------------------
@@ -290,62 +290,66 @@ end
 
 ENT.ClientProps["FrontBrake"] = {--
 	model = "models/metrostroi_train/81/tmiso.mdl",
-	pos = Vector(458, -26.8, -53),
-	ang = Angle(0,-90,0)
-}
-ENT.ClientProps["ParkingBrake"] = {--
-	model = "models/metrostroi_train/81/parbr.mdl",
-	pos = Vector(458, 55, -53.7),
+	pos = Vector(450, -26.0, -52.3),
 	ang = Angle(0,-90,0)
 }
 ENT.ClientProps["FrontTrain"] = {--
 	model = "models/metrostroi_train/81/nmsio.mdl",
-	pos = Vector(458, 26, -53.7),
+	pos = Vector(450, 25.7, -52.8),
+	ang = Angle(0,-90,0)
+}
+ENT.ClientProps["ParkingBrake"] = {--
+	model = "models/metrostroi_train/81/parbr.mdl",
+	pos = Vector(450, 55, -52.8),
 	ang = Angle(0,-90,0)
 }
 ENT.ClientProps["RearBrake"] = {--
 	model = "models/metrostroi_train/81/tmiso.mdl",
-	pos = Vector(-465, -26.2, -53.7),
+	pos = Vector(-455, -25.8, -52.5),
 	ang = Angle(0,90,0)
 }
 ENT.ClientProps["RearTrain"] = {--
 	model = "models/metrostroi_train/81/nmsio.mdl",
-	pos = Vector(-465, 26, -53),
+	pos = Vector(-455, 26, -52.0),
 	ang = Angle(0,90,0)
 }
 --------------------------------------------------------------------------------
 Metrostroi.ClientPropForButton("KRP",{
 	panel = "Main",
 	button = "KRPSet",
-	model = "models/metrostroi/81-717/button05.mdl"
+	model = "models/metrostroi_train/81/button2.mdl",
+	skin = 1,
 })
 Metrostroi.ClientPropForButton("VozvratRP",{
 	panel = "Main",
 	button = "VozvratRPSet",
-	model = "models/metrostroi/81-717/button02.mdl"
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 1,
 })
 Metrostroi.ClientPropForButton("RezMK",{
 	panel = "Main",
 	button = "RezMKSet",
-	model = "models/metrostroi/81-717/button02.mdl"
+	model = "models/metrostroi_train/81/button.mdl",
 })
 Metrostroi.ClientPropForButton("VMK",{
 	panel = "Main",
 	button = "VMKToggle",
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler3.mdl",
+	ang = 90
 })
 Metrostroi.ClientPropForButton("BPSNon",{
 	panel = "Main",
 	button = "BPSNonToggle",
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler3.mdl",
+	ang = 90
 })
 
 --------------------------------------------------------------------------------
 -- Add doors
 local function GetDoorPosition(i,k,j)
 	if j == 0 
-	then return Vector(366.0 - 35.5*k     - 234.5*i,-67*(1-2*k),7.5)
-	else return Vector(366.0 - 35.5*(1-k) - 234.5*i,-67*(1-2*k),7.5)
+	then return Vector(359.0 - 35.0*k     - 229.5*i,-65*(1-2*k),7.5)
+	else return Vector(359.0 - 35.0*(1-k) - 229.5*i,-65*(1-2*k),7.5)
 	end
 end
 for i=0,3 do
@@ -365,12 +369,12 @@ end
 --24.2 0.2 5.3
 ENT.ClientProps["door1"] = {
 	model = "models/metrostroi_train/81/frontdoor.mdl",
-	pos = Vector(472.0,-16.4,5.75),
+	pos = Vector(463.0,-16.2,6),
 	ang = Angle(0,-90,0)
 }
 ENT.ClientProps["door2"] = {
 	model = "models/metrostroi_train/81/backdoor.mdl",
-	pos = Vector(-478.2,16.4,6),
+	pos = Vector(-469.0,16.2,6),
 	ang = Angle(0,-90,0)
 }
 

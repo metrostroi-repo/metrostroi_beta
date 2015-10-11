@@ -656,7 +656,7 @@ ENT.ButtonMap["PassengerDoor"] = {
 	height = 2000,
 	scale = 0.1/2,
 	buttons = {
-		{ID = "PassengerDoor",x=0,y=0,w=642-220,h=2000, tooltip="Дверь в кабину машиниста из салона\nPass door door"},
+		{ID = "PassengerDoor",x=0,y=0,w=642-220,h=2000, tooltip="Дверь в кабину машиниста из салона\nPass door"},
 	}
 }
 ENT.ButtonMap["Wiper"] = {
@@ -1726,87 +1726,9 @@ function ENT:Think()
 		self.ClientProps["KVPLight"].skin = self:GetNWInt("KVPType")
 		if IsValid(self.ClientEnts["KVPLight"]) then self.ClientEnts["KVPLight"]:SetSkin(self:GetNWInt("KVPType")) end
 	end
-	--Vector(407.3,-10.5,47)+ps
-	--Vector(417.3,-57.5,47.5)
-	--[[
-		self:RemoveCSEnts()
-		self.Breakers = self:GetNWBool("Breakers")
-
-		self:SetAutobreakersPos(self:GetNWBool("Breakers") and Vector(12,-47,0.5) or Vector())
-	
-		self.ButtonMap["Battery"] = self.BatteryMap[self.Breakers and 2 or 1]
-		
-		self:ClientPropForButton("battery",{
-			panel = "Battery",
-			button = "VBToggle",	
-			model = "models/metrostroi/81-717/rc.mdl",
-		})
-		self:ClientPropForButton("RC1",{
-			panel = "Battery",
-			button = "RC1Toggle",	
-			model = "models/metrostroi/81-717/rc.mdl",
-		})
-
-		self:ClientPropForButton("UOS",{
-			panel = "Battery",
-			button = "UOSToggle",	
-			model = "models/metrostroi/81-717/rc.mdl",
-		})
-
-		self:ClientPropForButton("BPS",{
-			panel = "Battery",
-			button = "BPSToggle",	
-			model = "models/metrostroi/81-717/rc.mdl",
-		})
-		--PrintTable(self.ButtonMap["Battery"])
-		--self:ReloadCLPropPosAng("battery","Battery","VBToggle")
-		--self:ReloadCLPropPosAng("RC1","Battery","RC1Toggle")
-		--self:ReloadCLPropPosAng("UOS","Battery","UOSToggle")
-		--self:ReloadCLPropPosAng("BPS","Battery","BPSToggle")
-		self:CreateCSEnts()
-		self.Reloaded = false
-	end
-	]]
-	--self.ButtonMap["Battery"].pos = Vector(419.0,-55.5,38) + (self:GetNWBool("Breakers") and Vector(12,-47,0.5) or Vector())
-	for i = 0,33 do
-		--self:SetSubMaterial(i,"")
-	end
-	--[[
-	if not self.Animate then self.BaseClass = baseclass.Get("gmod_subway_base") end
-	if self.RearDoor < 90 and self:GetPackedBool(156) or self.RearDoor > 0 and not self:GetPackedBool(156) then
-		local RearDoorData = self.ClientProps["door1"]
-		--RearDoor:SetLocalPos(RearDoorData.pos + Vector(-2,-0,0))
-		self.RearDoor = math.max(0,math.min(90,self.RearDoor + (self:GetPackedBool(156)  and 1 or -1)*self.DeltaTime*180))
-		self:ApplyMatrix("door1",Vector(0,16,0),Angle(0,self.RearDoor,0))
-	end
-	if not self.ClientPropsMatrix["door1"] or self.ClientPropsMatrix["door1"]:GetAngles().yaw ~= self.RearDoor then
-		self:ApplyMatrix("door1",Vector(0,-16,0),Angle(0,self.RearDoor,0))
-	end
-	if self.PassengerDoor < 90 and self:GetPackedBool(158) or self.PassengerDoor > 0 and not self:GetPackedBool(158) then
-		local PassengerDoorData = self.ClientProps["door1"]
-		--PassengerDoor:SetLocalPos(PassengerDoorData.pos + Vector(-2,-0,0))
-		self.PassengerDoor = math.max(0,math.min(90,self.PassengerDoor + (self:GetPackedBool(158)  and 1 or -1)*self.DeltaTime*180))
-		self:ApplyMatrix("door2",Vector(0,-16,0),Angle(0,self.PassengerDoor,0))
-	end
-	if not self.ClientPropsMatrix["door2"] or self.ClientPropsMatrix["door2"]:GetAngles().yaw ~= self.PassengerDoor then
-		self:ApplyMatrix("door2",Vector(0,-16,0),Angle(0,self.PassengerDoor,0))
-	end
-	if self.CabinDoor < 90 and self:GetPackedBool(159) or self.CabinDoor > 0 and not self:GetPackedBool(159) then
-		local CabinDoorData = self.ClientProps["door1"]
-		--CabinDoor:SetLocalPos(CabinDoorData.pos + Vector(-2,-0,0))
-		self.CabinDoor = math.max(0,math.min(90,self.CabinDoor + (self:GetPackedBool(159)  and 1 or -1)*self.DeltaTime*180))
-		self:ApplyMatrix("door3",Vector(16,0,0),Angle(0,self.CabinDoor,0))
-	end
-	if not self.ClientPropsMatrix["door3"] or self.ClientPropsMatrix["door3"]:GetAngles().yaw ~= self.door3 then
-		self:ApplyMatrix("door3",Vector(0,-16,0),Angle(0,self.CabinDoor,0))
-	end
-	]]
 	-- Distance cull
 	local distance = self:GetPos():Distance(LocalPlayer():GetPos())
 	if distance > 8192 then return end
-	for i = 0,8 do
-		--print(i,self:GetBodygroupName(i))
-	end
 --[[
 	self:SetBodygroup(0,(self.ARSType or 1)-1)
 	self:SetBodygroup(1,(self.LampType or 1)-1)

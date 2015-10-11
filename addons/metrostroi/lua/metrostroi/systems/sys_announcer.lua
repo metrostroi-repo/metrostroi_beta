@@ -105,6 +105,84 @@ Metrostroi.Announcements = {
  
 	[9999] = { 3.0,   "subway_announcer/00_00.mp3" },
 }
+Metrostroi.AnnouncementsPNM = {
+	[0003] = { 0.2,       "subway_announcer_pnm/00_03.wav" },
+	[0005] = { 0.2,       "subway_announcer_pnm/00_05.wav" },
+	[0006] = { 0.2,       "subway_announcer_pnm/00_06.wav" },
+
+	[0201] = { 1.831,       "subway_announcer_pnm/02_01.wav" },
+	[0202] = { 0.570,       "subway_announcer_pnm/02_02.wav" },
+	[0203] = { 0.862,       "subway_announcer_pnm/02_03.wav" },
+	[0204] = { 2.272,       "subway_announcer_pnm/02_04.wav" },
+	[0205] = { 3.090,       "subway_announcer_pnm/02_05.wav" },
+	[0206] = { 3.456,       "subway_announcer_pnm/02_06.wav" },
+	[0207] = { 3.498,       "subway_announcer_pnm/02_07.wav" },
+	[0208] = { 2.936,       "subway_announcer_pnm/02_08.wav" },
+	[0209] = { 5.263,       "subway_announcer_pnm/02_09.wav" },
+	[0210] = { 1.974,       "subway_announcer_pnm/02_10.wav" },
+	[0211] = { 1.392,       "subway_announcer_pnm/02_11.wav" },
+	[0212] = { 6.745,       "subway_announcer_pnm/02_12.wav" },
+	[0213] = { 4.711,       "subway_announcer_pnm/02_13.wav" },
+	[0214] = { 8.162,       "subway_announcer_pnm/02_14.wav" },
+	[0215] = { 1.737,       "subway_announcer_pnm/02_15.wav" },
+	[0216] = { 1.049,       "subway_announcer_pnm/02_16.wav" },
+	[0217] = { 6.213,       "subway_announcer_pnm/02_17.wav" },
+	[0218] = { 2.197,       "subway_announcer_pnm/02_18.wav" },
+	[0219] = { 1.370,       "subway_announcer_pnm/02_19.wav" },
+	[0220] = { 0.889,       "subway_announcer_pnm/02_20.wav" },
+	[0221] = { 2.428,       "subway_announcer_pnm/02_21.wav" },
+	[0222] = { 3.494,       "subway_announcer_pnm/02_22.wav" },
+	[0223] = { 1.971,       "subway_announcer_pnm/02_23.wav" },
+	[0224] = { 4.199,       "subway_announcer_pnm/02_24.wav" },
+	[0225] = { 3.734,       "subway_announcer_pnm/02_25.wav" },
+	[0226] = { 2.984,       "subway_announcer_pnm/02_26.wav" },
+	[0227] = { 3.558,       "subway_announcer_pnm/02_27.wav" },
+	[0228] = { 4.255,       "subway_announcer_pnm/02_28.wav" },
+	[0229] = { 5.224,       "subway_announcer_pnm/02_29.wav" },
+	[0230] = { 1.402,       "subway_announcer_pnm/02_30.wav" },
+	[0231] = { 1.322,       "subway_announcer_pnm/02_31.wav" },
+	[0232] = { 7.107,       "subway_announcer_pnm/02_32.wav" },
+	[0233] = { 1.186,       "subway_announcer_pnm/02_33.wav" },
+	[0234] = { 1.641,       "subway_announcer_pnm/02_34.wav" },
+	[0235] = { 1.145,       "subway_announcer_pnm/02_35.wav" },
+	[0236] = { 1.068,       "subway_announcer_pnm/02_36.wav" },
+	[0237] = { 1.141,       "subway_announcer_pnm/02_37.wav" },
+	[0238] = { 2.580,       "subway_announcer_pnm/02_38.wav" },
+
+	[0308] = { 1.113,       "subway_announcer_pnm/03_08.wav" },
+	[0309] = { 1.122,       "subway_announcer_pnm/03_09.wav" },
+	[0310] = { 0.938,       "subway_announcer_pnm/03_10.wav" },
+	[0311] = { 0.994,       "subway_announcer_pnm/03_11.wav" },
+	[0312] = { 0.970,       "subway_announcer_pnm/03_12.wav" },
+	[0313] = { 1.098,       "subway_announcer_pnm/03_13.wav" },
+	[0314] = { 0.921,       "subway_announcer_pnm/03_14.wav" },
+	[0315] = { 0.963,       "subway_announcer_pnm/03_15.wav" },
+	[0316] = { 0.929,       "subway_announcer_pnm/03_16.wav" },
+	[0317] = { 1.474,       "subway_announcer_pnm/03_17.wav" },
+	[0318] = { 1.026,       "subway_announcer_pnm/03_18.wav" },
+	[0319] = { 1.120,       "subway_announcer_pnm/03_19.wav" },
+	[0320] = { 3.442,       "subway_announcer_pnm/03_20.wav" },
+	[0321] = { 0.795,       "subway_announcer_pnm/03_21.wav" },
+	[0322] = { 1.240,       "subway_announcer_pnm/03_22.wav" },
+	[0323] = { 1.141,       "subway_announcer_pnm/03_23.wav" },
+	[0415] = { 0.860,       "subway_announcer_pnm/04_15.wav" },
+	[0521] = { 1.162,       "subway_announcer_pnm/05_21.wav" },
+	[0522] = { 1.594,       "subway_announcer_pnm/05_22.wav" },
+
+	[0601] = { 0.845,       "subway_announcer_pnm/06_01.wav" },
+	[0602] = { 1.261,       "subway_announcer_pnm/06_02.wav" },
+	[0603] = { 0.902,       "subway_announcer_pnm/06_03.wav" },
+	[0604] = { 0.549,       "subway_announcer_pnm/06_04.wav" },
+	[0605] = { 1.290,       "subway_announcer_pnm/06_05.wav" },
+	[0606] = { 1.549,       "subway_announcer_pnm/06_06.wav" },
+	[0607] = { 1.136,       "subway_announcer_pnm/06_07.wav" },
+	[0608] = { 1.557,       "subway_announcer_pnm/06_08.wav" },
+	[0699] = { 1.219,       "subway_announcer_pnm/06_99.wav" },
+	[0702] = { 0.934,       "subway_announcer_pnm/07_02.wav" },
+	[0704] = { 1.260,       "subway_announcer_pnm/07_04.wav" },
+	[0799] = { 1.329,       "subway_announcer_pnm/07_99.wav" },
+	[0801] = { 0.845,       "subway_announcer_pnm/08_01.wav" },
+}
 Metrostroi.AnnouncementSequences = {
 	[1101] = { 0211, 0308, 0321 },
 	[1102] = { 0211, 0321, 0308 },
@@ -167,6 +245,9 @@ Metrostroi.AnnouncementSequenceNames = {
 for k,v in pairs(Metrostroi.Announcements) do
 	v[3] = k
 end
+for k,v in pairs(Metrostroi.AnnouncementsPNM) do
+	v[3] = k
+end	
 
 --[НОМЕР] = {НАЗВАНИЕ,ПРАВАЯ СТОРОНА,ВЕЖЛИВОСТЬ,ВЕЩИ,ПРИСЛНОЯТЬСЯ К ДВЕРЯМ,ИМЕЕТ В НАЗВАНИИ "СТАНЦИЯ",СТАНЦИЯ ПЕРЕХОДА,СТАНЦИЯ РАЗДЕЛЕНИЯ,НЕ КОНЕЧНАЯ(развернуть информатор)}
 Metrostroi.AnnouncerData =
@@ -178,7 +259,7 @@ Metrostroi.AnnouncerData =
 	[112] = {"Ploschad' Myra",          		false,false,false,true ,false,0   },
 	[113] = {"Novoarmeyskaya",          	false,true ,true ,false,false,0   },
 	[114] = {"Vokzalnaya",						false,false,true ,false,false,0   },
-	[115] = {"Komsomol'skaya",        		true ,true ,false,false,false,1215},
+	[115] = {"Komsomol'skaya",        		true ,true ,false,false,false,{1215,0234,1215}},
 	[116] = {"Elektrosila",             			false,false,false,true ,false,0   },
 	[117] = {"Teatral'naya Ploshad'",		false,false,true ,false,false,0   },
 	[118] = {"Park Pobedy",             		true,false ,false,true ,false,0   },
@@ -263,6 +344,9 @@ function TRAIN_SYSTEM:Initialize()
 	for k,v in pairs(Metrostroi.Announcements) do
 		util.PrecacheSound(v[2])
 	end
+	for k,v in pairs(Metrostroi.AnnouncementsPNM) do
+		util.PrecacheSound(v[2])
+	end
 
 	-- Currently playing announcement
 	self.Announcement = 0
@@ -323,7 +407,7 @@ end
 
 
 function TRAIN_SYSTEM:Queue(id)
-	if (not Metrostroi.Announcements[id]) and
+	if (not Metrostroi.Announcements[id]) and (not Metrostroi.AnnouncementsPNM[id]) and
 		(not Metrostroi.AnnouncementSequences[id]) then return end
 	if self.Train and self.Train.SubwayTrain.Name and self.Train.SubwayTrain.Name:sub(1,-2) ~= "81-71" and
 		(id == 5 or id == 6) then return end
@@ -335,7 +419,9 @@ function TRAIN_SYSTEM:Queue(id)
 				self:Queue(i)
 			end
 		else
-			table.insert(self.Schedule, Metrostroi.Announcements[id])
+			local tbl = Metrostroi["Announcements" .. (self.Train.PNM and "PNM" or "")][id] or Metrostroi.Announcements[id]
+			--print(Metrostroi["Announcements" .. (self.Train.PNM and "PNM" or "")][id])
+			table.insert(self.Schedule, tbl)
 		end
 	end
 end
@@ -356,8 +442,11 @@ function TRAIN_SYSTEM:ClientInitialize()
 end
 function TRAIN_SYSTEM:ClientThink()
 	local active = self.Train:GetNWBool("BPSNBuzz",false) and self.Train:GetPackedBool(52)
-	self.Train:SetSoundState("bpsn_ann",(active and (self.Train:GetPackedBool(127) or self.Train:GetPackedBool(132))) and 0.175 or 0,1)
-	self.Train:SetSoundState("bpsn_ann_cab",(active and self.Train:GetPackedBool(125)) and 0.175 or 0,1)
+	local btype = self.Train:GetNWBool("BPSNBuzzType",false)
+	self.Train:SetSoundState("bpsn_ann",(active and  not btype and (self.Train:GetPackedBool(127) or self.Train:GetPackedBool(132))) and 0.175 or 0,1)
+	self.Train:SetSoundState("bpsn_ann_cab",(active and  not btype and self.Train:GetPackedBool(125)) and 0.175 or 0,1)
+	self.Train:SetSoundState("bpsn_ann_pnm",(active and  btype and (self.Train:GetPackedBool(127) or self.Train:GetPackedBool(132))) and 0.175 or 0,1)
+	self.Train:SetSoundState("bpsn_ann_pnm_cab",(active and  btype and self.Train:GetPackedBool(125)) and 0.175 or 0,1)
 end
 
 function TRAIN_SYSTEM:PlayInfQueueSounds(...)
@@ -574,9 +663,11 @@ function TRAIN_SYSTEM:AnnPlayArriving()
             self:PlayInfQueueSounds(0231)
         end
 
-        if Metrostroi.AnnouncerData[self.AnnStation][7] > 0 then
-            self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnStation][7]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnStation][7])	
-        end
+      if type(Metrostroi.AnnouncerData[self.AnnStation][7]) == "table" then
+			self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnStation][7][self.AnnStyle]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnStation][7][self.AnnStyle])
+		elseif Metrostroi.AnnouncerData[self.AnnStation][7] > 0 then
+			self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnStation][7]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnStation][7])
+		end
 
         if self:AnnEnd() then
             self:PlayInfQueueSounds(0224,0002,0230,0226,0006)
@@ -607,9 +698,11 @@ function TRAIN_SYSTEM:AnnPlayArriving()
             self:PlayInfQueueSounds(0215)
         end
 
-        if Metrostroi.AnnouncerData[self.AnnStation][7] > 0 then
-            self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnStation][7]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnStation][7])
-        end
+		if type(Metrostroi.AnnouncerData[self.AnnStation][7]) == "table" then
+			self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnStation][7][self.AnnStyle]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnStation][7][self.AnnStyle])
+		elseif Metrostroi.AnnouncerData[self.AnnStation][7] > 0 then
+			self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnStation][7]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnStation][7])
+		end
 
 		if Metrostroi.AnnouncerData[self.AnnStation][8] and self.AnnPath == Metrostroi.AnnouncerData[self.AnnStation][8] then
             self:PlayInfQueueSounds(0230,0233,0210,self.AnnPath == 1 and self.AnnEndStation or self.AnnStartStation)
@@ -623,9 +716,11 @@ function TRAIN_SYSTEM:AnnPlayArriving()
             self:PlayInfQueueSounds(0215)
         end
 
-        if Metrostroi.AnnouncerData[self.AnnNext][7] > 0 then
-            self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnNext][7]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnNext][7])
-        end
+        if type(Metrostroi.AnnouncerData[self.AnnNext][7]) == "table" then
+			self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnNext][7][self.AnnStyle]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnNext][7][self.AnnStyle])
+		elseif Metrostroi.AnnouncerData[self.AnnNext][7] > 0 then
+			self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnNext][7]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnNext][7])
+		end
 
 		if Metrostroi.AnnouncerData[self.AnnNext][8] and self.AnnPath == Metrostroi.AnnouncerData[self.AnnNext][8] then
             self:PlayInfQueueSounds(0230,0233,0210,self.AnnPath == 1 and self.AnnEndStation or self.AnnStartStation)
@@ -635,9 +730,11 @@ function TRAIN_SYSTEM:AnnPlayArriving()
         if Metrostroi.AnnouncerData[self.AnnStation][2] then
             self:PlayInfQueueSounds(0215)
         end
-        if Metrostroi.AnnouncerData[self.AnnStation][7] > 0 then
-            self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnStation][7]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnStation][7])
-        end
+        if type(Metrostroi.AnnouncerData[self.AnnStation][7]) == "table" then
+			self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnStation][7][self.AnnStyle]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnStation][7][self.AnnStyle])
+		elseif Metrostroi.AnnouncerData[self.AnnStation][7] > 0 then
+			self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnStation][7]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnStation][7])
+		end
 
         if self:AnnEnd() then
             self:PlayInfQueueSounds(0212,0006)
@@ -696,9 +793,11 @@ function TRAIN_SYSTEM:AnnPlayDepeate()
             self:PlayInfQueueSounds(0215)
         end
 
-        if Metrostroi.AnnouncerData[self.AnnNext][7] > 0 then
-            self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnNext][7]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnNext][7])
-        end
+        if type(Metrostroi.AnnouncerData[self.AnnNext][7]) == "table" then
+			self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnNext][7][self.AnnStyle]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnNext][7][self.AnnStyle])
+		elseif Metrostroi.AnnouncerData[self.AnnNext][7] > 0 then
+			self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[self.AnnNext][7]] and 0203 or nil,Metrostroi.AnnouncerData[self.AnnNext][7])
+		end
 		if Metrostroi.AnnouncerData[self.AnnNext][8] and self.AnnPath == Metrostroi.AnnouncerData[self.AnnNext][8] then
             self:PlayInfQueueSounds(0230,0233,0210,self.AnnPath == 1 and self.AnnEndStation or self.AnnStartStation)
 		end
@@ -1534,9 +1633,11 @@ function TRAIN_SYSTEM:Think()
 	if (targetAnnouncement == 0) then targetAnnouncement = self.Fake48 or 0  onlyCabin = true end
 	if (targetAnnouncement > 0) and (targetAnnouncement ~= self.Announcement) and (CurTime() > self.EndTime) then
 		self.Announcement = targetAnnouncement
-		if Metrostroi.Announcements[targetAnnouncement] then
-			self.Sound = Metrostroi.Announcements[targetAnnouncement][2]
-			self.EndTime = CurTime() + Metrostroi.Announcements[targetAnnouncement][1]
+		local tbl = Metrostroi["Announcements" .. (self.Train.PNM and "PNM" or "")][targetAnnouncement] or Metrostroi.Announcements[targetAnnouncement]
+		if tbl then
+			--if not Metrostroi["Announcements" .. (self.Train.PNM and "PNM" or "")][targetAnnouncement] then print(targetAnnouncement) end
+			self.Sound = tbl[2]
+			self.EndTime = CurTime() + tbl[1]
 
 			-- Emit the sound
 			if self.Sound ~= "" then
@@ -1560,10 +1661,17 @@ function TRAIN_SYSTEM:Think()
 					self.Train.AnnouncementToLeaveWagon = false
 				end
 			end
-
 			-- BPSN buzz
 			if targetAnnouncement == 5 then timer.Simple(0.3,function() self.Train:SetNWBool("BPSNBuzz",true) end) end
-			if targetAnnouncement == 6 then timer.Simple(0.4,function() self.Train:SetNWBool("BPSNBuzz",false) end) end
+			if targetAnnouncement == 6 then
+				if self.Train.PNM then
+					--self.Train:SetNWBool("BPSNBuzz",false)
+					self.BPSNBuzzTimeout1 = CurTime() + 0
+				else
+					self.BPSNBuzzTimeout1 = CurTime() + 0.4
+					--timer.Simple(0.4,function() if not IsValid(self.Train) then return end self.Train:SetNWBool("BPSNBuzz",false) end)
+				end
+			end
 			self.BPSNBuzzTimeout = CurTime() + 10.0
 		end
 	elseif (targetAnnouncement == 0) then
@@ -1573,6 +1681,10 @@ function TRAIN_SYSTEM:Think()
 	-- Buzz timeout
 	if self.BPSNBuzzTimeout and (CurTime() > self.BPSNBuzzTimeout) then
 		self.BPSNBuzzTimeout = nil
+		self.Train:SetNWBool("BPSNBuzz",false)
+	end
+	if self.BPSNBuzzTimeout1 and (CurTime() > self.BPSNBuzzTimeout1) then
+		self.BPSNBuzzTimeout1 = nil
 		self.Train:SetNWBool("BPSNBuzz",false)
 	end
 
@@ -1586,7 +1698,7 @@ function TRAIN_SYSTEM:Think()
 
 	-- Check if schedule announcement is playing
 	if self.ScheduleAnnouncement ~= 0 then
-		if self.Train.DriverSeat and ((self.Train.R_UNch and self.Train.R_UNch.Value < 0.5) or (self.Train.UPO and self.Train.UPO.Value < 0.5)) then
+		if self.Train.DriverSeat and ((self.Train.R_UNch and self.Train.R_UNch.Value < 0.5) or (self.Train.R_UPO and self.Train.R_UPO.Value < 0.5)) then
 			self.Fake48 = self.ScheduleAnnouncement
 		else
 			self.Train:WriteTrainWire(48,self.ScheduleAnnouncement)

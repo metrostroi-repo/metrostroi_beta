@@ -67,7 +67,10 @@
             <File name="lua\metrostroi\systems\sys_81_717_pneumatic.lua" />
             <File name="lua\metrostroi\systems\sys_als_ars.lua" />
             <File name="lua\metrostroi\systems\sys_bars.lua" />
+            <File name="lua\metrostroi\systems\sys_upo.lua" />
+            <File name="lua\metrostroi\systems\sys_autodrive.lua" />
             <File name="lua\metrostroi\systems\sys_pa-ksd.lua" />
+            <File name="lua\metrostroi\systems\sys_pa-ksd-m.lua" />
             <File name="lua\metrostroi\systems\sys_pa-m.lua" />
             <File name="lua\metrostroi\systems\sys_puav.lua" />
             <File name="lua\metrostroi\systems\sys_announcer.lua" />
