@@ -36,6 +36,10 @@ local function LoadSkin()
 		path = "metrostroi_skins/ezh3/8",
 	})
 	table.insert(Metrostroi.Skins["ezh3"],{
+		name = "Parad",
+		path = "metrostroi_skins/ezh3/9",
+	})
+	table.insert(Metrostroi.Skins["ezh3"],{
 		name = "Random",
 		path = "RND",
 	})
@@ -68,22 +72,45 @@ local function LoadSkin()
 		path = "metrostroi_skins/81-717/6",
 	})
 	table.insert(Metrostroi.Skins["717"],{
-		name = "Kiyv",
+		name = "Kiyv1",
 		path = "metrostroi_skins/81-717/7",
 	})
 	table.insert(Metrostroi.Skins["717"],{
-		name = "Moscow3",
+		name = "Moscow4",
 		path = "metrostroi_skins/81-717/8",
+	})	
+	table.insert(Metrostroi.Skins["717"],{
+		name = "Red Arrow",
+		path = "metrostroi_skins/81-717/12",
 	})
 	table.insert(Metrostroi.Skins["717"],{
+		name = "Kiyv2",
+		path = "metrostroi_skins/81-717/14",
+	})
+	table.insert(Metrostroi.Skins["717"],{
+		name = "Minsk",
+		path = "metrostroi_skins/81-717/13",
+	})
+	table.insert(Metrostroi.Skins["717"],{
+		name = "Very old1",
+		path = "metrostroi_skins/81-717/15",
+	})
+	table.insert(Metrostroi.Skins["717"],{
+		name = "Very old2",
+		path = "metrostroi_skins/81-717/16",
+	})
+	
+	if not Metrostroi.Skins["717p"] then Metrostroi.Skins["717p"] = {} end
+	print("Metrostroi:Loading St.Petersburg 81-717 skins...")
+	table.insert(Metrostroi.Skins["717p"],{
 		name = "St.Petersburg1",
 		path = "metrostroi_skins/81-717/9",
 	})
-	table.insert(Metrostroi.Skins["717"],{
+	table.insert(Metrostroi.Skins["717p"],{
 		name = "St.Petersburg2",
 		path = "metrostroi_skins/81-717/10",
 	})
-	table.insert(Metrostroi.Skins["717"],{
+	table.insert(Metrostroi.Skins["717p"],{
 		name = "St.Petersburg3",
 		path = "metrostroi_skins/81-717/11",
 	})
@@ -193,24 +220,146 @@ local function LoadSkin()
 		path = "metrostroi_skins/81-717_pass/5",
 	})
 	table.insert(Metrostroi.Skins["717_pass"],{
+		name = "Red Arrow",
+		path = "metrostroi_skins/81-717_pass/10",
+	})
+	table.insert(Metrostroi.Skins["717_pass"],{
+		name = "SL-Wood",
+		path = "metrostroi_skins/81-717_pass/11",
+	})
+
+	if not Metrostroi.Skins["717_passp"] then Metrostroi.Skins["717_passp"] = {} end
+	print("Metrostroi:Loading St.Petersburg 81-717  pass skins...")
+	table.insert(Metrostroi.Skins["717_passp"],{
 		name = "(St.Petersburg) Green",
 		path = "metrostroi_skins/81-717_pass/6",
 	})
-	table.insert(Metrostroi.Skins["717_pass"],{
+	table.insert(Metrostroi.Skins["717_passp"],{
 		name = "(St.Petersburg) Blue",
 		path = "metrostroi_skins/81-717_pass/7",
 	})
-	table.insert(Metrostroi.Skins["717_pass"],{
+	table.insert(Metrostroi.Skins["717_passp"],{
 		name = "(St.Petersburg) Red1",
 		path = "metrostroi_skins/81-717_pass/8",
 	})
-	table.insert(Metrostroi.Skins["717_pass"],{
+	table.insert(Metrostroi.Skins["717_passp"],{
 		name = "(St.Petersburg) Red2",
 		path = "metrostroi_skins/81-717_pass/9",
 	})
+	table.insert(Metrostroi.Skins["717_passp"],{
+		name = "(St.Petersburg) Blue2",
+		path = "metrostroi_skins/81-717_pass/12",
+	})
+	table.insert(Metrostroi.Skins["717_passp"],{
+		name = "(St.Petersburg) White",
+		path = "metrostroi_skins/81-717_pass/13",
+	})
+	Metrostroi.Skins["717_pass2"] = {}
+	for i = 1,#Metrostroi.Skins["717_pass"] do
+		Metrostroi.Skins["717_pass2"][Metrostroi.Skins["717_pass"][i].path] = Metrostroi.Skins["717_pass"][i].name
+	end
 	table.insert(Metrostroi.Skins["717_pass"],{
 		name = "Random",
 		path = "RND",
+	})
+	print("Metrostroi:Loading 717 advert skins...")	
+	if not Metrostroi.Skins["717_schemes"] then Metrostroi.Skins["717_schemes"] = {} end
+	Metrostroi.Skins["717_schemes"]["p_metrostroi"] = {
+		path1 = "metrostroi_skins/81-717_schemes/int_b50_spb_adv",
+		path2 = "metrostroi_skins/81-717_schemes/int_b50_spb_clean",
+	}
+	Metrostroi.Skins["717_schemes"]["p_orange"] = {
+		path1 = "metrostroi_skins/81-717_schemes/int_orange_spb_adv",
+		path2 = "metrostroi_skins/81-717_schemes/int_orange_spb_clean",
+	}
+	Metrostroi.Skins["717_schemes"]["m_metrostroi"] = {
+		path1 = "metrostroi_skins/81-717_schemes/int_b50_msk_adv",
+		path2 = "metrostroi_skins/81-717_schemes/int_b50_msk_noadv",
+	}
+	Metrostroi.Skins["717_schemes"]["m_orange"] = {
+		path1 = "metrostroi_skins/81-717_schemes/int_orange_msk_adv",
+		path2 = "metrostroi_skins/81-717_schemes/int_orange_msk_noadv",
+	}
+	Metrostroi.Skins["717_schemes"]["p_metrostroi_lite"] = Metrostroi.Skins["717_schemes"]["p_metrostroi"]
+	Metrostroi.Skins["717_schemes"]["p_orange_lite"] = Metrostroi.Skins["717_schemes"]["p_orange"]
+	Metrostroi.Skins["717_schemes"]["m_metrostroi_lite"] = Metrostroi.Skins["717_schemes"]["m_metrostroi"]
+	Metrostroi.Skins["717_schemes"]["m_orange_lite"] = Metrostroi.Skins["717_schemes"]["m_orange"]
+	Metrostroi.Skins["717_schemes"][""] = {
+		path = "metrostroi_skins/81-717_schemes/int_blank",
+	}
+
+	print("Metrostroi:Loading 717 cab texture...")	
+	if not Metrostroi.Skins["ezh3_cab"] then Metrostroi.Skins["ezh3_cab"] = {} end
+	if not Metrostroi.Skins["717_cab"] then Metrostroi.Skins["717_cab"] = {} end
+	if not Metrostroi.Skins["717_cabp"] then Metrostroi.Skins["717_cabp"] = {} end
+	table.insert(Metrostroi.Skins["717_cabp"],{
+		name = "Yellow",
+		textures = {
+			puav = {
+				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_yellow",
+				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_yellow",
+				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_yellow_ars",
+				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_ars",
+			},
+			pam = {
+				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_yellow",
+				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_yellow",
+				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_yellow_ars",
+				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_ars",
+			},
+			paksd = {
+				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_yellow",
+				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_yellow",
+				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_yellow_vpa",
+				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_vpa",
+			},
+		},
+	})
+	table.insert(Metrostroi.Skins["717_cabp"],{
+		name = "Blue",
+		textures = {
+			puav = {
+				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_blue",
+				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_blue",
+				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_blue_ars",
+				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_ars",
+			},
+			pam = {
+				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_blue",
+				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_blue",
+				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_blue_ars",
+				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_ars",
+			},
+			paksd = {
+				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_blue",
+				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_blue",
+				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_blue_vpa",
+				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_vpa",
+			},
+		},
+	})
+	table.insert(Metrostroi.Skins["717_cabp"],{
+		name = "Gray",
+		textures = {
+			puav = {
+				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_gray",
+				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_gray",
+				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_gray_ars",
+				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_ars",
+			},
+			pam = {
+				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_gray",
+				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_gray",
+				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_gray_ars",
+				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_ars",
+			},
+			paksd = {
+				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_gray",
+				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_gray",
+				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_gray_vpa",
+				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_vpa",
+			},
+		},
 	})
 end
 timer.Simple(1,LoadSkin)

@@ -273,6 +273,7 @@ function Metrostroi.UpdateSignalEntities()
 end
 
 function Metrostroi.PostSignalInitialize()
+	if Metrostroi.IgnoreEntityUpdates then return end
 	print("Metrostroi: PostInitialize signals")
 	local entities = ents.FindByClass("gmod_track_signal")
 	for k,v in pairs(entities) do
@@ -414,7 +415,7 @@ function Metrostroi.ScanTrack(itype,node,func,x,dir,checked,startx,train)
 			local isolating = false
 			if IsValid(v) then
 				if itype == "light" then
-					isolating = v.TrackDir == dir and (not v.ARSOnly or tonumber(v.RouteNumber) ~= nil)
+					isolating = (v.TrackDir == dir and not v.Routes[v.Route or 1].Repeater) or (v.TrackDir == dir and v.Routes[v.Route or 1].Repeater and tonumber(v.RouteNumber) == 9) or (tonumber(v.RouteNumber) ~= nil and v.Routes[v.Route or 1].Repeater)
 				end
 				if itype == "ars" then
 					isolating = v.TrackDir == dir
@@ -716,6 +717,7 @@ function Metrostroi.IsTrackOccupied(src_node,x,dir,t)
 			end
 		end
 	end,x,dir)
+	
 	return #Trains > 0,Trains[#Trains],Trains[1]
 end
 
@@ -1010,6 +1012,8 @@ function Metrostroi.Load(name,keep_signs)
 						ent.Routes = v.Routes
 						ent.ARSOnly = v.ARSOnly
 						ent.Left = v.Left
+						ent.Approve0 = v.Approve0
+						ent.Depot = v.Depot
 						ent.Lenses = string.Explode("-",ent.LensesStr)
 						ent.InS = nil
 						for i = 1,#ent.Lenses do
@@ -1085,6 +1089,8 @@ function Metrostroi.Save(name)
 				IsolateSwitches = v.IsolateSwitches,
 				ARSOnly = v.ARSOnly,
 				Routes = Routes,
+				Approve0 = v.Approve0,
+				Depot = v.Depot,
 				Left = v.Left,
 			})
 		end

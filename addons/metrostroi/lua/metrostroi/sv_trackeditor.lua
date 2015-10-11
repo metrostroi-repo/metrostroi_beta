@@ -289,7 +289,7 @@ local function Save(args,ply)
 	if not file.Exists(FileDir,"DATA") then
 		file.CreateDir(FileDir)
 	end
-	local data = util.TableToJSON(Metrostroi.TrackEditor.Paths)
+	local data = util.TableToJSON(Metrostroi.TrackEditor.Paths,true)
 	file.Write(FilePath,data)
 	print("Saved to " .. FilePath)
 	SendClientMsg(ply,"Saved to file")

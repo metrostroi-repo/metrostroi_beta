@@ -19,6 +19,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.XT3_1ext = 0 -- External
 	self.Active = 0
 	self.LightsActive = 0
+	self.Train:LoadSystem("ConverterProtection","Relay","Switch", {button = true})
 end
 
 function TRAIN_SYSTEM:Inputs()
@@ -46,7 +47,11 @@ end
 
 function TRAIN_SYSTEM:Think()
 	local Train = self.Train
-	
+	self.Train:WriteTrainWire(35,self.Train.RZP.Value)
+	self.Train:WriteTrainWire(36,self.Train.ConverterProtection.Value)
+	if self.Train.RZP.Value > 0.5 and self.Train:ReadTrainWire(36) > 0 then
+		self.Train.RZP:TriggerInput("Open",self.Train.A27.Value)
+	end
 	-- Get high-voltage input
 	self.XT1_2 = Train.Electric.Aux750V * Train.KPP.Value * 1 -- P4
 	-- Get battery input
@@ -65,10 +70,9 @@ function TRAIN_SYSTEM:Think()
 	if (self.XT1_2 > 550) and (self.XT1_2 < 975) then voltage_bat = 75 end
 	if voltage_bat < 55 then self.Active = 0 self.LightsActive = 0 end
 	if voltage_bat > 85 then self.Active = 0 self.LightsActive = 0 end
-	
+	if self.XT1_2 > 1000 then self.Train.RZP:TriggerInput("Close",1) end
 	local voltage = 0
 	if (self.XT1_2 > 550) and (self.XT1_2 < 975) then voltage = 75 end
-	
 	-- Generate output
 	self.XT3_1 = voltage * self.Active
 	self.XT3_4 = voltage * self.Active

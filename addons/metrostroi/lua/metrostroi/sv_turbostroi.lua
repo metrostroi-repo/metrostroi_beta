@@ -5,12 +5,11 @@ if not TURBOSTROI then
 	local FPS = 33
 	local messageTimeout = 0
 	local messageCounter = 0
-	local dataCache = {}
+	Metrostroi.dataCache = {{},{}}
 	local inputCache = {}
 	local id,system,name,index,value
 	local function updateTrains(trains)
 		--local recvMessage = Turbostroi.RecvMessage
-
 		-- Get data packets from simulation
 		for _,train in pairs(trains) do			
 			while true do
@@ -42,35 +41,50 @@ if not TURBOSTROI then
 		end
 		
 		-- Send train wire values
-		for _,train in pairs(trains) do
-			for i=1,32 do
-				Turbostroi.SendMessage(train,3,"","",i,train:ReadTrainWire(i))
-			end
-		end
-		
 		-- Output all system values
 		for _,train in pairs(trains) do
+			for i=1,32 do
+				if not Metrostroi.dataCache[1][train] then Metrostroi.dataCache[1][train] = {} end
+				if not Metrostroi.dataCache[1][train]["wires"] then Metrostroi.dataCache[1][train]["wires"] = {} end
+				--if Metrostroi.dataCache[1][train]["wires"][i] ~= train:ReadTrainWire(i) then
+					--Metrostroi.dataCache[1][train]["wires"][i] = train:ReadTrainWire(i)
+					Turbostroi.SendMessage(train,3,"","",i,train:ReadTrainWire(i))
+				--end
+			end
+			Turbostroi.SendMessage(train,3,"","",35,train:ReadTrainWire(35))
+			Turbostroi.SendMessage(train,3,"","",36,train:ReadTrainWire(36))
 			for sys_name,system in pairs(train.Systems) do
 				if system.OutputsList and system.DontAccelerateSimulation then
 					for _,name in pairs(system.OutputsList) do
-						local value = (system[name] or 0)
-						if dataCache[tostring(train)..sys_name..name] ~= value then
-							dataCache[tostring(train)..sys_name..name] = value
+						local value = system[name] or 0
+						if not Metrostroi.dataCache[1][train][sys_name] then Metrostroi.dataCache[1][train][sys_name] = {} end
+						--print(Metrostroi.dataCache[1][train][sys_name][name],value)
+						if Metrostroi.dataCache[1][train][sys_name][name] ~= value then
+							Metrostroi.dataCache[1][train][sys_name][name] = value
 							Turbostroi.SendMessage(train,1,sys_name,name,0,tonumber(value) or 0)
 						end
 					end
 				end
 			end
 		end
+		hook.Add("EntityRemoved","TurbostroiMetrostroi.DataCache1",function(ent)
+			if Metrostroi.dataCache[ent] then
+				Metrostroi.dataCache[ent] = nil
+			end
+		end)
 	end
 
 	if Turbostroi then
 		function Turbostroi.TriggerInput(train,system,name,value)
 			local v = value or 0
 			if type(value) == "boolean" then v = value and 1 or 0 end
-			Turbostroi.SendMessage(train,4,system,name,0,v)
+			--if not Metrostroi.dataCache[2][train] then Metrostroi.dataCache[2][train] = {} end
+			--if not Metrostroi.dataCache[2][train][system] then Metrostroi.dataCache[2][train][system] = {} end
+			--if Metrostroi.dataCache[2][train][system][name] ~= v then
+				--Metrostroi.dataCache[2][train][system][name] = v
+				Turbostroi.SendMessage(train,4,system,name,0,v)
+			--end
 		end
-	
 		hook.Add("Think", "Turbostroi_Think", function()
 			if not Turbostroi then return end
 			
@@ -92,7 +106,7 @@ if not TURBOSTROI then
 			-- Print stats
 			if ((CurTime() - messageTimeout) > 1.0) then
 				messageTimeout = CurTime()
-				--print(Format("Metrostroi: %d messages per second (%d per tick)",messageCounter,messageCounter / FPS))
+				--RunConsoleCommand("say",Format("Metrostroi: %d messages per second (%d per tick)",messageCounter,messageCounter / FPS))
 				messageCounter = 0
 			end
 		end)
@@ -107,6 +121,7 @@ end
 -- Turbostroi scripts
 --------------------------------------------------------------------------------
 Metrostroi = {}
+Metrostroi.DataCache = {}
 Metrostroi.BaseSystems = {} -- Systems that can be loaded
 Metrostroi.Systems = {} -- Constructors for systems
 
@@ -256,10 +271,10 @@ function Initialize()
 	for k,v in pairs(LoadSystems) do
 		GlobalTrain:LoadSystem(k,v)
 	end
+	--Metrostroi.DataCache = {}
 	GlobalTrain.Initialized = true
 end
 
-DataCache = {}
 function DataExchange()
 	-- Get data packets
 	local id,system,name,index,value
@@ -278,18 +293,17 @@ function DataExchange()
 				GlobalTrain.Systems[system]:TriggerInput(name,value)
 			end
 		end
-		
 		if not id then break end
 	end
-			
 	-- Output all variable values
 	for sys_name,system in pairs(GlobalTrain.Systems) do
 		if system.OutputsList and (not system.DontAccelerateSimulation) then
 			for _,name in pairs(system.OutputsList) do
 				local value = (system[name] or 0)
-				if DataCache[sys_name..name] ~= value then
-					DataCache[sys_name..name] = value
-
+				if not Metrostroi.DataCache[sys_name] then Metrostroi.DataCache[sys_name] = {} end
+				if Metrostroi.DataCache[sys_name][name] ~= value then
+					Metrostroi.DataCache[sys_name][name] = value
+					--print(sys_name,name,value)
 					SendMessage(1,sys_name,name,0,tonumber(value) or 0)
 				end
 			end
@@ -297,8 +311,14 @@ function DataExchange()
 	end
 	
 	-- Output train wire writes
-	for twID,value in pairs(GlobalTrain.WriteTrainWires) do	
-		SendMessage(3,"","",tonumber(twID) or 0,tonumber(value) or 0)
+	if not Metrostroi.DataCache["wires"] then Metrostroi.DataCache["wires"] = {} end
+	for twID,value in pairs(GlobalTrain.WriteTrainWires) do
+		--local value = tonumber(value) or 0
+		--if Metrostroi.DataCache["wires"][twID] ~= value then
+			--Metrostroi.DataCache["wires"][twID] = value
+			SendMessage(3,"","",tonumber(twID) or 0,tonumber(value) or 0)
+			--print(GlobalTrain,twID,value)
+		--end
 		GlobalTrain.WriteTrainWires[twID] = nil
 	end
 end

@@ -1,0 +1,152 @@
+<NotepadPlus>
+    <Project name="Metrostroi">
+        <Folder name="autorun">
+            <File name="lua\autorun\DefaultSkins.lua" />
+            <File name="lua\autorun\gm_metrostroi_content.lua" />
+            <File name="lua\autorun\metrostroi.lua" />
+            <File name="lua\autorun\your_skin.txt" />
+        </Folder>
+        <Folder name="base">
+            <File name="lua\entities\gmod_subway_base\cl_init.lua" />
+            <File name="lua\entities\gmod_subway_base\init.lua" />
+            <File name="lua\entities\gmod_subway_base\shared.lua" />
+        </Folder>
+        <Folder name="717_mvm">
+            <File name="lua\entities\gmod_subway_81-717_mvm\cl_init.lua" />
+            <File name="lua\entities\gmod_subway_81-717_mvm\init.lua" />
+            <File name="lua\entities\gmod_subway_81-717_mvm\shared.lua" />
+        </Folder>
+        <Folder name="714_mvm">
+            <File name="lua\entities\gmod_subway_81-714_mvm\cl_init.lua" />
+            <File name="lua\entities\gmod_subway_81-714_mvm\init.lua" />
+            <File name="lua\entities\gmod_subway_81-714_mvm\shared.lua" />
+        </Folder>
+        <Folder name="717_lvz">
+            <File name="lua\entities\gmod_subway_81-717_lvz\cl_init.lua" />
+            <File name="lua\entities\gmod_subway_81-717_lvz\init.lua" />
+            <File name="lua\entities\gmod_subway_81-717_lvz\shared.lua" />
+        </Folder>
+        <Folder name="714_lvz">
+            <File name="lua\entities\gmod_subway_81-714_lvz\cl_init.lua" />
+            <File name="lua\entities\gmod_subway_81-714_lvz\init.lua" />
+            <File name="lua\entities\gmod_subway_81-714_lvz\shared.lua" />
+        </Folder>
+        <Folder name="em508t">
+            <File name="lua\entities\gmod_subway_ema508t\cl_init.lua" />
+            <File name="lua\entities\gmod_subway_ema508t\init.lua" />
+            <File name="lua\entities\gmod_subway_ema508t\shared.lua" />
+        </Folder>
+        <Folder name="ezh3">
+            <File name="lua\entities\gmod_subway_ezh3\cl_init.lua" />
+            <File name="lua\entities\gmod_subway_ezh3\init.lua" />
+            <File name="lua\entities\gmod_subway_ezh3\shared.lua" />
+        </Folder>
+        <Folder name="bogey">
+            <File name="lua\entities\gmod_train_bogey\cl_init.lua" />
+            <File name="lua\entities\gmod_train_bogey\init.lua" />
+            <File name="lua\entities\gmod_train_bogey\shared.lua" />
+        </Folder>
+        <Folder name="wheels">
+            <File name="lua\entities\gmod_train_wheels\cl_init.lua" />
+            <File name="lua\entities\gmod_train_wheels\init.lua" />
+            <File name="lua\entities\gmod_train_wheels\shared.lua" />
+        </Folder>
+        <Folder name="spawner">
+            <File name="lua\entities\gmod_train_spawner\cl_init.lua" />
+            <File name="lua\entities\gmod_train_spawner\init.lua" />
+            <File name="lua\entities\gmod_train_spawner\shared.lua" />
+        </Folder>
+        <Folder name="system">
+            <File name="lua\metrostroi\systems\sys_81_704_electric.lua" />
+            <File name="lua\metrostroi\systems\sys_81_705_electric.lua" />
+            <File name="lua\metrostroi\systems\sys_81_705_panel.lua" />
+            <File name="lua\metrostroi\systems\sys_81_717_panel.lua" />
+            <File name="lua\metrostroi\systems\sys_81_717lvz_panel.lua" />
+            <File name="lua\metrostroi\systems\sys_81_714_electric.lua" />
+            <File name="lua\metrostroi\systems\sys_81_717_electric.lua" />
+            <File name="lua\metrostroi\systems\sys_81_717_pneumatic.lua" />
+            <File name="lua\metrostroi\systems\sys_als_ars.lua" />
+            <File name="lua\metrostroi\systems\sys_bars.lua" />
+            <File name="lua\metrostroi\systems\sys_upo.lua" />
+            <File name="lua\metrostroi\systems\sys_autodrive.lua" />
+            <File name="lua\metrostroi\systems\sys_pa-ksd.lua" />
+            <File name="lua\metrostroi\systems\sys_pa-ksd-m.lua" />
+            <File name="lua\metrostroi\systems\sys_pa-m.lua" />
+            <File name="lua\metrostroi\systems\sys_puav.lua" />
+            <File name="lua\metrostroi\systems\sys_announcer.lua" />
+            <File name="lua\metrostroi\systems\sys_battery.lua" />
+            <File name="lua\metrostroi\systems\sys_bpsn.lua" />
+            <File name="lua\metrostroi\systems\sys_dip_01k.lua" />
+            <File name="lua\metrostroi\systems\sys_dk_117dm.lua" />
+            <File name="lua\metrostroi\systems\sys_dura.lua" />
+            <File name="lua\metrostroi\systems\sys_ekg.lua" />
+            <File name="lua\metrostroi\systems\sys_ekg_17b.lua" />
+            <File name="lua\metrostroi\systems\sys_ekg_18b.lua" />
+            <File name="lua\metrostroi\systems\sys_electric.lua" />
+            <File name="lua\metrostroi\systems\sys_failsim.lua" />
+            <File name="lua\metrostroi\systems\sys_gen_int.lua" />
+            <File name="lua\metrostroi\systems\sys_gen_res.lua" />
+            <File name="lua\metrostroi\systems\sys_horn.lua" />
+            <File name="lua\metrostroi\systems\sys_kf_47a.lua" />
+            <File name="lua\metrostroi\systems\sys_kf_50a.lua" />
+            <File name="lua\metrostroi\systems\sys_kru.lua" />
+            <File name="lua\metrostroi\systems\sys_kv_70.lua" />
+            <File name="lua\metrostroi\systems\sys_lk_755a.lua" />
+            <File name="lua\metrostroi\systems\sys_pmp.lua" />
+            <File name="lua\metrostroi\systems\sys_pr_14x_panels.lua" />
+            <File name="lua\metrostroi\systems\sys_relay.lua" />
+            <File name="lua\metrostroi\systems\sys_tatra_systems.lua" />
+            <File name="lua\metrostroi\systems\sys_telemetry.lua" />
+            <File name="lua\metrostroi\systems\sys_tr_3b.lua" />
+            <File name="lua\metrostroi\systems\sys_yak_36.lua" />
+            <File name="lua\metrostroi\systems\sys_yak_37e.lua" />
+            <File name="lua\metrostroi\systems\sys_yap_57.lua" />
+            <File name="lua\metrostroi\systems\sys_yar_13a.lua" />
+            <File name="lua\metrostroi\systems\sys_yar_27.lua" />
+            <File name="lua\metrostroi\systems\sys_yard_2.lua" />
+            <File name="lua\metrostroi\systems\sys_yas_44v.lua" />
+        </Folder>
+        <Folder name="util">
+            <File name="lua\metrostroi\cl_cpanel.lua" />
+            <File name="lua\metrostroi\cl_debugger.lua" />
+            <File name="lua\metrostroi\cl_trackeditor.lua" />
+            <File name="lua\metrostroi\cl_util.lua" />
+            <File name="lua\metrostroi\sh_convars.lua" />
+            <File name="lua\metrostroi\sh_failsim.lua" />
+            <File name="lua\metrostroi\sv_data.lua" />
+            <File name="lua\metrostroi\sv_debug.lua" />
+            <File name="lua\metrostroi\sv_debugger.lua" />
+            <File name="lua\metrostroi\sv_hs_layout.lua" />
+            <File name="lua\metrostroi\sv_railnetwork.lua" />
+            <File name="lua\metrostroi\sv_rerail.lua" />
+            <File name="lua\metrostroi\sv_schedule.lua" />
+            <File name="lua\metrostroi\sv_signs.lua" />
+            <File name="lua\metrostroi\sv_telemetry.lua" />
+            <File name="lua\metrostroi\sv_trackeditor.lua" />
+            <File name="lua\metrostroi\sv_turbostroi.lua" />
+            <File name="lua\metrostroi\sv_util.lua" />
+        </Folder>
+        <Folder name="signal">
+            <File name="lua\entities\gmod_track_signal\cl_init.lua" />
+            <File name="lua\entities\gmod_track_signal\init.lua" />
+            <File name="lua\entities\gmod_track_signal\shared.lua" />
+        </Folder>
+        <Folder name="sign">
+            <File name="lua\entities\gmod_track_signs\cl_init.lua" />
+            <File name="lua\entities\gmod_track_signs\init.lua" />
+            <File name="lua\entities\gmod_track_signs\shared.lua" />
+        </Folder>
+        <Folder name="platform">
+            <File name="lua\entities\gmod_track_platform\cl_init.lua" />
+            <File name="lua\entities\gmod_track_platform\init.lua" />
+            <File name="lua\entities\gmod_track_platform\shared.lua" />
+        </Folder>
+        <Folder name="stools">
+            <File name="lua\weapons\gmod_tool\stools\signalling.lua" />
+            <File name="lua\weapons\gmod_tool\stools\switch.lua" />
+            <File name="lua\weapons\gmod_tool\stools\train_edit.lua" />
+            <File name="lua\weapons\gmod_tool\stools\train_spawner.lua" />
+        </Folder>
+        <File name="C:\Users\glebqip\Desktop\&#x041D;&#x0443;&#x0436;&#x043D;&#x043E; &#x0441;&#x0434;&#x0435;&#x043B;&#x0430;&#x0442;&#x044C;.txt" />
+    </Project>
+</NotepadPlus>

@@ -38,7 +38,7 @@ end
 function TRAIN_SYSTEM:Think()
 	-- Require 54 volts
 	if self.Train.Battery and (self.Train.Battery.Voltage < 54) then return end
-	if not self.Power or self.Train.ARSMode == 3 then return end
+	if not self.Power or self.Train.ARSType == 3 then return end
 	--self.Train:PlayOnce("dura2","cabin",0.4,100)
 	-- Check ARS signals
 	self.Timer = self.Timer or CurTime()

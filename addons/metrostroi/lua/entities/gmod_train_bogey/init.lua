@@ -452,7 +452,11 @@ function ENT:Think()
 	end
 	if self.DisableSound < 2 then
 		self:SetdPdT(self.BrakeCylinderPressure_dPdT)
-		self:SetBrakeSqueal(self.BrakeSqueal or brakeSqueal)
+		local brakeRamp = math.min(1.0,math.max(0.0,self.Speed/2.0))
+		if self.Speed > 2 then
+			brakeRamp = 1 - math.min(1.0,math.max(0.0,(self.Speed-3)/10.0))
+		end
+		if brakeRamp > 0.01 and brakeSqueal > 0 then self:SetBrakeSqueal(self.BrakeSqueal or brakeSqueal) end
 	end
 	if self.DisableSound < 3 then
 		self:SetSpeed(absSpeed)

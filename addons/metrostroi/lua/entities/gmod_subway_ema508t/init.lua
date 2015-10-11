@@ -121,6 +121,12 @@ end
 
 --------------------------------------------------------------------------------
 function ENT:Think()
+	if self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
+		self.YAR_13A:TriggerInput("Slope",true)
+	end
+	if self.YAR_13A.Slope > 0 and self:GetAngles().pitch*self.SpeedSign > -1 then
+		self.YAR_13A:TriggerInput("Slope",false)
+	end
 	self.TextureTime = self.TextureTime or CurTime()
 	if (CurTime() - self.TextureTime) > 1.0 then
 		--print(1)

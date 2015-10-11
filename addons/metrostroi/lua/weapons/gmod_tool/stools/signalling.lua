@@ -51,6 +51,8 @@ function TOOL:SpawnSignal(ply,trace,param)
 		Signal.Lenses = ent.LensesStr
 		Signal.RouteNumber =	ent.RouteNumber
 		Signal.IsolateSwitches = ent.IsolateSwitches
+		Signal.Approve0 = ent.Approve0
+		Signal.Depot = ent.Depot
 		Signal.ARSOnly = ent.ARSOnly
 		Signal.Routes = ent.Routes
 		Signal.Left = ent.Left
@@ -63,7 +65,7 @@ function TOOL:SpawnSignal(ply,trace,param)
 		if IsValid(ent) then
 			if param ~= 2 then 
 				ent:SetPos(tr.centerpos - tr.up * 9.5)
-				ent:SetAngles((-tr.right):Angle() + Angle(0,(Signal.ARSOnly and Signal.Left) and 180 or 0,0))
+				ent:SetAngles((-tr.right):Angle() + Angle(0,Signal.Left and 180 or 0,0))
 			end
 			if not found then ent:Spawn() end
 			ent.SignalType = Signal.Type-1
@@ -72,16 +74,20 @@ function TOOL:SpawnSignal(ply,trace,param)
 			ent.LensesStr = Signal.Lenses
 			ent.RouteNumber =	Signal.RouteNumber
 			ent.IsolateSwitches = Signal.IsolateSwitches
+			ent.Approve0 = Signal.Approve0
+			ent.Depot = Signal.Depot
 			ent.Routes = Signal.Routes
-			ent.Left = Signal.ARSOnly and Signal.Left
+			ent.Left = Signal.Left
 			ent.Lenses = string.Explode("-",ent.LensesStr)
 			ent.InS = nil
+			ent:SendUpdate()
 			for i = 1,#ent.Lenses do
 				if ent.Lenses[i]:find("W") then
 					ent.InS = i
 				end
 			end
 			Metrostroi.UpdateSignalEntities()
+			Metrostroi.PostSignalInitialize()
 		end
 		return ent
 	end
@@ -123,6 +129,7 @@ function TOOL:SpawnSign(ply,trace,param)
 			ent.SignType = Sign.Type
 			ent.YOffset = Sign.YOffset
 			ent.ZOffset = Sign.ZOffset
+			ent:SendUpdate()
 		end
 		return ent
 	end
@@ -356,7 +363,7 @@ function TOOL:BuildCPanelCustom()
 					Signal.Lenses = self:GetValue()
 					tool:SendSettings()
 				end
-		else
+		end
 			local VLeftC = CPanel:CheckBox("Left side")
 					VLeftC:SetTooltip("Left side")
 					VLeftC:SetValue(Signal.Left or false)
@@ -364,7 +371,6 @@ function TOOL:BuildCPanelCustom()
 						Signal.Left = self:GetChecked()
 						tool:SendSettings()
 					end
-		end
 		local VRouT,VRouN = CPanel:TextEntry("Route number:")
 				VRouT:SetTooltip("Route number. Can be empty. One digit or D.\nFor example:D")
 				VRouT:SetValue(Signal.RouteNumber or "")
@@ -388,6 +394,20 @@ function TOOL:BuildCPanelCustom()
 				VIsoSC:SetValue(Signal.IsolateSwitches or false)
 				function VIsoSC:OnChange()
 					Signal.IsolateSwitches = self:GetChecked()
+					tool:SendSettings()
+				end
+		local VAppC = CPanel:CheckBox("325Hz on 0")
+				VAppC:SetTooltip("Is signal will be issuse 325Hz(for PA-KSD) on zero?")
+				VAppC:SetValue(Signal.Approve0 or false)
+				function VAppC:OnChange()
+					Signal.Approve0 = self:GetChecked()
+					tool:SendSettings()
+				end
+		local VDepC = CPanel:CheckBox("Depot signal")
+				VDepC:SetTooltip("Is signal go to depot?")
+				VDepC:SetValue(Signal.Depot or false)
+				function VDepC:OnChange()
+					Signal.Depot = self:GetChecked()
 					tool:SendSettings()
 				end
 		local VARSOC = CPanel:CheckBox("ARS Only")
@@ -417,7 +437,7 @@ function TOOL:BuildCPanelCustom()
 					end
 				CollCat:AddItem(VTypeOfRouteI)
 				local VRNT,VRNN = CollCat:TextEntry("Route name:")
-					VRNT:SetText(Signal.Routes[i].RNts or "")
+					VRNT:SetText(Signal.Routes[i].RouteName or "")
 					VRNT:SetTooltip("Route name.\nIt uses for !sopen or !sclose")
 					function VRNT:OnLoseFocus()
 						Signal.Routes[i].RouteName = self:GetValue()
@@ -489,7 +509,7 @@ function TOOL:BuildCPanelCustom()
 		local VAddR = CPanel:Button("Add route")
 		VAddR.DoClick = function()
 			if not Signal.Routes then Signal.Routes = {} end
-			table.insert(Signal.Routes,{Manual = RouteType==2, Repeater = RouteType == 3})
+			table.insert(Signal.Routes,{Manual = RouteType==2, Repeater = RouteType == 3, RouteName = ""})
 			tool:SendSettings()
 			self:BuildCPanelCustom()
 		end

@@ -65,8 +65,8 @@ function TRAIN_SYSTEM:Initialize()
 	-- Воздухораспределитель
 	self.Train:LoadSystem("AirDistributorDisconnect","Relay","Switch")
 	--УАВА
-	self.Train:LoadSystem("UAVA","Relay","Switch")
-	self.Train:LoadSystem("UAVAContact","Relay","Switch")
+	self.Train:LoadSystem("UAVA","Relay","Switch",{uava = true})
+	self.Train:LoadSystem("UAVAContact","Relay","Switch",{button = true})
 	--Стояночный тормоз
 	self.Train:LoadSystem("ParkingBrake","Relay","Switch")
 	self.Train:LoadSystem("ParkingBrakeSign","Relay","Switch")
@@ -413,7 +413,7 @@ function TRAIN_SYSTEM:Think(dT)
 		end
 		-- Valve #2
 		if self.Train.PneumaticNo2.Value == 1.0 then
-			local PN2 = math.min(self.TrainLinePressure,(1.5 + error)*1.7)
+			local PN2 = math.min(self.TrainLinePressure,(2.5 + error)*1.7)
 			self:equalizePressure(dT,"BrakeCylinderPressure", PN2, 1.00, 5.50)
 			--self:equalizePressure(dT,"BrakeCylinderPressure", self.TrainLinePressure * 0.39 + error, 1.00, 5.50)
 			pneumaticValveConsumption_dPdT = pneumaticValveConsumption_dPdT + self.BrakeCylinderPressure_dPdT

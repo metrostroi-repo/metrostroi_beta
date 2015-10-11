@@ -7,7 +7,7 @@ include("shared.lua")
 function ENT:PlayAnnounce(arriving,Ann)
 	if not arriving then
 		if self.MustPlayAnnounces then
-			local Announce = Sound( "subway_stations_test1/"..self.Map.."_"..(math.random(6))..".mp3" )
+			local Announce = Sound( "subway_stations_test1/"..self.Map:Replace("_lite",""):Replace("gm_","").."_"..(math.random(6))..".mp3" )
 			sound.Play(Announce,self:LocalToWorld(Vector(0,-1200,200)),90,100,1)
 			sound.Play(Announce,self:LocalToWorld(Vector(0,1200,200)),90,100,1)
 			timer.Adjust( "metrostroi_station_announce_"..self:EntIndex(), math.random(45,150),0,function() self:PlayAnnounce() end)
@@ -39,12 +39,6 @@ end
 -- Initialize the platform data
 --------------------------------------------------------------------------------
 function ENT:Initialize()
-	local Map = game.GetMap() or ""
-	if Map:find("gm_metrostroi") then
-		self.Map = "metrostroi"
-	elseif Map:find("gm_mus_orange_line") then
-		self.Map = "orange"
-	end
 	-- Get platform parameters
 	self.VMF = self.VMF or {}
 	self.PlatformStart		= ents.FindByName(self.VMF.PlatformStart or "")[1]
@@ -98,6 +92,17 @@ function ENT:Initialize()
 	self:SetNWVector("PlatformEnd",self.PlatformEnd)
 	self:SetNWVector("StationCenter",self:GetPos())
 	
+	self.Map = ""
+	local Map = game.GetMap() or ""
+	if Map:find("gm_metrostroi") and Map:find("lite") then
+		self.Map = "gm_metrostroi_lite"
+	elseif Map:find("gm_metrostroi") then
+		self.Map = "gm_metrostroi"
+	elseif Map:find("gm_mus_orange_line") and Map:find("long") then
+		self.Map = "gm_orange"
+	elseif Map:find("gm_mus_orange_line") then
+		self.Map = "gm_orange_lite"
+	end
 	-- FIXME make this nicer
 	for i=1,32 do self:SetNWVector("TrainDoor"..i,Vector(0,0,0)) end
 	self:SetNWInt("TrainDoorCount",0)
@@ -175,7 +180,7 @@ end
 
 ENT.TESTTEST = false
 local dT = 0.25
-local trains 
+local trains  = {}
 function ENT:Think()
 	if not Metrostroi.Stations[self.StationIndex] then return end
 	-- Rate of boarding
@@ -210,8 +215,10 @@ function ENT:Think()
 	local boardingDoorList = {}
 	self.HasTrain = nil
 	for k,v in pairs(trains) do
+		if not IsValid(v) then trains[k] = nil end
 		if not IsValid(v) or v:GetPos():Distance(self:GetPos()) > platformStart:Distance(platformEnd) then continue end
 		local platform_distance	= ((platformStart-v:GetPos()) - ((platformStart-v:GetPos()):Dot(platformNorm))*platformNorm):Length()
+		
 		local vertical_distance = math.abs(v:GetPos().z - platformStart.z)
 		local train_start		= (v:LocalToWorld(Vector(480,0,0)) - platformStart):Dot(platformDir) / (platformDir:Length()^2)
 		local train_end			= (v:LocalToWorld(Vector(-480,0,0)) - platformStart):Dot(platformDir) / (platformDir:Length()^2)
@@ -339,7 +346,7 @@ function ENT:Think()
 	end
 	if self.HasTrain then
 		if not self.TritonePlayed then
-			if self.HasTrain.SignsList and self.HasTrain.SignsIndex > #self.HasTrain.SignsList-6 then
+			if self.HasTrain.SignsList and Metrostroi.WorkingStations[self.Map][self.HasTrain.SignsList] then
 				self:PlayAnnounce(2)
 			else
 				self:PlayAnnounce(1)

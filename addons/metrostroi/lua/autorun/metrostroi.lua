@@ -40,7 +40,7 @@ end
 --------------------------------------------------------------------------------
 -- Create metrostroi global library
 --------------------------------------------------------------------------------
-if not Metrostroi then
+if not Metrostroi then	
 	-- Global library
 	Metrostroi = {}
 	

@@ -178,9 +178,9 @@ hook.Add("PostDrawTranslucentRenderables","metrostroi_trackeditor_draw",function
 			
 			for k2,node in pairs(path) do
 				if lastnode then
-					render.DrawLine(node,lastnode,col,false)
+					render.DrawLine(node,lastnode,col,true)
 				end
-				render.DrawWireframeSphere(node,10,2,2,col,false)
+				render.DrawWireframeSphere(node,10,2,2,col,true)
 				lastnode = node
 			end
 		end

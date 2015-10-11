@@ -87,7 +87,6 @@ end
 
 function TRAIN_SYSTEM:TriggerInput(name,value)
 	local prevReverserPosition = self.ReverserPosition
-	
 	-- Change position
 	if name == "Type" then
 		self.Type = math.floor(value)

@@ -239,6 +239,12 @@ end
 
 --------------------------------------------------------------------------------
 function ENT:Think()
+	if self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
+		self.YAR_13A:TriggerInput("Slope",true)
+	end
+	if self.YAR_13A.Slope > 0 and self:GetAngles().pitch*self.SpeedSign > -1 then
+		self.YAR_13A:TriggerInput("Slope",false)
+	end
 	if self.ARSType then self.ARSType = nil end
 	self.TextureTime = self.TextureTime or CurTime()
 	if (CurTime() - self.TextureTime) > 1.0 then
@@ -247,9 +253,9 @@ function ENT:Think()
 		if self.Texture then
 			for k,v in pairs(self:GetMaterials()) do
 				if v:find("ewagon") then
-					self:SetSubMaterial(k-1,self.Texture)
+					--self:SetSubMaterial(k-1,self.Texture)
 				else
-					self:SetSubMaterial(k-1,"")
+					--self:SetSubMaterial(k-1,"")
 				end
 			end
 			self:SetNWString("texture",self.Texture)

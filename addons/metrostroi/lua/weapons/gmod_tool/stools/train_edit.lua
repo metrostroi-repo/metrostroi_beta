@@ -12,13 +12,14 @@ end
 TOOL.ClientConVar["train"] = 0
 TOOL.ClientConVar["passtexture"] = 0
 TOOL.ClientConVar["texture"] = 0
+TOOL.ClientConVar["adv"] = 1
 TOOL.ClientConVar["led"] = 0
 TOOL.ClientConVar["cran"] = 0
 TOOL.ClientConVar["bpsn"] = 1
-TOOL.ClientConVar["oldkv"] = 0
+TOOL.ClientConVar["kvsnd"] = 1
 TOOL.ClientConVar["oldkvpos"] = 0
 TOOL.ClientConVar["horn"] = 0
-TOOL.ClientConVar["ars"] = 0
+TOOL.ClientConVar["ars"] = 1
 TOOL.ClientConVar["lamp"] = 0
 TOOL.ClientConVar["mask"] = 0
 TOOL.ClientConVar["seat"] = 0
@@ -53,23 +54,26 @@ function TOOL:LeftClick(trace)
 	train.Breakers= self:GetClientNumber("breakers")
 	train:SetNWBool("Breakers",(train.Breakers or 1) > 0)
 	train.OldKVPos = self:GetClientNumber("oldkvpos") > 0
+	train.Adverts = self:GetClientNumber("adv")
 	--train:SetNWInt("ARSType",train.ARSType)
 	train:SetNWInt("BPSNType",train.BPSNType+1)
-	if self:GetClientNumber("oldkv") > 0 then
-		for k,v in pairs(train.SoundNames) do
-			if type(v) ~= "string" then continue end
-			if not v:find("kv_") then continue end
-			if v:find("ezh") then continue end
-			train.SoundNames[k] = string.Replace(v,"/new/kv","/kv")
-		end
-	else
-		for k,v in pairs(train.SoundNames) do
-			if type(v) ~= "string" then continue end
-			if not v:find("kv_") then continue end
-			if v:find("ezh") then continue end
-			train.SoundNames[k] = string.Replace(v,"subway_trains/kv","subway_trains/new/kv")
-		end
+	--if self:GetClientNumber("kvsnd") > 0 then
+	for k,v in pairs(train.SoundNames) do
+		if type(v) ~= "string" then continue end
+		if not k:find("kv_") then continue end
+		if k:find("ezh") then continue end
+		train.SoundNames[k] = string.gsub(v,"kv%d","kv"..self:GetClientNumber("kvsnd"))
+		train.NewKV = self:GetClientNumber("kvsnd") > 1
+		train:SetNWBool("NewKV",train.NewKV)
 	end
+	--else
+		--for k,v in pairs(train.SoundNames) do
+--			if type(v) ~= "string" then continue end
+			--if not v:find("kv_") then continue end
+			--if v:find("ezh") then continue end
+			--train.SoundNames[k] = string.Replace(v,"subway_trains/kv","subway_trains/new/kv")
+		--end
+	--end
 	
 	if train.Horn then train.Horn:TriggerInput("NewType",self:GetClientNumber("horn")) end
 	if not train:GetClass():find("81") then
@@ -105,7 +109,7 @@ function TOOL:RightClick(trace)
 end
 
 local SettingTypes = {
-	"Train,Texture,PassTexture,ARS,Cran,Mask,LED,BPSN,OldKV,Horn,OldKVPos,Bort,MVM,Hand,Seat,Lamp,Breakers",
+	"Train,Texture,PassTexture,ARS,Cran,Mask,LED,BPSN,KVSnd,Horn,OldKVPos,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv",
 	"Train,Texture,Cran,Horn",
 	"Train",
 }
@@ -120,11 +124,12 @@ function TOOL:LoadConCMD()
 		Train = 1,
 		Texture = 1,
 		PassTexture = 1,
+		Adv = 1,
 		ARS = 1,
 		Cran = 1,
 		Mask = 1,
 		BPSN = 1,
-		OldKV = 0,
+		KVSnd = 1,
 		OldKVPos = 0,
 		Horn = 0,
 		LED = 0,
@@ -146,7 +151,7 @@ end
 function TOOL:CreateList(name,text,tbl,OnSelect)
 	if not SettingTypes[self.Settings.Train]:find(name) then return end
 	local frame = controlpanel.Get("train_edit")
-	local List,ListLabel = frame:ComboBox(name)
+	local List,ListLabel = frame:ComboBox(text)
 	List:SizeToContents()
 	tbl[0] = text
 	for i=1,#tbl do
@@ -224,6 +229,7 @@ function TOOL:BuildCPanelCustom()
 --	self:CreateSlider("WagNum",0,1, GetGlobalInt("metrostroi_maxwagons"),"Wagons")
 	self:CreateList("Texture","Texture",Texture)
 	self:CreateList("PassTexture","PassTexture",PassTexture)
+	self:CreateList("Adv","Adverts",{"Type1","Type2","Type3","No adverts"})
 	self:CreateList("Cran","Cran type",{"334","013"})
 	self:CreateList("ARS","ARS Type",{"Standart(square lamps)","Standart(round lamps)","Kiev/St.Petersburg"})
 	self:CreateList("Mask","Mask",{"2-2","2-2-2","1-4-1 bumper 1","1-3-1","1-4-1 bumper2","1-1"})
@@ -234,7 +240,7 @@ function TOOL:BuildCPanelCustom()
 	self:CreateList("Lamp","Lamp type",{"Type1","Type2","Type3"})
 	self:CreateCheckBox("Breakers","Right-syde breakers")
 	self:CreateCheckBox("LED","LED")
-	self:CreateCheckBox("OldKV","Old KV snd")
+	self:CreateList("KVSnd","KV snd",{"Dildo","Type2","Type3"})
 	self:CreateCheckBox("OldKVPos","Old KV pos")
 	self:CreateCheckBox("Horn","Piter horn")
 	self:CreateCheckBox("MVM","MVM icon")

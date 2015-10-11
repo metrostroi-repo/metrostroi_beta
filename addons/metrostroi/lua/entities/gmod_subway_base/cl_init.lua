@@ -149,7 +149,7 @@ surface.CreateFont("MetrostroiSubway_InfoRoute", {
   size = 80,
   weight = 800,
   blursize = 0,
-  scanlines = 10,
+  scanlines = 0,
   antialias = true,
   underline = false,
   italic = false,
@@ -245,6 +245,7 @@ function ENT:ShouldRenderClientEnts()
 end
 
 function ENT:ApplyMatrix(name,pos,ang)
+	--[[
 	local csprop = self.ClientProps[name]
 	if not csprop then return end
 	local csent = self.ClientEnts[name]
@@ -257,29 +258,57 @@ function ENT:ApplyMatrix(name,pos,ang)
 	self.ClientPropsMatrix[name]:SetAngles(ang)
 	self.ClientPropsMatrix[name]:Translate(-pos)
 	csent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[name])
+	]]
+end
+function ENT:SpawnCSEnt(k)
+	local v = self.ClientProps[k]
+	if k ~= "BaseClass" and not IsValid(self.ClientEnts[k]) and not self.Hidden[k] and not self.HiddenAnim[id] then
+		local cent = ClientsideModel(v.model ,RENDERGROUP_OPAQUE)
+		cent:SetPos(self:LocalToWorld(v.pos))
+		cent:SetAngles(self:LocalToWorldAngles(v.ang))
+		cent:SetParent(self)
+		cent:SetColor(v.color or color_white)
+
+		cent:SetSkin(v.skin or 0)
+		if v.bodygroup then
+			for k,v in pairs(v.bodygroup) do
+				cent:SetBodygroup(v,k)
+			end
+		end
+		--if self.ClientPropsMatrix[k] then cent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[k]) end
+		--print(self:GetNWString("texture",nil))
+		self.ClientEnts[k] = cent
+
+		for k,v in pairs(cent:GetMaterials()) do
+			if v:find("ewagon") or v == "models/metrostroi_train/81/b01a" then
+				cent:SetSubMaterial(k-1,self:GetNWString("texture"))
+			elseif v == "models/metrostroi_train/81/int01" then
+				cent:SetSubMaterial(k-1,self:GetNWString("passtexture"))
+			else
+				cent:SetSubMaterial(k-1,"")
+			end
+		end
+		if self.Anims[k] and self.Anims[k].alpha then
+			if self.Anims[k].alpha > 0 then		
+				cent:SetColor(Color(255,255,255,self.Anims[k].alpha*255))
+				cent:SetRenderMode(RENDERMODE_TRANSALPHA)
+			else
+				cent:Remove()
+				self:ShowHide(k, false,true)
+			end
+		end
+		self:ShowHide(k, not self.Hidden[k],true)
+	end
+end
+function ENT:SetCSBodygroup(csent,id,value)
+	if not self.ClientProps[csent].bodygroup then self.ClientProps[csent].bodygroup = {} end
+	self.ClientProps[csent].bodygroup[id] = value
+	if IsValid(self.ClientEnts[csent]) then self.ClientEnts[csent]:SetBodygroup(id,value) end
 end
 function ENT:CreateCSEnts()
 	for k,v in pairs(self.ClientProps) do
 		if k ~= "BaseClass" and not IsValid(self.ClientEnts[k]) then
-			local cent = ClientsideModel(v.model ,RENDERGROUP_OPAQUE)
-			cent:SetPos(self:LocalToWorld(v.pos))
-			cent:SetAngles(self:LocalToWorldAngles(v.ang))
-			cent:SetParent(self)
-			cent:SetColor(v.color or color_white)
-			if self.ClientPropsMatrix[k] then cent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[k]) end
-			--print(self:GetNWString("texture",nil))
-			self.ClientEnts[k] = cent
-
-			for k,v in pairs(cent:GetMaterials()) do
-				if v:find("ewagon") or v == "models/metrostroi_train/81/b01a" then
-					cent:SetSubMaterial(k-1,self:GetNWString("texture"))
-				elseif v == "models/metrostroi_train/81/int01" then
-					cent:SetSubMaterial(k-1,self:GetNWString("passtexture"))
-				else
-					cent:SetSubMaterial(k-1,"")
-				end
-			end
-			self:ShowHide(k, not self.Hidden[k],true)
+			self:SpawnCSEnt(k)
 		end
 	end
 end
@@ -287,9 +316,11 @@ end
 function ENT:RemoveCSEnts()
 	if self.ClientEnts then
 		for k,v in pairs(self.ClientEnts) do
-			v:DisableMatrix("RenderMultiply")
 			local id = 0
-			if IsValid(v) then v:Remove() end
+			if IsValid(v) then 
+				--v:DisableMatrix("RenderMultiply")
+				v:Remove()
+			end
 		end
 	end
 	self.ClientEnts = {}
@@ -318,12 +349,16 @@ end
 --------------------------------------------------------------------------------
 -- Clientside initialization
 --------------------------------------------------------------------------------
+function ENT:CanDrawThings()
+	return not IsValid(LocalPlayer():GetVehicle()) or self == LocalPlayer():GetVehicle():GetNWEntity("TrainEntity")
+end
 function ENT:Initialize()
 	hook.Add("PostDrawOpaqueRenderables", "metrostroi_base_draw_"..self:EntIndex(), function(isDD)
 		if not IsValid(self) or isDD then
 			return
 		end
-
+		if self.DrawPost then self:DrawPost(not self:CanDrawThings()) end
+		if not self:CanDrawThings() then return end
 		self.CLDraw = true
 
 		if not self.ShouldRenderClientEnts or not self:ShouldRenderClientEnts() then return end
@@ -340,7 +375,6 @@ function ENT:Initialize()
 				self:DrawSchedule(panel)
 			end)
 		end
-		if self.DrawPost then self:DrawPost() end
 
 		-- Debug draw for buttons
 		if (GetConVarNumber("metrostroi_drawdebug") > 0) and (self.ButtonMap ~= nil) then
@@ -367,9 +401,9 @@ function ENT:Initialize()
 							if self.HiddenPanels[kp] then surface.SetAlphaMultiplier(0.1) end
 							
 							for kb,button in pairs(panel.buttons) do
-								if self.Hidden[button.PropName] then
+								if self.Hidden[button.PropName] or self.Hidden[button.ID] or self.HiddenAnim[button.PropName] or self.HiddenAnim[button.ID] or self.HiddenButton[button.PropName] or self.HiddenButton[button.ID] then
 									surface.SetDrawColor(255,255,0)
-								elseif self.Hidden[kb] then
+								elseif self.Hidden[kb] or self.HiddenAnim[kb] then
 									surface.SetDrawColor(255,255,0)
 								elseif self.HiddenPanels[kp] then
 									surface.SetDrawColor(100,0,0)
@@ -410,12 +444,14 @@ function ENT:Initialize()
 	self.PassengerPositions = {}
 	self.HiddenPanels = {}
 	self.Hidden = {}
+	self.HiddenAnim = {}
+	self.HiddenButton = {}
 	--self.HiddenQuele = {}
 	-- Systems defined in the train
 	self.Systems = {}
 	-- Initialize train systems
 	self:InitializeSystems()
-	
+	self.Anims = {}
 	-- Create sounds
 	self:InitializeSounds()
 	self.Sounds = {}
@@ -446,54 +482,6 @@ function ENT:OnRemove()
 	end
 end
 
---[[
-function ENT:PositionFromPanel(panel,button_id_or_vec,z)
-	local panel = self.ButtonMap[panel]
-	if not panel then return Vector(0,0,0) end
-	if not panel.buttons then return Vector(0,0,0) end
-	
-	-- Find button or read position
-	local vec
-	if type(button_id_or_vec) == "string" then
-		local button
-		for k,v in pairs(panel.buttons) do
-			if v.ID == button_id_or_vec then
-				button = v
-				break
-			end
-		end
-		vec = Vector(button.x,button.y,z or 0)
-	else
-		vec = button_id_or_vec
-	end
-
-	-- Convert to global coords
-	vec.y = -vec.y
-	vec:Rotate(panel.ang)
-	return panel.pos + vec * panel.scale
-end
-
-function ENT:AngleFromPanel(panel,ang)
-	local panel = self.ButtonMap[panel]
-	if not panel then return Vector(0,0,0) end
-	local true_ang = panel.ang + Angle(0,0,0)
-	true_ang:RotateAroundAxis(panel.ang:Up(),ang or -90)
-	return true_ang
-end
-
-function ENT:ReloadCLPropPosAng(prop_name,panel,button_or_pos,ang,z)
-	self.ClientProps[prop_name].pos = self:PositionFromPanel(panel,button_or_pos,(z or 0.2))
-	if ang then self.ClientProps[prop_name].ang = self:AngleFromPanel(panel,ang) end
-end
-function ENT:ClientPropForButton(prop_name,config)
-	self.ClientProps[prop_name] = {
-		model = config.model or "models/metrostroi/81-717/button07.mdl",
-		pos = self:PositionFromPanel(config.panel,config.button or config.pos,(config.z or 0.2)),
-		ang = self:AngleFromPanel(config.panel,config.ang),
-		color = config.color,
-	}
-end
-]]
 --------------------------------------------------------------------------------
 -- Default think function
 --------------------------------------------------------------------------------
@@ -803,8 +791,6 @@ end
 -- Default rendering function
 --------------------------------------------------------------------------------
 function ENT:Draw()
-	self.dT = RealTime() - (self.PrevTime2 or RealTime())
-	self.PrevTime2 = RealTime()
 
 	-- Draw model
 	self:DrawModel()
@@ -825,81 +811,142 @@ end
 --------------------------------------------------------------------------------
 function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
 	local id = clientProp
-	if self.Hidden[id] then return 0 end
-	if not self["_anim_"..id] then
-		self["_anim_"..id] = value
-		self["_anim_"..id.."V"] = 0.0
+	if self.Hidden[id] or self.HiddenAnim[id] then return 0 end
+	if not self.Anims[id] then
+		self.Anims[id] = {}
+		self.Anims[id].val = value
+		self.Anims[id].V = 0.0
+		self.Anims[id].block = false
+	end
+	if value ~= self.Anims[id].oldival then
+		self.Anims[id].block = false
+	end
+	if self.Anims[id].block then
+		if IsValid(self.ClientEnts[clientProp]) then
+			self.ClientEnts[clientProp]:SetPoseParameter("position",min + (max-min)*self.Anims[id].val)
+		end
+		return min + (max-min)*self.Anims[id].val
 	end
 	--if self["_anim_old_"..id] == value then return self["_anim_old_"..id] end
 	-- Generate sticky value
 	if stickyness and damping then
-		self["_anim_"..id.."_stuck"] = self["_anim_"..id.."_stuck"] or false
-		self["_anim_"..id.."P"] = self["_anim_"..id.."P"] or value
-		if (math.abs(self["_anim_"..id.."P"] - value) < stickyness) and (self["_anim_"..id.."_stuck"]) then
-			value = self["_anim_"..id.."P"]
-			self["_anim_"..id.."_stuck"] = false
+		self.Anims[id].stuck = self.Anims[id].stuck or false
+		self.Anims[id].P = self.Anims[id].P or value
+		if (math.abs(self.Anims[id].P - value) < stickyness) and (self.Anims[id].stuck) then
+			value = self.Anims[id].P
+			self.Anims[id].stuck = false
 		else
-			self["_anim_"..id.."P"] = value
+			self.Anims[id].P = value
 		end
 	end
 		
 	if damping == false then
 		local dX = speed * self.DeltaTime
-		if value > self["_anim_"..id] then
-			self["_anim_"..id] = self["_anim_"..id] + dX
+		if value > self.Anims[id].val then
+			self.Anims[id].val = self.Anims[id].val + dX
 		end
-		if value < self["_anim_"..id] then
-			self["_anim_"..id] = self["_anim_"..id] - dX
+		if value < self.Anims[id].val then
+			self.Anims[id].val = self.Anims[id].val - dX
 		end
-		if math.abs(value - self["_anim_"..id]) < dX then
-			self["_anim_"..id] = value
+		if math.abs(value - self.Anims[id].val) < dX then
+			self.Anims[id].val = value
 		end
 	else
 		-- Prepare speed limiting
-		local delta = math.abs(value - self["_anim_"..id])
+		local delta = math.abs(value - self.Anims[id].val)
 		local max_speed = 1.5*delta / self.DeltaTime
 		local max_accel = 0.5 / self.DeltaTime
 
 		-- Simulate
-		local dX2dT = (speed or 128)*(value - self["_anim_"..id]) - self["_anim_"..id.."V"] * (damping or 8.0)
+		local dX2dT = (speed or 128)*(value - self.Anims[id].val) - self.Anims[id].V * (damping or 8.0)
 		if dX2dT >  max_accel then dX2dT =  max_accel end
 		if dX2dT < -max_accel then dX2dT = -max_accel end
 		
-		self["_anim_"..id.."V"] = self["_anim_"..id.."V"] + dX2dT * self.DeltaTime
-		if self["_anim_"..id.."V"] >  max_speed then self["_anim_"..id.."V"] =  max_speed end
-		if self["_anim_"..id.."V"] < -max_speed then self["_anim_"..id.."V"] = -max_speed end
+		self.Anims[id].V = self.Anims[id].V + dX2dT * self.DeltaTime
+		if self.Anims[id].V >  max_speed then self.Anims[id].V =  max_speed end
+		if self.Anims[id].V < -max_speed then self.Anims[id].V = -max_speed end
 		
-		self["_anim_"..id] = math.max(0,math.min(1,self["_anim_"..id] + self["_anim_"..id.."V"] * self.DeltaTime))
+		self.Anims[id].val = math.max(0,math.min(1,self.Anims[id].val + self.Anims[id].V * self.DeltaTime))
 		
 		-- Check if value got stuck
 		if (math.abs(dX2dT) < 0.001) and stickyness and (self.DeltaTime > 0) then
-			self["_anim_"..id.."_stuck"] = true
+			self.Anims[id].stuck = true
 		end
 	end
 
-	if self.ClientEnts[clientProp] then
-		self.ClientEnts[clientProp]:SetPoseParameter("position",min + (max-min)*self["_anim_"..id])
+	if IsValid(self.ClientEnts[clientProp]) then
+		self.ClientEnts[clientProp]:SetPoseParameter("position",min + (max-min)*self.Anims[id].val)
 	end
-	--print(id,min + (max-min)*self["_anim_"..id],value, min + (max-min)*value)
-	--self["_anim_old_"..id] = min + (max-min)*self["_anim_"..id]
-	return min + (max-min)*self["_anim_"..id]
+	if self.Anims[id].val == self.Anims[id].oldval and value == self.Anims[id].oldival and self.Anims[id].timer and CurTime() - self.Anims[id].timer > 0 then
+		self.Anims[id].block = true
+	end
+	if self.Anims[id].val == self.Anims[id].oldval and value == self.Anims[id].oldival and not self.Anims[id].timer then
+		self.Anims[id].timer = CurTime() + 0.1
+	end
+	if (self.Anims[id].val ~= self.Anims[id].oldval or value ~= self.Anims[id].oldival) and self.Anims[id].timer then
+		self.Anims[id].timer = nil
+	end
+	--print(id,min + (max-min)*self.Anims[id].val,value, min + (max-min)*value)
+	--self["_anim_old_"..id] = min + (max-min)*self.Anims[id].val
+	self.Anims[id].oldval = self.Anims[id].val
+	self.Anims[id].oldival = value
+	return min + (max-min)*self.Anims[id].val
+end
+function ENT:AnimateFrom(clientProp,from)
+	if IsValid(self.ClientEnts[clientProp]) then
+		self.ClientEnts[clientProp]:SetPoseParameter("position",self.Anims[from].val)
+	end
+	return self.Anims[from].val
 end
 
 function ENT:ShowHide(clientProp, value, over)
 	if IsValid(self.ClientEnts[clientProp]) then
 		if value == true and (self.Hidden[clientProp] or over) then
-			self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_NORMAL)
-			self.ClientEnts[clientProp]:SetColor(Color(255,255,255,255))
+			if not IsValid(self.ClientEnts[clientProp]) then
+				self:SpawnCSEnt(clientProp)
+			end
+			--self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_NORMAL)
+			--self.ClientEnts[clientProp]:SetColor(Color(255,255,255,255))
 			--self.Hidden[clientProp] = false
 		elseif value ~= true and (not self.Hidden[clientProp] or over) then
-			self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_NONE)
-			self.ClientEnts[clientProp]:SetColor(Color(0,0,0,0))
+			if IsValid(self.ClientEnts[clientProp]) then
+				self.ClientEnts[clientProp]:Remove()
+			end
+			--self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_NONE)
+			--self.ClientEnts[clientProp]:SetColor(Color(0,0,0,0))
 			--self.Hidden[clientProp] = true
 		end	
 		--self.HiddenQuele[clientProp] = nil
 	--else
 	end
 	self.Hidden[clientProp] = value ~= true
+end
+
+function ENT:HideButton(clientProp, value)
+	self.HiddenButton[clientProp] = value
+end
+function ENT:ShowHideSmooth(clientProp, value)
+	if not self.Anims[clientProp] then
+		self.Anims[clientProp] = {}
+		self.Anims[clientProp].val = value
+		self.Anims[clientProp].V = 0.0
+		self.Anims[clientProp].block = false
+		if IsValid(self.ClientEnts[clientProp]) then self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_TRANSALPHA) end
+	end
+	if self.Anims[clientProp].alpha == value then return end
+	if value > 0 and not IsValid(self.ClientEnts[clientProp]) then
+		self:SpawnCSEnt(clientProp)
+	end
+	if value == 0 and IsValid(self.ClientEnts[clientProp]) then
+		self.ClientEnts[clientProp]:Remove()
+	end
+	if IsValid(self.ClientEnts[clientProp]) then
+		self.ClientEnts[clientProp]:SetColor(Color(255,255,255,value*255))
+		self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_TRANSALPHA)
+		--self.HiddenQuele[clientProp] = nil
+	--else
+	end
+	self.HiddenAnim[clientProp] = value == 0
 end
 
 local digit_bitmap = {
@@ -950,18 +997,21 @@ local segment_poly = {
 	},
 }
 
+local polys = {}
 function ENT:DrawSegment(i,x,y,scale_x,scale_y)
-	local poly = {}
-	for k,v in pairs(segment_poly[i]) do
-		poly[k] = {
-			x = (v.x*scale_x) + x,
-			y = (v.y*scale_y) + y,		
-		}
+	if not polys[i] then polys[i] = {} end
+	if not polys[i][k] then
+		for k,v in pairs(segment_poly[i]) do
+			polys[i][k] = {
+				x = (v.x*scale_x) + x,
+				y = (v.y*scale_y) + y,		
+			}
+		end
 	end
 	
 	surface.SetDrawColor(Color(100,255,0,255))
 	draw.NoTexture()
-	surface.DrawPoly(poly)
+	surface.DrawPoly(polys[i])
 end
 
 function ENT:DrawDigit(cx,cy,digit,scalex,scaley,thickness)
@@ -1041,20 +1091,20 @@ hook.Add("CalcView", "Metrostroi_TrainView", function(ply,pos,ang,fov,znear,zfar
 		if trainAng.y >  180 then trainAng.y = trainAng.y - 360 end
 		if trainAng.y < -180 then trainAng.y = trainAng.y + 360 end
 		if trainAng.y > 0 then
-			local target_ang = (train:GetAngles() + Angle(2,8,0))
+			local target_ang = (train:GetAngles() + Angle(2,0,0))
 			target_ang:RotateAroundAxis(train:GetAngles():Up(),180)
 			return {
-				origin = train:LocalToWorld(Vector(475,95,30)),
+				origin = train:LocalToWorld(Vector(475,80,30)),
 				angles = target_ang,
 				fov = 30,
 				znear = znear,
 				zfar = zfar
 			}
 		else
-			local target_ang = (train:GetAngles() + Angle(2,-8,0))
+			local target_ang = (train:GetAngles() + Angle(2,0,0))
 			target_ang:RotateAroundAxis(train:GetAngles():Up(),180)
 			return {
-				origin = train:LocalToWorld(Vector(475,-95,30)),
+				origin = train:LocalToWorld(Vector(475,-80,30)),
 				angles = target_ang,
 				fov = 20,
 				znear = znear,
@@ -1066,9 +1116,9 @@ hook.Add("CalcView", "Metrostroi_TrainView", function(ply,pos,ang,fov,znear,zfar
 --function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
 	--print(train:GetNWFloat("Accel")*1.1,train:Animate("accel",train:GetNWFloat("Accel")*1.1+5,-0,10, 				nil, nil,  64,2,4))
 		train.HeadAcceleration = GetConVarNumber("metrostroi_disablecamaccel") == 0 and (train:Animate("accel",(train:GetNWFloat("Accel")+1)/2,-1,1, 4, 1)*20 - 5) or 0
-		local headPos = train:WorldToLocal(pos)
+		--local headPos = train:WorldToLocal(pos)
 		return {
-			origin = train:LocalToWorld(train:WorldToLocal(pos)+Vector(math.Round((train.HeadAcceleration or 0),2),0,0)),--train:LocalToWorld(Vector(math.Round(train.HeadAcceleration,2),0,0)) ,
+			origin = train:LocalToWorld(train:WorldToLocal(pos)+Vector(math.Round((GetConVarNumber("metrostroi_disablecamaccel") == 0 and (train:Animate("accel",(train:GetNWFloat("Accel")+1)/2,-1,1, 4, 1)*20 - 5) or 0),2),0,0)),--train:LocalToWorld(Vector(math.Round(train.HeadAcceleration,2),0,0)) ,
 			angles = angles,
 			fov = fov,
 			znear = znear,
@@ -1111,6 +1161,15 @@ end
 
 local function findAimButton(ply)
 	local train = isValidTrainDriver(ply)
+	if not IsValid(train) and LocalPlayer():GetActiveWeapon():GetClass() == "train_kv_wrench" then
+		local trace = util.TraceLine({
+			start = LocalPlayer():EyePos(),
+			endpos = LocalPlayer():EyePos() + LocalPlayer():EyeAngles():Forward() * 100,
+			filter = function( ent ) if ent:GetClass():find("subway") then return true end end
+		})
+		train = trace.Entity
+		
+	end
 	if IsValid(train) and train.ButtonMap != nil then
 		local foundbuttons = {}
 		for kp,panel in pairs(train.ButtonMap) do
@@ -1120,8 +1179,8 @@ local function findAimButton(ply)
 				
 				--Loop trough every button on it
 				for kb,button in pairs(panel.buttons) do
-					if train.Hidden[button.PropName] then continue end
-					if train.Hidden[button.ID] then  continue end
+					if train.Hidden[button.PropName] or train.HiddenButton[button.PropName] then continue end
+					if train.Hidden[button.ID] or train.HiddenButton[button.ID] then  continue end
 					if button.w and button.h then
 						if panel.aimX >= button.x and panel.aimX <= (button.x + button.w) and
 								panel.aimY >= button.y and panel.aimY <= (button.y + button.h) then
@@ -1157,9 +1216,25 @@ hook.Add("Think","metrostroi-cabin-panel",function()
 	drawCrosshair = false
 	
 	local train = isValidTrainDriver(ply)
-	if(IsValid(train) and not ply:GetVehicle():GetThirdPersonMode() and train.ButtonMap != nil) then
+	local outside = false
+	if not IsValid(train) and IsValid(LocalPlayer():GetActiveWeapon()) and LocalPlayer():GetActiveWeapon():GetClass() == "train_kv_wrench" then
+		local trace = util.TraceLine({
+			start = LocalPlayer():EyePos(),
+			endpos = LocalPlayer():EyePos() + LocalPlayer():EyeAngles():Forward() * 100,
+			filter = function( ent ) if ent:GetClass():find("subway") then  return true end end
+		})
+		train = trace.Entity
+		--print(train)
+		outside = true
+	end
+	if(IsValid(train) and train.ButtonMap != nil) then
 		
-		local plyaimvec = gui.ScreenToVector(ScrW()/2, ScrH()/2) -- ply:GetAimVector() is unreliable when in seats
+		local plyaimvec 
+		if outside then
+			plyaimvec = ply:GetAimVector()
+		else
+			plyaimvec =gui.ScreenToVector(ScrW()/2, ScrH()/2) -- ply:GetAimVector() is unreliable when in seats
+		end
 		
 		-- Loop trough every panel
 		for k2,panel in pairs(train.ButtonMap) do
@@ -1167,8 +1242,7 @@ hook.Add("Think","metrostroi-cabin-panel",function()
 			local wang = train:LocalToWorldAngles(panel.ang)
 			
 			if plyaimvec:Dot(wang:Up()) < 0 then
-				local wpos = train:LocalToWorld(panel.pos - Vector(math.Round((train.HeadAcceleration or 0),2),0,0))
-				
+				local wpos = train:LocalToWorld(panel.pos - Vector(math.Round((!outside and train.HeadAcceleration or 0),2),0,0))
 				local isectPos = LinePlaneIntersect(wpos,wang:Up(),ply:EyePos(),plyaimvec)
 				local localx,localy = WorldToScreen(isectPos,wpos,panel.scale,wang)
 				
@@ -1190,7 +1264,7 @@ hook.Add("Think","metrostroi-cabin-panel",function()
 		if ttdelay and ttdelay >= 0 then
 			local button = findAimButton(ply)
 			--print(train.ClientProps[button.ID].button)
-			if button and (train.Hidden[button.ID] or train.Hidden[button.PropName]) then return end
+			if button and (train.Hidden[button.ID] or train.Hidden[button.PropName] or train.HiddenButton[button.ID] or train.HiddenButton[button.PropName]) then return end
 			if button != lastAimButton then
 				lastAimButtonChange = CurTime()
 				lastAimButton = button
@@ -1208,11 +1282,12 @@ end)
 
 
 -- Takes button table, sends current status
-local function sendButtonMessage(button)
+local function sendButtonMessage(button,outside)
 	if not button.ID then return end
 	net.Start("metrostroi-cabin-button")
 	net.WriteString(button.ID:find(":") and string.Explode(":",button.ID)[2] or button.ID) 
 	net.WriteBit(button.state)
+	net.WriteBool(outside)
 	net.SendToServer()
 	--RunConsoleCommand("metrostroi_button_press",button.ID..(button.state and 1 or 0))
 end
@@ -1252,11 +1327,22 @@ function ENT:HidePanel(kp,hide)
 end
 -- Args are player, IN_ enum and bool for press/release
 local function handleKeyEvent(ply,key,pressed)
-	if key ~= IN_ATTACK and key ~= 524288 then return end
+	if key ~= IN_ATTACK and key ~= 2048 and key ~= 524288 then return end
 	if key == 524288 and pressed then return end
 	if not game.SinglePlayer() and not IsFirstTimePredicted() then return end
 	if not IsValid(ply) then return end
 	local train = isValidTrainDriver(ply)
+	local outside = false
+	if not IsValid(train) and IsValid(LocalPlayer():GetActiveWeapon()) and LocalPlayer():GetActiveWeapon():GetClass() == "train_kv_wrench" then
+		local trace = util.TraceLine({
+			start = LocalPlayer():EyePos(),
+			endpos = LocalPlayer():EyePos() + LocalPlayer():EyeAngles():Forward() * 100,
+			filter = function( ent ) if ent:GetClass():find("subway") then return true end end
+		})
+		train = trace.Entity
+		
+		outside = true
+	end
 	if not IsValid(train) then return end
 	if train.ButtonMap == nil then return end
 	if key == 524288 and not pressed then train:ClearButtons() end
@@ -1264,7 +1350,7 @@ local function handleKeyEvent(ply,key,pressed)
 		local button = findAimButton(ply)
 		if button and !button.state then
 			button.state = true
-			sendButtonMessage(button)
+			sendButtonMessage(button,outside)
 			lastButton = button
 
 			if train.OnButtonPressed then
@@ -1280,7 +1366,7 @@ local function handleKeyEvent(ply,key,pressed)
 		if lastButton != nil then
 			if lastButton.state == true then
 				lastButton.state = false
-				sendButtonMessage(lastButton)
+				sendButtonMessage(lastButton,outside)
 			end
 
 			if train.OnButtonReleased and button then

@@ -12,7 +12,7 @@ function ENT:Initialize()
 	self.LastSignalTime = 0
 
 	-- Find rotating parts which belong to this switch
-	local list = ents.FindInSphere(self:GetPos(),256)
+	local list = ents.FindInSphere(self:GetPos(),512)
 	self.TrackSwitches = {}
 	for k,v in pairs(list) do
 		if (v:GetClass() == "prop_door_rotating") and (string.find(v:GetName(),"switch") or string.find(v:GetName(),"swh") or string.find(v:GetName(),"swit")) then
@@ -61,7 +61,7 @@ function ENT:Think()
 	
 	-- Check if local section of track is occupied or no
 	local pos = self.TrackPosition
-	if pos then
+	if pos and self.AlternateTrack then
 		local trackOccupied = Metrostroi.IsTrackOccupied(pos.node1,pos.x,pos.forward,"switch")
 		if trackOccupied then -- Prevent track switches from working when there's a train on segment
 			self.InhibitSwitching = true

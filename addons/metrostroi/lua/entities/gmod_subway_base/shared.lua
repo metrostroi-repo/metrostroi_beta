@@ -72,12 +72,22 @@ function ENT:InitializeSounds()
 		"subway_trains/switch_6.wav",
 		"subway_trains/switch_7.wav",
 	}
+	
+	self.SoundNames["kurlik"]		= "subway_trains/new/kurlik.wav"
 	self.SoundNames["switch4"]		= "subway_trains/switch_4.wav"
 	self.SoundNames["switch5"]		= "subway_trains/switch_8.wav"
 	self.SoundNames["switch6"]		= "subway_trains/switch_9.wav"
 	self.SoundNames["switch6_off"]	= "subway_trains/switch_10.wav"
-	self.SoundNames["vu22_on"]	= "subway_trains/new/vu22_on.wav"
-	self.SoundNames["vu22_off"]	= "subway_trains/new/vu22_off.wav"
+	self.SoundNames["vu22_on"]	= {
+		"subway_trains/new/vud_down_1.wav",
+		"subway_trains/new/vud_down_2.wav",
+		"subway_trains/new/vud_down_3.wav"
+	}
+	self.SoundNames["vu22_off"]	= {
+		"subway_trains/new/vud_up_1.wav",
+		"subway_trains/new/vud_up_2.wav",
+		"subway_trains/new/vud_up_3.wav"
+	}
 	self.SoundNames["button_press"]		= {
 		"subway_trains/new/button_1_on.wav",
 	}
@@ -95,13 +105,15 @@ function ENT:InitializeSounds()
 	self.SoundNames["av_off"]			= "subway_trains/av_off.wav"
 
 	self.SoundNames["bpsn1"] 		= "subway_trains/bpsn_1.wav"
-	self.SoundNames["bpsn2"] 		= "subway_trains/bpsn_2.wav"
-	self.SoundNames["bpsn3"] 		= "subway_trains/bpsn_3.wav"
-	self.SoundNames["bpsn4"] 		= "subway_trains/bpsn_4.wav"
-	self.SoundNames["bpsn5"] 		= "subway_trains/bpsn_5.wav"
-	self.SoundNames["bpsn6"] 		= "subway_trains/bpsn_6.wav"
-	self.SoundNames["bpsn_ann"] 	= "subway_announcer/00_07_new.wav"
-	self.SoundNames["bpsn_ann_cab"] 	= "subway_announcer/00_07_new.wav"
+	self.SoundNames["bpsn2"] 		= "subway_trains/bpsn_3.wav"
+	self.SoundNames["bpsn3"] 		= "subway_trains/bpsn_4.wav"
+	self.SoundNames["bpsn4"] 		= "subway_trains/bpsn_5.wav"
+	self.SoundNames["bpsn5"] 		= "subway_trains/bpsn_7.wav"
+	self.SoundNames["bpsn_ann_pnm"] 	= "subway_announcer_pnm/00_07_new.wav"
+	self.SoundNames["bpsn_ann_pnm_cab"] 	= "subway_announcer_pnm/00_07_new.wav"
+	self.SoundPositions["bpsn_ann_pnm_cab"]	= "cabin"
+	self.SoundNames["bpsn_ann"] 	= "subway_announcer_pnm/00_07.wav"
+	self.SoundNames["bpsn_ann_cab"] 	= "subway_announcer_pnm/00_07.wav"
 	self.SoundPositions["bpsn_ann_cab"]	= "cabin"
 	
 	self.SoundNames["release1"]		= "subway_trains/new/release_1.wav"
@@ -186,7 +198,32 @@ function ENT:InitializeSounds()
 	}
 	self.SoundNames["relay_close2"] = "subway_trains/new/relay_4.wav"
 	self.SoundNames["relay_close3"] = "subway_trains/new/relay_5.wav"
-	self.SoundNames["relay_close4"] = "subway_trains/new/relay_6.wav"
+	self.SoundNames["relay_close4"] = {
+		--"subway_trains/new/lsd_1.wav",
+		--"subway_trains/new/lsd_2.wav",
+		--"subway_trains/new/lsd_3.wav",
+		"subway_trains/new/lsd_4.wav",
+		"subway_trains/new/lsd_5.wav",
+		"subway_trains/new/lsd_6.wav",
+		"subway_trains/new/lsd_7.wav",
+	}
+	self.SoundNames["rvt_close"] = {
+		"subway_trains/new/brake_on1.wav",
+		"subway_trains/new/brake_on2.wav",
+		"subway_trains/new/brake_on3.wav",
+	}
+	self.SoundNames["r1_5_close"] = {
+		"subway_trains/new/drive_on1.wav",
+		"subway_trains/new/drive_on2.wav",
+		"subway_trains/new/drive_on3.wav",
+	}
+	self.SoundNames["rvt_open"] = {
+		"subway_trains/new/brake_off1.wav",
+		"subway_trains/new/brake_off2.wav",
+		"subway_trains/new/brake_off3.wav"
+	}
+	self.SoundNames["r1_5_open"] = "subway_trains/new/drive_off1.wav"
+
 	self.SoundNames["relay_close5"] = "subway_trains/new/relay_3.wav"
 	self.SoundNames["door_close1"] = {
 		"subway_trains/door_close_7.wav",
@@ -213,6 +250,10 @@ function ENT:InitializeSounds()
 		"subway_trains/door_open_2.wav",
 		"subway_trains/door_open_3.wav",
 	}
+	self.SoundNames["plomb"] = {
+		"subway_trains/new/plomb1.wav",
+		"subway_trains/new/plomb2.wav",
+	}
 	
 	self.SoundNames["compressor"]		= "subway_trains/compressor_1.wav"
 	self.SoundNames["compressor_end"] 	= "subway_trains/compressor_2.wav"
@@ -226,34 +267,35 @@ function ENT:InitializeSounds()
 	self.SoundNames["kru_2_1"]		= "subway_trains/new/kru_2_1.wav"
 	self.SoundNames["kru_1_0"]		= "subway_trains/new/kru_1_0.wav"
 
-	self.SoundNames["kv_0_t1"]		= "subway_trains/new/kv_0_t1.wav"
-	self.SoundNames["kv_t1_0"]		= "subway_trains/new/kv_t1_0.wav"
-	self.SoundNames["kv_t1_t1a"]	= "subway_trains/new/kv_t1_t1a.wav"
-	self.SoundNames["kv_t1a_t1"]	= "subway_trains/new/kv_t1a_t1.wav"
-	self.SoundNames["kv_t1a_t2"]	= "subway_trains/new/kv_t1a_t2.wav"
-	self.SoundNames["kv_t2_t1a"]	= "subway_trains/new/kv_t2_t1a.wav"
-	self.SoundNames["kv_0_x1"]		= "subway_trains/new/kv_0_x1.wav"
-	self.SoundNames["kv_x1_0"]		= "subway_trains/new/kv_x1_0.wav"
-	self.SoundNames["kv_x1_x2"]		= "subway_trains/new/kv_x1_x2.wav"
-	self.SoundNames["kv_x2_x1"]		= "subway_trains/new/kv_x2_x1.wav"
-	self.SoundNames["kv_x2_x3"]		= "subway_trains/new/kv_x2_x3.wav"
-	self.SoundNames["kv_x3_x2"]		= "subway_trains/new/kv_x3_x2.wav"
+	self.SoundNames["kv_0_t1"]		= "subway_trains/kv1/kv_0_t1.wav"
+	self.SoundNames["kv_t1_0"]		= "subway_trains/kv1/kv_t1_0.wav"
+	self.SoundNames["kv_t1_t1a"]	= "subway_trains/kv1/kv_t1_t1a.wav"
+	self.SoundNames["kv_t1a_t1"]	= "subway_trains/kv1/kv_t1a_t1.wav"
+	self.SoundNames["kv_t1a_t2"]	= "subway_trains/kv1/kv_t1a_t2.wav"
+	self.SoundNames["kv_t2_t1a"]	= "subway_trains/kv1/kv_t2_t1a.wav"
+	self.SoundNames["kv_0_x1"]		= "subway_trains/kv1/kv_0_x1.wav"
+	self.SoundNames["kv_x1_0"]		= "subway_trains/kv1/kv_x1_0.wav"
+	self.SoundNames["kv_x1_x2"]		= "subway_trains/kv1/kv_x1_x2.wav"
+	self.SoundNames["kv_x2_x1"]		= "subway_trains/kv1/kv_x2_x1.wav"
+	self.SoundNames["kv_x2_x3"]		= "subway_trains/kv1/kv_x2_x3.wav"
+	self.SoundNames["kv_x3_x2"]		= "subway_trains/kv1/kv_x3_x2.wav"
 	
-	self.SoundNames["ezh_kv_0_t1"]		= "subway_trains/new/ezh_kv_0_t1.wav"
-	self.SoundNames["ezh_kv_t1_0"]		= "subway_trains/new/ezh_kv_t1_0.wav"
-	self.SoundNames["ezh_kv_t1_t1a"]	= "subway_trains/new/ezh_kv_t1_t1a.wav"
-	self.SoundNames["ezh_kv_t1a_t1"]	= "subway_trains/new/ezh_kv_t1a_t1.wav"
-	self.SoundNames["ezh_kv_t1a_t2"]	= "subway_trains/new/ezh_kv_t1a_t2.wav"
-	self.SoundNames["ezh_kv_t2_t1a"]	= "subway_trains/new/ezh_kv_t2_t1a.wav"
-	self.SoundNames["ezh_kv_0_x1"]		= "subway_trains/new/ezh_kv_0_x1.wav"
-	self.SoundNames["ezh_kv_x1_0"]		= "subway_trains/new/ezh_kv_x1_0.wav"
-	self.SoundNames["ezh_kv_x1_x2"]		= "subway_trains/new/ezh_kv_x1_x2.wav"
-	self.SoundNames["ezh_kv_x2_x1"]		= "subway_trains/new/ezh_kv_x2_x1.wav"
-	self.SoundNames["ezh_kv_x2_x3"]		= "subway_trains/new/ezh_kv_x2_x3.wav"
-	self.SoundNames["ezh_kv_x3_x2"]		= "subway_trains/new/ezh_kv_x3_x2.wav"
+	self.SoundNames["ezh_kv_0_t1"]		= "subway_trains/kve1/kv_0_t1.wav"
+	self.SoundNames["ezh_kv_t1_0"]		= "subway_trains/kve1/kv_t1_0.wav"
+	self.SoundNames["ezh_kv_t1_t1a"]	= "subway_trains/kve1/kv_t1_t1a.wav"
+	self.SoundNames["ezh_kv_t1a_t1"]	= "subway_trains/kve1/kv_t1a_t1.wav"
+	self.SoundNames["ezh_kv_t1a_t2"]	= "subway_trains/kve1/kv_t1a_t2.wav"
+	self.SoundNames["ezh_kv_t2_t1a"]	= "subway_trains/kve1/kv_t2_t1a.wav"
+	self.SoundNames["ezh_kv_0_x1"]		= "subway_trains/kve1/kv_0_x1.wav"
+	self.SoundNames["ezh_kv_x1_0"]		= "subway_trains/kve1/kv_x1_0.wav"
+	self.SoundNames["ezh_kv_x1_x2"]		= "subway_trains/kve1/kv_x1_x2.wav"
+	self.SoundNames["ezh_kv_x2_x1"]		= "subway_trains/kve1/kv_x2_x1.wav"
+	self.SoundNames["ezh_kv_x2_x3"]		= "subway_trains/kve1/kv_x2_x3.wav"
+	self.SoundNames["ezh_kv_x3_x2"]		= "subway_trains/kve1/kv_x3_x2.wav"
 	
-	for i = 1,7 do
-		self.SoundNames["styk"..i] = "subway_trains/new/styk"..i..".wav"
+	for i = 1,10 do
+		self.SoundNames["st"..i.."a"] = "subway_trains/new/st"..i.."a.wav"
+		self.SoundNames["st"..i.."b"] = "subway_trains/new/st"..i.."b.wav"
 	end
 	
 	self.SoundNames["tr"] = {
@@ -399,7 +441,7 @@ function ENT:LoadSystem(a,b,...)
 	if SERVER and Turbostroi then
 		-- Load system into turbostroi
 		if (not GLOBAL_SKIP_TRAIN_SYSTEMS) then
-			Turbostroi.LoadSystem(sys_name,name)
+			Turbostroi.LoadSystem(sys_name,name,...)
 		end
 		
 		-- Load system locally (this may load any systems nested in the initializer)
@@ -453,12 +495,13 @@ end
 -- Sends and get float via NWVars
 ---------------------------------------------------------------------------------------
 function ENT:SetPackedRatio(idx,value)
-	if self._NetData[2][idx] ~= nil and self._NetData[2][idx] == math.Round(value,3) then return end
-	self:SetNWFloat(999-idx,math.Round(value,3))
+	local idx = type(idx) == "number" and 999-idx or idx
+	if self._NetData[2][idx] ~= nil and self._NetData[2][idx] == math.floor(value*100) then return end
+	self:SetNWInt(idx,math.floor(value*500))
 end
 
 function ENT:GetPackedRatio(idx)
-	return self:GetNWFloat(999-idx)
+	return self:GetNWInt(type(idx) == "number" and 999-idx or idx)/500
 end
 
 --------------------------------------------------------------------------------

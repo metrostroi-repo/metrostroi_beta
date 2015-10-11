@@ -1,0 +1,5 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models/metrostroi/train/signal_light_1"
+	"$additive" 1
+}
