@@ -252,6 +252,40 @@ StationNumbers["gm_mus_orange_line"] = {
 		["114"] = "workshop",
 		["115"] = "park",
 }
+StationNames["gm_mus_orange"] = {
+	 ["airport"] = Vector(-10812,1140,2290),
+	 ["wallace breen"] = Vector(13511,-945.446716,-509),
+	 ["glorious country"] = Vector(13128,1518,1026),
+	 ["lithium"] = Vector(-14376,-3979,610),
+	 ["depot"] = Vector(-5377,11990,-1466),
+	 ["pto"] = Vector(197,-11813,2185),
+	 ["disp"] = Vector(360,12839,-1200),
+	 ["gcfscape"] = Vector(-14547,-4216,-511),
+	 ["garry's mod workers"] = Vector(-14345,-8462,-2147),
+	 ["vhe"] = Vector(10549,-264,-1399),
+	 ["brateevo"] = Vector(11900,-14527,-2980),
+	 ["park"] = Vector(-3372,4093,514),
+	 ["pionerskaya"] = Vector(11466,-1168,2196.031250),
+	 ["metro builders"] = Vector(110,2633,983),
+}
+StationNumbers["gm_mus_orange"] = {
+	 --Оранжевая
+	 ["401"] = "airport",
+	 ["402"] = "glorious country",
+	 ["403"] = "lithium",
+	 ["404"] = "park",
+	 ["405"] = "gcfscape",
+	 ["406"] = "wallace breen",
+	 ["407"] = "vhe",
+	 ["408"] = "garry's mod workers",
+	 --Малина
+	 ["501"] = "airport",
+	 ["502"] = "pionerskaya",
+	 ["503"] = "lithium",
+	 ["504"] = "metro builders",
+	 --Оранжевая малина:d
+	 ["601"] = "brateevo",
+}
 function ulx.tps( calling_ply,station )
 		print(station,station2)
         station = string.lower(station)
@@ -262,6 +296,8 @@ function ulx.tps( calling_ply,station )
 			map = "gm_metrostroi"
 		elseif map:find("orange") and map:find("long") then
 			map = "gm_mus_orange_line"
+		elseif map:find("orange") and map:find("metro") then
+			map = "gm_mus_orange"
 		elseif map:find("orange") then
 			map = "gm_mus_orange_line_short"
 		end

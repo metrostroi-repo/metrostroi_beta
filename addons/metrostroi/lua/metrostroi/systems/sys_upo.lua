@@ -68,11 +68,10 @@ function TRAIN_SYSTEM:PlayArriving(station,next,path)
 	if Metrostroi.AnnouncerData[station][2] then
 		Announcer:PlayInfQueueSounds(0215)
 	end
-
 	if type(Metrostroi.AnnouncerData[station][7]) == "table" then
-		self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[station][7][2]] and 0203 or nil,Metrostroi.AnnouncerData[station][7][2])
+		Announcer:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[station][7][2]] and 0203 or nil,Metrostroi.AnnouncerData[station][7][2])
 	elseif Metrostroi.AnnouncerData[station][7] > 0 then
-		self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[station][7]] and 0203 or nil,Metrostroi.AnnouncerData[station][7])
+		Announcer:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[station][7]] and 0203 or nil,Metrostroi.AnnouncerData[station][7])
 	end
 
 	if Metrostroi.AnnouncerData[station][8] and path == Metrostroi.AnnouncerData[station][8] then
@@ -88,9 +87,9 @@ function TRAIN_SYSTEM:PlayArriving(station,next,path)
 	end
 
 	if type(Metrostroi.AnnouncerData[next][7]) == "table" then
-		self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7][2]] and 0203 or nil,Metrostroi.AnnouncerData[next][7][2])
+		Announcer:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7][2]] and 0203 or nil,Metrostroi.AnnouncerData[next][7][2])
 	elseif Metrostroi.AnnouncerData[next][7] > 0 then
-		self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7]] and 0203 or nil,Metrostroi.AnnouncerData[next][7])
+		Announcer:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7]] and 0203 or nil,Metrostroi.AnnouncerData[next][7])
 	end
 
 	if Metrostroi.AnnouncerData[next][8] and path == Metrostroi.AnnouncerData[next][8] then
@@ -118,9 +117,9 @@ function TRAIN_SYSTEM:PlayDepeate(station,next,path)
 	end
 
 	if type(Metrostroi.AnnouncerData[next][7]) == "table" then
-		self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7][2]] and 0203 or nil,Metrostroi.AnnouncerData[next][7][2])
+		Announcer:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7][2]] and 0203 or nil,Metrostroi.AnnouncerData[next][7][2])
 	elseif Metrostroi.AnnouncerData[next][7] > 0 then
-		self:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7]] and 0203 or nil,Metrostroi.AnnouncerData[next][7])
+		Announcer:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7]] and 0203 or nil,Metrostroi.AnnouncerData[next][7])
 	end
 
 	if Metrostroi.AnnouncerData[next][8] and path == Metrostroi.AnnouncerData[next][8] then

@@ -29,10 +29,10 @@ function ENT:Initialize()
 	
 	-- Create seat entities
 	self.DriverSeat = self:CreateSeat("driver",Vector(421,0,-23+7.8))
-	self.InstructorsSeat = self:CreateSeat("instructor",Vector(440,50,-28+3),Angle(0,270,0))
-	self.ExtraSeat1 = self:CreateSeat("instructor",Vector(430,-40,-28+1))
-	self.ExtraSeat2 = self:CreateSeat("instructor",Vector(435,-50,-43),Angle(0,180,0),"models/vehicles/prisoner_pod_inner.mdl")
-	self.ExtraSeat3 = self:CreateSeat("instructor",Vector(412,50,-43),Angle(0,-40+90,0),"models/vehicles/prisoner_pod_inner.mdl")
+	self.InstructorsSeat = self:CreateSeat("instructor",Vector(420,50,-28+3),Angle(0,270,0))
+	self.ExtraSeat1 = self:CreateSeat("instructor",Vector(410,-40,-28+1))
+	self.ExtraSeat2 = self:CreateSeat("instructor",Vector(415,-50,-43),Angle(0,180,0),"models/vehicles/prisoner_pod_inner.mdl")
+	self.ExtraSeat3 = self:CreateSeat("instructor",Vector(402,50,-43),Angle(0,-40+90,0),"models/vehicles/prisoner_pod_inner.mdl")
 
 	-- Hide seats
 	self.DriverSeat:SetColor(Color(0,0,0,0))
@@ -350,7 +350,7 @@ function ENT:Initialize()
 			end
 		end
 		local tex = Metrostroi.Skins["717_cabp"][self.CabTexture or 1]
-		for k1,v1 in pairs(self.Blok == 3 and tex.textures.pam or self.Blok == 2 and tex.textures.paksd or tex.textures.puav) do
+		for k1,v1 in pairs(self.Blok == 4 and tex.textures.paksdm or self.Blok == 3 and tex.textures.pam or self.Blok == 2 and tex.textures.paksd or tex.textures.puav) do
 			if v:find(k1) then
 				self:SetSubMaterial(k-1,v1)
 			end
@@ -375,7 +375,10 @@ function ENT:Think()
 	end
 	if self.Plombs and self.Plombs.Init then
 		self.Plombs.Init = nil
-		for k,v in pairs(self.Plombs) do self[k]:TriggerInput("Block",true) end
+		for k,v in pairs(self.Plombs) do
+			self[k]:TriggerInput("Reset",true)
+			self[k]:TriggerInput("Block",true)
+		end
 	end
 	if self.YAR_13A.Slope and self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
 		self.YAR_13A:TriggerInput("Slope",true)
@@ -449,7 +452,7 @@ function ENT:Think()
 	if self.OldBlok ~= self.Blok then
 		for k,v in pairs(self:GetMaterials()) do
 			local tex = Metrostroi.Skins["717_cabp"][self.CabTexture or 1]
-			for k1,v1 in pairs(self.Blok == 3 and tex.textures.pam or self.Blok == 2 and tex.textures.paksd or tex.textures.puav) do
+			for k1,v1 in pairs(self.Blok == 4 and tex.textures.paksdm or self.Blok == 3 and tex.textures.pam or self.Blok == 2 and tex.textures.paksd or tex.textures.puav) do
 				if v:find(k1) then
 					self:SetSubMaterial(k-1,v1)
 				end
@@ -460,7 +463,7 @@ function ENT:Think()
 	if self.OldCabTexture ~= self.CabTexture then
 		for k,v in pairs(self:GetMaterials()) do
 			local tex = Metrostroi.Skins["717_cabp"][self.CabTexture or 1]
-			for k1,v1 in pairs(self.Blok == 3 and tex.textures.pam or self.Blok == 2 and tex.textures.paksd or tex.textures.puav) do
+			for k1,v1 in pairs(self.Blok == 4 and tex.textures.paksdm or self.Blok == 3 and tex.textures.pam or self.Blok == 2 and tex.textures.paksd or tex.textures.puav) do
 				if v:find(k1) then
 					self:SetSubMaterial(k-1,v1)
 				end
@@ -820,7 +823,7 @@ function ENT:Think()
 		self:SetPackedBool("BMinus",self.BMinus.Value == 1.0)
 		self:SetPackedBool("BPlus",self.BPlus.Value == 1.0)
 		self:SetPackedBool("BEnter",self.BEnter.Value == 1.0)
-		if self.Blok ==3 then
+		if self.Blok >= 3 then
 			self:SetPackedBool("BRight", self.BRight.Value == 1.0)
 			self:SetPackedBool("BEsc", self.BEsc.Value == 1.0)
 			self:SetPackedBool("BF", self.BF.Value == 1.0)

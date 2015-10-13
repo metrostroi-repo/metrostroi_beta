@@ -3,7 +3,7 @@ ENT.Type            = "anim"
 ENT.PrintName       = "Track Switch"
 ENT.Category		= "Metrostroi (utility)"
 
-ENT.Spawnable       = false
+ENT.Spawnable       = true
 ENT.AdminSpawnable  = true
 
 function ENT:SetupDataTables()

@@ -346,7 +346,10 @@ end
 function ENT:Think()
 	if self.Plombs and self.Plombs.Init then
 		self.Plombs.Init = nil
-		for k,v in pairs(self.Plombs) do self[k]:TriggerInput("Block",true) end
+		for k,v in pairs(self.Plombs) do
+			self[k]:TriggerInput("Reset",true)
+			self[k]:TriggerInput("Block",true)
+		end
 	end
 	if self.YAR_13A.Slope and self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
 		self.YAR_13A:TriggerInput("Slope",true)

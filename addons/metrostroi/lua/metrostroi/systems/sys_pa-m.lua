@@ -458,6 +458,7 @@ if CLIENT then
 			local LastStation = self.Train:GetNWInt("PAM:LastStation",-1)
 			local RouteNumber = self.Train:GetNWInt("PAM:RouteNumber",-1)
 			local tbl = Metrostroi.WorkingStations
+			print(tbl[Announcer.AnnMap],Announcer.AnnMap)
 			draw.SimpleText("Ввод исходных данных","Metrostroi_PAMBig",256, 30,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			--elf.Train:GetNWInt("PAM:Pass",0) ~= -1 and string.rep("*",self.Train:GetNWInt("PAM:Pass",0)) or "ACCESS ERROR"
 			Metrostroi.DrawRectOutline(10, 50, 492, 367,Color(110,172,95),3)
@@ -468,7 +469,7 @@ if CLIENT then
 
 			Metrostroi.DrawRectOL(40, 110, 432, 40,Color(110,172,95),3,train:GetNWBool("PAM:State6",1) == 2 and Color(230,230,230) or Color(180,180,180))
 			draw.SimpleText("Нач. ст.","Metrostroi_PAMBig",45, 130,Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			if tbl[Announcer.AnnMap][Line] and tbl[Announcer.AnnMap][Line][FirstStation] and Metrostroi.AnnouncerData[FirstStation] then
+			if tbl[Announcer.AnnMap] and tbl[Announcer.AnnMap][Line] and tbl[Announcer.AnnMap][Line][FirstStation] and Metrostroi.AnnouncerData[FirstStation] then
 				draw.SimpleText(Metrostroi.AnnouncerData[FirstStation][1]:sub(1,10).." "..FirstStation,"Metrostroi_PAMBig",457, 130,Color(2,2,2),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
 			elseif FirstStation ~= -1 then
 				draw.SimpleText(FirstStation,"Metrostroi_PAMBig",457, 130,Color(2,2,2),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
@@ -476,7 +477,7 @@ if CLIENT then
 
 			Metrostroi.DrawRectOL(40, 160, 432, 40,Color(110,172,95),3,train:GetNWBool("PAM:State6",1) == 3 and Color(230,230,230) or Color(180,180,180))
 			draw.SimpleText("Кон. ст.","Metrostroi_PAMBig",45, 180,Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			if tbl[Announcer.AnnMap][Line] and tbl[Announcer.AnnMap][Line][LastStation] and Metrostroi.AnnouncerData[LastStation] then
+			if tbl[Announcer.AnnMap] and tbl[Announcer.AnnMap][Line] and tbl[Announcer.AnnMap][Line][LastStation] and Metrostroi.AnnouncerData[LastStation] then
 				draw.SimpleText(Metrostroi.AnnouncerData[LastStation][1]:sub(1,10).." "..LastStation,"Metrostroi_PAMBig",457, 180,Color(2,2,2),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
 			elseif LastStation ~= -1 then
 				draw.SimpleText(LastStation,"Metrostroi_PAMBig",457, 180,Color(2,2,2),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
@@ -496,7 +497,7 @@ if CLIENT then
 			end
 				
 			
-			if train:GetNWInt("PAM:State6",1) == 2 and tbl[Announcer.AnnMap][Line] then
+			if train:GetNWInt("PAM:State6",1) == 2 and tbl[Announcer.AnnMap] and tbl[Announcer.AnnMap][Line] then
 				local i = 1
 				for k,v in pairs(tbl[Announcer.AnnMap][Line]) do
 					if Metrostroi.AnnouncerData[v] and (tostring(v):find(FirstStation) or FirstStation == -1) then
@@ -524,7 +525,7 @@ if CLIENT then
 					Metrostroi.DrawLine(140, 155, 140, 145 + i*22,Color(110,172,95),3)
 				end
 			end
-			if train:GetNWInt("PAM:State6",1) == 3 and tbl[Announcer.AnnMap][Line] then
+			if train:GetNWInt("PAM:State6",1) == 3 and tbl[Announcer.AnnMap] and tbl[Announcer.AnnMap][Line] then
 				local i = 1
 				for k,v in pairs(tbl[Announcer.AnnMap][Line]) do
 					if Metrostroi.AnnouncerData[v] and (tostring(v):find(LastStation) or LastStation == -1) then
@@ -696,12 +697,12 @@ if CLIENT then
 			draw.SimpleText("Тост = "..train:GetNWInt("PAM:BoardTime",0),"Metrostroi_PAMSmall2",375, 365,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 
 			if train:GetNWInt("PAM:Menu",0) > 0 then
-				Metrostroi.DrawRectOutline(50, 150, 385, 24*8,Color(160,160,160), 3)
-				surface.SetDrawColor(Color(180,180,180))
-				surface.DrawRect(51,151,382,24*8-4)
+				Metrostroi.DrawRectOL(50, 150, 385, 24*7+3,Color(160,160,160), 3,Color(180,180,180))
+				--surface.SetDrawColor(Color(180,180,180))
+				--surface.DrawRect(51,151,382,24*7-4)
 				surface.SetDrawColor(Color(200,200,200))
 				surface.DrawRect(51,127 + train:GetNWInt("PAM:Menu",0)*24,382,23)
-				for i = 1,7 do
+				for i = 1,6 do
 					Metrostroi.DrawLine(50,150+24*i,435,150+24*i,Color(160,160,160),3)
 				end
 				draw.SimpleText("Проверка наката","Metrostroi_PAMSmall3",256, 162,Color(2,2,2),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
@@ -711,7 +712,7 @@ if CLIENT then
 				draw.SimpleText("Движение с  Vд = 0","Metrostroi_PAMSmall3",256, 258,Color(2,2,2),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				draw.SimpleText("Зонный оборот","Metrostroi_PAMSmall3",256, 282,Color(2,2,2),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				draw.SimpleText("Фиксация станции","Metrostroi_PAMSmall3",256, 306,Color(2,2,2),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Station mode","Metrostroi_PAMSmall3",256, 330,Color(2,2,2),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				--draw.SimpleText("Station mode","Metrostroi_PAMSmall3",256, 330,Color(2,2,2),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			end
 			if train:GetNWInt("PAM:Ann",0) > 0 then
 				Metrostroi.DrawRectOutline(50, 150, 385, 24*4,Color(160,160,160), 3)
@@ -994,7 +995,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		end
 		if name == "BDown" then
 			if self.MenuChoosed ~= 0 and (not self.NeedConfirm or self.NeedConfirm == 0) then
-				self.MenuChoosed = math.min(8,self.MenuChoosed + 1)
+				self.MenuChoosed = math.min(7,self.MenuChoosed + 1)
 
 				if self.MenuChoosed == 5 and (self.VRD or not (self.Train.ALS_ARS.Signal0 and not self.Train.ALS_ARS.RealNoFreq and not self.Train.ALS_ARS.Signal40 and not self.Train.ALS_ARS.Signal60 and not self.Train.ALS_ARS.Signal70 and not self.Train.ALS_ARS.Signal80)) then
 					self:Trigger("BDown",true)
@@ -1017,14 +1018,6 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				self.MenuChoosed = math.max(1,self.MenuChoosed - 1)
 				if self.MenuChoosed == 5 and (self.VRD or not (self.Train.ALS_ARS.Signal0 and not self.Train.ALS_ARS.RealNoFreq and not self.Train.ALS_ARS.Signal40 and not self.Train.ALS_ARS.Signal60 and not self.Train.ALS_ARS.Signal70 and not self.Train.ALS_ARS.Signal80)) then
 					self:Trigger("BUp",true)
-				elseif self.MenuChoosed == 6 then
-					if self.LastStation == tostring(self.Station) then
-						self:Trigger("BUp",true)
-					end
-				elseif self.MenuChoosed == 7 then
-					if self.FirstStation == tostring(self.Station) then
-						self:Trigger("BUp",true)
-					end
 				end
 			end
 			if self.MenuChoosed == 0 and self.AnnChoosed == 0 then
@@ -1247,12 +1240,14 @@ function TRAIN_SYSTEM:SetState(state,add,state9)
 		self.Line = 1
 		if Metrostroi.WorkingStations[Announcer.AnnMap][self.Line] then
 			local Routelength = #Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
-			self.FirstStation = tostring(self.Path == 2 and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][Routelength] or Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][1])
-			self.LastStation = tostring(self.Path == 1 and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][Routelength] or Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][1])
+			--self.FirstStation = tostring(self.Path == 2 and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][Routelength] or Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][1])
+			--self.LastStation = tostring(self.Path == 1 and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][Routelength] or Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][1])
 		else
-			self.FirstStation = "111"
-			self.LastStation = "123"
+			--self.FirstStation = "111"
+			--self.LastStation = "123"
 		end
+		self.FirstStation = ""
+		self.LastStation = ""
 		self.State6Error = false
 	end
 	if state == 7 then
@@ -1265,6 +1260,19 @@ function TRAIN_SYSTEM:SetState(state,add,state9)
 		for k,v in pairs(self.Train.WagonList) do
 			v.ENDis:TriggerInput("Set",1)
 		end
+		if not state9 then
+			for k,v in pairs(self.Train.WagonList) do
+				if v ~= self.Train and v["PA-M"] then
+					v["PA-M"]:SetState(8,nil,true)
+					v["PA-M"].Line = self.Line 
+					v["PA-M"].RouteNumber = self.RouteNumber
+					v["PA-M"].FirstStation = self.FirstStation
+					v["PA-M"].LastStation = self.LastStation
+				end
+				v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,false)
+			end
+		end
+		self.Train.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,true)
 	else
 		for k,v in pairs(self.Train.WagonList) do
 			v.ENDis:TriggerInput("Set",0)
@@ -1325,7 +1333,7 @@ function TRAIN_SYSTEM:Think(dT)
 			end
 		end
 	end
-	if self.Train.KV.ReverserPosition == 0 and self.State > 3 and self.State < 9 and self.State ~= -9 then self.State = 3 end
+	if self.Train.KV.ReverserPosition == 0 and self.State > 3 and self.State < 8 and self.State ~= -9 then self:SetState(3) end
 	if self.State == 0 and self.RealState ~= 0 then
 	elseif self.State == 0 then
 		self:SetTimer(0.5)
@@ -1355,6 +1363,11 @@ function TRAIN_SYSTEM:Think(dT)
 		if ARS.KVT and self:GetTimer(1) then
 			self.Check = false
 			ARS:TriggerInput("Ring",0)
+			for k,v in pairs(self.Train.WagonList) do
+				if v ~= self.Train and v.ALS_ARS then
+					v.ALS_ARS:TriggerInput("Ring",0)
+				end
+			end
 			self:SetTimer()
 		end
 	elseif self.State == 9 then
