@@ -1659,9 +1659,9 @@ function TRAIN_SYSTEM:Think()
 					self.Train.AnnouncementToLeaveWagon = false
 				end
 			end
-			self.Train.PNM = false
+			
 			-- BPSN buzz
-			if targetAnnouncement == 5 and self.Train.PNM then timer.Simple(0.3,function() self.Train:SetNWBool("BPSNBuzz",true) end) end
+			if targetAnnouncement == 5 and self.Train.PNM then timer.Simple(0.1,function() self.Train:SetNWBool("BPSNBuzz",true) end) end
 			if targetAnnouncement == 5 and not self.Train.PNM then timer.Simple(0.2,function() self.Train:SetNWBool("BPSNBuzz",true) end) end
 			if targetAnnouncement == 6 then
 				self.Train:SetNWBool("BPSNBuzz",false)

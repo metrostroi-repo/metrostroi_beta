@@ -193,6 +193,20 @@ function ENT:Initialize()
 	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*5+0.5)
 	self:SetNWInt("BPSNType",self.BPSNType)
 	self.OldTexture = 0
+	
+	for k,v in pairs(self:GetMaterials()) do
+		if v == "models/metrostroi_train/81/int02" then
+			if self.Map == "" then
+				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
+			else
+				if not self.Adverts or self.Adverts ~= 4 then
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..self.Map:sub(4,-1)].path1)
+				else
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..self.Map:sub(4,-1)].path2)
+				end
+			end
+		end
+	end
 end
 
 
@@ -240,24 +254,6 @@ function ENT:Think()
 		self.LightsReload = true
 	end
 
-
-	if (self.PassTexture ~= self.OldTexture or self.Adverts ~= self.OldAdverts) then
-		for k,v in pairs(self:GetMaterials()) do
-			if v == "models/metrostroi_train/81/int02" then
-				if self.Map == "" then
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
-				else
-					if not self.Adverts or self.Adverts ~= 4 then
-						self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path1)
-					else
-						self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path2)
-					end
-				end
-			end
-		end
-		self.OldTexture = self.PassTexture
-		self.OldAdverts = self.Adverts
-	end
 	self.TextureTime = self.TextureTime or CurTime()
 	if (CurTime() - self.TextureTime) > 1.0 then
 		self.TextureTime = CurTime()

@@ -1078,6 +1078,11 @@ function TRAIN_SYSTEM:Think(dT)
 		if self.Distance > 40 and (self.Distance + (self.Train.Autodrive.Corrections[self.Station] or 0) - 4.3) < (160+35*self.Train.Autodrive.MU - (ARS.SpeedLimit == 40 and 30 or 0)) then
 			self.StationAutodrive = true
 		end
+		if (self.Train.UPO:GetSTNum(self.LastStation) > self.Train.UPO:GetSTNum(self.FirstStation) and self.Path == 2) or (self.Train.UPO:GetSTNum(self.FirstStation) > self.Train.UPO:GetSTNum(self.LastStation)  and self.Path == 1) then
+			local old = self.LastStation
+			self.LastStation = self.FirstStation
+			self.FirstStation = old
+		end
 		self.State7 = (self.Train.UPO:End(self.Station,self.Path,true) or self.Train.UPO:GetSTNum(self.LastStation) > self.Train.UPO:GetSTNum(self.Station) and self.Path == 2 or self.Train.UPO:GetSTNum(self.Station) < self.Train.UPO:GetSTNum(self.FirstStation) and self.Path == 1) and 0 or self.Arrived ~= nil and 1 or 2
 		if self.State7 ~= 0 then
 			if (self.RealState == 8 or self.RealState == 6 or self.RealState == 49) and not self.Transit then

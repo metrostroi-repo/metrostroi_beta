@@ -14,6 +14,7 @@ end
 if SERVER then	
 	util.AddNetworkString("metrostroi-cabin-button")
 	util.AddNetworkString("metrostroi-cabin-reset")
+	util.AddNetworkString("metrostroi-panel-touch")
 
 	resource_AddDir("materials/metrostroi/props")
 	resource_AddDir("materials/models/metrostroi_signs")

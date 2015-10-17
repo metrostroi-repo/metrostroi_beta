@@ -36,8 +36,8 @@ function TRAIN_SYSTEM:Think()
 	local Train = self.Train
 	--self.RUTTarget = 250 + 150*self.WeightLoadRatio
 	self.RKTTCurrent = (math.abs(Train.Electric.I13) + math.abs(Train.Electric.I24))*Train:ReadTrainWire(6)
-	self.RKTTClose  = 375 + 50*self.WeightLoadRatio --125
-	self.RKTTOpen = 470 + 52*self.WeightLoadRatio --130
+	self.RKTTClose  = 275 + 50*self.WeightLoadRatio --125
+	self.RKTTOpen = 370 + 52*self.WeightLoadRatio --130
 	if self.RKTTCurrent < self.RKTTClose then
 		Train.RKTT:TriggerInput("Set",false)
 	else
