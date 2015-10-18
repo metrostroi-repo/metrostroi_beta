@@ -234,7 +234,7 @@ function TRAIN_SYSTEM:Think()
 		self.Train.ALS_ARS:TriggerInput("Ring",1)
 	end
 	if (not self.Ring or self.Ring == 0) and self.Train.ALS_ARS.Ring then	
-		self.Train.ALS_ARS:TriggerInput("Ring",0)
+		if not self.Train["PA-KSD"].Check and not self.Train["PA-M"].Check and not self.Train["PA-KSD-M"].Check then self.Train.ALS_ARS:TriggerInput("Ring",0) end
 	end
 	--[[
 	if self.FirstStation and self.LastStation then

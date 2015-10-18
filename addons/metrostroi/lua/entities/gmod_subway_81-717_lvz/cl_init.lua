@@ -2506,7 +2506,7 @@ function ENT:DrawPost(special)
 			surface.DrawRect(210.4*10-10,56*10+2,8*10,4*10)
 			draw.DrawText("ЛКТ","MetrostroiSubway_VerySmallText",210.4*10+0-10,56*10-5+2,Color(0,0,0,255))
 		end
-		b = self:Animate("light_PA",self:GetNWInt("PAKSD:State",-1) ~= 0 and 1 or 0,0,1,15,false)
+		b = self:Animate("light_PA",((self.Blok == 2 and self:GetNWInt("PAKSD:State",-1) ~= 0) or (self.Blok == 4 and self:GetNWInt("PAKSDM:State",-1) ~= -1)) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(150,255,50)
@@ -2552,7 +2552,7 @@ function ENT:DrawPost(special)
 			surface.DrawRect(184.1*10-5,38*10,8*10,4*10+1)
 			draw.DrawText("1","MetrostroiSubway_VerySmallText",184.1*10+32-5,38*10-5,Color(0,0,0,255))
 		end
-		b = self:Animate("light_VRD",self:GetPackedBool("PAKSD:VRD") and 1 or 0,0,1,15,false)
+		b = self:Animate("light_VRD",((self.Blok == 2 and self:GetPackedBool("PAKSD:VRD")) or (self.Blok == 4 and self:GetPackedBool("PAKSDM:VRD")) or (self.Blok ~= 2 and self.Blok ~= 4 and self:GetPackedBool("VRD"))) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(155,255,50)

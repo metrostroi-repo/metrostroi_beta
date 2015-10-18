@@ -1892,8 +1892,9 @@ net.Receive("metrostroi-panel-touch", function(len, ply)
 	local panel = net.ReadString()
 	local x = net.ReadInt(11)
 	local y = net.ReadInt(11)
-	local seat = ply:GetVehicle()
 	local outside = net.ReadBool()
+	local state = net.ReadBool()
+	local seat = ply:GetVehicle()
 	local train 
 
 	if seat and IsValid(seat) and not outside then 
@@ -1919,7 +1920,7 @@ net.Receive("metrostroi-panel-touch", function(len, ply)
 	end
 	if panel ~= "" and not train[panel] then print("Metrostroi:System not found,"..panel) return end
 	if panel ~= "" and not train[panel].Touch then print("Metrostroi:Touch function not found if system,"..panel) return end
-	if panel ~= "" then train[panel]:Touch(x,y) else train:Touch(x,y) end
+	if panel ~= "" then train[panel]:Touch(state,x,y) else train:Touch(state,x,y) end
 end)
 
 -- Denies entry if player recently sat in the same train seat

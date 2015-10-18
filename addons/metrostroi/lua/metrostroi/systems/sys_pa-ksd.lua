@@ -75,7 +75,7 @@ function TRAIN_SYSTEM:ClientInitialize()
 		[1]  = "X1",
 		[2]  = "X2",
 		[3]  = "X3",
-		[4]  = "RR0",
+		--[4]  = "RR0",
 		[5]  = "0XT",
 		[6]  = "T2",
 	}
@@ -358,7 +358,7 @@ function TRAIN_SYSTEM:ClientThink()
 			end
 			local distance = self.Train:GetNWInt("PAKSD:Distance",-99)
 			local pos =self.Positions[self.Train:GetNWInt("PAKSD:KV",0)]
-			local typ = self.Types[pos == "RR0" and 3 or self.Train:GetNWInt("PAKSD:Type",0)]
+			local typ = self.Types[self.Train:GetNWInt("PAKSD:Type",0)]
 			local RK = (self.Positions2[self.Train:GetNWInt("PAKSD:PPT",1)]).."="..tostring(self.Train:GetNWInt("PAKSD:RK",0))
 			if speed < 10 then
 				speed = "0"..speed
@@ -1164,7 +1164,7 @@ function TRAIN_SYSTEM:Think(dT)
 			self.Train:SetNWInt("PAKSD:Type",(self.Train.Pneumatic.EmergencyValveEPK and 0 or self.Train.ALS_ARS.UAVAContacts and 4 or self.UOS and 5 or self.VRD and 2 or (self.Train.AutodriveEnabled or self.StationAutodrive) and 1 or 3))
 			self.Train:SetNWInt("PAKSD:PPT",math.Clamp(math.floor(self.Train.PositionSwitch.Position + 0.5),1,3))
 			self.Train:SetNWInt("PAKSD:RK",math.floor(self.Train.RheostatController.Position+0.5))
-			self.Train:SetNWInt("PAKSD:KV",self.Train.KV.ReverserPosition == 0 and 4 or self.Train.Autodrive.AutodriveEnabled and (self.Rotating and -3 or self.Brake and -1 or self.Accelerate and 3 or 0) or (ARS["33G"] > 0 or (self.UOS and (ARS["8"] + (1-self.Train.RPB.Value)) > 0)) and 5 or self.Train.KV.RealControllerPosition)
+			self.Train:SetNWInt("PAKSD:KV",self.Train.Autodrive.AutodriveEnabled and (self.Rotating and -3 or self.Brake and -1 or self.Accelerate and 3 or 0) or (ARS["33G"] > 0 or (self.UOS and (ARS["8"] + (1-self.Train.RPB.Value)) > 0)) and 5 or self.Train.KV.RealControllerPosition)
 			self.Train:SetNWBool("PAKSD:VZ1", self.Train:ReadTrainWire(29) > 0)
 			self.Train:SetNWBool("PAKSD:VZ2", self.Train.PneumaticNo2.Value > 0)
 			self.Train:SetNWBool("PAKSD:UOS", self.UOS)

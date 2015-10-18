@@ -235,6 +235,7 @@ ENT.ClientProps = {}
 -- Clientside entities support
 --------------------------------------------------------------------------------
 local lastButton
+local lastTouch
 local drawCrosshair
 local toolTipText
 local lastAimButtonChange
@@ -1293,12 +1294,13 @@ local function sendButtonMessage(button,outside)
 	--RunConsoleCommand("metrostroi_button_press",button.ID..(button.state and 1 or 0))
 end
 -- Takes button table, sends current status
-local function sendPanelTouch(panel,x,y,outside)
+local function sendPanelTouch(panel,x,y,outside,state)
 	net.Start("metrostroi-panel-touch")
 	net.WriteString(panel or "") 
 	net.WriteInt(x,11)
 	net.WriteInt(y,11)
 	net.WriteBool(outside)
+	net.WriteBool(state)
 	net.SendToServer()
 	--RunConsoleCommand("metrostroi_button_press",button.ID..(button.state and 1 or 0))
 end
@@ -1372,7 +1374,8 @@ local function handleKeyEvent(ply,key,pressed)
 				end
 			end
 		elseif x and y then
-			sendPanelTouch(system,x,y,outside)
+			sendPanelTouch(system,x,y,outside,true)
+			lastTouch = {system,x,y}
 		end
 	else 
 		-- Reset the last button pressed
@@ -1389,6 +1392,10 @@ local function handleKeyEvent(ply,key,pressed)
 					train:OnButtonReleased(button.ID)
 				end
 			end
+		end
+		if lastTouch ~= nil then
+			sendPanelTouch(lastTouch[1],lastTouch[2],lastTouch[3],outside,false)
+			lastTouch = nil
 		end
 	end
 end

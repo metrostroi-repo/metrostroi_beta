@@ -73,7 +73,7 @@ function TRAIN_SYSTEM:ClientInitialize()
 		[1]  = "X1",
 		[2]  = "X2",
 		[3]  = "X3",
-		[4]  = "RR0",
+		--[4]  = "RR0",
 		[5]  = "0ХТ",
 		[6]  = "T2",
 	}
@@ -1520,7 +1520,7 @@ function TRAIN_SYSTEM:Think(dT)
 			Train:SetNWString("PAM:SName",ARS.Signal and ARS.Signal.RealName or "ERR")
 			Train:SetNWBool("PAM:RR",self.Train.KV.ReverserPosition ~= 0)
 			Train:SetNWInt("PAM:Type",(self.Train.Pneumatic.EmergencyValveEPK and 0 or self.Train.ALS_ARS.UAVAContacts and 4 or self.UOS and 5 or self.VRD and 2 or (self.Train.Autodrive.AutodriveEnabled or self.StationAutodrive) and 1 or 3))
-			Train:SetNWInt("PAM:KV",self.Train.KV.ReverserPosition == 0 and 4 or self.Train.Autodrive.AutodriveEnabled and (self.Rotating and -3 or self.Brake and -1 or self.Accelerate and 3 or 0) or (ARS["33G"] > 0 or (self.UOS and (ARS["8"] + (1-self.Train.RPB.Value)) > 0)) and 5 or self.Train.KV.RealControllerPosition)
+			Train:SetNWInt("PAM:KV",self.Train.Autodrive.AutodriveEnabled and (self.Rotating and -3 or self.Brake and -1 or self.Accelerate and 3 or 0) or (ARS["33G"] > 0 or (self.UOS and (ARS["8"] + (1-self.Train.RPB.Value)) > 0)) and 5 or self.Train.KV.RealControllerPosition)
 			Train:SetNWBool("PAM:VZ1", self.Train:ReadTrainWire(29) > 0)
 			Train:SetNWBool("PAM:VZ2", self.Train.PneumaticNo2.Value > 0)
 			Train:SetNWBool("PAM:Menu", self.MenuChoosed or 0)

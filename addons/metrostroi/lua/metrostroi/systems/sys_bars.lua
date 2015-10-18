@@ -148,10 +148,10 @@ function TRAIN_SYSTEM:Think(dT)
 	
 	if not OverrideState then
 		if PAKSD then
-			EnableARS = EnableARS and (self.Train[KSDType].State > 4 and self.Train[KSDType].State ~= 45 and self.Train[KSDType].State ~= 49)
+			EnableARS = EnableARS and (self.Train[KSDType].State > 4 and self.Train[KSDType].State ~= 45 and self.Train[KSDType].State ~= 49) and self.Train.RC1.Value > 0.5
 			EnableALS = EnableALS and Train[KSDType].VPA and (self.Train[KSDType].State > 0 or self.Train[KSDType].State == -1 or self.Train[KSDType].State == -9)
 		elseif PAKSDM then
-			EnableARS = EnableARS and (self.Train[KSDType].State > 7 or ((self.Train[KSDType].State == 1.1 or self.Train[KSDType].State == 1) and self.Train[KSDType].NextState > 8))
+			EnableARS = EnableARS and (self.Train[KSDType].State > 7 or ((self.Train[KSDType].State == 1.1 or self.Train[KSDType].State == 1) and self.Train[KSDType].NextState > 8)) and self.Train.RC1.Value > 0.5
 			EnableALS = EnableALS and (self.Train[KSDType].State > 2 or ((self.Train[KSDType].State == 1.1 or self.Train[KSDType].State == 1) and self.Train[KSDType].NextState > 3))
 		else
 			EnableARS = EnableARS and Train.ARS.Value == 1
@@ -553,7 +553,7 @@ function TRAIN_SYSTEM:Think(dT)
 				self:EPVDisableBrake("LKT not light-up when ARS stopping")
 			end
 		else
-			self.EPKTimer = nil
+			self:EPVDisableBrake("LKT not light-up when ARS stopping")
 		end
 		if self.KVT and self.ARSBrakeTimer then self.ARSBrakeTimer = false end
 		if self.EPKActivated and not self.LKT and self.Speed < 0.05 and Train:ReadTrainWire(1) == 0 and (not (PAKSD or PAM or PAKSDM) or not Train[KSDType].Nakat) then -- or (self.AntiRolling ~= nil and Train:ReadTrainWire(1) > 0) then

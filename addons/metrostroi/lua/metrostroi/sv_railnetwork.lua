@@ -935,10 +935,16 @@ function Metrostroi.Load(name,keep_signs)
 	
 	-- Find places where tracks link up together
 	for pathID,path in pairs(Metrostroi.Paths) do
+		if #path == 0 then break end
 		-- Find position of end nodes
 		local node1,node2 = path[1],path[#path]
-		local pos1 = Metrostroi.GetPositionOnTrack(node1.pos,nil,{ ignore_path = path })
-		local pos2 = Metrostroi.GetPositionOnTrack(node2.pos,nil,{ ignore_path = path })
+		local ignore_path = path
+		if game.GetMap():find("orange") and node1.path.id == 1 then
+			ignore_path = nil
+			--print(node1)
+		end
+		local pos1 = Metrostroi.GetPositionOnTrack(node1.pos,nil,{ ignore_path = ignore_path })
+		local pos2 = Metrostroi.GetPositionOnTrack(node2.pos,nil,{ ignore_path = ignore_path })
 		
 		-- Create connection
 		local join1,join2

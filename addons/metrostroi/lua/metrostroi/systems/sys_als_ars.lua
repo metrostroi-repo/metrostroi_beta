@@ -604,7 +604,8 @@ function TRAIN_SYSTEM:Think(dT)
 	self.LKT = true
 	for i,train in ipairs(Train.WagonList) do
 		--print(i,train.RKTT.Value,self["33G"],train.DKPT.Value)
-		if (train.RKTT and train.RKTT.Value < 0.5 and train.DKPT.Value < 0.5 and self["33G"] > 0) or (train.DKPT and train.DKPT.Value < 0.5 and self["33G"] == 0) then
+		--if (train.RKTT and train.RKTT.Value < 0.5 and train.DKPT.Value < 0.5 and self["33G"] > 0) or (train.DKPT and train.DKPT.Value < 0.5 and self["33G"] == 0) then
+		if (train.RKTT and train.RKTT.Value < 0.5 and train.DKPT.Value < 0.5) then-- or (train.DKPT and train.DKPT.Value < 0.5) then
 			self.LKT = false
 		end
 	end

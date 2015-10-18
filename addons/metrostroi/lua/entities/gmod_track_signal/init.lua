@@ -135,7 +135,7 @@ function ENT:SayHook(ply, comm)
 				elseif self.Close then
 					self.Close = false
 				elseif self.Red then
-					self.InvationSignal = true
+					--self.InvationSignal = true
 				end
 			end
 		elseif self.Routes then
@@ -145,6 +145,18 @@ function ENT:SayHook(ply, comm)
 					self:OpenRoute(k)
 				end
 			end
+		end
+	elseif comm:sub(1,7) == "!sopps " then
+		comm = comm:sub(8,-1):upper()
+		comm = string.Explode(":",comm)
+		if comm[1] == self.Name then
+			self.InvationSignal = true
+		end
+	elseif comm:sub(1,7) == "!sclps " then
+		comm = comm:sub(8,-1):upper()
+		comm = string.Explode(":",comm)
+		if comm[1] == self.Name then
+			self.InvationSignal = false
 		end
 	end
 end
@@ -244,6 +256,16 @@ function ENT:PostInitalize()
 		if not v.Lights then continue end
 		v.LightsExploded = string.Explode("-",v.Lights)
 	end
+	self.GoodInvationSignal = 0
+	local index = 1
+	for k,v in ipairs(self.Lenses) do
+		if v ~= "M" then
+			for i = 1,#v do
+				if v[i] == "W" then self.GoodInvationSignal = index end
+				index = index + 1
+			end
+		end
+	end
 	self.PostInitalized = false
 end
 
@@ -324,6 +346,10 @@ function ENT:ARSLogic(tim)
 		if self.OccupiedByNow ~= self.AutostopEnt and self.AutostopEnt ~= self.CurrentAutostopEnt then
 			self.AutostopEnt = nil
 		end
+	end
+	if self.OldRoute ~= self.Route then
+		self.InvationSignal = false
+		self.OldRoute = self.Route
 	end
 	--Removing NSL					
 	self.NextSignalLink = nil
@@ -494,8 +520,8 @@ function ENT:Think()
 				local LightID = IsValid(self.NextSignalLink) and math.min(#Route.LightsExploded,self.FreeBS+1) or 1
 				
 				--local InvationSignal = ((v[i] == "W" and self.InvationSignal and k == self.InS)
-				local AverageState = Route.LightsExploded[LightID]:find(tostring(index)) or ((v[i] == "W" and self.InvationSignal and k == self.InS) and 1 or 0)
-				local MustBlink = (((self.Lenses[#self.Lenses] ~= "W" and v[i] == "W") or v == "W") and self.InvationSignal) or (AverageState > 0 and Route.LightsExploded[LightID][AverageState+1] == "b") --Blinking, when next is "b" (or it's invasion signal')
+				local AverageState = Route.LightsExploded[LightID]:find(tostring(index)) or ((v[i] == "W" and self.InvationSignal and self.GoodInvationSignal == index) and 1 or 0)
+				local MustBlink = (v[i] == "W" and self.InvationSignal and self.GoodInvationSignal == index) or (AverageState > 0 and Route.LightsExploded[LightID][AverageState+1] == "b") --Blinking, when next is "b" (or it's invasion signal')
 				self.Sig = self.Sig..(AverageState > 0 and (MustBlink and 2 or 1) or 0)
 				local TimeToOff = not (RealTime() % 1 > 0.25)
 				--if v[i] == "R" and #Route.LightsExploded[LightID] == 1 and AverageState then self.AutoEnabled = true end
@@ -570,9 +596,9 @@ function ENT:Think()
 		--net.Broadcast()
 	end
 	self.Oldsig = self.Sig
-	if not self.AutoEnabled then
-		self.InvationSignal = false
-	end
+	--if not self.AutoEnabled then
+		--self.InvationSignal = false
+	--end
 	self:NextThink(CurTime() + 0.25)
 	return true
 end

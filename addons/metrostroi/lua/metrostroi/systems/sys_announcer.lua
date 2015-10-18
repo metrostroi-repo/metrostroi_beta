@@ -432,7 +432,7 @@ function TRAIN_SYSTEM:ClientInitialize()
 		self.AnnMap = "gm_metrostroi_lite"
 	elseif Map:find("gm_metrostroi") then
 		self.AnnMap = "gm_metrostroi"
-	elseif Map:find("gm_mus_orange_line") and Map:find("long") then
+	elseif Map:find("gm_mus_orange") and Map:find("metro") then
 		self.AnnMap = "gm_orange"
 	elseif Map:find("gm_mus_orange_line") then
 		self.AnnMap = "gm_orange_lite"
