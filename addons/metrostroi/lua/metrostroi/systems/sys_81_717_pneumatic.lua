@@ -401,19 +401,19 @@ function TRAIN_SYSTEM:Think(dT)
 				self:equalizePressure(dT,"BrakeCylinderPressure", targetPressure, 1.50, 6.50, nil, 1.0) --0.75, 1.25)
 			--end
 		end
-		
+		--if self.Train:EntIndex() == 3178 then print(math.abs(self.Train:GetAngles().pitch)) end
 		-- Valve #1
 		self.BrakeCylinderRegulationError = self.BrakeCylinderRegulationError or (math.random()*0.20 - 0.10)
 		local error = self.BrakeCylinderRegulationError
 		local pneumaticValveConsumption_dPdT = 0
 		if (self.Train.PneumaticNo1.Value == 1.0) and (self.Train.PneumaticNo2.Value == 0.0) then
-			local PN1 = math.min(self.TrainLinePressure,(1.2 + error)*1.7)
+			local PN1 = math.min(self.TrainLinePressure,(1.2 + error)*(1.3 + math.min(1,math.abs(self.Train:GetAngles().pitch)/6.68*0.7)))
 			self:equalizePressure(dT,"BrakeCylinderPressure", PN1, 1.00, 5.50)
 			pneumaticValveConsumption_dPdT = pneumaticValveConsumption_dPdT + self.BrakeCylinderPressure_dPdT
 		end
 		-- Valve #2
 		if self.Train.PneumaticNo2.Value == 1.0 then
-			local PN2 = math.min(self.TrainLinePressure,(2.5 + error)*1.7)
+			local PN2 = math.min(self.TrainLinePressure,(2.5 + error)*(1 + math.min(1,math.abs(self.Train:GetAngles().pitch)/6.68)))
 			self:equalizePressure(dT,"BrakeCylinderPressure", PN2, 1.00, 5.50)
 			--self:equalizePressure(dT,"BrakeCylinderPressure", self.TrainLinePressure * 0.39 + error, 1.00, 5.50)
 			pneumaticValveConsumption_dPdT = pneumaticValveConsumption_dPdT + self.BrakeCylinderPressure_dPdT

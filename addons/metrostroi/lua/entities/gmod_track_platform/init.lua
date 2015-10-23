@@ -346,7 +346,7 @@ function ENT:Think()
 	end
 	if self.HasTrain then
 		if not self.TritonePlayed then
-			if self.HasTrain.SignsList and Metrostroi.WorkingStations[self.Map][self.HasTrain.SignsList] then
+			if self.HasTrain.SignsList and Metrostroi.WorkingStations[self.Map] and Metrostroi.WorkingStations[self.Map][self.HasTrain.SignsList] then
 				self:PlayAnnounce(2)
 			else
 				self:PlayAnnounce(1)

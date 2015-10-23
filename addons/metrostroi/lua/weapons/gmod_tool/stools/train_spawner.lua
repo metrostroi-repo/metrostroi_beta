@@ -30,7 +30,7 @@ TOOL.ClientConVar["oldw"] = ""
 TOOL.ClientConVar["seat"] = 1
 TOOL.ClientConVar["hand"] = 1
 TOOL.ClientConVar["mvm"] = 1
-TOOL.ClientConVar["bort"] = 0
+TOOL.ClientConVar["bort"] = 1
 TOOL.ClientConVar["lamp"] = 1
 TOOL.ClientConVar["breakers"] = 0
 TOOL.ClientConVar["blok"] = 1
@@ -342,7 +342,7 @@ function TOOL:SetSettings(ent, ply, i)
 		ent.BortLampType = self.tbl.Bort
 		ent.LED = self.tbl.LED > 0
 		ent.Breakers= self.tbl.Breakers
-		ent.PNM= self.tbl.PNM
+		ent.PNM= self.tbl.PNM > 0
 		ent:SetNWBool("Breakers",(ent.Breakers or 1) > 0)
 		ent:TriggerInput("VBSet", self.tbl.Battery)
 		ent:TriggerInput("GVSet", self.tbl.GV)

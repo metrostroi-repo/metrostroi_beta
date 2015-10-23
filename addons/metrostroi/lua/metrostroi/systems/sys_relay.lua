@@ -142,6 +142,13 @@ end
 function TRAIN_SYSTEM:TriggerInput(name,value)
 	-- Boolean values accepted
 	if type(value) == "boolean" then value = value and 1 or 0 end
+	if name == "Reset" then
+		if self.normally_closed then
+			self:TriggerInput("Set",1)
+		else
+			self:TriggerInput("Set",self.defaultvalue or 0.0)
+		end
+	end
 		--print(name)
 	if name == "Check" then
 		if not value then print(self.Name) end

@@ -235,6 +235,7 @@ ENT.ClientProps = {}
 -- Clientside entities support
 --------------------------------------------------------------------------------
 local lastButton
+local lastTouch
 local drawCrosshair
 local toolTipText
 local lastAimButtonChange
@@ -1120,7 +1121,7 @@ hook.Add("CalcView", "Metrostroi_TrainView", function(ply,pos,ang,fov,znear,zfar
 		return {
 			origin = train:LocalToWorld(train:WorldToLocal(pos)+Vector(math.Round((GetConVarNumber("metrostroi_disablecamaccel") == 0 and (train:Animate("accel",(train:GetNWFloat("Accel")+1)/2,-1,1, 4, 1)*20 - 5) or 0),2),0,0)),--train:LocalToWorld(Vector(math.Round(train.HeadAcceleration,2),0,0)) ,
 			angles = angles,
-			fov = fov,
+			fov = fov/90*75,
 			znear = znear,
 			zfar = zfar
 		}
@@ -1175,6 +1176,7 @@ local function findAimButton(ply)
 		for kp,panel in pairs(train.ButtonMap) do
 			if train.HiddenPanels[kp] then continue end
 			--If player is looking at this panel
+			if panel.sensor and panel.aimX > 0 and panel.aimX < panel.width and panel.aimY > 0 and panel.aimY < panel.height then return false,panel.aimX,panel.aimY,panel.system end
 			if panel.aimedAt and panel.buttons then
 				
 				--Loop trough every button on it
@@ -1291,6 +1293,17 @@ local function sendButtonMessage(button,outside)
 	net.SendToServer()
 	--RunConsoleCommand("metrostroi_button_press",button.ID..(button.state and 1 or 0))
 end
+-- Takes button table, sends current status
+local function sendPanelTouch(panel,x,y,outside,state)
+	net.Start("metrostroi-panel-touch")
+	net.WriteString(panel or "") 
+	net.WriteInt(x,11)
+	net.WriteInt(y,11)
+	net.WriteBool(outside)
+	net.WriteBool(state)
+	net.SendToServer()
+	--RunConsoleCommand("metrostroi_button_press",button.ID..(button.state and 1 or 0))
+end
 
 -- Goes over a train's buttons and clears them, sending a message if needed
 function ENT:ClearButtons()
@@ -1347,7 +1360,7 @@ local function handleKeyEvent(ply,key,pressed)
 	if train.ButtonMap == nil then return end
 	if key == 524288 and not pressed then train:ClearButtons() end
 	if pressed then
-		local button = findAimButton(ply)
+		local button,x,y,system = findAimButton(ply)
 		if button and !button.state then
 			button.state = true
 			sendButtonMessage(button,outside)
@@ -1360,6 +1373,9 @@ local function handleKeyEvent(ply,key,pressed)
 					train:OnButtonPressed(button.ID)
 				end
 			end
+		elseif x and y then
+			sendPanelTouch(system,x,y,outside,true)
+			lastTouch = {system,x,y}
 		end
 	else 
 		-- Reset the last button pressed
@@ -1376,6 +1392,10 @@ local function handleKeyEvent(ply,key,pressed)
 					train:OnButtonReleased(button.ID)
 				end
 			end
+		end
+		if lastTouch ~= nil then
+			sendPanelTouch(lastTouch[1],lastTouch[2],lastTouch[3],outside,false)
+			lastTouch = nil
 		end
 	end
 end

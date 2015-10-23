@@ -2,4 +2,5 @@
 {
 	"$basetexture" "models/metrostroi_train/81/lamps"
 	"$model" "1"
+	"$selfillum" "1"
 }

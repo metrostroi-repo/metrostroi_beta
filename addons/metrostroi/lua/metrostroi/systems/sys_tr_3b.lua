@@ -121,8 +121,16 @@ function TRAIN_SYSTEM:Think(dT)
 					light:Spawn()
 					light:Fire("TurnOn","","0") 
 
-					timer.Simple(0.1,function() SafeRemoveEntity(light) end)
-					self.Train:PlayOnce("zap",sound_source,0.7*volume,50+math.random(90,120))
+					local function rem()
+						if IsValid(light) then
+							SafeRemoveEntity(light)
+						else
+							timer.Simple(0.3,rem)
+						end
+					end
+					timer.Simple(0.3,rem)
+					sound.Play("ambient/energy/zap"..math.random(1,3)..".wav",effectdata:GetOrigin(),75,math.random(100,150),1.0)
+					--self.Train:PlayOnce("zap",sound_source,0.7*volume,50+math.random(90,120))
 				end
 			end
 		end

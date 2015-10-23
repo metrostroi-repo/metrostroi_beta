@@ -75,7 +75,7 @@ function TRAIN_SYSTEM:ClientInitialize()
 		[1]  = "X1",
 		[2]  = "X2",
 		[3]  = "X3",
-		[4]  = "RR0",
+		--[4]  = "RR0",
 		[5]  = "0XT",
 		[6]  = "T2",
 	}
@@ -358,7 +358,7 @@ function TRAIN_SYSTEM:ClientThink()
 			end
 			local distance = self.Train:GetNWInt("PAKSD:Distance",-99)
 			local pos =self.Positions[self.Train:GetNWInt("PAKSD:KV",0)]
-			local typ = self.Types[pos == "RR0" and 3 or self.Train:GetNWInt("PAKSD:Type",0)]
+			local typ = self.Types[self.Train:GetNWInt("PAKSD:Type",0)]
 			local RK = (self.Positions2[self.Train:GetNWInt("PAKSD:PPT",1)]).."="..tostring(self.Train:GetNWInt("PAKSD:RK",0))
 			if speed < 10 then
 				speed = "0"..speed
@@ -1078,6 +1078,11 @@ function TRAIN_SYSTEM:Think(dT)
 		if self.Distance > 40 and (self.Distance + (self.Train.Autodrive.Corrections[self.Station] or 0) - 4.3) < (160+35*self.Train.Autodrive.MU - (ARS.SpeedLimit == 40 and 30 or 0)) then
 			self.StationAutodrive = true
 		end
+		if (self.Train.UPO:GetSTNum(self.LastStation) > self.Train.UPO:GetSTNum(self.FirstStation) and self.Path == 2) or (self.Train.UPO:GetSTNum(self.FirstStation) > self.Train.UPO:GetSTNum(self.LastStation)  and self.Path == 1) then
+			local old = self.LastStation
+			self.LastStation = self.FirstStation
+			self.FirstStation = old
+		end
 		self.State7 = (self.Train.UPO:End(self.Station,self.Path,true) or self.Train.UPO:GetSTNum(self.LastStation) > self.Train.UPO:GetSTNum(self.Station) and self.Path == 2 or self.Train.UPO:GetSTNum(self.Station) < self.Train.UPO:GetSTNum(self.FirstStation) and self.Path == 1) and 0 or self.Arrived ~= nil and 1 or 2
 		if self.State7 ~= 0 then
 			if (self.RealState == 8 or self.RealState == 6 or self.RealState == 49) and not self.Transit then
@@ -1159,7 +1164,7 @@ function TRAIN_SYSTEM:Think(dT)
 			self.Train:SetNWInt("PAKSD:Type",(self.Train.Pneumatic.EmergencyValveEPK and 0 or self.Train.ALS_ARS.UAVAContacts and 4 or self.UOS and 5 or self.VRD and 2 or (self.Train.AutodriveEnabled or self.StationAutodrive) and 1 or 3))
 			self.Train:SetNWInt("PAKSD:PPT",math.Clamp(math.floor(self.Train.PositionSwitch.Position + 0.5),1,3))
 			self.Train:SetNWInt("PAKSD:RK",math.floor(self.Train.RheostatController.Position+0.5))
-			self.Train:SetNWInt("PAKSD:KV",self.Train.KV.ReverserPosition == 0 and 4 or self.Train.Autodrive.AutodriveEnabled and (self.Rotating and -3 or self.Brake and -1 or self.Accelerate and 3 or 0) or (ARS["33G"] > 0 or (self.UOS and (ARS["8"] + (1-self.Train.RPB.Value)) > 0)) and 5 or self.Train.KV.RealControllerPosition)
+			self.Train:SetNWInt("PAKSD:KV",self.Train.Autodrive.AutodriveEnabled and (self.Rotating and -3 or self.Brake and -1 or self.Accelerate and 3 or 0) or (ARS["33G"] > 0 or (self.UOS and (ARS["8"] + (1-self.Train.RPB.Value)) > 0)) and 5 or self.Train.KV.RealControllerPosition)
 			self.Train:SetNWBool("PAKSD:VZ1", self.Train:ReadTrainWire(29) > 0)
 			self.Train:SetNWBool("PAKSD:VZ2", self.Train.PneumaticNo2.Value > 0)
 			self.Train:SetNWBool("PAKSD:UOS", self.UOS)

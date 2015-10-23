@@ -346,7 +346,10 @@ end
 function ENT:Think()
 	if self.Plombs and self.Plombs.Init then
 		self.Plombs.Init = nil
-		for k,v in pairs(self.Plombs) do self[k]:TriggerInput("Block",true) end
+		for k,v in pairs(self.Plombs) do
+			self[k]:TriggerInput("Reset",true)
+			self[k]:TriggerInput("Block",true)
+		end
 	end
 	if self.YAR_13A.Slope and self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
 		self.YAR_13A:TriggerInput("Slope",true)
@@ -385,24 +388,6 @@ function ENT:Think()
 			end
 		end
 		self.LightsReload = true
-	end
-
-	if (self.PassTexture ~= self.OldTexture or self.Adverts ~= self.OldAdverts) then
-		for k,v in pairs(self:GetMaterials()) do
-			if v == "models/metrostroi_train/81/int02" then
-				if self.Map == "" then
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
-				else
-					if not self.Adverts or self.Adverts ~= 4 then
-						self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path1)
-					else
-						self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][(self.PassTexture and (Metrostroi.Skins["717_pass2"][self.PassTexture]:find("Peters") and "p" or "m") or "m").."_"..self.Map:sub(4,-1)].path2)
-					end
-				end
-			end
-		end
-		self.OldTexture = self.PassTexture
-		self.OldAdverts = self.Adverts
 	end
 	self.TextureTime = self.TextureTime or CurTime()
 	if (CurTime() - self.TextureTime) > 1.0 then

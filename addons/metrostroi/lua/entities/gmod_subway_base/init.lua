@@ -1887,6 +1887,42 @@ net.Receive("metrostroi-cabin-button", function(len, ply)
 	train:ButtonEvent(button,(eventtype > 0))
 end)
 
+-- Receiver for panel touchs, Checks if people are the legit driver and calls buttonevent on the train
+net.Receive("metrostroi-panel-touch", function(len, ply)
+	local panel = net.ReadString()
+	local x = net.ReadInt(11)
+	local y = net.ReadInt(11)
+	local outside = net.ReadBool()
+	local state = net.ReadBool()
+	local seat = ply:GetVehicle()
+	local train 
+
+	if seat and IsValid(seat) and not outside then 
+		-- Player currently driving
+		train = seat:GetNWEntity("TrainEntity")
+		if (not train) or (not train:IsValid()) then return end
+		if (seat != train.DriverSeat) and (seat != train.InstructorsSeat) and not train:CPPICanPhysgun(ply) then return end
+	else
+		-- Player not driving, check recent train
+		train = ply.lastVehicleDriven and ply.lastVehicleDriven:GetNWEntity("TrainEntity") or NULL
+		if outside then
+			local trace = util.TraceLine({
+				start = ply:EyePos(),
+				endpos = ply:EyePos() + ply:EyeAngles():Forward() * 100,
+				filter = function( ent ) if ent:GetClass():find("subway") then return true end end
+			})
+			train = trace.Entity
+		end
+		if !IsValid(train) then return end
+		if outside and not train:CPPICanPhysgun(ply) then return end
+		if not outside and ply != train.DriverSeat.lastDriver then return end
+		if not outside and train.DriverSeat.lastDriverTime and (CurTime() - train.DriverSeat.lastDriverTime) > 1 then return end
+	end
+	if panel ~= "" and not train[panel] then print("Metrostroi:System not found,"..panel) return end
+	if panel ~= "" and not train[panel].Touch then print("Metrostroi:Touch function not found if system,"..panel) return end
+	if panel ~= "" then train[panel]:Touch(state,x,y) else train:Touch(state,x,y) end
+end)
+
 -- Denies entry if player recently sat in the same train seat
 -- This prevents getting stuck in seats when trying to exit
 local function CanPlayerEnter(ply,vec,role)

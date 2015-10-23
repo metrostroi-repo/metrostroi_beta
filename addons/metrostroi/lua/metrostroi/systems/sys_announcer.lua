@@ -16,172 +16,164 @@ end
 Metrostroi.Announcements = {
 	[0001] = { 0.700, "" },
 	[0002] = { 1.500, "" },
-	[0003] = { 1.123, "subway_announcer/00_03.mp3" },
-	[0004] = { 3.109, "subway_announcer/00_04.mp3" },
-	[0005] = { 0.200, "subway_announcer/00_05.mp3" },
-	[0006] = { 0.800, "subway_announcer/00_06.mp3" },
+	[0003]={ 0.451,       "subway_announcer/00_03.mp3" },
+	[0005]={ 0.380,       "subway_announcer/00_05.mp3" },
+	[0006]={ 0.271,       "subway_announcer/00_06.mp3" },
+	[0007]={ 4.577,       "subway_announcer/00_07.mp3" },
+	[0201]={ 1.995,       "subway_announcer/02_01.mp3" },
+	[0202]={ 0.600,       "subway_announcer/02_02.mp3" },
+	[0203]={ 1.000,       "subway_announcer/02_03.mp3" },
+	[0204]={ 2.564,       "subway_announcer/02_04.mp3" },
+	[0205]={ 3.385,       "subway_announcer/02_05.mp3" },
+	[0206]={ 3.806,       "subway_announcer/02_06.mp3" },
+	[0207]={ 3.719,       "subway_announcer/02_07.mp3" },
+	[0208]={ 2.980,       "subway_announcer/02_08.mp3" },
+	[0209]={ 4.958,       "subway_announcer/02_09.mp3" },
+	[0210]={ 2.091,       "subway_announcer/02_10.mp3" },
+	[0211]={ 1.603,       "subway_announcer/02_11.mp3" },
+	[0212]={ 7.187,       "subway_announcer/02_12.mp3" },
+	[0213]={ 4.695,       "subway_announcer/02_13.mp3" },
+	[0214]={ 7.750,       "subway_announcer/02_14.mp3" },
+	[0215]={ 1.991,       "subway_announcer/02_15.mp3" },
+	[0216]={ 1.302,       "subway_announcer/02_16.mp3" },
+	[0217]={ 5.846,       "subway_announcer/02_17.mp3" },
+	[0218]={ 2.341,       "subway_announcer/02_18.mp3" },
+	[0219]={ 1.502,       "subway_announcer/02_19.mp3" },
+	[0220]={ 1.039,       "subway_announcer/02_20.mp3" },
+	[0221]={ 2.216,       "subway_announcer/02_21.mp3" },
+	[0222]={ 3.518,       "subway_announcer/02_22.mp3" },
+	[0223]={ 2.154,       "subway_announcer/02_23.mp3" },
+	[0224]={ 4.094,       "subway_announcer/02_24.mp3" },
+	[0225]={ 3.656,       "subway_announcer/02_25.mp3" },
+	[0226]={ 2.950,       "subway_announcer/02_26.mp3" },
+	[0227]={ 3.255,       "subway_announcer/02_27.mp3" },
+	[0228]={ 4.260,       "subway_announcer/02_28.mp3" },
+	[0229]={ 5.334,       "subway_announcer/02_29.mp3" },
+	[0230]={ 1.515,       "subway_announcer/02_30.mp3" },
+	[0231]={ 1.628,       "subway_announcer/02_31.mp3" },
+	[0232]={ 7.149,       "subway_announcer/02_32.mp3" },
+	[0233]={ 1.315,       "subway_announcer/02_33.mp3" },
+	[0234]={ 1.930,       "subway_announcer/02_34.mp3" },
+	[0235]={ 1.407,       "subway_announcer/02_35.mp3" },
+	[0236]={ 1.372,       "subway_announcer/02_36.mp3" },
+	[0237]={ 1.382,       "subway_announcer/02_37.mp3" },
+	[0238]={ 2.805,       "subway_announcer/02_38.mp3" },
+	[0308]={ 1.152,       "subway_announcer/03_08.mp3" },
+	[0309]={ 1.152,       "subway_announcer/03_09.mp3" },
+	[0310]={ 1.152,       "subway_announcer/03_10.mp3" },
+	[0311]={ 1.111,       "subway_announcer/03_11.mp3" },
+	[0312]={ 1.369,       "subway_announcer/03_12.mp3" },
+	[0313]={ 1.272,       "subway_announcer/03_13.mp3" },
+	[0314]={ 1.052,       "subway_announcer/03_14.mp3" },
+	[0315]={ 1.174,       "subway_announcer/03_15.mp3" },
+	[0316]={ 1.296,       "subway_announcer/03_16.mp3" },
+	[0317]={ 1.712,       "subway_announcer/03_17.mp3" },
+	[0318]={ 1.076,       "subway_announcer/03_18.mp3" },
+	[0319]={ 1.377,       "subway_announcer/03_19.mp3" },
+	[0322]={ 3.490,       "subway_announcer/03_20.mp3" },
+	[0321]={ 0.939,       "subway_announcer/03_21.mp3" },
+	[0322]={ 1.174,       "subway_announcer/03_22.mp3" },
+	[0323]={ 1.377,       "subway_announcer/03_23.mp3" },
+	[0415]={ 1.033,       "subway_announcer/04_15.mp3" },
+	[0521]={ 1.518,       "subway_announcer/05_21.mp3" },
+	[0522]={ 1.969,       "subway_announcer/05_22.mp3" },
+	[0601]={ 1.076,       "subway_announcer/06_01.mp3" },
+	[0602]={ 1.521,       "subway_announcer/06_02.mp3" },
+	[0603]={ 0.939,       "subway_announcer/06_03.mp3" },
+	[0604]={ 0.704,       "subway_announcer/06_04.mp3" },
+	[0605]={ 1.330,       "subway_announcer/06_05.mp3" },
+	[0606]={ 1.663,       "subway_announcer/06_06.mp3" },
+	[0607]={ 1.389,       "subway_announcer/06_07.mp3" },
+	[0608]={ 1.663,       "subway_announcer/06_08.mp3" },
+	[0699]={ 1.399,       "subway_announcer/06_99.mp3" },
+	[0701]={ 1.076,       "subway_announcer/06_01.mp3" },
+	[0702]={ 1.064,       "subway_announcer/07_02.mp3" },
+	[0703]={ 0.939,       "subway_announcer/06_03.mp3" },
+	[0704]={ 1.468,       "subway_announcer/07_04.mp3" },
+	[0799]={ 1.585,       "subway_announcer/07_99.mp3" },
+	[0801]={ 0.923,       "subway_announcer/08_01.mp3" },
 
-	[0101] = { 2.194, "subway_announcer/01_01.mp3" },
-	[0102] = { 1.202, "subway_announcer/01_02.mp3" },
-	[0103] = { 2.351, "subway_announcer/01_03.mp3" },
-	[0104] = { 1.463, "subway_announcer/01_04.mp3" },
-	[0105] = { 8.385, "subway_announcer/01_05.mp3" },
-	[0106] = { 4.963, "subway_announcer/01_06.mp3" },
-	[0107] = { 4.963, "subway_announcer/01_07.mp3" },
-	[0108] = { 7.784, "subway_announcer/01_08.mp3" },
-	[0109] = { 4.624, "subway_announcer/01_09.mp3" },
-
-	[0201] = { 2.038, "subway_announcer/02_01.mp3" },
-	[0202] = { 0.701, "subway_announcer/02_02.mp3" },
-	[0203] = { 0.995, "subway_announcer/02_03.mp3" },
-	[0204] = { 2.562, "subway_announcer/02_04.mp3" },
-	[0205] = { 3.428, "subway_announcer/02_05.mp3" },
-	[0206] = { 3.946, "subway_announcer/02_06.mp3" },
-	[0207] = { 3.648, "subway_announcer/02_07.mp3" },
-	[0208] = { 3.033, "subway_announcer/02_08.mp3" },
-	[0209] = { 5.298, "subway_announcer/02_09.mp3" },
-	[0210] = { 1.972, "subway_announcer/02_10.mp3" },
-	[0211] = { 1.611, "subway_announcer/02_11.mp3" },
-	[0212] = { 7.345, "subway_announcer/02_12.mp3" },
-	[0213] = { 4.756, "subway_announcer/02_13.mp3" },
-	[0214] = { 7.926, "subway_announcer/02_14.mp3" },
-	[0215] = { 2.133, "subway_announcer/02_15.mp3" },
-	[0216] = { 1.470, "subway_announcer/02_16.mp3" },
-	[0217] = { 5.981, "subway_announcer/02_17.mp3" },
-	[0218] = { 2.639, "subway_announcer/02_18.mp3" },
-	[0219] = { 1.460, "subway_announcer/02_19.mp3" },
-	[0220] = { 1.122, "subway_announcer/02_20.mp3" },
-	[0221] = { 2.317, "subway_announcer/02_21.mp3" },
-	[0222] = { 3.468, "subway_announcer/02_22.mp3" },
-	[0223] = { 2.243, "subway_announcer/02_23.mp3" },
-	[0224] = { 4.114, "subway_announcer/02_24.mp3" },
-	[0225] = { 3.900, "subway_announcer/02_25.mp3" },
-	[0226] = { 3.160, "subway_announcer/02_26.mp3" },
-	[0227] = { 3.272, "subway_announcer/02_27.mp3" },
-	[0228] = { 4.383, "subway_announcer/02_28.mp3" },
-	[0229] = { 5.577, "subway_announcer/02_29.mp3" },
-	[0230] = { 1.596, "subway_announcer/02_30.mp3" },
-	[0231] = { 1.643, "subway_announcer/02_31.mp3" },
-	[0232] = { 7.295, "subway_announcer/02_32.mp3" },
-	[0233] = { 1.710, "subway_announcer/02_33.mp3" },
-
-	[0308] = { 1.276, "subway_announcer/03_08.mp3" },
-	[0309] = { 1.239, "subway_announcer/03_09.mp3" },
-	[0310] = { 1.327, "subway_announcer/03_10.mp3" },
-	[0311] = { 1.274, "subway_announcer/03_11.mp3" },
-	[0312] = { 1.487, "subway_announcer/03_12.mp3" },
-	[0313] = { 1.387, "subway_announcer/03_13.mp3" },
-	[0314] = { 1.217, "subway_announcer/03_14.mp3" },
-	[0315] = { 1.285, "subway_announcer/03_15.mp3" },
-	[0316] = { 1.301, "subway_announcer/03_16.mp3" },
-	[0317] = { 1.657, "subway_announcer/03_17.mp3" },
-	[0318] = { 1.261, "subway_announcer/03_18.mp3" },
-	[0319] = { 1.306, "subway_announcer/03_19.mp3" },
-	[0320] = { 3.542, "subway_announcer/03_20.mp3" },
-	[0321] = { 1.033, "subway_announcer/03_21.mp3" },
-	[0322] = { 1.317, "subway_announcer/03_22.mp3" },
-	[0323] = { 1.289, "subway_announcer/03_23.mp3" },
-
-	[0415] = { 1.210, "subway_announcer/04_15.mp3" },
-
-	[0521] = { 1.476, "subway_announcer/05_21.mp3" }, -- Yes, these are swapped.
-	[0522] = { 1.777, "subway_announcer/05_22.mp3" }, -- It is supposed to be so!
-
-	[0601] = { 1.393, "subway_announcer/06_01.mp3" },
-	[0602] = { 0.922, "subway_announcer/06_02.mp3" },
-	[0603] = { 0.576, "subway_announcer/06_03.mp3" },
-	[0604] = { 0.968, "subway_announcer/06_04.mp3" },
-	[0605] = { 1.337, "subway_announcer/06_05.mp3" },
-	[0606] = { 1.614, "subway_announcer/06_06.mp3" },
-	[0607] = { 1.290, "subway_announcer/06_07.mp3" },
-	[0608] = { 1.518, "subway_announcer/06_08.mp3" },
-	[0701] = { 0.876, "subway_announcer/07_01.mp3" },
-	[0702] = { 1.407, "subway_announcer/07_02.mp3" },
-	[0703] = { 0.922, "subway_announcer/06_02.mp3" },
-
-	[0699] = { 1.326, "subway_announcer/06_99.mp3" },
-	[0799] = { 1.589, "subway_announcer/07_99.mp3" },
- 
- 
 	[9999] = { 3.0,   "subway_announcer/00_00.mp3" },
 }
 Metrostroi.AnnouncementsPNM = {
-	[0003] = { 0.2,       "subway_announcer_pnm/00_03.wav" },
-	[0005] = { 0.2,       "subway_announcer_pnm/00_05.wav" },
-	[0006] = { 0.2,       "subway_announcer_pnm/00_06.wav" },
+	[0003] = { 0.2,       "subway_announcer_pnm/00_03.mp3" },
+	[0005] = { 0.2,       "subway_announcer_pnm/00_05.mp3" },
+	[0006] = { 0.2,       "subway_announcer_pnm/00_06.mp3" },
 
-	[0201] = { 1.831,       "subway_announcer_pnm/02_01.wav" },
-	[0202] = { 0.570,       "subway_announcer_pnm/02_02.wav" },
-	[0203] = { 0.862,       "subway_announcer_pnm/02_03.wav" },
-	[0204] = { 2.272,       "subway_announcer_pnm/02_04.wav" },
-	[0205] = { 3.090,       "subway_announcer_pnm/02_05.wav" },
-	[0206] = { 3.456,       "subway_announcer_pnm/02_06.wav" },
-	[0207] = { 3.498,       "subway_announcer_pnm/02_07.wav" },
-	[0208] = { 2.936,       "subway_announcer_pnm/02_08.wav" },
-	[0209] = { 5.263,       "subway_announcer_pnm/02_09.wav" },
-	[0210] = { 1.974,       "subway_announcer_pnm/02_10.wav" },
-	[0211] = { 1.392,       "subway_announcer_pnm/02_11.wav" },
-	[0212] = { 6.745,       "subway_announcer_pnm/02_12.wav" },
-	[0213] = { 4.711,       "subway_announcer_pnm/02_13.wav" },
-	[0214] = { 8.162,       "subway_announcer_pnm/02_14.wav" },
-	[0215] = { 1.737,       "subway_announcer_pnm/02_15.wav" },
-	[0216] = { 1.049,       "subway_announcer_pnm/02_16.wav" },
-	[0217] = { 6.213,       "subway_announcer_pnm/02_17.wav" },
-	[0218] = { 2.197,       "subway_announcer_pnm/02_18.wav" },
-	[0219] = { 1.370,       "subway_announcer_pnm/02_19.wav" },
-	[0220] = { 0.889,       "subway_announcer_pnm/02_20.wav" },
-	[0221] = { 2.428,       "subway_announcer_pnm/02_21.wav" },
-	[0222] = { 3.494,       "subway_announcer_pnm/02_22.wav" },
-	[0223] = { 1.971,       "subway_announcer_pnm/02_23.wav" },
-	[0224] = { 4.199,       "subway_announcer_pnm/02_24.wav" },
-	[0225] = { 3.734,       "subway_announcer_pnm/02_25.wav" },
-	[0226] = { 2.984,       "subway_announcer_pnm/02_26.wav" },
-	[0227] = { 3.558,       "subway_announcer_pnm/02_27.wav" },
-	[0228] = { 4.255,       "subway_announcer_pnm/02_28.wav" },
-	[0229] = { 5.224,       "subway_announcer_pnm/02_29.wav" },
-	[0230] = { 1.402,       "subway_announcer_pnm/02_30.wav" },
-	[0231] = { 1.322,       "subway_announcer_pnm/02_31.wav" },
-	[0232] = { 7.107,       "subway_announcer_pnm/02_32.wav" },
-	[0233] = { 1.186,       "subway_announcer_pnm/02_33.wav" },
-	[0234] = { 1.641,       "subway_announcer_pnm/02_34.wav" },
-	[0235] = { 1.145,       "subway_announcer_pnm/02_35.wav" },
-	[0236] = { 1.068,       "subway_announcer_pnm/02_36.wav" },
-	[0237] = { 1.141,       "subway_announcer_pnm/02_37.wav" },
-	[0238] = { 2.580,       "subway_announcer_pnm/02_38.wav" },
+	[0201] = { 1.831,       "subway_announcer_pnm/02_01.mp3" },
+	[0202] = { 0.570,       "subway_announcer_pnm/02_02.mp3" },
+	[0203] = { 0.862,       "subway_announcer_pnm/02_03.mp3" },
+	[0204] = { 2.272,       "subway_announcer_pnm/02_04.mp3" },
+	[0205] = { 3.090,       "subway_announcer_pnm/02_05.mp3" },
+	[0206] = { 3.456,       "subway_announcer_pnm/02_06.mp3" },
+	[0207] = { 3.498,       "subway_announcer_pnm/02_07.mp3" },
+	[0208] = { 2.936,       "subway_announcer_pnm/02_08.mp3" },
+	[0209] = { 5.263,       "subway_announcer_pnm/02_09.mp3" },
+	[0210] = { 1.974,       "subway_announcer_pnm/02_10.mp3" },
+	[0211] = { 1.392,       "subway_announcer_pnm/02_11.mp3" },
+	[0212] = { 6.745,       "subway_announcer_pnm/02_12.mp3" },
+	[0213] = { 4.711,       "subway_announcer_pnm/02_13.mp3" },
+	[0214] = { 8.162,       "subway_announcer_pnm/02_14.mp3" },
+	[0215] = { 1.737,       "subway_announcer_pnm/02_15.mp3" },
+	[0216] = { 1.049,       "subway_announcer_pnm/02_16.mp3" },
+	[0217] = { 6.213,       "subway_announcer_pnm/02_17.mp3" },
+	[0218] = { 2.197,       "subway_announcer_pnm/02_18.mp3" },
+	[0219] = { 1.370,       "subway_announcer_pnm/02_19.mp3" },
+	[0220] = { 0.889,       "subway_announcer_pnm/02_20.mp3" },
+	[0221] = { 2.428,       "subway_announcer_pnm/02_21.mp3" },
+	[0222] = { 3.494,       "subway_announcer_pnm/02_22.mp3" },
+	[0223] = { 1.971,       "subway_announcer_pnm/02_23.mp3" },
+	[0224] = { 4.199,       "subway_announcer_pnm/02_24.mp3" },
+	[0225] = { 3.734,       "subway_announcer_pnm/02_25.mp3" },
+	[0226] = { 2.984,       "subway_announcer_pnm/02_26.mp3" },
+	[0227] = { 3.558,       "subway_announcer_pnm/02_27.mp3" },
+	[0228] = { 4.255,       "subway_announcer_pnm/02_28.mp3" },
+	[0229] = { 5.224,       "subway_announcer_pnm/02_29.mp3" },
+	[0230] = { 1.402,       "subway_announcer_pnm/02_30.mp3" },
+	[0231] = { 1.322,       "subway_announcer_pnm/02_31.mp3" },
+	[0232] = { 7.107,       "subway_announcer_pnm/02_32.mp3" },
+	[0233] = { 1.186,       "subway_announcer_pnm/02_33.mp3" },
+	[0234] = { 1.641,       "subway_announcer_pnm/02_34.mp3" },
+	[0235] = { 1.145,       "subway_announcer_pnm/02_35.mp3" },
+	[0236] = { 1.068,       "subway_announcer_pnm/02_36.mp3" },
+	[0237] = { 1.141,       "subway_announcer_pnm/02_37.mp3" },
+	[0238] = { 2.580,       "subway_announcer_pnm/02_38.mp3" },
 
-	[0308] = { 1.113,       "subway_announcer_pnm/03_08.wav" },
-	[0309] = { 1.122,       "subway_announcer_pnm/03_09.wav" },
-	[0310] = { 0.938,       "subway_announcer_pnm/03_10.wav" },
-	[0311] = { 0.994,       "subway_announcer_pnm/03_11.wav" },
-	[0312] = { 0.970,       "subway_announcer_pnm/03_12.wav" },
-	[0313] = { 1.098,       "subway_announcer_pnm/03_13.wav" },
-	[0314] = { 0.921,       "subway_announcer_pnm/03_14.wav" },
-	[0315] = { 0.963,       "subway_announcer_pnm/03_15.wav" },
-	[0316] = { 0.929,       "subway_announcer_pnm/03_16.wav" },
-	[0317] = { 1.474,       "subway_announcer_pnm/03_17.wav" },
-	[0318] = { 1.026,       "subway_announcer_pnm/03_18.wav" },
-	[0319] = { 1.120,       "subway_announcer_pnm/03_19.wav" },
-	[0320] = { 3.442,       "subway_announcer_pnm/03_20.wav" },
-	[0321] = { 0.795,       "subway_announcer_pnm/03_21.wav" },
-	[0322] = { 1.240,       "subway_announcer_pnm/03_22.wav" },
-	[0323] = { 1.141,       "subway_announcer_pnm/03_23.wav" },
-	[0415] = { 0.860,       "subway_announcer_pnm/04_15.wav" },
-	[0521] = { 1.162,       "subway_announcer_pnm/05_21.wav" },
-	[0522] = { 1.594,       "subway_announcer_pnm/05_22.wav" },
+	[0308] = { 1.113,       "subway_announcer_pnm/03_08.mp3" },
+	[0309] = { 1.122,       "subway_announcer_pnm/03_09.mp3" },
+	[0310] = { 0.938,       "subway_announcer_pnm/03_10.mp3" },
+	[0311] = { 0.994,       "subway_announcer_pnm/03_11.mp3" },
+	[0312] = { 0.970,       "subway_announcer_pnm/03_12.mp3" },
+	[0313] = { 1.098,       "subway_announcer_pnm/03_13.mp3" },
+	[0314] = { 0.921,       "subway_announcer_pnm/03_14.mp3" },
+	[0315] = { 0.963,       "subway_announcer_pnm/03_15.mp3" },
+	[0316] = { 0.929,       "subway_announcer_pnm/03_16.mp3" },
+	[0317] = { 1.474,       "subway_announcer_pnm/03_17.mp3" },
+	[0318] = { 1.026,       "subway_announcer_pnm/03_18.mp3" },
+	[0319] = { 1.120,       "subway_announcer_pnm/03_19.mp3" },
+	[0320] = { 3.442,       "subway_announcer_pnm/03_20.mp3" },
+	[0321] = { 0.795,       "subway_announcer_pnm/03_21.mp3" },
+	[0322] = { 1.240,       "subway_announcer_pnm/03_22.mp3" },
+	[0323] = { 1.141,       "subway_announcer_pnm/03_23.mp3" },
+	[0415] = { 0.860,       "subway_announcer_pnm/04_15.mp3" },
+	[0521] = { 1.162,       "subway_announcer_pnm/05_21.mp3" },
+	[0522] = { 1.594,       "subway_announcer_pnm/05_22.mp3" },
 
-	[0601] = { 0.845,       "subway_announcer_pnm/06_01.wav" },
-	[0602] = { 1.261,       "subway_announcer_pnm/06_02.wav" },
-	[0603] = { 0.902,       "subway_announcer_pnm/06_03.wav" },
-	[0604] = { 0.549,       "subway_announcer_pnm/06_04.wav" },
-	[0605] = { 1.290,       "subway_announcer_pnm/06_05.wav" },
-	[0606] = { 1.549,       "subway_announcer_pnm/06_06.wav" },
-	[0607] = { 1.136,       "subway_announcer_pnm/06_07.wav" },
-	[0608] = { 1.557,       "subway_announcer_pnm/06_08.wav" },
-	[0699] = { 1.219,       "subway_announcer_pnm/06_99.wav" },
-	[0702] = { 0.934,       "subway_announcer_pnm/07_02.wav" },
-	[0704] = { 1.260,       "subway_announcer_pnm/07_04.wav" },
-	[0799] = { 1.329,       "subway_announcer_pnm/07_99.wav" },
-	[0801] = { 0.845,       "subway_announcer_pnm/08_01.wav" },
+	[0601] = { 0.845,       "subway_announcer_pnm/06_01.mp3" },
+	[0602] = { 1.261,       "subway_announcer_pnm/06_02.mp3" },
+	[0603] = { 0.902,       "subway_announcer_pnm/06_03.mp3" },
+	[0604] = { 0.549,       "subway_announcer_pnm/06_04.mp3" },
+	[0605] = { 1.290,       "subway_announcer_pnm/06_05.mp3" },
+	[0606] = { 1.549,       "subway_announcer_pnm/06_06.mp3" },
+	[0607] = { 1.136,       "subway_announcer_pnm/06_07.mp3" },
+	[0608] = { 1.557,       "subway_announcer_pnm/06_08.mp3" },
+	[0699] = { 1.219,       "subway_announcer_pnm/06_99.mp3" },
+	[0701] = { 0.934,       "subway_announcer_pnm/06_01.mp3" },
+	[0702] = { 0.934,       "subway_announcer_pnm/07_02.mp3" },
+	[0703] = { 0.934,       "subway_announcer_pnm/06_03.mp3" },
+	[0704] = { 1.260,       "subway_announcer_pnm/07_04.mp3" },
+	[0799] = { 1.329,       "subway_announcer_pnm/07_99.mp3" },
+	[0801] = { 0.845,       "subway_announcer_pnm/08_01.mp3" },
 }
 Metrostroi.AnnouncementSequences = {
 	[1101] = { 0211, 0308, 0321 },
@@ -272,17 +264,21 @@ Metrostroi.AnnouncerData =
 	[322] = {"Avtostanciya Yuzhnaya",		false,true,true,true   ,false,0   },
 	[1215] = {"Leninskaya" },
 	--ORANGE LINE
-	[401] = {"Slavnaya Strana",           	false,false,true ,false,false,0   },
-	[402] = {"Litievaya",          				false,false,false,true ,false,699   },
-	[403] = {"Park",          						true ,true ,true ,false,false,0   },
-	[404] = {"Masterskaya",              		true ,false,true ,false,false,0   },
-	[405] = {"GFCScape",          				true ,true ,false,false,false,0},
-	[406] = {"Im. Uollesa Brina",           	false,false,false,true ,true,0   },
-	[407] = {"VHE'",   							false,false,true ,false,false,0   },
-	[408] = {"Truzennikov Garry's mod'a",  false,false,false,true ,true,0   ,nil ,1},
-	[501] = {"Aeroport",               			true ,false,true,true  ,false,0   },
-	[502] = {"Fabriki SENT",        			true ,true,true,true   ,true,0   },
-	[503] = {"Litievaya",        					false,true,true,true   ,false,799   },
+	[401] = {"Aeroport",               			true ,true,true,false  ,false,{699,0236,699}},
+	[402] = {"Slavnaya Strana",           	false,false,false ,false,false,0   },
+	[403] = {"Litievaya",          				false,true,true,false ,false,{699,0236,699}},
+	[404] = {"Park",          						true ,false ,false ,true,false,0   },
+	[405]= {"GFCScape",          				true ,false ,true,false,false,0,2},
+	[406] = {"Im. Uollesa Brina",           	false,false,false,false ,true,0   },
+	[407] = {"VHE'",   							false,false,true ,true,false,0   },
+	[408] = {"Truzennikov Garry's mod'a",  false,true,false,true ,true,0   ,nil ,1},
+
+	[501] = {"Aeroport",               			true ,true,true,false  ,false,{799,0235,799}},
+	[502] = {"Pionerskaya",        			true ,false,false,true   ,false,0   },
+	[503] = {"Litievaya",        					false,true,false,false   ,false,{799,0235,799}},
+	[504] = {"Metrostroiteley",        					false,false,false,true   ,false,0},
+	
+	[601] = {"Brateyevo",        					false,false,false,true   ,false,0},
 }
 Metrostroi.PathConverter = {
 	[1] = 1,
@@ -300,7 +296,8 @@ Metrostroi.WorkingStations = {
 	},
 	["gm_orange"] = {
 		{401,402,403,404,405,406,407,408},
-		{501,502,503},
+		{501,502,503,504},
+		{601,405,406,407,408},
 	},
 	["gm_orange_lite"] = {
 		{403,404,405,406,407,408},
@@ -323,8 +320,9 @@ Metrostroi.EndStations = {
 		{108,111,114},
 	},
 	["gm_orange"] = {
-		{401,403,406,408},
-		{501,503},
+		{401,404,406,408},
+		{501,504},
+		{601,406,408},
 	},
 	["gm_orange_lite"] = {
 		{403,406,408},
@@ -364,7 +362,7 @@ function TRAIN_SYSTEM:Initialize()
 		self.AnnMap = "gm_metrostroi_lite"
 	elseif Map:find("gm_metrostroi") then
 		self.AnnMap = "gm_metrostroi"
-	elseif Map:find("gm_mus_orange_line") and Map:find("long") then
+	elseif Map:find("gm_mus_orange") and Map:find("metro") then
 		self.AnnMap = "gm_orange"
 	elseif Map:find("gm_mus_orange_line") then
 		self.AnnMap = "gm_orange_lite"
@@ -434,7 +432,7 @@ function TRAIN_SYSTEM:ClientInitialize()
 		self.AnnMap = "gm_metrostroi_lite"
 	elseif Map:find("gm_metrostroi") then
 		self.AnnMap = "gm_metrostroi"
-	elseif Map:find("gm_mus_orange_line") and Map:find("long") then
+	elseif Map:find("gm_mus_orange") and Map:find("metro") then
 		self.AnnMap = "gm_orange"
 	elseif Map:find("gm_mus_orange_line") then
 		self.AnnMap = "gm_orange_lite"
@@ -650,8 +648,8 @@ function TRAIN_SYSTEM:AnnEnd(next)
 		station = self.AnnStation
 	end
 	if not station then return false end
-    return (not Metrostroi.AnnouncerData[station][9]) and ((station <= self.AnnStartStation and self.AnnPath == 2) or
-			(station >= self.AnnEndStation and self.AnnPath == 1)), Metrostroi.AnnouncerData[station][9]
+    return (not Metrostroi.AnnouncerData[station][9]) and ((Metrostroi.WorkingStations[self.AnnMap][self.AnnRoute][station] <= Metrostroi.WorkingStations[self.AnnMap][self.AnnRoute][self.AnnStartStation] and self.AnnPath == 2) or
+			(Metrostroi.WorkingStations[self.AnnMap][self.AnnRoute][station] >= Metrostroi.WorkingStations[self.AnnMap][self.AnnRoute][self.AnnEndStation] and self.AnnPath == 1)), Metrostroi.AnnouncerData[station][9]
 end
 
 function TRAIN_SYSTEM:AnnPlayArriving()
@@ -986,7 +984,7 @@ function TRAIN_SYSTEM:Announcer2()
 			if not self.loadRand then self.loadRand = math.floor(math.random(8,30)) end
 			if self.loadState < self.loadRand then
 				timer.Simple(math.random(0.15,0.50),function()
-					if not self.AnnState then return end
+					if not self.AnnState or not IsValid(self.Train) then return end
 					local chars = ""
 					for i=1,20 do
 						chars = chars..string[math.random() > 0.5 and "upper" or "lower"](self.AnnChars[math.random(1,#self.AnnChars)])
@@ -1661,16 +1659,21 @@ function TRAIN_SYSTEM:Think()
 					self.Train.AnnouncementToLeaveWagon = false
 				end
 			end
+			
 			-- BPSN buzz
-			if targetAnnouncement == 5 then timer.Simple(0.3,function() self.Train:SetNWBool("BPSNBuzz",true) end) end
+			if targetAnnouncement == 5 and self.Train.PNM then timer.Simple(0.1,function() self.Train:SetNWBool("BPSNBuzz",true) end) end
+			if targetAnnouncement == 5 and not self.Train.PNM then timer.Simple(0.2,function() self.Train:SetNWBool("BPSNBuzz",true) end) end
 			if targetAnnouncement == 6 then
-				if self.Train.PNM then
-					--self.Train:SetNWBool("BPSNBuzz",false)
+				self.Train:SetNWBool("BPSNBuzz",false)
+					--[[
+					if self.Train.PNM then
+					self.Train:SetNWBool("BPSNBuzz",false)
 					self.BPSNBuzzTimeout1 = CurTime() + 0
 				else
 					self.BPSNBuzzTimeout1 = CurTime() + 0.4
 					--timer.Simple(0.4,function() if not IsValid(self.Train) then return end self.Train:SetNWBool("BPSNBuzz",false) end)
 				end
+				]]
 			end
 			self.BPSNBuzzTimeout = CurTime() + 10.0
 		end

@@ -40,8 +40,8 @@ local Settings = {
 }
 local Types = {
 	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,ARS,Cran,Mask,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv,PNM",
-	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,Blok,Cran,PiterMsk,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,Hand,Seat,Lamp,Breakers,Adv",
-	"Train,WagNum,Texture,Prom,Cran,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB",
+	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,Blok,Cran,PiterMsk,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,Hand,Seat,Lamp,Breakers,Adv,PNM",
+	"Train,WagNum,Texture,Prom,Cran,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,PNM",
 	"Train,WagNum",
 }
 local function UpdateConCMD()
@@ -212,13 +212,13 @@ local function Draw()
 	CreateList("Cran","Cran type",{"334","013"})
 	CreateSlider("NM",1,0.1,9,"Train Line Pressure")
 	CreateList("ARS","ARS Type",{"Standart(square lamps)","Standart(round lamps)","Kiev/St.Petersburg","Old ARS"})
-	CreateList("Blok","Autodrive panel",{"PUAV","PA-KSD","PA-M"})
+	CreateList("Blok","Autodrive panel",{"PUAV","PA-KSD","PA-M",LocalPlayer():IsAdmin() and "PA-KSD-M" or nil})
 	CreateList("Mask","Mask",{"2-2","2-2-2","1-4-1 bumper 1","1-4-1 bumper 2","1-1","Retro"})
 	CreateList("PiterMsk","PiterMsk",{"1-4-1","2-2 Down-2","2-2","2-2-2","1-3-1"})
-	CreateList("BPSN","BPSN type",{"Old high tone","Old medium tone","Normal(from St.Petersburg)","Normal","No sound"})
+	CreateList("BPSN","BPSN type",{"Old high tone","Old medium tone","Normal(from St.Petersburg)","Normal","No sound(BPN-115)"})
 	CreateList("Seat","Seat type",{"Old","New"})
 	CreateList("Hand","Hand rail type",{"Old","New"})
-	CreateList("Bort","Bort",{"Vertical","Horisontal"})
+	CreateList("Bort","Bort",{"Horisontal","Vertical"})
 	CreateList("Lamp","Lamp type",{"Type1","Type2","Type3"})
 	CreateCheckBox("PNM","PNM Informer")
 	CreateCheckBox("MVM","MVM icon")

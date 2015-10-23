@@ -313,6 +313,12 @@ local function LoadSkin()
 				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_yellow_vpa",
 				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_vpa",
 			},
+			paksdm = {
+				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_yellow",
+				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_yellow",
+				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_yellow_vpa",
+				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_vpa",
+			},
 		},
 	})
 	table.insert(Metrostroi.Skins["717_cabp"],{
@@ -336,6 +342,12 @@ local function LoadSkin()
 				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_blue_vpa",
 				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_vpa",
 			},
+			paksdm = {
+				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_blue",
+				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_blue",
+				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_blue_vpa",
+				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_vpa",
+			},
 		},
 	})
 	table.insert(Metrostroi.Skins["717_cabp"],{
@@ -354,6 +366,12 @@ local function LoadSkin()
 				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_ars",
 			},
 			paksd = {
+				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_gray",
+				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_gray",
+				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_gray_vpa",
+				cabin717_026 = "metrostroi_skins/81-540_cab/cabin717_026_vpa",
+			},
+			paksdm = {
 				cabin717_016 = "metrostroi_skins/81-540_cab/cabin717_016_gray",
 				cabin717_020 = "metrostroi_skins/81-540_cab/cabin717_020_gray",
 				cabin717_023 = "metrostroi_skins/81-540_cab/cabin717_023_gray_vpa",

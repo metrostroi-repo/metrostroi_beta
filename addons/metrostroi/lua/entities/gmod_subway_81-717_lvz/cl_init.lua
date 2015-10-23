@@ -248,6 +248,61 @@ ENT.ButtonMap["PAM2"] = {
 	scale = 0.02202,
 	props = {},
 }
+ENT.ButtonMap["PAKSDM"] = {
+	pos = Vector(455.3,30.8,7.0), --31.4
+	ang = Angle(0,-90,57.0),
+	width = 265,
+	height = 245,
+	scale = 0.0625,
+	
+	buttons = {
+		{ID = "BCCDSet", x=163, y=224, radius=20, tooltip="ПА-М:КСЗД"},
+		{ID = "VZPToggle", x=190, y=224, radius=20, tooltip="ПА-М:ВЗП"},
+	}
+}
+ENT.ButtonMap["PAKSDM1"] = {
+	pos = Vector(454.4,30.9,5.4), --31.4
+	ang = Angle(0,-90,58.0),
+	width = 50,
+	height = 200,
+	scale = 0.0625,
+	
+	buttons = {
+		
+		{ID = "BPSet", x=11 +14*2, y=45, radius=10, tooltip="ПА-КСД-М:P"},
+		
+		{ID = "BFSet", x=11 +14*0, y=71 + 16*0, radius=10, tooltip="ПА-КСД-М:F"},
+		{ID = "BUpSet", x=11 +14*1, y=71 + 16*0, radius=10, tooltip="ПА-КСД-М:Вверх"},
+		{ID = "BMSet", x=11 +14*2, y=71 + 16*0, radius=10, tooltip="ПА-КСД-М:M"},
+		{ID = "BLeftSet", x=11 +14*0, y=71 + 16*1, radius=10, tooltip="ПА-КСД-М:Влево"},
+		{ID = "BDownSet", x=11 +14*1, y=71 + 16*1, radius=10, tooltip="ПА-КСД-М:Вниз"},
+		{ID = "BRightSet", x=11 +14*2, y=71 + 16*1, radius=10, tooltip="ПА-КСД-М:Вправо"},
+		
+		
+		{ID = "B1Set", x=11 +14*0, y=113 + 15*0, radius=10, tooltip="ПА-КСД-М:1"},
+		{ID = "B2Set", x=11 +14*1, y=113 + 15*0, radius=10, tooltip="ПА-КСД-М:2"},
+		{ID = "B3Set", x=11 +14*2, y=113 + 15*0, radius=10, tooltip="ПА-КСД-М:3"},
+		{ID = "B4Set", x=11 +14*0, y=113 + 15*1, radius=10, tooltip="ПА-КСД-М:4"},
+		{ID = "B5Set", x=11 +14*1, y=113 + 15*1, radius=10, tooltip="ПА-КСД-М:5"},
+		{ID = "B6Set", x=11 +14*2, y=113 + 15*1, radius=10, tooltip="ПА-КСД-М:6"},
+		{ID = "B7Set", x=11 +14*0, y=113 + 15*2, radius=10, tooltip="ПА-КСД-М:7"},
+		{ID = "B8Set", x=11 +14*1, y=113 + 15*2, radius=10, tooltip="ПА-КСД-М:8"},
+		{ID = "B9Set", x=11 +14*2, y=113 + 15*2, radius=10, tooltip="ПА-КСД-М:9"},
+		{ID = "BEscSet", x=11 +14*0, y=113 + 15*3, radius=10, tooltip="ПА-КСД-М:Отмена"},
+		{ID = "B0Set", x=11 +14*1, y=113 + 15*3, radius=10, tooltip="ПА-КСД-М:0"},
+		{ID = "BEnterSet", x=11 +14*2, y=113 + 15*3, radius=10, tooltip="ПА-КСД-М:Ввод"},
+	}
+}
+ENT.ButtonMap["PAKSDM2"] = {
+	pos = Vector(453.55,30.0-3.35,4.55), --31.4
+	ang = Angle(0,-90,57.4),
+	width = 512,
+	height = 411,
+	scale = 0.0196,
+	props = {},
+	sensor = true,
+	system = "PA-KSD-M",
+}
 ENT.ButtonMap["ARS"] = {
 	pos = Vector(459.49,10.98,13.09),
 	ang = Angle(0,-90-0.2,56.3),
@@ -281,8 +336,8 @@ ENT.ButtonMap["ARS"] = {
 }
 -- ARS/Speedometer panel (Kyiv version)
 ENT.ButtonMap["ARSKyiv"] = {
-	pos = Vector(459.59,10.98,13.10),
-	ang = Angle(0,-90-0.2,56.3),
+	pos = Vector(459.51,10.98,13.10),
+	ang = Angle(0,-90,56.8),
 	width = 300*10,
 	height = 110*10,
 	scale = 0.0625/10,
@@ -1344,6 +1399,136 @@ Metrostroi.ClientPropForButton("PAM_BEnter",{
 	ang = 0,
 })
 
+--ПА-КСД-М
+Metrostroi.ClientPropForButton("PAKSDM_BCCD",{
+	panel = "PAKSDM",
+	button = "BCCDSet",	
+	model = "models/metrostroi_train/81/button.mdl",
+})
+Metrostroi.ClientPropForButton("PAKSDM_VZP",{
+	panel = "PAKSDM",
+	button = "VZPToggle",	
+	model = "models/metrostroi_train/81/tumbler2.mdl",
+	ang = 90
+})
+Metrostroi.ClientPropForButton("PAKSDM_BP",{
+	panel = "PAKSDM1",
+	button = "BPSet",	
+	model = "models/metrostroi_train/81/pamp.mdl",
+	ang = 0,
+})
+
+Metrostroi.ClientPropForButton("PAKSDM_BF",{
+	panel = "PAKSDM1",
+	button = "BFSet",	
+	model = "models/metrostroi_train/81/pamf.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_BUp",{
+	panel = "PAKSDM1",
+	button = "BUpSet",	
+	model = "models/metrostroi_train/81/pamup.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_BM",{
+	panel = "PAKSDM1",
+	button = "BMSet",	
+	model = "models/metrostroi_train/81/pamM.mdl",
+	ang = 0,
+})
+
+Metrostroi.ClientPropForButton("PAKSDM_BRight",{
+	panel = "PAKSDM1",
+	button = "BRightSet",	
+	model = "models/metrostroi_train/81/pamright.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_BDown",{
+	panel = "PAKSDM1",
+	button = "BDownSet",	
+	model = "models/metrostroi_train/81/pamdown.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_BLeft",{
+	panel = "PAKSDM1",
+	button = "BLeftSet",	
+	model = "models/metrostroi_train/81/pamleft.mdl",
+	ang = 0,
+})
+
+Metrostroi.ClientPropForButton("PAKSDM_B1",{
+	panel = "PAKSDM1",
+	button = "B1Set",	
+	model = "models/metrostroi_train/81/pam1.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_B2",{
+	panel = "PAKSDM1",
+	button = "B2Set",	
+	model = "models/metrostroi_train/81/pam2.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_B3",{
+	panel = "PAKSDM1",
+	button = "B3Set",	
+	model = "models/metrostroi_train/81/pam3.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_B4",{
+	panel = "PAKSDM1",
+	button = "B4Set",	
+	model = "models/metrostroi_train/81/pam4.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_B5",{
+	panel = "PAKSDM1",
+	button = "B5Set",	
+	model = "models/metrostroi_train/81/pam5.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_B6",{
+	panel = "PAKSDM1",
+	button = "B6Set",	
+	model = "models/metrostroi_train/81/pam6.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_B7",{
+	panel = "PAKSDM1",
+	button = "B7Set",	
+	model = "models/metrostroi_train/81/pam7.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_B8",{
+	panel = "PAKSDM1",
+	button = "B8Set",	
+	model = "models/metrostroi_train/81/pam8.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_B9",{
+	panel = "PAKSDM1",
+	button = "B9Set",	
+	model = "models/metrostroi_train/81/pam9.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_BEsc",{
+	panel = "PAKSDM1",
+	button = "BEscSet",	
+	model = "models/metrostroi_train/81/pamesc.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_B0",{
+	panel = "PAKSDM1",
+	button = "B0Set",	
+	model = "models/metrostroi_train/81/pam0.mdl",
+	ang = 0,
+})
+Metrostroi.ClientPropForButton("PAKSDM_BEnter",{
+	panel = "PAKSDM1",
+	button = "BEnterSet",	
+	model = "models/metrostroi_train/81/pamenter.mdl",
+	ang = 0,
+})
+
 --PA-KSD
 Metrostroi.ClientPropForButton("Indicate",{
 	panel = "PAKSD",
@@ -1650,7 +1835,7 @@ ENT.ClientProps["door2"] = {
 }
 ENT.ClientProps["door3"] = {
 	model = "models/metrostroi_train/81/cabindoor.mdl",
-	pos = Vector(446.6,66.0,7.1),
+	pos = Vector(446.6,65.0,7.1),
 	ang = Angle(0,-90,0)
 }
 ENT.ClientProps["UAVALever"] = {
@@ -1683,15 +1868,15 @@ function ENT:Think()
 	end
 	if self.Blok ~= self:GetNWBool("Blok",1) then
 		self.Blok = self:GetNWBool("Blok",1)
-		self:ShowHide("VPA",self.Blok and self.Blok == 2)
-		self:ShowHide("VPAOn",self.Blok and self.Blok == 2)
-		self:ShowHide("VPAOff",self.Blok and self.Blok == 2)
-		self:ShowHide("ARS",not self.Blok or self.Blok ~= 2)
-		self:ShowHide("ALS",not self.Blok or self.Blok ~= 2)
-		self:ShowHide("VAU",not self.Blok or self.Blok ~= 2 and not self.Breakers)
-		self:ShowHide("VAU_2",not self.Blok or self.Blok ~= 2 and self.Breakers)
-		self:ShowHide("RC2",not self.Blok or self.Blok ~= 2 and not self.Breakers)
-		self:ShowHide("RC2_2",not self.Blok or self.Blok ~= 2 and self.Breakers)
+		self:ShowHide("VPA",self.Blok and (self.Blok == 2 or self.Blok == 4))
+		self:ShowHide("VPAOn",self.Blok and (self.Blok == 2 or self.Blok == 4))
+		self:ShowHide("VPAOff",self.Blok and (self.Blok == 2 or self.Blok == 4))
+		self:ShowHide("ARS",not self.Blok or (self.Blok ~= 2 and self.Blok ~= 4))
+		self:ShowHide("ALS",not self.Blok or (self.Blok ~= 2 and self.Blok ~= 4))
+		self:ShowHide("VAU",not self.Blok or (self.Blok ~= 2 and self.Blok ~= 4) and not self.Breakers)
+		self:ShowHide("VAU_2",not self.Blok or (self.Blok ~= 2 and self.Blok ~= 4) and self.Breakers)
+		self:ShowHide("RC2",not self.Blok or (self.Blok ~= 2 and self.Blok ~= 4) and not self.Breakers)
+		self:ShowHide("RC2_2",not self.Blok or (self.Blok ~= 2 and self.Blok ~= 4) and self.Breakers)
 		self:HidePanel("PUAV",self.Blok and self.Blok ~= 1)
 		self:HidePanel("PUAV1",self.Blok and self.Blok ~= 1)
 		self:HidePanel("PUAV2",self.Blok and self.Blok ~= 1)
@@ -1701,6 +1886,9 @@ function ENT:Think()
 		self:HidePanel("PAM",not self.Blok or self.Blok ~= 3)
 		self:HidePanel("PAM1",not self.Blok or self.Blok ~= 3)
 		self:HidePanel("PAM2",not self.Blok or self.Blok ~= 3)
+		self:HidePanel("PAKSDM",not self.Blok or self.Blok ~= 4)
+		self:HidePanel("PAKSDM1",not self.Blok or self.Blok ~= 4)
+		self:HidePanel("PAKSDM2",not self.Blok or self.Blok ~= 4)
 	end
 	if self.ClientProps["KVPLight_light"] and self.ClientProps["KVPLight_light"].skin ~= self:GetNWInt("KVPType") then
 		self.ClientProps["KVPLight_light"].skin = self:GetNWInt("KVPType")
@@ -2021,6 +2209,32 @@ function ENT:Think()
 		self:Animate("PAM_BEnter",self:GetPackedBool("BEnter") and 1 or 0,0,0.8,8,false)
 		self:Animate("PAM_BEsc",self:GetPackedBool("BEsc") and 1 or 0,0,0.8,8,false)
 	end
+	if self.Blok == 4 then
+		self:Animate("PAKSDM_BCCD",self:GetPackedBool("BCCD") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_VZP",self:GetPackedBool("VZP") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_BP",self:GetPackedBool("BP") and 1 or 0,0,0.8,8,false)
+		
+		self:Animate("PAKSDM_BF",self:GetPackedBool("BF") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_BUp",self:GetPackedBool("BUp") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_BM",self:GetPackedBool("BM") and 1 or 0,0,0.8,8,false)
+		
+		self:Animate("PAKSDM_BLeft",self:GetPackedBool("BLeft") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_BDown",self:GetPackedBool("BDown") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_BRight",self:GetPackedBool("BRight") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_B1",self:GetPackedBool("B1") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_B2",self:GetPackedBool("B2") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_B3",self:GetPackedBool("B3") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_B4",self:GetPackedBool("B4") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_B5",self:GetPackedBool("B5") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_B6",self:GetPackedBool("B6") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_B7",self:GetPackedBool("B7") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_B8",self:GetPackedBool("B8") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_B9",self:GetPackedBool("B9") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_B0",self:GetPackedBool("B0") and 1 or 0,0,0.8,8,false)
+		
+		self:Animate("PAKSDM_BEnter",self:GetPackedBool("BEnter") and 1 or 0,0,0.8,8,false)
+		self:Animate("PAKSDM_BEsc",self:GetPackedBool("BEsc") and 1 or 0,0,0.8,8,false)
+	end
 	self:Animate("ConverterProtection",self:GetPackedBool("ConverterProtection") and 1 or 0,0,1,8,false)
 	if self:GetPackedBool(156) and not self.Door1 then self.Door1 = 0.99 end
 	if self:GetPackedBool(158) and not self.Door2 then self.Door2 = 0.99 end
@@ -2239,16 +2453,19 @@ function ENT:DrawPost(special)
 
 	local distance = self:GetPos():Distance(LocalPlayer():GetPos())
 	if distance > 1024 or special then return end
-	if not self.Blok or self.Blok == 1 then
-		self:DrawOnPanel("PUAV1",function(...) self.PUAV.PUAV1(self,...) end)
-		self:DrawOnPanel("PUAV2",function(...) self.PUAV.PUAV2(self,...) end)
-	elseif self.Blok == 2 then
-		self:DrawOnPanel("PAKSD1",function(...) self["PA-KSD"]:PAKSD1(self,...) end)
-		self:DrawOnPanel("PAKSD2",function(...) self["PA-KSD"]:PAKSD2(self,...) end)
-	elseif self.Blok == 3 then
-		self:DrawOnPanel("PAM2",function(...) self["PA-M"]:PAM	(self,...) end)
+	if self:GetPackedBool(32) then
+		if not self.Blok or self.Blok == 1 then
+			self:DrawOnPanel("PUAV1",function(...) self.PUAV.PUAV1(self,...) end)
+			self:DrawOnPanel("PUAV2",function(...) self.PUAV.PUAV2(self,...) end)
+		elseif self.Blok == 2 then
+			self:DrawOnPanel("PAKSD1",function(...) self["PA-KSD"]:PAKSD1(self,...) end)
+			self:DrawOnPanel("PAKSD2",function(...) self["PA-KSD"]:PAKSD2(self,...) end)
+		elseif self.Blok == 3 then
+			self:DrawOnPanel("PAM2",function(...) self["PA-M"]:PAM(self,...) end)
+		elseif self.Blok == 4 then
+			self:DrawOnPanel("PAKSDM2",function(...) self["PA-KSD-M"]:PAKSDM(self,...) end)
+		end
 	end
-		
 	self:DrawOnPanel("ARSKyiv",function()
 		if not self:GetPackedBool(32) then return end
 		
@@ -2271,45 +2488,45 @@ function ENT:DrawPost(special)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(255,60,60)
-			surface.DrawRect(210.4*10,38*10,8*10,4*10)
-			draw.DrawText("ЛСН","MetrostroiSubway_VerySmallText",210.3*10+0,38*10-5,Color(0,0,0,255))
+			surface.DrawRect(210.4*10-9,39*10-4,8*10,4*10-4)
+			draw.DrawText("ЛСН","MetrostroiSubway_VerySmallText",210.3*10+0-9,39*10-5-4,Color(0,0,0,255))
 		end
 		local b = self:Animate("light_rRP",self:GetPackedBool(35) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(255,60,60)
-			surface.DrawRect(201.3*10,38*10,8.2*10,4*10)
-			draw.DrawText("РП","MetrostroiSubway_VerySmallText", 201.3*10+15,38*10-5,Color(0,0,0,255))
+			surface.DrawRect(201.3*10-9,39*10-4,8.2*10,4*10-4)
+			draw.DrawText("РП","MetrostroiSubway_VerySmallText", 201.3*10+15-9,39*10-5-4,Color(0,0,0,255))
 		end
 		
 		b = self:Animate("light_KT",self:GetPackedBool(47) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(255,160,20)
-			surface.DrawRect(210.4*10,56*10,8*10,4*10)
-			draw.DrawText("ЛКТ","MetrostroiSubway_VerySmallText",210.4*10+0,56*10-5,Color(0,0,0,255))
+			surface.DrawRect(210.4*10-10,56*10+2,8*10,4*10)
+			draw.DrawText("ЛКТ","MetrostroiSubway_VerySmallText",210.4*10+0-10,56*10-5+2,Color(0,0,0,255))
 		end
-		b = self:Animate("light_PA",self:GetNWInt("PAKSD:State",-1) ~= 0 and 1 or 0,0,1,15,false)
+		b = self:Animate("light_PA",((self.Blok == 2 and self:GetNWInt("PAKSD:State",-1) ~= 0) or (self.Blok == 4 and self:GetNWInt("PAKSDM:State",-1) ~= -1)) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(150,255,50)
-			surface.DrawRect(210.4*10,65.2*10,8*10,4*10)
-			draw.DrawText("ПА","MetrostroiSubway_VerySmallText",210.4*10+15,65.2*10-5,Color(0,0,0,255))
+			surface.DrawRect(210.4*10-9,65.2*10+2,8*10,4*10)
+			draw.DrawText("ПА","MetrostroiSubway_VerySmallText",210.4*10+15-9,65.2*10-5+2,Color(0,0,0,255))
 		end			
 		b = self:Animate("light_KVD",self:GetPackedBool(48) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(255,160,20)
-			surface.DrawRect(210*10,47.5*10,8*10,4*10)
-			draw.DrawText("ЛКВД","MetrostroiSubway_VerySmallText2",210*10-4,48*10-5,Color(0,0,0,255))
+			surface.DrawRect(210*10-9,47.5*10+2,8*10,4*10)
+			draw.DrawText("ЛКВД","MetrostroiSubway_VerySmallText2",210*10-4-9,48*10-5+2,Color(0,0,0,255))
 		end
 		
 		b = self:Animate("light_LhRK",self:GetPackedBool(33) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(255,160,20)
-			surface.DrawRect(184*10,47*10,8.2*10,4*10)
-			draw.DrawText("2","MetrostroiSubway_VerySmallText",184*10+32,47*10-5,Color(0,0,0,255))
+			surface.DrawRect(184*10-4,47*10,8.2*10,4*10+3)
+			draw.DrawText("2","MetrostroiSubway_VerySmallText",184*10+32-4,47*10-5,Color(0,0,0,255))
 		end
 		
 		--[[b = self:Animate("light_LRS",self:GetPackedBool(54) and 1 or 0,0,1,15,false)
@@ -2324,23 +2541,23 @@ function ENT:DrawPost(special)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(255,160,20)
-			surface.DrawRect(184.2*10,56.2*10,8*10,4*10)
-			draw.DrawText("6","MetrostroiSubway_VerySmallText",184.2*10+32,56.2*10-5,Color(0,0,0,255))
+			surface.DrawRect(184.2*10-3,56.2*10,8*10,4*10+1)
+			draw.DrawText("6","MetrostroiSubway_VerySmallText",184.2*10+32-3,56.2*10-5,Color(0,0,0,255))
 		end
 		
 		b = self:Animate("light_LVD",self:GetPackedBool(50) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(150,255,50)
-			surface.DrawRect(184.1*10,38*10,8*10,4*10)
-			draw.DrawText("1","MetrostroiSubway_VerySmallText",184.1*10+32,38*10-5,Color(0,0,0,255))
+			surface.DrawRect(184.1*10-5,38*10,8*10,4*10+1)
+			draw.DrawText("1","MetrostroiSubway_VerySmallText",184.1*10+32-5,38*10-5,Color(0,0,0,255))
 		end
-		b = self:Animate("light_VRD",self:GetPackedBool("PAKSD:VRD") and 1 or 0,0,1,15,false)
+		b = self:Animate("light_VRD",((self.Blok == 2 and self:GetPackedBool("PAKSD:VRD")) or (self.Blok == 4 and self:GetPackedBool("PAKSDM:VRD")) or (self.Blok ~= 2 and self.Blok ~= 4 and self:GetPackedBool("VRD"))) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(155,255,50)
-			surface.DrawRect(184*10,65*10,8*10,4*10)
-			draw.DrawText("ЛРД","MetrostroiSubway_VerySmallText",184*10+0,65*10-5,Color(0,0,0,255))
+			surface.DrawRect(184*10-3,65*10,8*10,4*10)
+			draw.DrawText("ЛРД","MetrostroiSubway_VerySmallText",184*10+0-3,65*10-5,Color(0,0,0,255))
 		end	
 		
 		--[[b = self:Animate("light_LKVC",1-(self:GetPackedBool(34) and 1 or 0),0,1,5,false)
@@ -2355,8 +2572,8 @@ function ENT:DrawPost(special)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(150,255,50)
-			surface.DrawRect(184.0*10,28.9*10,16.3*10,4*10)
-			draw.DrawText("ЛСД","MetrostroiSubway_VerySmallText",184.5*10+32,28.9*10-5,Color(0,0,0,255))
+			surface.DrawRect(184.0*10-8,28.9*10+4,16.3*10+4,4*10)
+			draw.DrawText("ЛСД","MetrostroiSubway_VerySmallText",184.5*10+32-8,28.9*10-5+4,Color(0,0,0,255))
 		end
 	
 		------------------------------------------------------------------------
@@ -2364,79 +2581,79 @@ function ENT:DrawPost(special)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(255,60,60)
-			surface.DrawRect(98.6*10,27*10,8*10,8.8*10)
+			surface.DrawRect(98.6*10+17,27*10+7,8*10,8.8*10)
 			surface.DrawPoly({
-				{ x = 1455-18,	y = 840+0 },
-				{ x = 1455+0,	y = 840-30 },
-				{ x = 1455+18,	y = 840+0 },
+				{ x = 1390-18,	y = 838+0 },
+				{ x = 1390+0,	y = 838-30 },
+				{ x = 1390+18,	y = 838+0 },
 			})
-			draw.DrawText("НЧ","MetrostroiSubway_LargeText3",98.6*10-1,27*10+5,Color(0,0,0,255))
+			draw.DrawText("НЧ","MetrostroiSubway_LargeText3",98.6*10-1+17,27*10+5+7,Color(0,0,0,255))
 		end
 		
 		b = self:Animate("light_0",self:GetPackedBool(42) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(255,60,60)
-			surface.DrawRect(88*10,(27+10*0)*10,8*10,8.8*10)
+			surface.DrawRect(88*10+17,(27+10*0)*10+7,8*10,8.8*10)
 			surface.DrawPoly({
-				{ x = 1455-18,	y = 840+0 },
-				{ x = 1455+0,	y = 840-30 },
-				{ x = 1455+18,	y = 840+0 },
+				{ x = 1390-18,	y = 838+0 },
+				{ x = 1390+0,	y = 838-30 },
+				{ x = 1390+18,	y = 838+0 },
 			})
-			draw.DrawText("0","MetrostroiSubway_LargeText2",88*10+20,(27+11.3*0)*10-5,Color(0,0,0,255))
+			draw.DrawText("0","MetrostroiSubway_LargeText2",88*10+20+17,(27+11.3*0)*10-5+7,Color(0,0,0,255))
 		end
 		
 		b = self:Animate("light_40",self:GetPackedBool(43) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
-			surface.SetDrawColor(255,160,20)
-			surface.DrawRect(88*10,(27+11.3*1)*10,8*10,8.8*10)
+			surface.SetDrawColor(255,170,20)
+			surface.DrawRect(88*10+17,(27+11.3*1)*10+7,8*10,8.8*10)
 			surface.DrawPoly({
-				{ x = 1485-18,	y = 840+0 },
-				{ x = 1485+0,	y = 840-30 },
-				{ x = 1485+18,	y = 840+0 },
+				{ x = 1480-18,	y = 838+0 },
+				{ x = 1480+0,	y = 838-30 },
+				{ x = 1480+18,	y = 838+0 },
 			})
-			draw.DrawText("40","MetrostroiSubway_LargeText2",88*10-2,(27.5+11.3*1)*10-5,Color(0,0,0,255))
+			draw.DrawText("40","MetrostroiSubway_LargeText2",88*10-2+17,(27.5+11.3*1)*10-5+7,Color(0,0,0,255))
 		end
 			
 		b = self:Animate("light_60",self:GetPackedBool(44) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(150,255,50)
-			surface.DrawRect(88*10,(28+11*2)*10,8*10,8.8*10)
+			surface.DrawRect(88*10+17,(28+11*2)*10,8*10,8.8*10)
 			surface.DrawPoly({
-				{ x = 1570-18,	y = 840+0 },
-				{ x = 1570+0,	y = 840-30 },
-				{ x = 1570+18,	y = 840+0 },
+				{ x = 1566-18,	y = 838+0 },
+				{ x = 1566+0,	y = 838-30 },
+				{ x = 1566+18,	y = 838+0 },
 			})
-			draw.DrawText("60","MetrostroiSubway_LargeText2",88*10-2,(28+11.3*2)*10-5,Color(0,0,0,255))
+			draw.DrawText("60","MetrostroiSubway_LargeText2",88*10-2+17,(28+11.3*2)*10-5,Color(0,0,0,255))
 		end
 			
 		b = self:Animate("light_70",self:GetPackedBool(45) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(150,255,50)
-			surface.DrawRect(88*10,(28.4+11*3)*10,8*10,8.8*10)
+			surface.DrawRect(88*10+17,(28.4+11*3)*10,8*10,8.7*10)
 			surface.DrawPoly({
-				{ x = 1615-18,	y = 840+0 },
-				{ x = 1615+0,	y = 840-30 },
-				{ x = 1615+18,	y = 840+0 },
+				{ x = 1711-18,	y = 838+0 },
+				{ x = 1711+0,	y = 838-30 },
+				{ x = 1711+18,	y = 838+0 },
 			})
-			draw.DrawText("70","MetrostroiSubway_LargeText2",88*10-1,(29+11*3)*10-5,Color(0,0,0,255))
+			draw.DrawText("70","MetrostroiSubway_LargeText2",88*10-1+17,(29+11*3)*10-5,Color(0,0,0,255))
 		end
 			
 		b = self:Animate("light_80",self:GetPackedBool(46) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(150,255,50)
-			surface.DrawRect(88*10,(28+11.3*4)*10,8*10,8.8*10)
+			surface.DrawRect(88*10+17,(28+11.3*4)*10-5,8*10,8.7*10)
 			surface.DrawPoly({
-				{ x = 1660-18,	y = 840+0 },
-				{ x = 1660+0,	y = 840-30 },
-				{ x = 1660+18,	y = 840+0 },
+				{ x = 1760-18,	y = 838+0 },
+				{ x = 1760+0,	y = 838-30 },
+				{ x = 1760+18,	y = 838+0 },
 			})
 				
-			draw.DrawText("80","MetrostroiSubway_LargeText2",88*10-2,(28+11.3*4)*10-5,Color(0,0,0,255))
+			draw.DrawText("80","MetrostroiSubway_LargeText2",88*10-2+16,(28+11.5*4)*10-5-5,Color(0,0,0,255))
 			surface.SetAlphaMultiplier(1.0)
 		end
 	end)

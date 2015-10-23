@@ -48,6 +48,9 @@ function SWEP:PrimaryAttack()
 	if trace.Entity:GetClass() == "gmod_train_bogey" then
 		self.Owner:EmitSound(Format("subway_trains/kv1_%d.wav",math.random(9)))
 		trace.Entity:ConnectDisconnect()
+		if self.Owner then
+			RunConsoleCommand("say",tostring(self.Owner).." touched EKK on "..tostring(trace.Entity))
+		end
 	end
 	self:SetNextPrimaryFire( CurTime()+0.5)
 end

@@ -400,7 +400,7 @@ function TRAIN_SYSTEM:Think()
 			self.OnStation = false
 		end
 
-		if self.Train.VZP.Value < 0.5 and self.AutodriveReset then
+		if (self.Train.VZP.Value < 0.5 or (self.Train.Blok and self.Train.Blok == 4)) and self.AutodriveReset then
 			self.AutodriveReset = false
 		end
 		--Disable autodrive, if KV pos is not zero, ARS or ALS not enabled, Reverser position is not forward or Driver value pos is > 2
