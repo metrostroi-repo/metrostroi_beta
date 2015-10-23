@@ -253,9 +253,9 @@ function ENT:Think()
 		if self.Texture then
 			for k,v in pairs(self:GetMaterials()) do
 				if v:find("ewagon") then
-					--self:SetSubMaterial(k-1,self.Texture)
+					self:SetSubMaterial(k-1,self.Texture)
 				else
-					--self:SetSubMaterial(k-1,"")
+					self:SetSubMaterial(k-1,"")
 				end
 			end
 			self:SetNWString("texture",self.Texture)
