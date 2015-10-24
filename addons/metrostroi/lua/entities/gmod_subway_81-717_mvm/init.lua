@@ -39,6 +39,8 @@ function ENT:Initialize()
 	-- Hide seats
 	self.DriverSeat:SetColor(Color(0,0,0,0))
 	self.DriverSeat:SetRenderMode(RENDERMODE_TRANSALPHA)
+	self.InstructorsSeat:SetColor(Color(0,0,0,0))
+	self.InstructorsSeat:SetRenderMode(RENDERMODE_TRANSALPHA)
 	self.ExtraSeat1:SetColor(Color(0,0,0,0))
 	self.ExtraSeat1:SetRenderMode(RENDERMODE_TRANSALPHA)
 	self.ExtraSeat2:SetColor(Color(0,0,0,0))
@@ -312,7 +314,7 @@ function ENT:Initialize()
 	self.KVPType = self.KVPType or 0+math.floor(math.random()*4+1.5)
 	if self.KVPType == 1 then self.KVPType = 0 end
 	-- BPSN type
-	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*5+0.5)
+	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*6+0.5)
 	self:SetNWInt("BPSNType",self.BPSNType)
 	self:SetNWInt("KVPType",self.KVPType)
 

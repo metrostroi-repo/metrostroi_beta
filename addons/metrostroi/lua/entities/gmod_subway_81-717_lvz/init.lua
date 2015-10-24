@@ -31,12 +31,14 @@ function ENT:Initialize()
 	self.DriverSeat = self:CreateSeat("driver",Vector(421,0,-23+7.8))
 	self.InstructorsSeat = self:CreateSeat("instructor",Vector(420,50,-28+3),Angle(0,270,0))
 	self.ExtraSeat1 = self:CreateSeat("instructor",Vector(410,-40,-28+1))
-	self.ExtraSeat2 = self:CreateSeat("instructor",Vector(415,-50,-43),Angle(0,180,0),"models/vehicles/prisoner_pod_inner.mdl")
+	self.ExtraSeat2 = self:CreateSeat("instructor",Vector(430,-50,-43),Angle(0,180,0),"models/vehicles/prisoner_pod_inner.mdl")
 	self.ExtraSeat3 = self:CreateSeat("instructor",Vector(402,50,-43),Angle(0,-40+90,0),"models/vehicles/prisoner_pod_inner.mdl")
 
 	-- Hide seats
 	self.DriverSeat:SetColor(Color(0,0,0,0))
 	self.DriverSeat:SetRenderMode(RENDERMODE_TRANSALPHA)
+	self.InstructorsSeat:SetColor(Color(0,0,0,0))
+	self.InstructorsSeat:SetRenderMode(RENDERMODE_TRANSALPHA)
 	self.ExtraSeat1:SetColor(Color(0,0,0,0))
 	self.ExtraSeat1:SetRenderMode(RENDERMODE_TRANSALPHA)
 	self.ExtraSeat2:SetColor(Color(0,0,0,0))
@@ -322,7 +324,7 @@ function ENT:Initialize()
 	self.KVPType = self.KVPType or 0+math.floor(math.random()*4+1.5)
 	if self.KVPType == 1 then self.KVPType = 0 end
 	-- BPSN type
-	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*7+0.5)
+	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*6+0.5)
 	self:SetNWInt("BPSNType",self.BPSNType)
 	self:SetNWInt("KVPType",self.KVPType)
 
@@ -359,6 +361,8 @@ function ENT:Initialize()
 end
 --------------------------------------------------------------------------------
 function ENT:Think()
+	self.ExtraSeat1:SetPos(Vector(420,-40,-28+1))
+	--self.ExtraSeat3:SetPos(Vector(402,50,-43))
 	if self.PAKSD_VUD.Value == 0 then self.PAKSD_VUD:TriggerInput("Set",1) end
 	if self.Plombs and self.Plombs.Init then
 		self.Plombs.Init = nil

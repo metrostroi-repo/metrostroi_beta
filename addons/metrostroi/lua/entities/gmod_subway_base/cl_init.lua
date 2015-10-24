@@ -1176,7 +1176,7 @@ local function findAimButton(ply)
 		for kp,panel in pairs(train.ButtonMap) do
 			if train.HiddenPanels[kp] then continue end
 			--If player is looking at this panel
-			if panel.sensor and panel.aimX > 0 and panel.aimX < panel.width and panel.aimY > 0 and panel.aimY < panel.height then return false,panel.aimX,panel.aimY,panel.system end
+			if panel.aimX and panel.aimY and panel.sensor and panel.aimX > 0 and panel.aimX < panel.width and panel.aimY > 0 and panel.aimY < panel.height then return false,panel.aimX,panel.aimY,panel.system end
 			if panel.aimedAt and panel.buttons then
 				
 				--Loop trough every button on it

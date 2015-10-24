@@ -76,7 +76,7 @@ local function CreateList(name,text,tbl,OnSelect)
 		if OnSelect then OnSelect(List,ListLabel) end
 	end
 	table.insert(VGUI,function()
-		local on = Types[Settings.Train]:find(name)
+		local on = Types[Settings.Train]:find(name) and #tbl > 0 
 		List:SetVisible(on)
 		ListLabel:SetVisible(on)
 		if on then
@@ -86,7 +86,7 @@ local function CreateList(name,text,tbl,OnSelect)
 		end
 	end)
 	VGUI[name] = List
-	if Types[Settings.Train]:find(name) then Pos = Pos + 1 end
+	if Types[Settings.Train]:find(name) and #tbl > 0  then Pos = Pos + 1 end
 end
 	
 local function CreateSlider(name,decimals,min,max,text,OnSelect)
@@ -215,7 +215,7 @@ local function Draw()
 	CreateList("Blok","Autodrive panel",{"PUAV","PA-KSD","PA-M",LocalPlayer():IsAdmin() and "PA-KSD-M" or nil})
 	CreateList("Mask","Mask",{"2-2","2-2-2","1-4-1 bumper 1","1-4-1 bumper 2","1-1","Retro"})
 	CreateList("PiterMsk","PiterMsk",{"1-4-1","2-2 Down-2","2-2","2-2-2","1-3-1"})
-	CreateList("BPSN","BPSN type",{"Old high tone","Old medium tone","Normal(from St.Petersburg)","Normal","No sound(BPN-115)"})
+	CreateList("BPSN","BPSN type",{"Old high tone","Old medium tone","Normal(from St.Petersburg)","Normal","Old tone","No sound(BPN-115)"})
 	CreateList("Seat","Seat type",{"Old","New"})
 	CreateList("Hand","Hand rail type",{"Old","New"})
 	CreateList("Bort","Bort",{"Horisontal","Vertical"})

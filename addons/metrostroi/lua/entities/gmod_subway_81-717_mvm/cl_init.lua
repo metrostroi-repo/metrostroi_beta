@@ -770,7 +770,7 @@ Metrostroi.ClientPropForButton("LSD",{
 	panel = "OldARS",
 	button = "LSD",
 	model = "models/metrostroi_train/81/lamplsd.mdl",
-	z = 68,
+	z = 70,
 	ang = 0,
 })
 Metrostroi.ClientPropForButton("LOCh",{
@@ -1949,7 +1949,7 @@ function ENT:Think()
 		self:ShowHideSmooth("L60",self:Animate("light_60",self:GetPackedBool(44) and 1 or 0,0,1,8,false))
 		self:ShowHideSmooth("L80",self:Animate("light_80",self:GetPackedBool(46) and 1 or 0,0,1,8,false))
 		self:ShowHideSmooth("L70",self:Animate("light_70",self:GetPackedBool(45) and 1 or 0,0,1,8,false))
-		self:ShowHideSmooth("LRK",self:Animate("light_LhRK",self:GetPackedBool(33) and 1 or 0,0,12,1,false))
+		self:ShowHideSmooth("LRK",self:Animate("light_LhRK",self:GetPackedBool(33) and 1 or 0,0,1,8,false))
 	end
 	local accel = self:GetNWFloat("Accel")
 	
@@ -2100,12 +2100,23 @@ function ENT:Think()
 	--self:SetSoundState("ring2",0.20,1)
 	
 	-- DIP sound
-	self.BPSNType = self:GetNWInt("BPSNType",6)
+	self.BPSNType = self:GetNWInt("BPSNType",7)
 	if not self.OldBPSNType then self.OldBPSNType = self.BPSNType end
 	if self.BPSNType ~= self.OldBPSNType then
-		self:SetSoundState("bpsn"..self.OldBPSNType,0,1.0)
+		if self.OldBPSNType ~= 6 then
+			self:SetSoundState("bpsn"..self.OldBPSNType,0,1.0)
+		else
+			self:SetSoundState("bpsn1",0,1.0)
+			self:SetSoundState("bpsn5",0,1.0)
+		end
 	end
-	self:SetSoundState("bpsn"..self.BPSNType,self:GetPackedBool(52) and 2 or 0,1.0,nil,0.9)
+	if self.BPSNType ~= 6 then
+		self:SetSoundState("bpsn"..self.BPSNType,self:GetPackedBool(52) and 2 or 0,1.0,nil,0.9)
+	else
+		self:SetSoundState("bpsn1",0,1.0)
+		self:SetSoundState("bpsn2",self:GetPackedBool(52) and 0.16 or 0,1.0)
+		self:SetSoundState("bpsn5",self:GetPackedBool(52) and 1 or 0,1.0)
+	end
 	self.OldBPSNType = self.BPSNType
 end
 

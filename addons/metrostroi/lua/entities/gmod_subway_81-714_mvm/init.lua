@@ -190,7 +190,7 @@ function ENT:Initialize()
 	end
 	
 	-- BPSN type
-	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*5+0.5)
+	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*6+0.5)
 	self:SetNWInt("BPSNType",self.BPSNType)
 	self.OldTexture = 0
 	
