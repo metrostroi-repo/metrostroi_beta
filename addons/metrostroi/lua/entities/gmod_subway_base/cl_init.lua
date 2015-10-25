@@ -291,7 +291,7 @@ function ENT:SpawnCSEnt(k)
 		end
 		if self.Anims[k] and self.Anims[k].alpha then
 			if self.Anims[k].alpha > 0 then		
-				cent:SetColor(Color(255,255,255,self.Anims[k].alpha*255))
+				cent:SetColor(Color(v.color.r,v.color.g,v.color.b,self.Anims[k].alpha*255))
 				cent:SetRenderMode(RENDERMODE_TRANSALPHA)
 			else
 				cent:Remove()
@@ -942,7 +942,12 @@ function ENT:ShowHideSmooth(clientProp, value)
 		self.ClientEnts[clientProp]:Remove()
 	end
 	if IsValid(self.ClientEnts[clientProp]) then
-		self.ClientEnts[clientProp]:SetColor(Color(255,255,255,value*255))
+		local v = self.ClientProps[clientProp]
+		if v.color then
+			self.ClientEnts[clientProp]:SetColor(Color(v.color.r,v.color.g,v.color.b,value*255))
+		else
+			self.ClientEnts[clientProp]:SetColor(Color(255,255,255,value*255))
+		end
 		self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_TRANSALPHA)
 		--self.HiddenQuele[clientProp] = nil
 	--else
@@ -1060,7 +1065,7 @@ hook.Add("CalcView", "Metrostroi_TrainView", function(ply,pos,ang,fov,znear,zfar
 	if (not seat) or (not seat:IsValid()) then return end
 	local train = seat:GetNWEntity("TrainEntity")
 	if (not train) or (not train:IsValid()) then return end
-	
+
 	--local hack = string.find(train:GetClass(),"81")
 	--local dy = 0
 	--if hack then dy = 3 end

@@ -606,10 +606,10 @@ function TRAIN_SYSTEM:Think(dT)
 		self["31"] = 0
 		self["32"] = 0
 		--self["8"] = KRUEnabled and (1-Train.RPB.Value) or 0
-		self["33D"] = (self.Speed + 0.5 > 35 and ((not PAKSD and not PAKSDM) or Train[KSDType].State > 0)) and 0 or 1
+		self["33D"] = (self.Speed + 0.5 > 9000 and ((not PAKSD and not PAKSDM) or Train[KSDType].State > 0)) and 0 or 1
 		--self["33G"] = (self.Speed + 0.5 > 35) and 1 or KRUEnabled and (1-Train.RPB.Value) or 0
 		--self["33Zh"] = 1--(self.Speed + 0.5 > 40) and 0 or KAH
-		self["8"] = (self.Speed + 0.5 > 35 and ((not PAKSD and not PAKSDM) or Train[KSDType].State > 0)) and 1 or KRUEnabled and (1-Train.RPB.Value) or 0
+		self["8"] = (self.Speed + 0.5 > 9000 and ((not PAKSD and not PAKSDM) or Train[KSDType].State > 0)) and 1 or KRUEnabled and (1-Train.RPB.Value) or 0
 	else
 		if (not self.EPKActivated) then
 			self["33D"] = 0

@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 if not Metrostroi.Paths then
 	-- Definition of paths used in runtime
-	Metrostroi.Paths = {}			
+	Metrostroi.Paths = {}
 	-- Spatial lookup for nodes
 	Metrostroi.SpatialLookup = {}
 	
@@ -945,7 +945,6 @@ function Metrostroi.Load(name,keep_signs)
 		end
 		local pos1 = Metrostroi.GetPositionOnTrack(node1.pos,nil,{ ignore_path = ignore_path })
 		local pos2 = Metrostroi.GetPositionOnTrack(node2.pos,nil,{ ignore_path = ignore_path })
-		
 		-- Create connection
 		local join1,join2
 		if pos1[1] then join1 = pos1[1].node1 end

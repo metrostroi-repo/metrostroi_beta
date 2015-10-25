@@ -1848,6 +1848,27 @@ ENT.ClientProps["wiper"] = {
 	pos = Vector(463.8,0,53.8),
 	ang = Angle(0,-90,0)
 }
+for i = 1,23 do
+	ENT.ClientProps["lamp1_"..i] = {
+		model = "models/metrostroi_train/81/lamp1.mdl",
+		pos = Vector(-455.5 + 34.796*i, 0, 77),
+		ang = Angle(180,0,0),
+		color = Color(255,175,100),
+	}
+end
+for i = 1,12 do
+	ENT.ClientProps["lamp2_"..i] = {
+		model = "models/metrostroi_train/81/lamp2.mdl",
+		pos = Vector(-462.9 + 66.12*i, 0, 76.7),
+		ang = Angle(180,0,0),
+		color = Color(240,240,255),
+	}
+	ENT.ClientProps["lamp3_"..i] = {
+		model = "models/metrostroi_train/81/lamp3.mdl",
+		pos = Vector(-462.9 + 66.12*i, 0, 77.5),
+		ang = Angle(180,0,0),
+	}
+end
 
 --ENT.AutoPos = {Vector(407.3,-10.5,47),Vector(419.3,-57.5,47.5)}
 --local X = Material( "metrostroi_skins/81-717/6.png")
@@ -2275,6 +2296,29 @@ function ENT:Think()
 	if self.Door3 == 0.99 then
 		--sendButtonMessage({ID = "CabinDoor",state = true})
 		--sendButtonMessage({ID = "CabinDoor",state = false})
+	end
+	if self.LampType ~= self:GetNWInt("LampType",1) then
+		self.LampType = self:GetNWInt("LampType",1)
+		for i = 1,23 do
+			self:ShowHide("lamp1_"..i,self.LampType == 1)
+			if i < 13 then
+				self:ShowHide("lamp2_"..i,self.LampType == 2)
+				self:ShowHide("lamp3_"..i,self.LampType == 3)
+			end
+		end
+	end
+	if self.LampType == 1 then
+		for i = 1,23 do
+			self:ShowHideSmooth("lamp1_"..i,self:Animate("Lamp1_"..i,	(self:GetPackedBool("lightsActive"..i) or self:GetPackedBool("lightsActiveB"..i) and CurTime()%math.random()*2 > 0.8) and 1 or 0,0,1,6,false))
+		end
+	else
+		for i = 1,12 do
+			if self.LampType == 2 then
+				self:ShowHideSmooth("lamp2_"..i,self:Animate("Lamp2_"..i,	(self:GetPackedBool("lightsActive"..i) or self:GetPackedBool("lightsActiveB"..i) and CurTime()%math.random()*2 > 0.8) and 1 or 0,0,1,6,false))
+			else
+				self:ShowHideSmooth("lamp3_"..i,self:Animate("Lamp3_"..i,	(self:GetPackedBool("lightsActive"..i) or self:GetPackedBool("lightsActiveB"..i) and CurTime()%math.random()*2 > 0.8) and 1 or 0,0,1,6,false))
+			end
+		end
 	end
 	
 	self:Animate("door1",	self:GetPackedBool(156) and (self.Door1 or 0.99) or 0,0,0.54, 1024, 1)

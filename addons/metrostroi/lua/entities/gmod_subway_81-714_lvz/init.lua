@@ -153,15 +153,15 @@ function ENT:Initialize()
 		[13] = { "dynamiclight",	Vector(-350, 0, 5), Angle(0,0,0), Color(255,220,180), brightness = 3, distance = 400 },
 		
 		-- Side lights
-		[14] = { "light",			Vector(-50, 68, 69.5), Angle(0,0,0), Color(255,0,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[15] = { "light",			Vector(15.2,   69, 59.5), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[16] = { "light",			Vector(12,   69, 59.5), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[17] = { "light",			Vector(9,  69, 59.5), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		[14] = { "light",			Vector(-50, 68, 69.5), Angle(0,0,0), Color(255,0,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[15] = { "light",			Vector(15.2,   69, 59.5), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[16] = { "light",			Vector(12,   69, 59.5), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[17] = { "light",			Vector(9,  69, 59.5), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
 		
-		[18] = { "light",			Vector(-50, -69, 59.5), Angle(0,0,0), Color(255,0,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[19] = { "light",			Vector(15,   -69, 59.5), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[20] = { "light",			Vector(12,   -69, 59.5), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[21] = { "light",			Vector(9,  -69, 59.5), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		[18] = { "light",			Vector(-50, -69, 59.5), Angle(0,0,0), Color(255,0,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[19] = { "light",			Vector(15,   -69, 59.5), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[20] = { "light",			Vector(12,   -69, 59.5), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[21] = { "light",			Vector(9,  -69, 59.5), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
 
 		-- Green RP
 		[22] = { "light",			Vector(461,12.75+1.5-9.6,-0.8), Angle(0,0,0), Color(0,255,0), brightness = 1.0, scale = 0.020 },
@@ -206,6 +206,13 @@ function ENT:Initialize()
 			end
 		end
 	end
+	self.LampsBlink = {}
+	self.Lamps = {}
+	self.BrokenLamps = {}
+	local rand = math.random() > 0.5 and 1 or math.random(0.93,0.99)
+	for i = 1,23 do
+		if math.random() > rand then self.BrokenLamps[i] = math.random() > 0.5 end
+	end
 end
 
 
@@ -220,28 +227,13 @@ function ENT:Think()
 	if self.SpeedSign and self.YAR_13A.Slope > 0 and self:GetAngles().pitch*self.SpeedSign > -1 then
 		self.YAR_13A:TriggerInput("Slope",false)
 	end
-	if self.Lights[70] and self.LampType and self.LampType == 1 and self.Lights[70][4] ~= Color(255,175,50) then
-		for i = 1,23 do
-			self:SetLightPower(69+i,false)
-			self.Lights[69+i][2] = Vector(-470 + 35.8*i, 0, 70)
-			self.Lights[69+i][4] = Color(255,175,50)
-		end
+	if self.Lights[11] and self.LampType and self.LampType == 1 and self.Lights[11][4] ~= Color(255,175,75) then
 		for i = 11,13 do
 			self:SetLightPower(i,false)
-			self.Lights[i][4] = Color(255,175,50)
+			self.Lights[i][4] = Color(255,175,75)
 		end
-		self.LightsReload = true
 	end
-	if self.Lights[70] and self.LampType and self.LampType > 1 and ((self.Lights[70][4] ~= Color(200,200,255)  and self.LampType == 2) or (self.Lights[70][4] ~= Color(255,255,255)  and self.LampType == 3)) then
-		for i = 1,23 do
-			self:SetLightPower(69+i,false)
-			self.Lights[69+i][2] = Vector(-474 + 67.5*i, 0, 70)
-			if self.LampType == 2 then
-				self.Lights[69+i][4] = Color(200,200,255)
-			elseif self.LampType == 3 then
-				self.Lights[69+i][4] = Color(255,255,255)
-			end
-		end
+	if self.Lights[11] and self.LampType and self.LampType > 1 and ((self.Lights[11][4] ~= Color(200,200,255)  and self.LampType == 2) or (self.Lights[11][4] ~= Color(255,255,255)  and self.LampType == 3)) then
 		for i = 11,13 do
 			self:SetLightPower(i,false)
 			if self.LampType == 2 then
@@ -250,12 +242,12 @@ function ENT:Think()
 				self.Lights[i][4] = Color(255,255,255)
 			end
 		end
-		self.LightsReload = true
 	end
 
 	self.TextureTime = self.TextureTime or CurTime()
 	if (CurTime() - self.TextureTime) > 1.0 then
 		self.TextureTime = CurTime()
+		self:SetNWInt("LampType",(self.LampType or 1))
 		if self.Texture or self.PassTexture or self.SignsList	 then
 			for k,v in pairs(self:GetMaterials()) do
 				if v == "models/metrostroi_train/81/b01a" then
@@ -291,19 +283,31 @@ function ENT:Think()
 	-- Interior/cabin lights
 	local lightsActive1 = (self.Battery.Voltage > 55.0 and self.Battery.Voltage < 85.0) and
 		((self:ReadTrainWire(33) > 0) or (self:ReadTrainWire(34) > 0))
-	local lightsActive2 = (self.PowerSupply.XT3_4 > 65.0) and
+	local lightsActive2 = (self.PowerSupply.XT3_4 > 55.0) and
 		(self:ReadTrainWire(33) > 0)
-	if not self.LightsActive then self.LightsActive = 0 end
-	if (lightsActive1 and not lightsActive2) and self.LightsActive ~= 1 or lightsActive2 and self.LightsActive ~= 2 or (not lightsActive1 and not lightsActive2) and self.LightsActive ~= 0 or self.LightsReload then
-		self:SetLightPower(11, lightsActive1, 0.2*self:ReadTrainWire(34) + 0.8*self:ReadTrainWire(33))
-		self:SetLightPower(12, lightsActive2, 0.2*self:ReadTrainWire(34) + 0.8*self:ReadTrainWire(33))
-		self:SetLightPower(13, lightsActive1, 0.2*self:ReadTrainWire(34) + 0.8*self:ReadTrainWire(33))
-		--print(lightsActive1,lightsActive2)
-		for i = 1,23 do
-			self:SetLightPower(69+i,(lightsActive2 or (lightsActive1 and (i+3)%(self.LampType == 1 and 5 or 3)==1)) and (self.LampType == 1 or i < 14))
+	local mul = 0
+
+	local LampCount  = (self.LampType == 1 and 25 or 13)
+	for i = 1,LampCount do
+		local Ip = self.LampType == 1 and 6 or 3
+		if (lightsActive2 or (lightsActive1 and (i+Ip-2)%Ip==1)) then
+			if not self.BrokenLamps[i]  and not self.LampsBlink[i] then self.LampsBlink[i] = CurTime() + math.random() end
+			if self.BrokenLamps[i] == nil and self.LampsBlink[i] and CurTime() - self.LampsBlink[i] > 0 and not self.Lamps[i] then self.Lamps[i] = CurTime() + math.random()*4 end
+		else
+			self.LampsBlink[i] = nil
+			self.Lamps[i] = nil
 		end
-		self.LightsActive = (lightsActive2 and 2 or lightsActive1 and 1 or 0)
+		if (self.Lamps[i] and CurTime() - self.Lamps[i] > 0) then
+			mul = mul + 1
+		elseif (self.LampsBlink[i] and CurTime() - self.LampsBlink[i] > 0) then
+			mul = mul + 0.5
+		end
+		self:SetPackedBool("lightsActive"..i,(self.Lamps[i] and CurTime() - self.Lamps[i] > 0) or false)
+		self:SetPackedBool("lightsActiveB"..i,(self.LampsBlink[i] and CurTime() - self.LampsBlink[i] > 0) or false)
 	end
+	self:SetLightPower(11, mul > 0,mul/LampCount)
+	self:SetLightPower(12, mul > 0,mul/LampCount)
+	self:SetLightPower(13, mul > 0,mul/LampCount)
 	-- Side lights
 	self:SetLightPower(15, self.Panel["TrainDoors"] > 0.5)
 	self:SetLightPower(19, self.Panel["TrainDoors"] > 0.5)

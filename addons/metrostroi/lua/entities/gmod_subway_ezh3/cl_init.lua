@@ -14,7 +14,7 @@ ENT.ButtonMap["Main"] = {
 	height = 145,
 	scale = 0.0625,
 	
-	buttons = {		
+	buttons = {
 		{ID = "DIPonSet",		x=22,  y=19, radius=20, tooltip="Включение ДИП и освещения\nTurn DIP and interior lights on"},
 		{ID = "DIPoffSet",		x=66,  y=19, radius=20, tooltip="Выключение ДИП и освещения\nTurn DIP and interior lights off"},
 		{ID = "VozvratRPSet",	x=192, y=78, radius=20, tooltip="Возврат реле перегрузки\nReset overload relay"},

@@ -304,12 +304,12 @@ function ENT:Think()
 	else
 		local k = "m1"
 
-		if not IsValid(self.Models[k]) then
+		if not IsValid(self.Models[1][k]) then
 			local v = self.TrafficLightModels[self.LightType]["m1"]
-			self.Models[k] = ClientsideModel(v,RENDERGROUP_OPAQUE)
-			self.Models[k]:SetPos(self:LocalToWorld(self.BasePosition))
-			self.Models[k]:SetAngles(self:GetAngles())
-			self.Models[k]:SetParent(self)
+			self.Models[1][k] = ClientsideModel(v,RENDERGROUP_OPAQUE)
+			self.Models[1][k]:SetPos(self:LocalToWorld(self.BasePosition))
+			self.Models[1][k]:SetAngles(self:GetAngles())
+			self.Models[1][k]:SetParent(self)
 		end
 	end
 	self.Models.have = true

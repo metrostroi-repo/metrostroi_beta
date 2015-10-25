@@ -378,6 +378,27 @@ ENT.ClientProps["door2"] = {
 	ang = Angle(0,-90,0)
 }
 
+for i = 1,25 do
+	ENT.ClientProps["lamp1_"..i] = {
+		model = "models/metrostroi_train/81/lamp1.mdl",
+		pos = Vector(-455.8 + 34.801*i, 0, 76.9),
+		ang = Angle(180,0,0),
+		color = Color(255,175,100),
+	}
+end
+for i = 1,13 do
+	ENT.ClientProps["lamp2_"..i] = {
+		model = "models/metrostroi_train/81/lamp2.mdl",
+		pos = Vector(-466 + 66.12*i, 0, 76.7),
+		ang = Angle(180,0,0),
+		color = Color(240,240,255),
+	}
+	ENT.ClientProps["lamp3_"..i] = {
+		model = "models/metrostroi_train/81/lamp3.mdl",
+		pos = Vector(-466 + 66.12*i, 0, 77.5),
+		ang = Angle(180,0,0),
+	}
+end
 ENT.RearDoor = 0
 ENT.FrontDoor = 0
 --------------------------------------------------------------------------------
@@ -420,6 +441,29 @@ function ENT:Think()
 	self:Animate("KRP",				self:GetPackedBool(113) and 1 or 0, 0,1, 16, false)	
 	self:Animate("BPSNon",			self:GetPackedBool(59) and 1 or 0, 	0,1, 16, false)
 
+	if self.LampType ~= self:GetNWInt("LampType",1) then
+		self.LampType = self:GetNWInt("LampType",1)
+		for i = 1,25 do
+			self:ShowHide("lamp1_"..i,self.LampType == 1)
+			if i < 14 then
+				self:ShowHide("lamp2_"..i,self.LampType == 2)
+				self:ShowHide("lamp3_"..i,self.LampType == 3)
+			end
+		end
+	end
+	if self.LampType == 1 then
+		for i = 1,25 do
+			self:ShowHideSmooth("lamp1_"..i,self:Animate("Lamp1_"..i,	(self:GetPackedBool("lightsActive"..i) or self:GetPackedBool("lightsActiveB"..i) and CurTime()%math.random()*2 > 0.8) and 1 or 0,0,1,6,false))
+		end
+	else
+		for i = 1,13 do
+			if self.LampType == 2 then
+				self:ShowHideSmooth("lamp2_"..i,self:Animate("Lamp2_"..i,	(self:GetPackedBool("lightsActive"..i) or self:GetPackedBool("lightsActiveB"..i) and CurTime()%math.random()*2 > 0.8) and 1 or 0,0,1,6,false))
+			else
+				self:ShowHideSmooth("lamp3_"..i,self:Animate("Lamp3_"..i,	(self:GetPackedBool("lightsActive"..i) or self:GetPackedBool("lightsActiveB"..i) and CurTime()%math.random()*2 > 0.8) and 1 or 0,0,1,6,false))
+			end
+		end
+	end
 	local accel = self:GetNWFloat("Accel")
 	--print(accel)
 	--print(accel)
