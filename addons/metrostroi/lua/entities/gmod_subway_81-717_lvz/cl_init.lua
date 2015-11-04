@@ -77,6 +77,7 @@ ENT.ButtonMap["Front"] = {
 		{ID = "VAHToggle",x=170, y=200, radius=20, tooltip="ВАХ: Включение аварийного хода (неисправность реле педали безопасности)\nVAH: Emergency driving mode (failure of RPB relay)"},
 		{ID = "VAHPl",x=170, y=227, radius=20, tooltip="Пломба кнопки ВАХ\nVAH plomb"},
 		{ID = "VADToggle",x=127, y=200, radius=20, tooltip="ВАД: Включение аварийного закрытия дверей (неисправность реле контроля дверей)\nVAD: Emergency door close override (failure of KD relay)"},		
+		{ID = "VADPl",x=127, y=227, radius=20, tooltip="Пломба кнопки ВАХ\nVAH plomb"},
 		{ID = "RezMKSet",x=53,  y=102, radius=20, tooltip="Резервное включение мотор-компрессора\nEmergency motor-compressor startup"},
 		--{ID = "KAHSet",x=53,  y=98, radius=20, tooltip="КАХ: Кнопка аварийного хода\nEmergency drive button"},
 		--{ID = "KAHPl",x=37, y=68, radius=20, tooltip="Пломба крышки КАХ\nKAH plomb"},
@@ -878,6 +879,12 @@ Metrostroi.ClientPropForButton("VAD",{
 	button = "VADToggle",
 	model = "models/metrostroi_train/81/tumbler1.mdl",
 	ang = 90
+})
+Metrostroi.ClientPropForButton("VADPl",{
+	panel = "Front",
+	button = "VADPl",
+	model = "models/metrostroi_train/81/plomb.mdl",
+	z = -3,
 })
 Metrostroi.ClientPropForButton("ALS",{
 	panel = "Main",
@@ -2077,11 +2084,14 @@ function ENT:Think()
 	self:SetCSBodygroup("OtklAVUPl",1,self:GetPackedBool("OtklAVUPl") and 0 or 1)
 	self:SetCSBodygroup("OVTPl",1,self:GetPackedBool("OVTPl") and 0 or 1)
 
+	self:SetCSBodygroup("VAHPl",1,self:GetPackedBool("VAHPl") and 0 or 1)
+	self:SetCSBodygroup("VADPl",1,self:GetPackedBool("VADPl") and 0 or 1)
 	self:SetCSBodygroup("RC1Pl",1,self:GetPackedBool("RC1Pl") and 0 or 1)
 	self:SetCSBodygroup("A5Pl",1,self:GetPackedBool("A5Pl") and 0 or 1)
 	self:SetCSBodygroup("RC1Pl_2",1,self:GetPackedBool("RC1Pl") and 0 or 1)
 	
 	self:HideButton("VAH",self:GetPackedBool("VAHPl"))
+	self:HideButton("VAD",self:GetPackedBool("VADPl"))
 	self:HideButton("OtklAVU",self:GetPackedBool("OtklAVUPl"))
 	self:HideButton("OVT",self:GetPackedBool("OVTPl"))
 
@@ -2091,6 +2101,7 @@ function ENT:Think()
 	self:HideButton("2:A5Toggle",self:GetPackedBool("A5Pl"))
 		
 	self:HideButton("VAHPl",not self:GetPackedBool("VAHPl"))
+	self:HideButton("VADPl",not self:GetPackedBool("VADPl"))
 	
 	self:HideButton("OVTPl",not self:GetPackedBool("OVTPl"))
 	self:HideButton("OtklAVUPl",not self:GetPackedBool("OtklAVUPl"))

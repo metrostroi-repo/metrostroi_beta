@@ -13,6 +13,7 @@ function ENT:Initialize()
 	}
 	self.Plombs = {
 		VAH = true,
+		VAD = true,
 		OtklAVU = true,
 		OVT = true,
 		RC1 = true,
@@ -1109,11 +1110,6 @@ function ENT:OnButtonPress(button,state)
 	end
 	if button == "CabinDoor" then
 		self.CabinDoor = not self.CabinDoor
-	end
-	if button == "VADToggle" then
-		local drv = self:GetDriverName()
-		local state = self.VAD.TargetValue < 0.5 and "enabled" or "disabled"
-		RunConsoleCommand("say",drv.." "..state.." VAD!")
 	end
 	if button == "UAVAToggle" then
 		local drv = self:GetDriverName()

@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/metrostroi_train/E/doors"
+	"$bumpmap" "models/metrostroi_train/E/doors_n"
+	"$selfillum" "1"
+	"$model" "1"
+}
