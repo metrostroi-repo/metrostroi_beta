@@ -12,7 +12,7 @@ function TRAIN_SYSTEM:Initialize()
 	-- Контактор 6-ого провода (К6)
 	self.Train:LoadSystem("K6","Relay","KPD-110E", { in_cabin = true })
 	-- Реле времени торможения (РВТ)
-	self.Train:LoadSystem("RVT","Relay","REV-811T", { rvt	 = true, open_time = 0.3 })--(self.Train.Electric.TrainSolver:find("81-") and 0.3 or 0.7)
+	self.Train:LoadSystem("RVT","Relay","REV-811T", { rvt	 = true, open_time = 0.3, close_time = 0.1 })--(self.Train.Electric.TrainSolver:find("81-") and 0.3 or 0.7)
 	-- Реле педали бдительности (РПБ)
 	self.Train:LoadSystem("RPB","Relay","REV-813T", { in_cabin = true, open_time = 2.5, rpb = true })
 	-- РВ-2
@@ -40,7 +40,7 @@ function TRAIN_SYSTEM:Think()
 	if not self.Checked then
 		if not self.Train.Electric.TrainSolver:find("81") then
 			self.Train.RVT.open_time = 1
-			FailSim.AddParameter(self.Train.RVT,"OpenTime", 		{ value = self.Train.RVT.open_time, precision = self.Train.RVT.contactor and 0.35 or 0.10, min = 0.010, varies = true })
+			FailSim.AddParameter(self.Train.RVT,"OpenTime",		{ value = self.Train.RVT.open_time })--, precision = self.Train.RVT.contactor and 0.35 or 0.10, min = 0.010, varies = true })
 		end
 		self.Checked = true
 	end

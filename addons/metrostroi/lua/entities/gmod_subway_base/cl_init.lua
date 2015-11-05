@@ -291,7 +291,7 @@ function ENT:SpawnCSEnt(k)
 		end
 		if self.Anims[k] and self.Anims[k].alpha then
 			if self.Anims[k].alpha > 0 then		
-				cent:SetColor(Color(255,255,255,self.Anims[k].alpha*255))
+				cent:SetColor(Color(v.color.r,v.color.g,v.color.b,self.Anims[k].alpha*255))
 				cent:SetRenderMode(RENDERMODE_TRANSALPHA)
 			else
 				cent:Remove()
@@ -942,7 +942,12 @@ function ENT:ShowHideSmooth(clientProp, value)
 		self.ClientEnts[clientProp]:Remove()
 	end
 	if IsValid(self.ClientEnts[clientProp]) then
-		self.ClientEnts[clientProp]:SetColor(Color(255,255,255,value*255))
+		local v = self.ClientProps[clientProp]
+		if v.color then
+			self.ClientEnts[clientProp]:SetColor(Color(v.color.r,v.color.g,v.color.b,value*255))
+		else
+			self.ClientEnts[clientProp]:SetColor(Color(255,255,255,value*255))
+		end
 		self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_TRANSALPHA)
 		--self.HiddenQuele[clientProp] = nil
 	--else
@@ -1060,7 +1065,7 @@ hook.Add("CalcView", "Metrostroi_TrainView", function(ply,pos,ang,fov,znear,zfar
 	if (not seat) or (not seat:IsValid()) then return end
 	local train = seat:GetNWEntity("TrainEntity")
 	if (not train) or (not train:IsValid()) then return end
-	
+
 	--local hack = string.find(train:GetClass(),"81")
 	--local dy = 0
 	--if hack then dy = 3 end
@@ -1160,7 +1165,7 @@ local function LinePlaneIntersect(PlanePos,PlaneNormal,LinePos,LineDir)
 	return LineDir * dis + LinePos
 end
 
-local function findAimButton(ply)
+local function findAimButton(ply,press)
 	local train = isValidTrainDriver(ply)
 	if not IsValid(train) and LocalPlayer():GetActiveWeapon():GetClass() == "train_kv_wrench" then
 		local trace = util.TraceLine({
@@ -1176,9 +1181,9 @@ local function findAimButton(ply)
 		for kp,panel in pairs(train.ButtonMap) do
 			if train.HiddenPanels[kp] then continue end
 			--If player is looking at this panel
-			if panel.sensor and panel.aimX > 0 and panel.aimX < panel.width and panel.aimY > 0 and panel.aimY < panel.height then return false,panel.aimX,panel.aimY,panel.system end
+			if panel.aimX and panel.aimY and panel.sensor and panel.aimX > 0 and panel.aimX < panel.width and panel.aimY > 0 and panel.aimY < panel.height then return false,panel.aimX,panel.aimY,panel.system end
 			if panel.aimedAt and panel.buttons then
-				
+				if GetConVarNumber("metrostroi_drawdebug") > 0 and press then print(kp,panel.aimX,panel.aimY) end
 				--Loop trough every button on it
 				for kb,button in pairs(panel.buttons) do
 					if train.Hidden[button.PropName] or train.HiddenButton[button.PropName] then continue end
@@ -1360,7 +1365,7 @@ local function handleKeyEvent(ply,key,pressed)
 	if train.ButtonMap == nil then return end
 	if key == 524288 and not pressed then train:ClearButtons() end
 	if pressed then
-		local button,x,y,system = findAimButton(ply)
+		local button,x,y,system = findAimButton(ply,true)
 		if button and !button.state then
 			button.state = true
 			sendButtonMessage(button,outside)

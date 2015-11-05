@@ -11,6 +11,11 @@
             <File name="lua\entities\gmod_subway_base\init.lua" />
             <File name="lua\entities\gmod_subway_base\shared.lua" />
         </Folder>
+        <Folder name="E">
+            <File name="lua\entities\gmod_subway_E\cl_init.lua" />
+            <File name="lua\entities\gmod_subway_E\init.lua" />
+            <File name="lua\entities\gmod_subway_E\shared.lua" />
+        </Folder>
         <Folder name="717_mvm">
             <File name="lua\entities\gmod_subway_81-717_mvm\cl_init.lua" />
             <File name="lua\entities\gmod_subway_81-717_mvm\init.lua" />

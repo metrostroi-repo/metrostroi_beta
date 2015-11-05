@@ -13,6 +13,7 @@ function ENT:Initialize()
 	}
 	self.Plombs = {
 		VAH = true,
+		VAD = true,
 		OtklAVU = true,
 		OVT = true,
 		RC1 = true,
@@ -31,12 +32,14 @@ function ENT:Initialize()
 	self.DriverSeat = self:CreateSeat("driver",Vector(421,0,-23+7.8))
 	self.InstructorsSeat = self:CreateSeat("instructor",Vector(420,50,-28+3),Angle(0,270,0))
 	self.ExtraSeat1 = self:CreateSeat("instructor",Vector(410,-40,-28+1))
-	self.ExtraSeat2 = self:CreateSeat("instructor",Vector(415,-50,-43),Angle(0,180,0),"models/vehicles/prisoner_pod_inner.mdl")
+	self.ExtraSeat2 = self:CreateSeat("instructor",Vector(430,-50,-43),Angle(0,180,0),"models/vehicles/prisoner_pod_inner.mdl")
 	self.ExtraSeat3 = self:CreateSeat("instructor",Vector(402,50,-43),Angle(0,-40+90,0),"models/vehicles/prisoner_pod_inner.mdl")
 
 	-- Hide seats
 	self.DriverSeat:SetColor(Color(0,0,0,0))
 	self.DriverSeat:SetRenderMode(RENDERMODE_TRANSALPHA)
+	self.InstructorsSeat:SetColor(Color(0,0,0,0))
+	self.InstructorsSeat:SetRenderMode(RENDERMODE_TRANSALPHA)
 	self.ExtraSeat1:SetColor(Color(0,0,0,0))
 	self.ExtraSeat1:SetRenderMode(RENDERMODE_TRANSALPHA)
 	self.ExtraSeat2:SetColor(Color(0,0,0,0))
@@ -231,13 +234,13 @@ function ENT:Initialize()
 		[13] = { "dynamiclight",	Vector(-200, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400 , fov=180,farz = 128 },
 		
 		-- Side lights
-		[15] = { "light",			Vector(15,   69, 58.3), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[16] = { "light",			Vector(12,   69, 58.3), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[17] = { "light",			Vector(9,  69, 58.3), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		[15] = { "light",			Vector(15,   69, 58.3), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[16] = { "light",			Vector(12,   69, 58.3), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[17] = { "light",			Vector(9,  69, 58.3), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
 		
-		[19] = { "light",			Vector(15,   -69, 58.3), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[20] = { "light",			Vector(12,   -69, 58.3), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[21] = { "light",			Vector(9,  -69, 58.3), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		[19] = { "light",			Vector(15,   -69, 58.3), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[20] = { "light",			Vector(12,   -69, 58.3), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[21] = { "light",			Vector(9,  -69, 58.3), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
 
 	--self.Lights[22]
 		--self.Lights[26]
@@ -299,9 +302,6 @@ function ENT:Initialize()
 		[99] = { "headlight",		Vector(460,45,-10), Angle(-5,20,0), Color(216,161,92), fov = 70 },
 		]]
 	}
-	for i = 1,23 do
-		self.Lights[69+i] = { "light", Vector(-470 + 35.8*i, 0, 70), Angle(180,0,0), Color(255,220,180), brightness = 1, scale = 0.75}
-	end
 	-- Cross connections in train wires
 	self.TrainWireCrossConnections = {
 		[5] = 4, -- Reverser F<->B
@@ -322,7 +322,7 @@ function ENT:Initialize()
 	self.KVPType = self.KVPType or 0+math.floor(math.random()*4+1.5)
 	if self.KVPType == 1 then self.KVPType = 0 end
 	-- BPSN type
-	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*7+0.5)
+	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*6+0.5)
 	self:SetNWInt("BPSNType",self.BPSNType)
 	self:SetNWInt("KVPType",self.KVPType)
 
@@ -356,9 +356,19 @@ function ENT:Initialize()
 			end
 		end
 	end
+
+	self.LampsBlink = {}
+	self.Lamps = {}
+	self.BrokenLamps = {}
+	local rand = math.random() > 0.5 and 1 or math.random(0.93,0.99)
+	for i = 1,23 do
+		if math.random() > rand then self.BrokenLamps[i] = math.random() > 0.5 end
+	end
 end
 --------------------------------------------------------------------------------
 function ENT:Think()
+	self.ExtraSeat1:SetPos(Vector(420,-40,-28+1))
+	--self.ExtraSeat3:SetPos(Vector(402,50,-43))
 	if self.PAKSD_VUD.Value == 0 then self.PAKSD_VUD:TriggerInput("Set",1) end
 	if self.Plombs and self.Plombs.Init then
 		self.Plombs.Init = nil
@@ -372,29 +382,13 @@ function ENT:Think()
 	end
 	if self.YAR_13A.Slope and self.YAR_13A.Slope > 0 and self:GetAngles().pitch*self.SpeedSign > -1 then
 		self.YAR_13A:TriggerInput("Slope",false)
-	end
-	if self.Lights[70] and self.LampType and self.LampType == 1 and self.Lights[70][4] ~= Color(255,175,50) then
-		for i = 1,23 do
-			self:SetLightPower(69+i,false)
-			self.Lights[69+i][2] = Vector(-457 + 34.9*i, 0, 70)
-			self.Lights[69+i][4] = Color(255,175,50)
-		end
+	end	if self.Lights[11] and self.LampType and self.LampType == 1 and self.Lights[11][4] ~= Color(255,175,75) then
 		for i = 11,13 do
 			self:SetLightPower(i,false)
-			self.Lights[i][4] = Color(255,175,50)
+			self.Lights[i][4] = Color(255,175,75)
 		end
-		self.LightsReload = true
 	end
-	if self.Lights[70] and self.LampType and self.LampType > 1 and ((self.Lights[70][4] ~= Color(200,200,255)  and self.LampType == 2) or (self.Lights[70][4] ~= Color(255,255,255)  and self.LampType == 3)) then
-		for i = 1,23 do
-			self:SetLightPower(69+i,false)
-			self.Lights[69+i][2] = Vector(-468 + 66.5*i, 0, 70)
-			if self.LampType == 2 then
-				self.Lights[69+i][4] = Color(200,200,255)
-			elseif self.LampType == 3 then
-				self.Lights[69+i][4] = Color(255,255,255)
-			end
-		end
+	if self.Lights[11] and self.LampType and self.LampType > 1 and ((self.Lights[11][4] ~= Color(200,200,255)  and self.LampType == 2) or (self.Lights[11][4] ~= Color(255,255,255)  and self.LampType == 3)) then
 		for i = 11,13 do
 			self:SetLightPower(i,false)
 			if self.LampType == 2 then
@@ -403,7 +397,6 @@ function ENT:Think()
 				self.Lights[i][4] = Color(255,255,255)
 			end
 		end
-		self.LightsReload = true
 	end
 
 	self.TextureTime = self.TextureTime or CurTime()
@@ -413,6 +406,7 @@ function ENT:Think()
 		self.TextureTime = CurTime()
 		self:SetNWInt("Blok",(self.Blok or 1))
 		self:SetNWBool("Breakers",(self.Breakers or 0) > 0)
+		self:SetNWInt("LampType",(self.LampType or 1))
 		self:SetNWBool("BPSNBuzzType",self.PNM)
 		if self.Texture or self.PassTexture or self.SignsList	 then
 			for k,v in pairs(self:GetMaterials()) do
@@ -623,28 +617,29 @@ function ENT:Think()
 		((self:ReadTrainWire(33) > 0) or (self:ReadTrainWire(34) > 0))
 	local lightsActive2 = (self.PowerSupply.XT3_4 > 55.0) and
 		(self:ReadTrainWire(33) > 0)
-	if not self.LightsActive then self.LightsActive = 0 end
-	if (lightsActive1 and not lightsActive2) and self.LightsActive ~= 1 or lightsActive2 and self.LightsActive ~= 2 or (not lightsActive1 and not lightsActive2) and self.LightsActive ~= 0 or self.LightsReload then
-		self:SetLightPower(11, lightsActive1, 0.2*self:ReadTrainWire(34) + 0.8*self:ReadTrainWire(33))
-		self:SetLightPower(12, lightsActive1, 0.2*self:ReadTrainWire(34) + 0.8*self:ReadTrainWire(33))
-		self:SetLightPower(13, lightsActive1, 0.2*self:ReadTrainWire(34) + 0.8*self:ReadTrainWire(33))
-		self.LightsReload = nil
-		local Ip = self.LampType == 1 and 5 or 3
-		for i = 1,23 do
-			self:SetLightPower(69+i,(lightsActive2 or (lightsActive1 and (i+Ip-2)%Ip==1)) and (self.LampType == 1 or i < 14))
+	local mul = 0
+	local LampCount  = (self.LampType == 1 and 23 or 12)
+	for i = 1,LampCount do
+		local Ip = self.LampType == 1 and 6 or 3
+		if (lightsActive2 or (lightsActive1 and (i+Ip-2)%Ip==1)) then
+			if not self.BrokenLamps[i]  and not self.LampsBlink[i] then self.LampsBlink[i] = CurTime() + math.random() end
+			if self.BrokenLamps[i] == nil and self.LampsBlink[i] and CurTime() - self.LampsBlink[i] > 0 and not self.Lamps[i] then self.Lamps[i] = CurTime() + math.random()*4 end
+		else
+			self.LampsBlink[i] = nil
+			self.Lamps[i] = nil
 		end
-		self.LightsActive = (lightsActive2 and 2 or lightsActive1 and 1 or 0)
+		if (self.Lamps[i] and CurTime() - self.Lamps[i] > 0) then
+			mul = mul + 1
+		elseif (self.LampsBlink[i] and CurTime() - self.LampsBlink[i] > 0) then
+			mul = mul + 0.5
+		end
+		self:SetPackedBool("lightsActive"..i,(self.Lamps[i] and CurTime() - self.Lamps[i] > 0) or false)
+		self:SetPackedBool("lightsActiveB"..i,(self.LampsBlink[i] and CurTime() - self.LampsBlink[i] > 0) or false)
 	end
-	--[[self:SetLightPower(12, (self.Panel["EmergencyLight"] > 0.5) and ((self.L_1.Value > 0.5) or (self.L_5.Value > 0.5)),
-		0.5*self.L_5.Value + ((self.PowerSupply.XT3_4 > 65.0) and 0.5 or 0))]]
-		
-	--[[for i=60,69 do
-		self:SetLightPower(i,
-			(self.Panel["EmergencyLight"] > 0.5) and ((self.L_1.Value > 0.5) or (self.L_5.Value > 0.5)),
-			0.1*self.L_5.Value + ((self.PowerSupply.XT3_4 > 65.0) and 1 or 0))
-	end]]--
-	--self:SetLightPower(12, self.Panel["EmergencyLight"] > 0.5)
-	--self:SetLightPower(13, self.PowerSupply.XT3_4 > 65.0)	
+	self:SetLightPower(11, mul > 0,mul/LampCount)
+	self:SetLightPower(12, mul > 0,mul/LampCount)
+	self:SetLightPower(13, mul > 0,mul/LampCount)
+
 	self:SetLightPower(31, (self.Panel["CabinLight"] > 0.5) and (self.L_3.Value > 0.5))
 	self:SetLightPower(32, (self.Panel["CabinLight"] > 0.5) and (self.L_3.Value > 0.5))
 	self:SetLightPower(33, (self.Panel["CabinLight"] > 0.5) and (self.L_3.Value > 0.5))
@@ -1115,11 +1110,6 @@ function ENT:OnButtonPress(button,state)
 	end
 	if button == "CabinDoor" then
 		self.CabinDoor = not self.CabinDoor
-	end
-	if button == "VADToggle" then
-		local drv = self:GetDriverName()
-		local state = self.VAD.TargetValue < 0.5 and "enabled" or "disabled"
-		RunConsoleCommand("say",drv.." "..state.." VAD!")
 	end
 	if button == "UAVAToggle" then
 		local drv = self:GetDriverName()

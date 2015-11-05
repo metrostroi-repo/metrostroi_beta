@@ -74,6 +74,7 @@ ENT.ButtonMap["Front"] = {
 		{ID = "VAHToggle",x=170, y=200, radius=20, tooltip="ВАХ: Включение аварийного хода (неисправность реле педали безопасности)\nVAH: Emergency driving mode (failure of RPB relay)"},
 		{ID = "VAHPl",x=170, y=227, radius=20, tooltip="Пломба кнопки ВАХ\nVAH plomb"},
 		{ID = "VADToggle",x=127, y=200, radius=20, tooltip="ВАД: Включение аварийного закрытия дверей (неисправность реле контроля дверей)\nVAD: Emergency door close override (failure of KD relay)"},		
+		{ID = "VADPl",x=127, y=227, radius=20, tooltip="Пломба кнопки ВАХ\nVAH plomb"},
 		--{ID = "RezMKSet",x=53,  y=98, radius=20, tooltip="Резервное включение мотор-компрессора\nEmergency motor-compressor startup"},
 		{ID = "KAHSet",x=53,  y=98, radius=20, tooltip="КАХ: Кнопка аварийного хода\nEmergency drive button"},
 		{ID = "KAHPl",x=37, y=68, radius=20, tooltip="Пломба крышки КАХ\nKAH plomb"},
@@ -770,7 +771,7 @@ Metrostroi.ClientPropForButton("LSD",{
 	panel = "OldARS",
 	button = "LSD",
 	model = "models/metrostroi_train/81/lamplsd.mdl",
-	z = 68,
+	z = 70,
 	ang = 0,
 })
 Metrostroi.ClientPropForButton("LOCh",{
@@ -1047,6 +1048,12 @@ Metrostroi.ClientPropForButton("VAD",{
 	button = "VADToggle",
 	model = "models/metrostroi_train/81/tumbler1.mdl",
 	ang = 90
+})
+Metrostroi.ClientPropForButton("VADPl",{
+	panel = "Front",
+	button = "VADPl",
+	model = "models/metrostroi_train/81/plomb.mdl",
+	z = -3,
 })
 Metrostroi.ClientPropForButton("ALS",{
 	panel = "Main",
@@ -1600,7 +1607,7 @@ Metrostroi.ClientPropForButton("RC1Pl_2",{
 
 Metrostroi.ClientPropForButton("UOSPl_2",{
 	panel = "Battery_2",
-	button = "1:UOSPl",	
+	button = "1:UOSPl",
 	model = "models/metrostroi_train/81/plomb.mdl",
 	z = -3,
 })
@@ -1691,6 +1698,27 @@ ENT.ClientProps["wiper"] = {
 	pos = Vector(463.8,0,53.8),
 	ang = Angle(0,-90,0)
 }
+for i = 1,23 do
+	ENT.ClientProps["lamp1_"..i] = {
+		model = "models/metrostroi_train/81/lamp1.mdl",
+		pos = Vector(-455.5 + 34.80*i, 0, 77),
+		ang = Angle(180,0,0),
+		color = Color(255,175,100),
+	}
+end
+for i = 1,12 do
+	ENT.ClientProps["lamp2_"..i] = {
+		model = "models/metrostroi_train/81/lamp2.mdl",
+		pos = Vector(-462.9 + 66.12*i, 0, 76.7),
+		ang = Angle(180,0,0),
+		color = Color(240,240,255),
+	}
+	ENT.ClientProps["lamp3_"..i] = {
+		model = "models/metrostroi_train/81/lamp3.mdl",
+		pos = Vector(-462.9 + 66.12*i, 0, 77.5),
+		ang = Angle(180,0,0),
+	}
+end
 
 --ENT.AutoPos = {Vector(407.3,-10.5,47),Vector(419.3,-57.5,47.5)}
 --local X = Material( "metrostroi_skins/81-717/6.png")
@@ -1810,12 +1838,15 @@ function ENT:Think()
 	self:SetCSBodygroup("OtklAVUPl",1,self:GetPackedBool("OtklAVUPl") and 0 or 1)
 	self:SetCSBodygroup("RC1Pl",1,self:GetPackedBool("RC1Pl") and 0 or 1)
 	self:SetCSBodygroup("KAHPl",1,self:GetPackedBool("KAHPl") and 0 or 1)
+	self:SetCSBodygroup("VAHPl",1,self:GetPackedBool("VAHPl") and 0 or 1)
+	self:SetCSBodygroup("VADPl",1,self:GetPackedBool("VADPl") and 0 or 1)
 	self:SetCSBodygroup("A5Pl",1,self:GetPackedBool("A5Pl") and 0 or 1)
 	self:SetCSBodygroup("RC1Pl_2",1,self:GetPackedBool("RC1Pl") and 0 or 1)
 	self:SetCSBodygroup("UOSPl_2",1,self:GetPackedBool("UOSPl") and 0 or 1)
 	
 	self:HideButton("UOS",self:GetPackedBool("UOSPl"))
 	self:HideButton("VAH",self:GetPackedBool("VAHPl"))
+	self:HideButton("VAD",self:GetPackedBool("VADPl"))
 	self:HideButton("OtklAVU",self:GetPackedBool("OtklAVUPl"))
 	self:HideButton("RC1",self:GetPackedBool("RC1Pl"))
 	self:HideButton("KAH",self:GetPackedBool("KAHPl"))
@@ -1827,6 +1858,7 @@ function ENT:Think()
 		
 	self:HideButton("UOSPl",not self:GetPackedBool("UOSPl"))
 	self:HideButton("VAHPl",not self:GetPackedBool("VAHPl"))
+	self:HideButton("VADPl",not self:GetPackedBool("VADPl"))
 	self:HideButton("OtklAVUPl",not self:GetPackedBool("OtklAVUPl"))
 	self:HideButton("RC1Pl",not self:GetPackedBool("RC1Pl"))
 	self:HideButton("KAHPl",not self:GetPackedBool("KAHPl"))
@@ -1949,7 +1981,7 @@ function ENT:Think()
 		self:ShowHideSmooth("L60",self:Animate("light_60",self:GetPackedBool(44) and 1 or 0,0,1,8,false))
 		self:ShowHideSmooth("L80",self:Animate("light_80",self:GetPackedBool(46) and 1 or 0,0,1,8,false))
 		self:ShowHideSmooth("L70",self:Animate("light_70",self:GetPackedBool(45) and 1 or 0,0,1,8,false))
-		self:ShowHideSmooth("LRK",self:Animate("light_LhRK",self:GetPackedBool(33) and 1 or 0,0,12,1,false))
+		self:ShowHideSmooth("LRK",self:Animate("light_LhRK",self:GetPackedBool(33) and 1 or 0,0,1,8,false))
 	end
 	local accel = self:GetNWFloat("Accel")
 	
@@ -1970,7 +2002,29 @@ function ENT:Think()
 		--sendButtonMessage({ID = "CabinDoor",state = true})
 		--sendButtonMessage({ID = "CabinDoor",state = false})
 	end
-	
+	if self.LampType ~= self:GetNWInt("LampType",1) then
+		self.LampType = self:GetNWInt("LampType",1)
+		for i = 1,23 do
+			self:ShowHide("lamp1_"..i,self.LampType == 1)
+			if i < 13 then
+				self:ShowHide("lamp2_"..i,self.LampType == 2)
+				self:ShowHide("lamp3_"..i,self.LampType == 3)
+			end
+		end
+	end
+	if self.LampType == 1 then
+		for i = 1,23 do
+			self:ShowHideSmooth("lamp1_"..i,self:Animate("Lamp1_"..i,	(self:GetPackedBool("lightsActive"..i) or self:GetPackedBool("lightsActiveB"..i) and CurTime()%math.random()*2 > 0.8) and 1 or 0,0,1,6,false))
+		end
+	else
+		for i = 1,12 do
+			if self.LampType == 2 then
+				self:ShowHideSmooth("lamp2_"..i,self:Animate("Lamp2_"..i,	(self:GetPackedBool("lightsActive"..i) or self:GetPackedBool("lightsActiveB"..i) and CurTime()%math.random()*2 > 0.8) and 1 or 0,0,1,6,false))
+			else
+				self:ShowHideSmooth("lamp3_"..i,self:Animate("Lamp3_"..i,	(self:GetPackedBool("lightsActive"..i) or self:GetPackedBool("lightsActiveB"..i) and CurTime()%math.random()*2 > 0.8) and 1 or 0,0,1,6,false))
+			end
+		end
+	end
 	self:Animate("door1",	self:GetPackedBool(156) and (self.Door1 or 0.99) or 0,0,0.54, 1024, 1)
 	self:Animate("door2",	self:GetPackedBool(158) and (self.Door2 or 0.99) or 0,0,0.51, 1024, 1)
 	self:Animate("door3",	self:GetPackedBool(159) and (self.Door3 or 0.99) or 0,0,0.54, 1024, 1)
@@ -2100,12 +2154,23 @@ function ENT:Think()
 	--self:SetSoundState("ring2",0.20,1)
 	
 	-- DIP sound
-	self.BPSNType = self:GetNWInt("BPSNType",6)
+	self.BPSNType = self:GetNWInt("BPSNType",7)
 	if not self.OldBPSNType then self.OldBPSNType = self.BPSNType end
 	if self.BPSNType ~= self.OldBPSNType then
-		self:SetSoundState("bpsn"..self.OldBPSNType,0,1.0)
+		if self.OldBPSNType ~= 6 then
+			self:SetSoundState("bpsn"..self.OldBPSNType,0,1.0)
+		else
+			self:SetSoundState("bpsn1",0,1.0)
+			self:SetSoundState("bpsn5",0,1.0)
+		end
 	end
-	self:SetSoundState("bpsn"..self.BPSNType,self:GetPackedBool(52) and 2 or 0,1.0,nil,0.9)
+	if self.BPSNType ~= 6 then
+		self:SetSoundState("bpsn"..self.BPSNType,self:GetPackedBool(52) and 2 or 0,1.0,nil,0.9)
+	else
+		self:SetSoundState("bpsn1",0,1.0)
+		self:SetSoundState("bpsn2",self:GetPackedBool(52) and 0.16 or 0,1.0)
+		self:SetSoundState("bpsn5",self:GetPackedBool(52) and 1 or 0,1.0)
+	end
 	self.OldBPSNType = self.BPSNType
 end
 

@@ -87,6 +87,7 @@ function TRAIN_SYSTEM:ClientInitialize()
 		[5] = "Подтверди движение с Vф=0?",
 		[6] = {"Подтверди изменение","станции оборота"},
 		[7] = {"Подтверди режим","фиксации станции"},
+		[8] = {"Следи за графиком","Ты будешь виноват в задержке"},
 		[11] = "Перейти в режим АВ?",
 		[12] = "Перейти в режим КС?",
 		[13] = "Перейти в режим ОД?",
@@ -565,11 +566,12 @@ if CLIENT then
 				draw.SimpleText("7","Metrostroi_PAM30",30, 252,train:GetNWBool("PAKSDM:Menu",1) == 7 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				draw.SimpleText("Фиксация","Metrostroi_PAM22",92, 244,train:GetNWBool("PAKSDM:Menu",1) == 7 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				draw.SimpleText("станции","Metrostroi_PAM22",92, 260,train:GetNWBool("PAKSDM:Menu",1) == 7 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				--[[
-				Metrostroi.DrawTextRectOL(174, 230, 164, 45,Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("8","Metrostroi_PAM30",194, 162,train:GetNWBool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Движение","Metrostroi_PAM22",256, 154,train:GetNWBool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText(train:GetNWBool("PAKSDM:KD") and "с КД" or "без КД","Metrostroi_PAM22",256, 170,train:GetNWBool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+
+				Metrostroi.DrawTextRectOL(174, 230, 164, 45,train:GetNWBool("PAKSDM:Menu",1) ==8 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("8","Metrostroi_PAM30",194, 252,train:GetNWBool("PAKSDM:Menu",1) == 8 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("ИГРУФКИ","Metrostroi_PAM22",256, 252,train:GetNWBool("PAKSDM:Menu",1) == 8 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				--draw.SimpleText(train:GetNWBool("PAKSDM:KD") and "с КД" or "без КД","Metrostroi_PAM22",256, 170,train:GetNWBool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+			--[[
 				Metrostroi.DrawTextRectOL(338, 230, 164, 45,Color(230,230,230),gr_up,2,Color(110,110,110))
 				draw.SimpleText("9","Metrostroi_PAM30",358, 162,train:GetNWBool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				draw.SimpleText("Смена","Metrostroi_PAM22",420, 154,train:GetNWBool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
@@ -649,7 +651,7 @@ if CLIENT then
 				Metrostroi.DrawTextRectOL(111, 210, 140, 40,train:GetNWBool("PAKSDM:NCOk",false) and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
 				draw.SimpleText("Да - Enter","Metrostroi_PAM30",181, 230,train:GetNWBool("PAKSDM:NCOk",false) and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				Metrostroi.DrawTextRectOL(261, 210, 140, 40,train:GetNWBool("PAKSDM:NCCanc",false) and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("Нет - Esc","Metrostroi_PAM30",331, 230,train:GetNWBool("PAKSDM:NCCanc",false) and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Нет - Esc","Metrostroi_PAM30",331, 230,train:GetNWBool("PAKSDM:NCCanc") and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				
 				--draw.SimpleText(self.Questions[train:GetNWInt("PAKSDM:NeedConfirm",0)].."?","Metrostroi_PAM30",256, 180,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			end
@@ -733,6 +735,41 @@ if CLIENT then
 				end
 			end
 		end
+		if train:GetNWBool("PAKSDM:2048") then
+			Metrostroi.DrawTextRectOL(156, 100, 200, 30,Color(42,58,148),gr_up,1,Color(110,110,110))
+			Metrostroi.DrawRectOL(156, 130, 200, 200,Color(110,110,110),1,Color(200,200,200))
+			draw.SimpleText("2048 Счёт:"..train:GetNWInt("PAKSDM:2048Score",0),"Metrostroi_PAM25",166, 113,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+			self.g2048col = {
+				Color(238,228,218),
+				Color(236,224,200),
+				Color(242,177,121),
+				Color(245,149,99),
+				Color(245,124,95),
+				Color(246,93,59),
+				Color(237,206,113),
+				Color(237,204,97),
+				Color(236,200,80),
+				Color(237,197,63),
+				Color(238,194,46),
+			}
+			for i = 0,15 do
+				local val = train:GetNWInt("PAKSDM:2048:"..math.floor(i/4+1)..":"..(i%4+1),0)
+				if val ~= 0 then
+					surface.SetDrawColor(self.g2048col[val] or Color(174,8,12))
+					surface.DrawRect(156 + (i%4)*50,130 + math.floor(i/4)*50,50,50)
+					draw.SimpleText(2^val,val < 10 and "Metrostroi_PAM25" or i < 13 and "Metrostroi_PAM22" or "Metrostroi_PAM20",181 + (i%4)*50, 155 + math.floor(i/4)*50,val > 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				end
+			end
+			Metrostroi.DrawLine(156,180,356,180,Color(110,110,110),2)
+			Metrostroi.DrawLine(156,230,356,230,Color(110,110,110),2)
+			Metrostroi.DrawLine(156,280,356,280,Color(110,110,110),2)
+
+			Metrostroi.DrawLine(206,130,206,330,Color(110,110,110),2)
+			Metrostroi.DrawLine(256,130,256,330,Color(110,110,110),2)
+			Metrostroi.DrawLine(306,130,306,330,Color(110,110,110),2)
+			Metrostroi.DrawTextRectOL(156, 330, 200, 40,train:GetNWBool("PAKSDM:NCCanc") and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+			draw.SimpleText("Выход - Esc","Metrostroi_PAM30",256, 350,train:GetNWBool("PAKSDM:NCCanc") and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+		end
 		surface.SetAlphaMultiplier(1)
 	end
 	function TRAIN_SYSTEM:ClientThink()
@@ -747,6 +784,12 @@ end
 
 function TRAIN_SYSTEM:Touch(state,x,y)
 	local Announcer = self.Train.Announcer
+	if self.g2048 and self:FindAimButton(x,y,156, 330, 200, 40) then
+		self.NCCanc = state
+		if not state then
+			self.g2048 = nil
+		end
+	end
 	if self.State == 3 and self:FindAimButton(x,y,216, 340, 80, 40) then
 		self:SetState(1.1,(self.FirstStation ~= "" and self.LastStation ~= "") and 5 or 4)
 	end
@@ -963,6 +1006,14 @@ function TRAIN_SYSTEM:Touch(state,x,y)
 						--self.MenuChoosed = 0
 					end
 				end
+				if self:FindAimButton(x,y,174, 230, 164, 45) then
+					if state then
+						self.MenuChoosed = 8
+					else
+						self.NeedConfirm = 8
+						--self.MenuChoosed = 0
+					end
+				end
 
 				if self:FindAimButton(x,y,338, 275, 164, 45) then
 					if state then
@@ -1033,6 +1084,12 @@ function TRAIN_SYSTEM:Touch(state,x,y)
 						self.EnteredStation = ""
 						self.FLine = nil
 						self.State6Error = false
+					end
+					if self.NeedConfirm == 8 then
+						self.g2048 = {}
+						self.g2048s = 0
+						self.g2048go = false
+						self.g2048[math.random(0,15)] = 1
 					end
 					if not self.AutodriveWorking and self.Train.ALS_ARS["33G"] < 0.5 and self.NeedConfirm == 11 then
 						self.AutodriveWorking = true
@@ -1280,6 +1337,131 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			self:SetState(1.1,9)
 		end
 	elseif self.State == 9 then
+		if self.g2048 then
+			if name == "BEsc" then
+				self.g2048 = nil
+			end
+			local spawn = false
+			if name == "BDown" then
+				for i = 11,0,-1 do
+					local add
+					for i1 = 0,2 do
+						add = 4*(3-math.floor(i/4)) - i1*4
+						if not self.g2048[i+add] or self.g2048[i+add] == 0 or self.g2048[i+add] == self.g2048[i] then
+							break
+						end
+						if i1 == 2 then add = 0 end
+					end
+					if self.g2048[i] and self.g2048[i] > 0 and add > 0 then
+						if self.g2048[i+add] and self.g2048[i+add] > 0 then
+							if self.g2048[i+add] == self.g2048[i] then
+								self.g2048[i+add] = self.g2048[i] + 1
+								self.g2048s = self.g2048s + 2^(self.g2048[i] + 1)
+							end
+						else
+							self.g2048[i+add] = self.g2048[i]
+						end
+						self.g2048[i] = 0
+						spawn = true
+					end
+				end
+			end
+			if name == "BUp" then
+				for i = 3,15 do
+					local add
+					for i1 = 0,2 do
+						add = 4*(math.floor(i/4)) - i1*4
+						if not self.g2048[i-add] or self.g2048[i-add] == 0 or self.g2048[i-add] == self.g2048[i] then
+							break
+						end
+						if i1 == 2 then add = 0 end
+					end
+					if self.g2048[i] and self.g2048[i] > 0 and add > 0 then
+						if self.g2048[i-add] and self.g2048[i-add] > 0 then
+							if self.g2048[i-add] == self.g2048[i] then
+								self.g2048[i-add] = self.g2048[i] + 1
+								self.g2048s = self.g2048s + 2^(self.g2048[i] + 1)
+							end
+						else
+							self.g2048[i-add] = self.g2048[i]
+						end
+						self.g2048[i] = 0
+						spawn = true
+					end
+				end
+			end
+			if name == "BLeft" then
+				for i = 0,15 do
+					if i%4 ~= 0 then
+						local add
+						for i1 = 0,2 do
+							add  = math.floor(i%4) - i1
+							if not self.g2048[i-add] or self.g2048[i-add] == 0 or self.g2048[i-add] == self.g2048[i] then
+								break
+							end
+							if i1 == 2 then add = 0 end
+						end
+						if self.g2048[i] and self.g2048[i] > 0 and add > 0 then-- and i-add > 0 then
+							if self.g2048[i-add] and self.g2048[i-add] > 0 then
+								if self.g2048[i-add] == self.g2048[i] then
+									self.g2048[i-add] = self.g2048[i] + 1
+									self.g2048s = self.g2048s + 2^(self.g2048[i] + 1)
+								end
+							else
+								self.g2048[i-add] = self.g2048[i]
+							end
+							self.g2048[i] = 0
+							spawn = true
+						end
+					end
+				end
+			end
+			if name == "BRight" then
+				for i = 15,0,-1 do
+					if i%4 ~= 3 then
+						local add
+						for i1 = 0,2 do
+							add  = 3-math.floor(i%4) - i1
+							if not self.g2048[i+add] or self.g2048[i+add] == 0 or self.g2048[i+add] == self.g2048[i] then
+								break
+							end
+							if i1 == 2 then add = 0 end
+						end
+						if self.g2048[i] and self.g2048[i] > 0 and add > 0 then-- and i-add > 0 then
+							if self.g2048[i+add] and self.g2048[i+add] > 0 then
+								if self.g2048[i+add] == self.g2048[i] then
+									self.g2048[i+add] = self.g2048[i] + 1
+									self.g2048s = self.g2048s + 2^(self.g2048[i] + 1)
+								end
+							else
+								self.g2048[i+add] = self.g2048[i]
+							end
+							self.g2048[i] = 0
+							spawn = true
+						end
+					end
+				end
+			end
+			local count = 0
+			for i = 0,15 do
+				if self.g2048[i] and self.g2048[i] > 0 then
+					count = count + 1
+				end
+			end
+			if (name == "BDown" or name == "BUp" or name == "BLeft" or name == "BRight") and count < 15 and spawn then
+				while true do
+					local choose = math.random(0,15)
+					if not self.g2048[choose] or self.g2048[choose] == 0 then
+						self.g2048[choose] = 1
+						break
+					end
+						
+					--x = x +1
+				end
+			end
+			if count >= 15 then self.g2048go = true end
+			return
+		end
 		if self.Fix then
 			if self.State6Error then if name == "BEnter" then self.State6Error = false end return end
 			if name == "BEsc" then
@@ -1463,6 +1645,12 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 					self.FLine = nil
 					self.State6Error = false
 				end
+				if self.NeedConfirm == 8 then
+					self.g2048 = {}
+					self.g2048s = 0
+					self.g2048go = false
+					self.g2048[math.random(0,15)] = 1
+				end
 				if not self.AutodriveWorking and self.Train.ALS_ARS["33G"] < 0.5 and self.NeedConfirm == 11 then
 					self.AutodriveWorking = true
 					self.UOS = false
@@ -1482,7 +1670,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				self.NeedConfirm = 0
 			end
 		end
-		if self.MenuChoosed ~= 0 and not self.Nakat and not self.Fix and not self.Zon then
+		if self.MenuChoosed ~= 0 and not self.Nakat and not self.Fix and not self.Zon and not self.g2048 then
 			if name == "BEnter" and (not self.NeedConfirm or self.NeedConfirm == 0) then
 				if self.MenuChoosed == 1 and self.Train.Speed < 0.5 then
 					self.NeedConfirm = 1
@@ -1510,7 +1698,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				--if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self.State = 7 end
 			end
 		end
-		if self.AnnChoosed ~= 0 and not self.Nakat and not self.Fix and not self.Zon then
+		if self.AnnChoosed ~= 0 and not self.Nakat and not self.Fix and not self.Zon and not self.g2048 then
 			if name == "BEnter" then
 				if self.Train.R_UPO.Value > 0 then self.Train.UPO:II(self.AnnChoosed) end
 				self.AnnChoosed = 0
@@ -1803,7 +1991,6 @@ function TRAIN_SYSTEM:Think(dT)
 		self.RealState = self.State
 		self.TimeOverride = true
 	end
-
 	self.Time = self.Time or CurTime()
 	if (CurTime() - self.Time) > 0.1 or self.TimeOverride then
 		self.TimeOverride = nil
@@ -1863,6 +2050,15 @@ function TRAIN_SYSTEM:Think(dT)
 			if self.Nakat then
 				Train:SetNWFloat("PAKSDM:Meters",math.Round(math.abs(self.Meters or 0),2))
 				Train:SetNWBool("PAKSDM:Sign",ARS.Speed > 0.5 and self.Train.SpeedSign < 0)
+				Train:SetNWBool("PAKSDM:NCCanc",self.NCCanc)
+			end
+			Train:SetNWBool("PAKSDM:2048",self.g2048 ~= nil)
+			if self.g2048 then
+				Train:SetNWInt("PAKSDM:2048Score",self.g2048s)
+				Train:SetNWBool("PAKSDM:2048GG",self.g2048go)
+				for i = 0,4*4-1 do
+					Train:SetNWInt("PAKSDM:2048:"..math.floor(i/4+1)..":"..(i%4+1),self.g2048[i] or 0)
+				end
 				Train:SetNWBool("PAKSDM:NCCanc",self.NCCanc)
 			end
 			self.Train:SetNWInt("PAKSDM:Fix",self.Fix or -1)

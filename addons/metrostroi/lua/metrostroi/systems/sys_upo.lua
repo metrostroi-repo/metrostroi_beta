@@ -38,7 +38,7 @@ function TRAIN_SYSTEM:GetSTNum(station)
 end
 
 function TRAIN_SYSTEM:End(station,path,next)
-	if not station or station == 0 then return true end
+	if not station or station == 0 or not Metrostroi.AnnouncerData[station] then return true end
 	if next then
 		return (not Metrostroi.AnnouncerData[station][9])
 			and (((self:GetSTNum(self.LastStation) > self:GetSTNum(station) or self:GetSTNum(station) > self:GetSTNum(self.FirstStation)) and path == 2)

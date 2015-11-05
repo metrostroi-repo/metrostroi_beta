@@ -72,8 +72,13 @@ function TRAIN_SYSTEM:Initialize(parameters,extra_parameters)
 
 	----------------------------------------------------------------------------
 	-- Relay parameters
-	FailSim.AddParameter(self,"CloseTime", 		{ value = parameters.close_time, precision = self.contactor and 0.35 or 0.10, min = 0.010, varies = true })
-	FailSim.AddParameter(self,"OpenTime", 		{ value = parameters.open_time, precision = self.contactor and 0.35 or 0.10, min = 0.010, varies = true })
+	if self.rvt then
+		FailSim.AddParameter(self,"CloseTime", 		{ value = parameters.close_time})
+		FailSim.AddParameter(self,"OpenTime", 		{ value = parameters.open_time})
+	else
+		FailSim.AddParameter(self,"CloseTime", 		{ value = parameters.close_time, precision = self.contactor and 0.35 or 0.10, min = 0.010, varies = true })
+		FailSim.AddParameter(self,"OpenTime", 		{ value = parameters.open_time, precision = self.contactor and 0.35 or 0.10, min = 0.010, varies = true })
+	end
 	-- Did relay short-circuit?
 	FailSim.AddParameter(self,"ShortCircuit",	{ value = 0.000, precision = 0.00 })
 	-- Was there a spurious trip?
@@ -179,6 +184,7 @@ function TRAIN_SYSTEM:TriggerInput(name,value)
 	elseif (name == "Close") and (value > self.trigger_level) and (self.Value ~= 1.0 or self.TargetValue ~= 1.0) then --(self.TargetValue ~= 1.0 and self.rpb))
 		if (not self.ChangeTime) and (self.TargetValue ~= 1.0) then
 			self.ChangeTime = self.Time + FailSim.Value(self,"CloseTime")
+			--if self.rvt then print(FailSim.Value(self,"CloseTime")) end
 		end
 		--if self.rpb and 
 		if self.Value == 1.0 then self.ChangeTime = nil end

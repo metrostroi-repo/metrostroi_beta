@@ -8,6 +8,7 @@ function TRAIN_SYSTEM:Initialize()
 	-- Output voltage from contact rail
 	self.Main750V = 0.0
 	self.DropByPeople = 0
+	self.Ignores = {}
 end
 
 function TRAIN_SYSTEM:Inputs()
@@ -18,17 +19,16 @@ function TRAIN_SYSTEM:Outputs()
 	return { "Main750V", "DropByPeople"}
 end
 
-function TRAIN_SYSTEM:CheckContact(ent,pos,dir)
+
+function TRAIN_SYSTEM:CheckContact(ent,pos,dir,id)
 	local trace = {
 		start = ent:LocalToWorld(pos),
 		endpos = ent:LocalToWorld(pos + dir*10),
 		mask = -1,
 		filter = { self.Train, ent },
 	}
-	
-	
 	local result = util.TraceLine(trace)
-	if IsValid(result.Entity) and (self.Main750V > 40) then
+	if IsValid(result.Entity) and (self.Main750V > 40) and result.Entity:GetClass() ~= "gmod_track_udochka" then
 		local pos = result.Entity:GetPos()
 		self.VoltageDropByTouch = (self.VoltageDropByTouch or 0) + 1
 		util.BlastDamage(result.Entity,result.Entity,pos,64,3.0*self.Main750V)
@@ -36,8 +36,34 @@ function TRAIN_SYSTEM:CheckContact(ent,pos,dir)
 		local effectdata = EffectData()
 		effectdata:SetOrigin(pos + Vector(0,0,-16+math.random()*(40+0)))
 		util.Effect("cball_explode",effectdata,true,true)
-		
 		sound.Play("ambient/energy/zap"..math.random(1,3)..".wav",pos,75,math.random(100,150),1.0)
+	elseif IsValid(result.Entity) and result.Entity:GetClass() == "gmod_track_udochka" then
+		local IsFront = ent == self.Train.FrontBogey
+		local bogey = IsFront and self.Train.FrontBogey or self.Train.RearBogey
+		--[[
+		local constrainttable = constraint.FindConstraints(ent,"Weld")
+		local coupled = false
+		for k,v in pairs(constrainttable) do
+			if v.Type == "Weld" then 
+				if( (v.Ent1 == ent or v.Ent1 == result.Entity) and (v.Ent2 == ent or v.Ent2 == result.Entity)) then
+					coupled = true
+				end
+			end
+		end
+		]]
+		if not result.Entity.Timer and result.Entity.CoupledWith ~= bogey and IsValid(constraint.Weld(
+			ent,
+			result.Entity,
+			0, --bone
+			0, --bone
+			0, --forcelimit
+			true, --nocollide
+			false --nocollide
+		)) then
+			result.Entity.Coupled = ent
+			sound.Play("buttons/lever2.wav",(ent:GetPos()+result.Entity:GetPos())/2)
+		end
+		return result.Entity.Power
 	end
 	return result.Hit
 end
@@ -71,10 +97,10 @@ function TRAIN_SYSTEM:Think(dT)
 	if (CurTime() - self.CheckTimeout) > 0.25 then
 		self.CheckTimeout = CurTime()
 		self.VoltageDropByTouch = 0
-		self.NextStates[1] = self:CheckContact(self.Train.FrontBogey,Vector(0,-61,-14),Vector(0,-1,0))
-		self.NextStates[2] = self:CheckContact(self.Train.FrontBogey,Vector(0, 61,-14),Vector(0, 1,0))
-		self.NextStates[3] = self:CheckContact(self.Train.RearBogey,Vector(0, -61,-14),Vector(0,-1,0))
-		self.NextStates[4] = self:CheckContact(self.Train.RearBogey,Vector(0,  61,-14),Vector(0, 1,0))
+		self.NextStates[1] = self:CheckContact(self.Train.FrontBogey,Vector(0,-61,-14),Vector(0,-1,0),1)
+		self.NextStates[2] = self:CheckContact(self.Train.FrontBogey,Vector(0, 61,-14),Vector(0, 1,0),2)
+		self.NextStates[3] = self:CheckContact(self.Train.RearBogey,Vector(0, -61,-14),Vector(0,-1,0),3)
+		self.NextStates[4] = self:CheckContact(self.Train.RearBogey,Vector(0,  61,-14),Vector(0, 1,0),4)
 	end
 	
 	-- Voltage spikes

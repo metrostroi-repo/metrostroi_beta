@@ -301,7 +301,11 @@ function ENT:ARSLogic(tim)
 	if not self.Routes[self.Route or 1].Repeater  then
 		if Metrostroi.Voltage > 50 and not self.Close then --not self.OverrideTrackOccupied and 
 			if self.Node and  self.TrackPosition then
-				self.Occupied,self.OccupiedBy,self.OccupiedByNow = Metrostroi.IsTrackOccupied(self.Node, self.TrackPosition.x, self.Left and not self.TrackPosition.forward or self.TrackPosition.forward,self.ARSOnly and "ars" or "light", self)
+				if self.Left then
+					self.Occupied,self.OccupiedBy,self.OccupiedByNow = Metrostroi.IsTrackOccupied(self.Node, self.TrackPosition.x,not self.TrackPosition.forward,self.ARSOnly and "ars" or "light", self)
+				else
+					self.Occupied,self.OccupiedBy,self.OccupiedByNow = Metrostroi.IsTrackOccupied(self.Node, self.TrackPosition.x,self.TrackPosition.forward,self.ARSOnly and "ars" or "light", self)
+				end
 			end
 			if self.Routes[self.Route] and self.Routes[self.Route].Manual then
 				self.Occupied = self.Occupied or not self.Routes[self.Route].IsOpened

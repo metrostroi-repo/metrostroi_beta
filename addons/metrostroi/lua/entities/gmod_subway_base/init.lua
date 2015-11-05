@@ -1192,8 +1192,23 @@ function ENT:SetLightPower(index,power,brightness)
 					lightData[4].b*brightness
 				)
 			)
-			return
 		end
+		if (lightData[1] == "headlight") then
+			-- Set Brightness
+			local brightness = brightness * (lightData.brightness or 1.25)
+			light:SetKeyValue("lightcolor",
+				Format("%i %i %i 255",
+					lightData[4].r*brightness,
+					lightData[4].g*brightness,
+					lightData[4].b*brightness
+				)
+			)
+		end
+		if (lightData[1] == "dynamiclight") then
+			light:SetKeyValue("brightness", brightness * (lightData.brightness or 2))
+		end
+		self.LightBrightness[index] = brightness
+		return
 	end
 	
 	-- Turn off light

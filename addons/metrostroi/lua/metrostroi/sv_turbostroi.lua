@@ -43,25 +43,27 @@ if not TURBOSTROI then
 		-- Send train wire values
 		-- Output all system values
 		for _,train in pairs(trains) do
-			for i=1,32 do
-				if not Metrostroi.dataCache[1][train] then Metrostroi.dataCache[1][train] = {} end
-				if not Metrostroi.dataCache[1][train]["wires"] then Metrostroi.dataCache[1][train]["wires"] = {} end
-				--if Metrostroi.dataCache[1][train]["wires"][i] ~= train:ReadTrainWire(i) then
-					--Metrostroi.dataCache[1][train]["wires"][i] = train:ReadTrainWire(i)
-					Turbostroi.SendMessage(train,3,"","",i,train:ReadTrainWire(i))
-				--end
-			end
-			Turbostroi.SendMessage(train,3,"","",35,train:ReadTrainWire(35))
-			Turbostroi.SendMessage(train,3,"","",36,train:ReadTrainWire(36))
-			for sys_name,system in pairs(train.Systems) do
-				if system.OutputsList and system.DontAccelerateSimulation then
-					for _,name in pairs(system.OutputsList) do
-						local value = system[name] or 0
-						if not Metrostroi.dataCache[1][train][sys_name] then Metrostroi.dataCache[1][train][sys_name] = {} end
-						--print(Metrostroi.dataCache[1][train][sys_name][name],value)
-						if Metrostroi.dataCache[1][train][sys_name][name] ~= value then
-							Metrostroi.dataCache[1][train][sys_name][name] = value
-							Turbostroi.SendMessage(train,1,sys_name,name,0,tonumber(value) or 0)
+			if train.ReadTrainWire then
+				for i=1,32 do
+					if not Metrostroi.dataCache[1][train] then Metrostroi.dataCache[1][train] = {} end
+					if not Metrostroi.dataCache[1][train]["wires"] then Metrostroi.dataCache[1][train]["wires"] = {} end
+					--if Metrostroi.dataCache[1][train]["wires"][i] ~= train:ReadTrainWire(i) then
+						--Metrostroi.dataCache[1][train]["wires"][i] = train:ReadTrainWire(i)
+						Turbostroi.SendMessage(train,3,"","",i,train:ReadTrainWire(i))
+					--end
+				end
+				Turbostroi.SendMessage(train,3,"","",35,train:ReadTrainWire(35))
+				Turbostroi.SendMessage(train,3,"","",36,train:ReadTrainWire(36))
+				for sys_name,system in pairs(train.Systems) do
+					if system.OutputsList and system.DontAccelerateSimulation then
+						for _,name in pairs(system.OutputsList) do
+							local value = system[name] or 0
+							if not Metrostroi.dataCache[1][train][sys_name] then Metrostroi.dataCache[1][train][sys_name] = {} end
+							--print(Metrostroi.dataCache[1][train][sys_name][name],value)
+							if Metrostroi.dataCache[1][train][sys_name][name] ~= value then
+								Metrostroi.dataCache[1][train][sys_name][name] = value
+								Turbostroi.SendMessage(train,1,sys_name,name,0,tonumber(value) or 0)
+							end
 						end
 					end
 				end
