@@ -10,7 +10,7 @@ function ENT:Initialize()
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
 	local physobj = self:GetPhysicsObject()
-	if physobj:IsValid() then physobj:SetMass(1) end
+	if physobj:IsValid() then physobj:SetMass(25) end
 end
 
 local function removeWeldBetweenEnts(ent1,ent2)

@@ -489,9 +489,16 @@ if CLIENT then
 			draw.SimpleText("9 ФСт","Metrostroi_PAM30",430, 290,Color(200,200,200),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 
 			Metrostroi.DrawLine(10 + (spd == "НЧ" and 20 or spd)*4, 93, 10 + (spd == "НЧ" and 20 or spd)*4, 125,(spd == "НЧ" and 20 or spd) > 20 and Color(254,237,142) or Color(200,0,0), 3)
-			draw.SimpleText("S= "..S.."м","Metrostroi_PAM30",506, 340,Color(110,172,95),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
-			draw.SimpleText("РЦ= "..train:GetNWString("PAKSDM:SName",""),"Metrostroi_PAM30",6, 340,Color(254,237,142),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			draw.SimpleText(Format("Уклон= %.2f",train:GetNWInt("PAKSDM:Uklon",0)/100),"Metrostroi_PAM30",180, 340,Color(254,237,142),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+			if train:GetNWBool("PAKSDM:Arrived",false) then
+				draw.SimpleText("Tпр=00:00:00","Metrostroi_PAM28",6, 340,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Нагон=","Metrostroi_PAM28",170, 340,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Тост = "..train:GetNWInt("PAKSDM:BoardTime",0),"Metrostroi_PAM28",290, 340,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+				draw.SimpleText("S= "..S.."м","Metrostroi_PAM28",506, 340,Color(110,172,95),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
+			else
+				draw.SimpleText("РЦ= "..train:GetNWString("PAKSDM:SName",""),"Metrostroi_PAM30",6, 340,Color(254,237,142),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+				draw.SimpleText(Format("Уклон= %.2f",train:GetNWInt("PAKSDM:Uklon",0)/100),"Metrostroi_PAM30",180, 340,Color(254,237,142),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+				draw.SimpleText("S= "..S.."м","Metrostroi_PAM30",506, 340,Color(110,172,95),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
+			end
 			
 			surface.SetDrawColor(Color(38,81,109))
 			surface.DrawRect(0,360,120,52)
@@ -502,10 +509,15 @@ if CLIENT then
 			draw.SimpleText("меню","Metrostroi_PAM25",452, 395,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			surface.SetDrawColor(Color(180,180,180))
 			surface.DrawRect(121,360,100,26)
+			surface.DrawRect(222,360,57,26)
 			surface.DrawRect(280,360,60,26)
 			surface.DrawRect(341,360,50,26)
 			draw.SimpleText(self.Types[train:GetNWBool("PAKSDM:Type",false)].."="..self.Positions[train:GetNWBool("PAKSDM:KV",false)],"Metrostroi_PAM30",171, 371,Color(20,20,20),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+			if train:GetNWBool("PAKSDM:VZ1",false) or train:GetNWBool("PAKSDM:VZ2",false) then
+				draw.SimpleText(train:GetNWBool("PAKSDM:VZ1",false) and (train:GetNWBool("PAKSDM:VZ2",false) and "В1 2" or "В1") or "В   2","Metrostroi_PAM30",224, 371,Color(20,20,20),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+			end
 			draw.SimpleText("ЛПТ","Metrostroi_PAM30",310, 371,train:GetPackedBool("PN") and Color(20,20,20) or Color(200,200,200),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+			--
 			draw.SimpleText("КД","Metrostroi_PAM30",366, 371,train:GetPackedBool(40) and Color(20,20,20) or Color(200,200,200),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			surface.DrawRect(121,387,80,26)
 			surface.DrawRect(321,387,70,26)
@@ -534,6 +546,17 @@ if CLIENT then
 			--draw.SimpleText("Na   =","Metrostroi_PAM20",375, 347.5,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			draw.SimpleText("Тост = "..train:GetNWInt("PAKSDM:BoardTime",0),"Metrostroi_PAM20",375, 365,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			]]
+			
+			if train:GetNWBool("PAKSDM:Arrived",false) then
+				if Station > 0 then
+					if Metrostroi.AnnouncerData[Station] then
+						draw.SimpleText(Metrostroi.AnnouncerData[Station][1],"Metrostroi_PAM30",256, 200,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+						draw.SimpleText(Path .. " путь","Metrostroi_PAM30",256, 225,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+					end
+				end
+				--draw.SimpleText("S= "..S.."м","Metrostroi_PAM30",256, 200,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				--draw.SimpleText("S= "..S.."м","Metrostroi_PAM30",256, 250,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+			end
 			if train:GetNWInt("PAKSDM:Menu",0) > 0 then
 				Metrostroi.DrawRectOL(10, 140, 492, 180,Color(110,110,110),1,Color(200,200,200))
 				Metrostroi.DrawTextRectOL(10, 140, 164, 45,train:GetNWBool("PAKSDM:Menu",1) == 1 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
@@ -889,8 +912,10 @@ function TRAIN_SYSTEM:Touch(state,x,y)
 							else
 								self.Fix = nil
 								for k,v in pairs(self.Train.WagonList) do
-									v["PA-KSD-M"].Line = self.FLine 
-									v["PA-KSD-M"].FirstStation = tostring(self.EnteredStation)
+									if v["PA-KSD-M"] then
+										v["PA-KSD-M"].Line = self.FLine 
+										v["PA-KSD-M"].FirstStation = tostring(self.EnteredStation)
+									end
 									if v == self.Train then
 										v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,v == self.Train)
 									end
@@ -913,8 +938,10 @@ function TRAIN_SYSTEM:Touch(state,x,y)
 							else
 								self.Zon = nil
 								for k,v in pairs(self.Train.WagonList) do
-									v["PA-KSD-M"].Line = self.FLine 
-									v["PA-KSD-M"].LastStation = tostring(self.EnteredStation)
+									if v["PA-KSD-M"] then
+										v["PA-KSD-M"].Line = self.FLine 
+										v["PA-KSD-M"].LastStation = tostring(self.EnteredStation)
+									end
 									if v == self.Train then
 										v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,v == self.Train)
 									end
@@ -1477,8 +1504,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				else
 					self.Fix = nil
 					for k,v in pairs(self.Train.WagonList) do
-						v["PA-KSD-M"].Line = self.FLine 
-						v["PA-KSD-M"].FirstStation = tostring(self.EnteredStation)
+						if v["PA-KSD-M"] then
+							v["PA-KSD-M"].Line = self.FLine 
+							v["PA-KSD-M"].FirstStation = tostring(self.EnteredStation)
+						end
 						if v == self.Train then
 							v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,v == self.Train)
 						end
@@ -1944,8 +1973,8 @@ function TRAIN_SYSTEM:Think(dT)
 				self.StopTrain = false
 			end
 				
-			if self.RealState == 8 and not self.Transit then
-				if self.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][self.Station] and ARS.Speed <= 1 then
+			if not self.Transit then
+				if self.Distance < 75 and self.Arrived == nil and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][self.Station] and ARS.Speed <= 1 then
 					self.Arrived = true
 				end
 			end
@@ -2042,7 +2071,10 @@ function TRAIN_SYSTEM:Think(dT)
 				Train:SetNWBool("PAKSDM:NCOk",self.NCOk)
 				Train:SetNWBool("PAKSDM:NCCanc",self.NCCanc)
 			end
-			Train:SetNWInt("PAKSDM:BoardTime",math.floor((Train.UPO.BoardTime or CurTime()) - CurTime()))
+			Train:SetNWBool("PAKSDM:Arrived", Train.UPO.Arrived ~= nil and Train.UPO.BoardTime ~= nil)
+			if Train.UPO.Arrived ~= nil and Train.UPO.BoardTime ~= nil then
+				Train:SetNWInt("PAKSDM:BoardTime",math.floor((Train.UPO.BoardTime or CurTime()) - CurTime()))
+			end
 			Train:SetNWBool("PAKSDM:KD",self.KD)
 			Train:SetNWBool("PAKSDM:LPT",self.LPT)
 			Train:SetNWBool("PAKSDM:Nakat",self.Nakat)

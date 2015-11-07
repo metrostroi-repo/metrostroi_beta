@@ -2701,9 +2701,9 @@ function ENT:DrawPost(special)
 			surface.SetDrawColor(150,255,50)
 			surface.DrawRect(88*10+17,(28.4+11*3)*10,8*10,8.7*10)
 			surface.DrawPoly({
-				{ x = 1711-18,	y = 838+0 },
-				{ x = 1711+0,	y = 838-30 },
-				{ x = 1711+18,	y = 838+0 },
+				{ x = 1611-18,	y = 838+0 },
+				{ x = 1611+0,	y = 838-30 },
+				{ x = 1611+18,	y = 838+0 },
 			})
 			draw.DrawText("70","MetrostroiSubway_LargeText2",88*10-1+17,(29+11*3)*10-5,Color(0,0,0,255))
 		end
@@ -2714,9 +2714,9 @@ function ENT:DrawPost(special)
 			surface.SetDrawColor(150,255,50)
 			surface.DrawRect(88*10+17,(28+11.3*4)*10-5,8*10,8.7*10)
 			surface.DrawPoly({
-				{ x = 1760-18,	y = 838+0 },
-				{ x = 1760+0,	y = 838-30 },
-				{ x = 1760+18,	y = 838+0 },
+				{ x = 1660-18,	y = 838+0 },
+				{ x = 1660+0,	y = 838-30 },
+				{ x = 1660+18,	y = 838+0 },
 			})
 				
 			draw.DrawText("80","MetrostroiSubway_LargeText2",88*10-2+16,(28+11.5*4)*10-5-5,Color(0,0,0,255))

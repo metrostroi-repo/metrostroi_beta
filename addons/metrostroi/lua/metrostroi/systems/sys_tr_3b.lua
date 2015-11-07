@@ -60,6 +60,7 @@ function TRAIN_SYSTEM:CheckContact(ent,pos,dir,id)
 			true, --nocollide
 			false --nocollide
 		)) then
+			constraint.ForgetConstraints( ent )
 			result.Entity.Coupled = ent
 			sound.Play("buttons/lever2.wav",(ent:GetPos()+result.Entity:GetPos())/2)
 		end
