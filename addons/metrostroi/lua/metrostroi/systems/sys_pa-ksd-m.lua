@@ -1331,7 +1331,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 						v["PA-KSD-M"].FirstStation = self.FirstStation
 						v["PA-KSD-M"].LastStation = self.LastStation
 					end
-					v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,false)
+					if v.UPO then v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,false) end
 				end
 				self.Train.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,true)
 			end
@@ -1816,7 +1816,7 @@ function TRAIN_SYSTEM:SetState(state,add,state9)
 					v["PA-KSD-M"].FirstStation = self.FirstStation
 					v["PA-KSD-M"].LastStation = self.LastStation
 				end
-				v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,false)
+				if v.UPO then v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,false) end
 			end
 		end
 		self.Train.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,true)
