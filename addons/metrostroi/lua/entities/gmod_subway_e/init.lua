@@ -4,13 +4,19 @@ include("shared.lua")
 
 ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 
---------------------------------------------------------------------------------
+---------------------------------------------------
+-- Defined train information                      
+-- Types of wagon(for wagon limit system):
+-- 0 = Head or intherim                           
+-- 1 = Only head                                     
+-- 2 = Only intherim                                
+---------------------------------------------------
+ENT.SubwayTrain = {
+	Type = "E",
+	Name = "E",
+	WagType = 0,
+}
 function ENT:Initialize()
-	-- Defined train information
-	self.SubwayTrain = {
-		Type = "E",
-		Name = "Ezh3",
-	}
 
 	-- Set model and initialize
 	self:SetModel("models/metrostroi_train/e/e.mdl")
@@ -598,20 +604,19 @@ function ENT:OnButtonPress(button)
 		local state = self.BPS.TargetValue < 0.5 and "enabled" or "disabled"
 		RunConsoleCommand("say",drv.." "..state.." BPS!")
 	end
-	if button == "AirDistributorDisconnectToggle" then return end
 	if button == "NextSign" then
 		self:PrepareSigns()
 		self.SignsIndex = self.SignsIndex + 1
 		if self.SignsIndex > #self.SignsList then self.SignsIndex = 1 end
 		
-		self:SetNWString("FrontText",self.SignsList[self.SignsIndex])
+		self:SetNWString("FrontText",self.SignsList[self.SignsIndex][2])
 	end
 	if button == "PrevSign" then
 		self:PrepareSigns()
 		self.SignsIndex = self.SignsIndex - 1
 		if self.SignsIndex < 1 then self.SignsIndex = #self.SignsList end
 		
-		self:SetNWString("FrontText",self.SignsList[self.SignsIndex])
+		self:SetNWString("FrontText",self.SignsList[self.SignsIndex][2])
 	end
 
 	if button == "Num1P" then
@@ -667,14 +672,6 @@ function ENT:OnButtonPress(button)
 		end
 	end
 
-	if button == "VBToggle" then
-		if self.VB.Value == 1 then
-			self:PlayOnce("vu22_on","cabin")
-		else
-			self:PlayOnce("vu22_off","cabin")
-		end
-		return
-	end
 	-- Parking brake
 	if button == "ManualBrakeLeft" then
 		self.ManualBrake = math.max(0.0,self.ManualBrake - 0.008)
@@ -788,10 +785,6 @@ function ENT:OnButtonPress(button)
 		self.DriverValveDisconnect:TriggerInput("Set",1)
 		return
 	end
-	if button == "VDLSet" then
-		self:PlayOnce("vu22_on","instructor")
-		return
-	end
 	-- Special logic
 	if (button == "VDL") or (button == "KDL") or (button == "KDP") then
 		--self.VUD1:TriggerInput("Open",1)
@@ -806,19 +799,6 @@ function ENT:OnButtonPress(button)
 		self.KDP:TriggerInput("Open",1)
 	end
 	
-	-- Special sounds
-	if (button == "VUToggle") or ((string.sub(button,1,1) == "A") and (tonumber(string.sub(button,2,2)))) then
-		local name = string.sub(button,1,(string.find(button,"Toggle") or 0)-1)
-		if self[name] then
-			if self[name].Value > 0.5 then
-				self:PlayOnce("av_off","cabin")
-			else
-				self:PlayOnce("av_on","cabin")
-			end
-		end
-		return
-	end
-	if button == "PBSet" then self:PlayOnce("switch6","cabin",0.55,100) return end
 	if button == "GVToggle" then
 		if self.GV.Value > 0.5 then
 			self:PlayOnce("revers_f",nil,0.7)
@@ -828,26 +808,6 @@ function ENT:OnButtonPress(button)
 		return
 	end
 
-	if button == "VUD1Toggle" then 
-		if self.VUD1.Value > 0.5 then
-			self:PlayOnce("vu22_off","cabin")
-		else
-			self:PlayOnce("vu22_on","cabin")
-		end
-		return
-	end
-	if button == "VUD2Toggle" then 
-		if self.VUD2.Value > 0.5 then
-			self:PlayOnce("vu22_off","instructor")
-		else
-			self:PlayOnce("vu22_on","instructor")
-		end
-		return
-	end
-	if button == "VUD1Set" then 
-		self:PlayOnce("vu22_on","cabin")
-		return
-	end
 
 	if (button == "UAVAToggle") then
 		if self.UAVA then
@@ -872,14 +832,6 @@ function ENT:OnButtonPress(button)
 	end
 	if (not string.find(button,"KVT")) and string.find(button,"KV") then return end
 	if string.find(button,"KRU") then return end
-
-	-- Generic button or switch sound
-	if string.find(button,"Set") or string.find(button,"DURASelect") then
-		self:PlayOnce("button_press","cabin")
-	end
-	if string.find(button,"Toggle") then
-		self:PlayOnce("switch2","cabin",0.7)
-	end
 end
 
 function ENT:OnButtonRelease(button)
@@ -890,16 +842,11 @@ function ENT:OnButtonRelease(button)
 	if button == "KDL" then self.KDL:TriggerInput("Open",1) self:OnButtonRelease("KDLSet") end
 	if button == "KDP" then self.KDP:TriggerInput("Open",1) self:OnButtonRelease("KDPSet") end
 	if button == "VDL" then self.VDL:TriggerInput("Open",1) self:OnButtonRelease("VDLSet") end
-	if button == "VDLSet" then
-		self:PlayOnce("vu22_off","instructor")
-		return
-	end
 	if button == "KRP" then 
 		self.KRP:TriggerInput("Set",0)
 		self:OnButtonRelease("KRPSet")
 	end
 	
-	if button == "PBSet" then self:PlayOnce("switch6_off","cabin",0.55,100) return end
 	--[[
 	if (button == "PneumaticBrakeDown") and (self.Pneumatic.DriverValvePosition == 1) then
 		self.Pneumatic:TriggerInput("BrakeSet",2)
@@ -910,17 +857,9 @@ function ENT:OnButtonRelease(button)
 		end
 	end
 	]]
-	if button == "VUD1Set" then
-		self:PlayOnce("vu22_off","cabin")
-		return
-	end
 	
 	if (not string.find(button,"KVT")) and string.find(button,"KV") then return end
 	if string.find(button,"KRU") then return end
-
-	if string.find(button,"Set") or string.find(button,"DURASelect") then
-		self:PlayOnce("button_release","cabin")
-	end
 end
 
 function ENT:OnCouple(train,isfront)

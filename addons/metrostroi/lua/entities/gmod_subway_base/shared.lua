@@ -32,7 +32,6 @@ function ENT:BoardPassengers(delta)
 end
 
 
-
 --------------------------------------------------------------------------------
 -- Load/define basic sounds
 --------------------------------------------------------------------------------
@@ -73,6 +72,29 @@ function ENT:InitializeSounds()
 		"subway_trains/switch_7.wav",
 	}
 	
+	-----
+	--E
+	-----
+	self.SoundNames["auto_on"]			= {
+		"subway_trains/new/lsd_5.wav",
+		"subway_trains/new/lsd_6.wav",
+		"subway_trains/new/lsd_4.wav",
+	}
+	self.SoundNames["auto_off"]			= {
+		"subway_trains/new/lsd_1.wav",
+		"subway_trains/new/lsd_3.wav",
+		"subway_trains/new/lsd_6.wav",
+	}
+	self.SoundNames["mainauto_on"]		= {
+		"subway_trains/kv1_4.wav",
+		"subway_trains/kv1_5.wav",
+		"subway_trains/kv1_3.wav",
+	}
+	self.SoundNames["mainauto_off"]		= {
+		"subway_trains/kv1_2.wav",
+		"subway_trains/kv1_10.wav",
+	}
+	-----
 	self.SoundNames["kurlik"]		= "subway_trains/new/kurlik.wav"
 	self.SoundNames["switch4"]		= "subway_trains/switch_4.wav"
 	self.SoundNames["switch5"]		= "subway_trains/switch_8.wav"

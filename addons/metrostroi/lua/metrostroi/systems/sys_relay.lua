@@ -286,6 +286,8 @@ function TRAIN_SYSTEM:Think(dT)
 				if self.uava then self.Train:PlayOnce("uava_on","cabin") end
 				if self.pb then self.Train:PlayOnce("switch6","cabin") end
 				if self.programm then self.Train:PlayOnce("inf_on","cabin") end
+				if self.av then self.Train:PlayOnce("auto_on","cabin") end
+				if self.mainav then self.Train:PlayOnce("mainauto_on","cabin") end
 			end
 			if self.Value == 0.0 and self.maxvalue ~= 2 or self.Value == 1.0 and self.maxvalue == 2 then
 				if self.button then self.Train:PlayOnce("button_release","cabin") end
@@ -293,6 +295,8 @@ function TRAIN_SYSTEM:Think(dT)
 				if self.uava then self.Train:PlayOnce("uava_off","cabin") end
 				if self.pb then self.Train:PlayOnce("switch6_off","cabin") end
 				if self.programm then self.Train:PlayOnce("inf_off","cabin") end
+				if self.av then self.Train:PlayOnce("auto_off","cabin") end
+				if self.mainav then self.Train:PlayOnce("mainauto_off","cabin") end
 			end
 			if self.switch or self.rc then self.Train:PlayOnce("switch2","cabin") end
 		end

@@ -2,8 +2,8 @@ ENT.Type            = "anim"
 ENT.Base            = "gmod_subway_base"
 
 ENT.PrintName       = "E"
-ENT.Author          = ""
-ENT.Contact         = ""
+ENT.Author          = "Oldy"
+ENT.Contact         = "oldy702@gmail.com"
 ENT.Purpose         = ""
 ENT.Instructions    = ""
 ENT.Category		= "Metrostroi (trains)"
@@ -72,8 +72,8 @@ function ENT:InitializeSystems()
 	
 	-- Пневмосистема 81-705
 	self:LoadSystem("Pneumatic","81_717_Pneumatic")
-	-- Панель управления 81-705
-	self:LoadSystem("Panel","81_705_Panel")
+	-- Панель управления Е
+	self:LoadSystem("Panel","e_panel")
 	-- Everything else
 	self:LoadSystem("Battery")
 	self:LoadSystem("PowerSupply","DIP_01K")

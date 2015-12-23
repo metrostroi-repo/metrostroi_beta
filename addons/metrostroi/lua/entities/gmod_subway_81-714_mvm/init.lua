@@ -4,7 +4,21 @@ include("shared.lua")
 
 ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 
---------------------------------------------------------------------------------
+
+---------------------------------------------------
+-- Defined train information                      
+-- Types of wagon(for wagon limit system):
+-- 0 = Head or intherim                           
+-- 1 = Only head                                     
+-- 2 = Only intherim                                
+---------------------------------------------------
+ENT.SubwayTrain = {
+	Type = "81",
+	Name = "81-714",
+	WagType = 2,
+	Manufacturer = "MVM",
+}
+
 function ENT:Initialize()
 	if self.FrontBogey then
 		
@@ -17,11 +31,6 @@ function ENT:Initialize()
 	--584 14.83 19.17
 	--666 16.91 21.84
 	end
-	-- Defined train information
-	self.SubwayTrain = {
-		Type = "81",
-		Name = "81-714",
-	}
 	self.MaskType = 1
 	self.LampType = 1
 

@@ -4,7 +4,12 @@ include("shared.lua")
 
 ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 
---------------------------------------------------------------------------------
+ENT.SubwayTrain = {
+	Type = "81",
+	Name = "81-714",
+	Manufacturer = "LVZ",
+	WagType = 2,
+}
 function ENT:Initialize()
 	if self.FrontBogey then
 		

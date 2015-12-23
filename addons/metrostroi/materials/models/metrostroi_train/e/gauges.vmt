@@ -3,4 +3,5 @@
 	"$basetexture" "models/metrostroi_train/E/gauges"
 	"$bumpmap" "models/metrostroi_train/E/gauges_n"
 	"$model" "1"
+	"$selfillum" "1"
 }

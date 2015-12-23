@@ -3,14 +3,21 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 ENT.BogeyDistance = 650 -- Needed for gm trainspawner
+---------------------------------------------------
+-- Defined train information                      
+-- Types of wagon(for wagon limit system):
+-- 0 = Head or intherim                           
+-- 1 = Only head                                     
+-- 2 = Only intherim                                
+---------------------------------------------------
+ENT.SubwayTrain = {
+	Type = "E",
+	Name = "Ezh3",
+	Manufacturer = "MVM",
+	WagType = 0,
+}
 
---------------------------------------------------------------------------------
 function ENT:Initialize()
-	-- Defined train information
-	self.SubwayTrain = {
-		Type = "E",
-		Name = "Ezh3",
-	}
 
 	-- Set model and initialize
 	self:SetModel("models/metrostroi/e/em508.mdl")
@@ -68,6 +75,7 @@ function ENT:Initialize()
 		
 		[KEY_SPACE] = "PBSet",
 		[KEY_BACKSPACE] = "EmergencyBrake",
+		[KEY_PAD_MULTIPLY] = "KAHSet",
 
 		[KEY_LSHIFT] = {
 			--[KEY_SPACE] = "KBSet",
@@ -604,14 +612,14 @@ function ENT:OnButtonPress(button)
 		self.SignsIndex = self.SignsIndex + 1
 		if self.SignsIndex > #self.SignsList then self.SignsIndex = 1 end
 		
-		self:SetNWString("FrontText",self.SignsList[self.SignsIndex])
+		self:SetNWString("FrontText",self.SignsList[self.SignsIndex][2])
 	end
 	if button == "PrevSign" then
 		self:PrepareSigns()
 		self.SignsIndex = self.SignsIndex - 1
 		if self.SignsIndex < 1 then self.SignsIndex = #self.SignsList end
 		
-		self:SetNWString("FrontText",self.SignsList[self.SignsIndex])
+		self:SetNWString("FrontText",self.SignsList[self.SignsIndex][2])
 	end
 
 	if button == "Num1P" then

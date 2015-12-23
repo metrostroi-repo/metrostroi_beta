@@ -4,13 +4,21 @@ include("shared.lua")
 
 ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 
---------------------------------------------------------------------------------
+---------------------------------------------------
+-- Defined train information                      
+-- Types of wagon(for wagon limit system):
+-- 0 = Head or intherim                           
+-- 1 = Only head                                     
+-- 2 = Only intherim                                
+---------------------------------------------------
+ENT.SubwayTrain = {
+	Type = "81",
+	Name = "81-7036",
+	WagType = 1,
+	Manufacturer = "KVZ",
+}
+
 function ENT:Initialize()
-	-- Defined train information
-	self.SubwayTrain = {
-		Type = "81",
-		Name = "81-7036",
-	}
 
 	-- Set model and initialize
 	self:SetModel("models/metrostroi/81/81-7036.mdl")

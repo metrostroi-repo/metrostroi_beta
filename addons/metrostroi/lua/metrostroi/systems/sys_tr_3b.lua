@@ -64,7 +64,7 @@ function TRAIN_SYSTEM:CheckContact(ent,pos,dir,id)
 			result.Entity.Coupled = ent
 			sound.Play("buttons/lever2.wav",(ent:GetPos()+result.Entity:GetPos())/2)
 		end
-		return result.Entity.Power
+		return result.Entity.Power,true
 	end
 	return result.Hit
 end
@@ -94,14 +94,15 @@ function TRAIN_SYSTEM:Think(dT)
 	self.PlayTime = self.PlayTime or { 0, 0, 0, 0 }
 	self.ContactStates = self.ContactStates or { false, false, false, false }
 	self.NextStates = self.NextStates or { false,false,false,false }
+	self.Udochkas = self.Udochkas or { false,false,false,false }
 	self.CheckTimeout = self.CheckTimeout or 0
 	if (CurTime() - self.CheckTimeout) > 0.25 then
 		self.CheckTimeout = CurTime()
 		self.VoltageDropByTouch = 0
-		self.NextStates[1] = self:CheckContact(self.Train.FrontBogey,Vector(0,-61,-14),Vector(0,-1,0),1)
-		self.NextStates[2] = self:CheckContact(self.Train.FrontBogey,Vector(0, 61,-14),Vector(0, 1,0),2)
-		self.NextStates[3] = self:CheckContact(self.Train.RearBogey,Vector(0, -61,-14),Vector(0,-1,0),3)
-		self.NextStates[4] = self:CheckContact(self.Train.RearBogey,Vector(0,  61,-14),Vector(0, 1,0),4)
+		self.NextStates[1],self.Udochkas[1] = self:CheckContact(self.Train.FrontBogey,Vector(0,-61,-14),Vector(0,-1,0),1)
+		self.NextStates[2],self.Udochkas[2]  = self:CheckContact(self.Train.FrontBogey,Vector(0, 61,-14),Vector(0, 1,0),2)
+		self.NextStates[3],self.Udochkas[3]  = self:CheckContact(self.Train.RearBogey,Vector(0, -61,-14),Vector(0,-1,0),3)
+		self.NextStates[4],self.Udochkas[4]  = self:CheckContact(self.Train.RearBogey,Vector(0,  61,-14),Vector(0, 1,0),4)
 	end
 	
 	-- Voltage spikes
@@ -174,7 +175,10 @@ function TRAIN_SYSTEM:Think(dT)
 	self.Main750V = 0
 	self.DropByPeople = 0
 	for i=1,4 do
-		if self.ContactStates[i] then self.Main750V = (Metrostroi.Voltage or 750) + self.VoltageDrop end
+		if self.ContactStates[i] then self.Main750V = (self.Udochkas[i] and Metrostroi.Voltage or 750) + self.VoltageDrop end
+		if self.Udochkas[i] then
+			self.Main750V = 750
+		end
 	end
 	if self.VoltageDropByTouch > 0 then
 		local Rperson = 0.613

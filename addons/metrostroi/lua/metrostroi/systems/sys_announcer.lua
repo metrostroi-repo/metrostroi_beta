@@ -409,7 +409,6 @@ function TRAIN_SYSTEM:Queue(id)
 		(not Metrostroi.AnnouncementSequences[id]) then return end
 	if self.Train and self.Train.SubwayTrain.Name and self.Train.SubwayTrain.Name:sub(1,-2) ~= "81-71" and
 		(id == 5 or id == 6) then return end
-
 	-- Add announcement to queue
 	if #self.Schedule < 16 then
 		if Metrostroi.AnnouncementSequences[id] then
@@ -1505,13 +1504,13 @@ function TRAIN_SYSTEM:Announcer2()
 			end
 			self.Train:PrepareSigns()
 			self.Train.SignsIndex = self.Train.SignsList[self.AnnPath == 2 and self.AnnStartStation or self.AnnEndStation] or 1
-			self.Train:SetNWString("FrontText",self.Train.SignsList[self.Train.SignsIndex])
+			self.Train:SetNWString("FrontText",self.Train.SignsList[self.Train.SignsIndex][2])
 			local LastTrain = self:GetLastWagon()
 
 			if #self.Train.WagonList > 1 then
 				LastTrain:PrepareSigns()
 				LastTrain.SignsIndex = self.Train.SignsList[self.AnnPath == 1 and self.AnnStartStation or self.AnnEndStation] or 1
-				LastTrain:SetNWString("FrontText",self.Train.SignsList[LastTrain.SignsIndex])
+				LastTrain:SetNWString("FrontText",self.Train.SignsList[LastTrain.SignsIndex][2])
 			end
 			--self.Train:TriggerInput("CustomDSet", 0)
 			--self.Train:TriggerInput("CustomESet", 0)

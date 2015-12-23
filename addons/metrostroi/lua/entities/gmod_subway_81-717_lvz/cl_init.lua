@@ -2467,16 +2467,19 @@ function ENT:Think()
 		if self.OldBPSNType ~= 6 then
 			self:SetSoundState("bpsn"..self.OldBPSNType,0,1.0)
 		else
-			self:SetSoundState("bpsn1",0,1.0)
+			self:SetSoundState("bpsn2",0,1.0)
+			self:SetSoundState("bpsn3",0,1.0)
 			self:SetSoundState("bpsn5",0,1.0)
 		end
 	end
 	if self.BPSNType ~= 6 then
 		self:SetSoundState("bpsn"..self.BPSNType,self:GetPackedBool(52) and 2 or 0,1.0,nil,0.9)
 	else
-		self:SetSoundState("bpsn1",0,1.0)
-		self:SetSoundState("bpsn2",self:GetPackedBool(52) and 0.16 or 0,1.0)
-		self:SetSoundState("bpsn5",self:GetPackedBool(52) and 1 or 0,1.0)
+		self:SetSoundState("bpsn2",self:GetPackedBool(52) and 0.2 or 0,1.0)
+		self:SetSoundState("bpsn3",self:GetPackedBool(52) and 0.4 or 0,1)
+		--self:SetSoundState("bpsn2",0,1.0)
+		--self:SetSoundState("bpsn3",0,1.0)
+		self:SetSoundState("bpsn5",self:GetPackedBool(52) and 1 or 0,1)
 	end
 	self.OldBPSNType = self.BPSNType
 end

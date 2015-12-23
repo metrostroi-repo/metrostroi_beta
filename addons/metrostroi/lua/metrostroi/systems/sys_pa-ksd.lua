@@ -716,11 +716,11 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			if self.State74 == 5 and (self.VRD or not (self.Train.ALS_ARS.Signal0 and not self.Train.ALS_ARS.RealNoFreq and not self.Train.ALS_ARS.Signal40 and not self.Train.ALS_ARS.Signal60 and not self.Train.ALS_ARS.Signal70 and not self.Train.ALS_ARS.Signal80)) then
 				self:Trigger("BUp",true)
 			elseif self.State74 == 6 then
-				if self.LastStation == tostring(self.Station) then
+				if self.LastStation == tostring(self.Train.UPO.Station) then
 					self:Trigger("BUp",true)
 				end
 			elseif self.State74 == 7 then
-				if self.FirstStation == tostring(self.Station) then
+				if self.FirstStation == tostring(self.Train.UPO.Station) then
 					self:Trigger("BUp",true)
 				end
 			end
@@ -733,11 +733,11 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			if self.State74 == 5 and (self.VRD or not (self.Train.ALS_ARS.Signal0 and not self.Train.ALS_ARS.RealNoFreq and not self.Train.ALS_ARS.Signal40 and not self.Train.ALS_ARS.Signal60 and not self.Train.ALS_ARS.Signal70 and not self.Train.ALS_ARS.Signal80)) then
 				self:Trigger("BDown",true)
 			elseif self.State74 == 6 then
-				if self.LastStation == tostring(self.Station) then
+				if self.LastStation == tostring(self.Train.UPO.Station) then
 					self:Trigger("BDown",true)
 				end
 			elseif self.State74 == 7 then
-				if self.FirstStation == tostring(self.Station) then
+				if self.FirstStation == tostring(self.Train.UPO.Station) then
 					self:Trigger("BDown",true)
 				end
 			end
@@ -758,12 +758,12 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			elseif self.State74 == 5 then
 				self:SetState(76)
 			elseif self.State74 == 6 then
-				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Station] then
-					self.LastStation = tostring(self.Station)
+				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] then
+					self.LastStation = tostring(self.Train.UPO.Station)
 				end
 			elseif self.State74 == 7 then
-				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Station] then
-					self.FirstStation = tostring(self.Station)
+				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] then
+					self.FirstStation = tostring(self.Train.UPO.Station)
 				end
 			elseif self.State74 == 8 and not self.Arrived then
 				self.Arrived = true
@@ -772,8 +772,8 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		end
 		if self.State74 > 6 then
 			if name == "B7" then
-				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Station] then
-					self.FirstStation = tostring(self.Station)
+				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] then
+					self.FirstStation = tostring(self.Train.UPO.Station)
 					if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self:SetState(7,nil,true) end
 				end
 			end
@@ -792,8 +792,8 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self:SetState(7,nil,true) end
 			end
 			if name == "B6" then
-				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Station] then
-					self.LastStation = tostring(self.Station)
+				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] then
+					self.LastStation = tostring(self.Train.UPO.Station)
 					if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self:SetState(7,nil,true) end
 				end
 			end
@@ -939,8 +939,8 @@ function TRAIN_SYSTEM:SetState(state,state7,noupd)
 			self.RouteNumber = ""
 			self.State4Choosed = 1
 			if Metrostroi.EndStations[Announcer.AnnMap][self.Line] then
-				self.FirstStation = tostring(self.Path == 2 and Metrostroi.EndStations[Announcer.AnnMap][self.Line][#Metrostroi.EndStations[Announcer.AnnMap][self.Line]] or Metrostroi.EndStations[Announcer.AnnMap][self.Line][1])
-				self.LastStation = tostring(self.Path == 1 and Metrostroi.EndStations[Announcer.AnnMap][self.Line][#Metrostroi.EndStations[Announcer.AnnMap][self.Line]] or Metrostroi.EndStations[Announcer.AnnMap][self.Line][1])
+				self.FirstStation = tostring(self.Train.UPO.Path == 2 and Metrostroi.EndStations[Announcer.AnnMap][self.Line][#Metrostroi.EndStations[Announcer.AnnMap][self.Line]] or Metrostroi.EndStations[Announcer.AnnMap][self.Line][1])
+				self.LastStation = tostring(self.Train.UPO.Path == 1 and Metrostroi.EndStations[Announcer.AnnMap][self.Line][#Metrostroi.EndStations[Announcer.AnnMap][self.Line]] or Metrostroi.EndStations[Announcer.AnnMap][self.Line][1])
 			else
 				self.FirstStation = "111"
 				self.LastStation = "123"
@@ -1033,9 +1033,9 @@ function TRAIN_SYSTEM:Think(dT)
 	--print(self.Train.Owner)
 	local ARS = self.Train.ALS_ARS
 	local Announcer = self.Train.Announcer
-	self.Station = self.Train:ReadCell(49160) > 0 and self.Train:ReadCell(49160) or self.Train:ReadCell(49161)
-	self.Path = Metrostroi.PathConverter[self.Train:ReadCell(65510)] or 0
-	self.Distance = self.Train:ReadCell(49165) + (self.Train.Autodrive.Corrections[self.Station] or 0) - 4.3
+	--self.Train.UPO.Station = self.Train:ReadCell(49160) > 0 and self.Train:ReadCell(49160) or self.Train:ReadCell(49161)
+	--self.Train.UPO.Path = Metrostroi.PathConverter[self.Train:ReadCell(65510)] or 0
+	--self.Train.UPO.Distance = self.Train:ReadCell(49165) + (self.Train.Autodrive.Corrections[self.Train.UPO.Station] or 0) - 4.3
 	--print(self.Train.VB.Value < 0.5 or self.Train.Battery.Voltage < 55)
 	if self.Train.VB.Value < 0.5 or self.Train.Battery.Voltage < 55 or not self.VPA  then self:SetState(0) elseif self.State == 0 then self:SetState(-2) end
 	--if not ARS.EnableARS and self.State > 6 then self.State = -1 end
@@ -1075,26 +1075,26 @@ function TRAIN_SYSTEM:Think(dT)
 		end
 	elseif self.State > 6 and self.State ~= 8 and self.State ~= 49 and self.State ~= 45 and self.State ~= 48 then
 		if self.VRD and (not ARS.Signal0 or ARS.Signal0 and (ARS.Signal40 or ARS.Signal60 or ARS.Signal70 or ARS.Signal80)) then self.VRD = false end
-		if self.Distance > 40 and (self.Distance + (self.Train.Autodrive.Corrections[self.Station] or 0) - 4.3) < (160+35*self.Train.Autodrive.MU - (ARS.SpeedLimit == 40 and 30 or 0)) then
-			self.StationAutodrive = true
+		if self.Train.UPO.Distance > 40 and (self.Train.UPO.Distance + (self.Train.Autodrive.Corrections[self.Train.UPO.Station] or 0) - 4.3) < (160+35*self.Train.Autodrive.MU - (ARS.SpeedLimit == 40 and 30 or 0)) then
+			self.Train.UPO.StationAutodrive = true
 		end
-		if (self.Train.UPO:GetSTNum(self.LastStation) > self.Train.UPO:GetSTNum(self.FirstStation) and self.Path == 2) or (self.Train.UPO:GetSTNum(self.FirstStation) > self.Train.UPO:GetSTNum(self.LastStation)  and self.Path == 1) then
+		if (self.Train.UPO:GetSTNum(self.LastStation) > self.Train.UPO:GetSTNum(self.FirstStation) and self.Train.UPO.Path == 2) or (self.Train.UPO:GetSTNum(self.FirstStation) > self.Train.UPO:GetSTNum(self.LastStation)  and self.Train.UPO.Path == 1) then
 			local old = self.LastStation
 			self.LastStation = self.FirstStation
 			self.FirstStation = old
 		end
-		self.State7 = (self.Train.UPO:End(self.Station,self.Path,true) or self.Train.UPO:GetSTNum(self.LastStation) > self.Train.UPO:GetSTNum(self.Station) and self.Path == 2 or self.Train.UPO:GetSTNum(self.Station) < self.Train.UPO:GetSTNum(self.FirstStation) and self.Path == 1) and 0 or self.Arrived ~= nil and 1 or 2
+		self.State7 = (self.Train.UPO:End(self.Train.UPO.Station,self.Train.UPO.Path,true) or self.Train.UPO:GetSTNum(self.LastStation) > self.Train.UPO:GetSTNum(self.Train.UPO.Station) and self.Train.UPO.Path == 2 or self.Train.UPO:GetSTNum(self.Train.UPO.Station) < self.Train.UPO:GetSTNum(self.FirstStation) and self.Train.UPO.Path == 1) and 0 or self.Arrived ~= nil and 1 or 2
 		if self.State7 ~= 0 then
 			if (self.RealState == 8 or self.RealState == 6 or self.RealState == 49) and not self.Transit then
-				if self.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][self.Station] and ARS.Speed <= 1 then
+				if self.Train.UPO.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] and ARS.Speed <= 1 then
 					self.Arrived = true
 				end
 			end
-			if not self.Transit and 45 < self.Distance and self.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][self.Station] then
+			if not self.Transit and 45 < self.Train.UPO.Distance and self.Train.UPO.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] then
 				self.Arrived = true
 			end
 			if self.Transit then self.Arrived = nil end
-			if self.Distance > 75 then
+			if self.Train.UPO.Distance > 75 then
 				self.Arrived = nil
 			else
 				--if self.Train.Panel.SD < 0.5 then self.Arrived = true end
@@ -1136,7 +1136,7 @@ function TRAIN_SYSTEM:Think(dT)
 			--self.Train:SetNWString("PAKSD2",self.STR2)
 			--self.STR2 = self.STR2Real
 		--end
-		--self.Train:SetNWString("PAKSD2","V+= 59 VD= 70 self.Distance= 307\nKB=T1       Tx= -2c")
+		--self.Train:SetNWString("PAKSD2","V+= 59 VD= 70 self.Train.UPO.Distance= 307\nKB=T1       Tx= -2c")
 		self.Train:SetNWInt("PAKSD:State",self.State)
 		if self.State == 2 then self.Train:SetNWInt("PAKSD:Pass",self.EnteredPass ~= "/" and #self.EnteredPass or -1)
 		elseif self.State == 3 then self.Train:SetNWBool("PAKSD:Restart",self.FirstStation ~= "" and self.LastStation ~= "")
@@ -1159,9 +1159,9 @@ function TRAIN_SYSTEM:Think(dT)
 			self.Train:SetNWInt("PAKSD:Nakat",self.Nakat)
 			self.Train:SetNWBool("PAKSD:VRD",self.VRD)
 			self.Train:SetNWBool("PAKSD:Transit",self.Transit)
-			self.Train:SetNWInt("PAKSD:Station",self.Station)
-			self.Train:SetNWInt("PAKSD:Distance",self.Distance)
-			self.Train:SetNWInt("PAKSD:Type",(self.Train.Pneumatic.EmergencyValveEPK and 0 or self.Train.ALS_ARS.UAVAContacts and 4 or self.UOS and 5 or self.VRD and 2 or (self.Train.AutodriveEnabled or self.StationAutodrive) and 1 or 3))
+			self.Train:SetNWInt("PAKSD:Station",self.Train.UPO.Station)
+			self.Train:SetNWInt("PAKSD:Distance",self.Train.UPO.Distance)
+			self.Train:SetNWInt("PAKSD:Type",(self.Train.Pneumatic.EmergencyValveEPK and 0 or self.Train.ALS_ARS.UAVAContacts and 4 or self.UOS and 5 or self.VRD and 2 or (self.Train.AutodriveEnabled or self.Train.UPO.StationAutodrive) and 1 or 3))
 			self.Train:SetNWInt("PAKSD:PPT",math.Clamp(math.floor(self.Train.PositionSwitch.Position + 0.5),1,3))
 			self.Train:SetNWInt("PAKSD:RK",math.floor(self.Train.RheostatController.Position+0.5))
 			self.Train:SetNWInt("PAKSD:KV",self.Train.Autodrive.AutodriveEnabled and (self.Rotating and -3 or self.Brake and -1 or self.Accelerate and 3 or 0) or (ARS["33G"] > 0 or (self.UOS and (ARS["8"] + (1-self.Train.RPB.Value)) > 0)) and 5 or self.Train.KV.RealControllerPosition)
@@ -1174,7 +1174,7 @@ function TRAIN_SYSTEM:Think(dT)
 
 			if self.State7 == 1 then
 				self.Train:SetNWInt("PAKSD:BoardTime",math.floor((self.Train.UPO.BoardTime or CurTime()) - CurTime()))
-				self.Train:SetNWInt("PAKSD:Path",self.Path)
+				self.Train:SetNWInt("PAKSD:Path",self.Train.UPO.Path)
 			elseif self.State7 == 2 then
 				self.Train:SetNWString("PAKSD:SName",ARS.Signal and ARS.Signal.RealName or "ERR")
 			end

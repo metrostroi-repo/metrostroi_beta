@@ -237,6 +237,7 @@ ENT.ClientProps = {}
 local lastButton
 local lastTouch
 local drawCrosshair
+local canDrawCrosshair
 local toolTipText
 local lastAimButtonChange
 local lastAimButton
@@ -473,6 +474,7 @@ function ENT:OnRemove()
 	hook.Remove("PostDrawOpaqueRenderables", "metrostroi_signal_draw_"..self:EntIndex())
 	self:RemoveCSEnts()
 	drawCrosshair = false
+	canDrawCrosshair = false
 	toolTipText = nil
 	
 	for k,v in pairs(self.Sounds) do
@@ -1221,6 +1223,7 @@ hook.Add("Think","metrostroi-cabin-panel",function()
 	
 	toolTipText = nil
 	drawCrosshair = false
+	canDrawCrosshair = false
 	
 	local train = isValidTrainDriver(ply)
 	local outside = false
@@ -1235,6 +1238,7 @@ hook.Add("Think","metrostroi-cabin-panel",function()
 		outside = true
 	end
 	if(IsValid(train) and train.ButtonMap != nil) then
+		canDrawCrosshair = true
 		
 		local plyaimvec 
 		if outside then
@@ -1417,12 +1421,12 @@ hook.Add("KeyPress", "metrostroi-cabin-buttons", function(ply,key) handleKeyEven
 hook.Add("KeyRelease", "metrostroi-cabin-buttons", function(ply,key) handleKeyEvent(ply, key,false) end)
 
 hook.Add( "HUDPaint", "metrostroi-draw-crosshair-tooltip", function()
-	if not drawCrosshair then return end
+	--if not drawCrosshair then return end
 	if IsValid(LocalPlayer()) then
 		local scrX,scrY = surface.ScreenWidth(),surface.ScreenHeight()
 		
-		if drawCrosshair then
-			surface.DrawCircle(scrX/2,scrY/2,4.1,Color(255,255,150))
+		if canDrawCrosshair then
+			surface.DrawCircle(scrX/2,scrY/2,4.1,drawCrosshair and Color(255,0,0) or Color(255,255,150))
 		end
 		
 		if toolTipText != nil then

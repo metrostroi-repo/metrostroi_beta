@@ -529,11 +529,12 @@ function ENT:ReadCell(Address)
 		end
 
 		local pos = Metrostroi.TrainPositions[self]
-		if (Address >= 49160) and (Address <= 49165) and pos and pos[1] then
+		if (Address >= 49160) and (Address <= 49170) and pos and pos[1] then
 			pos = pos[1]
 
 			-- Get stations
 			local current,next,prev = 0,0,0
+			local cPlatID,nPlatID,pPlatID = 0,0,0
 			local x1,x2,x3 = 1e9,0,1e9
 			for stationID,stationData in pairs(Metrostroi.Stations) do
 				for platformID,platformData in pairs(stationData) do
@@ -541,12 +542,14 @@ function ENT:ReadCell(Address)
 						(platformData.x_start < pos.x) and 
 						(platformData.x_end > pos.x) then
 						current = stationID
+						cPlatID = platformID
 					end
 					if (platformData.node_start.path == pos.path) and 
 						(platformData.x_start > pos.x) then
 						if platformData.x_start < x1 then
 							x1 = platformData.x_start
 							next = stationID
+							nPlatID = platformID
 						end
 					end
 					if (platformData.node_start.path == pos.path) and 
@@ -554,6 +557,7 @@ function ENT:ReadCell(Address)
 						if platformData.x_start > x2 then
 							x2 = platformData.x_start
 							prev = stationID
+							pPlatID = platformID
 						end
 					end
 					if (platformData.node_start.path == pos.path) and 
@@ -561,6 +565,7 @@ function ENT:ReadCell(Address)
 						if platformData.x_end < x3 then
 							x3 = platformData.x_end
 							next = stationID
+							nPlatID = platformID
 						end
 					end
 				end
@@ -571,6 +576,12 @@ function ENT:ReadCell(Address)
 			if Address == 49162 then return prev end
 			if Address == 49163 then return x1 - pos.x end
 			if Address == 49165 then return x3 - pos.x end
+			if Address == 49166 then return cPlatID end
+			if Address == 49167 then return nPlatID end
+			if Address == 49168 then return pPlatID end
+			
+			if Address == 49169 then return current > 0 and current or next end
+			if Address == 49170 then return cPlatID > 0 and cPlatID or nPlatID end
 		end
 		return 0
 	end
@@ -1725,21 +1736,24 @@ end
 function ENT:SpawnFunction(ply, tr)
 	--MaxTrains limit
 	if self.ClassName ~= "gmod_subway_base" then
-		local Limit1 = math.min(2,GetConVarNumber("metrostroi_maxwagons"))*GetConVarNumber("metrostroi_maxtrains_onplayer")
-		local Limit2 = math.max(0,GetConVarNumber("metrostroi_maxwagons")-2)*GetConVarNumber("metrostroi_maxtrains_onplayer")
+		local Limit1 = math.min(2,GetConVarNumber("metrostroi_maxwagons"))*GetConVarNumber("metrostroi_maxtrains_onplayer")-1
+		local Limit2 = math.max(0,GetConVarNumber("metrostroi_maxwagons")-2)*GetConVarNumber("metrostroi_maxtrains_onplayer")-1
 
-		if Metrostroi.TrainCount() + 1 > GetConVarNumber("metrostroi_maxtrains")*GetConVarNumber("metrostroi_maxwagons") then
+		if Metrostroi.TrainCount() > GetConVarNumber("metrostroi_maxtrains")*GetConVarNumber("metrostroi_maxwagons")-1 then
 			Metrostroi.LimitMessage(ply)
 			return
 		end
-		
-		if self.ClassName:find("ezh3") or self.ClassName:find("717") or self.ClassName:find("7036") then
-			if Metrostroi.TrainCountOnPlayer(ply, "gmod_subway_81-717", "gmod_subway_ezh3", "gmod_subway_81-7036") + 1 > Limit1 then
+		if Metrostroi.TrainCountOnPlayer(ply) > GetConVarNumber("metrostroi_maxwagons")*GetConVarNumber("metrostroi_maxtrains_onplayer")-1 then
+			Metrostroi.LimitMessage(ply)
+			return
+		end
+		if self.SubwayTrain and self.SubwayTrain.WagType == 1 then
+			if Metrostroi.TrainCountOnPlayer(ply, 1) > Limit1 then
 				Metrostroi.LimitMessage(ply)
 				return
 			end
-		elseif self.ClassName:find("ema") or self.ClassName:find("714") or self.ClassName:find("7037") then
-			if Metrostroi.TrainCountOnPlayer(ply, "gmod_subway_81-714", "gmod_subway_ema", "gmod_subway_81-7037") + 1 > Limit2 then
+		elseif self.SubwayTrain and self.SubwayTrain.WagType == 2 then
+			if Metrostroi.TrainCountOnPlayer(ply, 2) > Limit2 then
 				Metrostroi.LimitMessage(ply)
 				return
 			end

@@ -230,6 +230,8 @@ function ENT:Think()
 		if (train_start > 1) and (train_end > 1) then doors_open = false end
 		if train_start > -0.2 and train_start < 1.2 and vertical_distance < 192 and platform_distance < 256  then
 			self.HasTrain = v
+			v.BoardTime = math.max((v.PassengersToLeave or 0)*dT,v.AnnouncementToLeaveWagon and 0 or self:PopulationCount()*dT)
+			v.Horlift = self.HorliftStation > 0
 		end
 		-- Check horizontal lift station logic
 		local passengers_can_board = false
@@ -332,8 +334,6 @@ function ENT:Think()
 			end
 			-- Change number of people in train
 			v:BoardPassengers(passenger_delta)
-			v.BoardTime = math.max(v.PassengersToLeave*dT,v.AnnouncementToLeaveWagon and 0 or self:PopulationCount()*dT)
-			v.Horlift = self.HorliftStation > 0
 			
 			-- Keep list of door positions
 			if left_side 
@@ -383,8 +383,12 @@ function ENT:Think()
 				self:FireHorliftDoors("Close")
 				self.HorliftTimer1 = nil
 				self.HorliftTimer2 = nil
-				self.ARSOverride = false
+				self.HorliftTimer3 = CurTime()
 			end		
+		end
+		if self.HorliftTimer3 and (CurTime() - self.HorliftTimer3) > 2 then
+			self.ARSOverride = false
+			self.HorliftTimer3 = nil
 		end
 	end
 	

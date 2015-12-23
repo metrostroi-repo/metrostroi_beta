@@ -4,13 +4,20 @@ include("shared.lua")
 
 ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 
---------------------------------------------------------------------------------
+---------------------------------------------------
+-- Defined train information                      
+-- Types of wagon(for wagon limit system):
+-- 0 = Head or intherim                           
+-- 1 = Only head                                     
+-- 2 = Only intherim                                
+---------------------------------------------------
+ENT.SubwayTrain = {
+	Type = "81",
+	Name = "81-717",
+	WagType = 1,
+	Manufacturer = "MVM",
+}
 function ENT:Initialize()
-	-- Defined train information
-	self.SubwayTrain = {
-		Type = "81",
-		Name = "81-717",
-	}
 	self.Plombs = {
 		VAH = true,
 		VAD = true,
@@ -944,11 +951,11 @@ function ENT:Think()
 		self.RearBogey.Reversed = (self.RKR.Value < 0.5)
 	
 		-- These corrections are required to beat source engine friction at very low values of motor power
-		local A = 2*self.Engines.BogeyMoment
-		local P = math.max(0,0.04449 + 1.06879*math.abs(A) - 0.465729*A^2)
-		if math.abs(A) > 0.4 then P = math.abs(A) end
-		if math.abs(A) < 0.05 then P = 0 end
-		if self.Speed < 10 then P = P*(1.0 + 0.5*(10.0-self.Speed)/10.0) end
+			local A = 2*self.Engines.BogeyMoment
+			local P = math.max(0,0.04449 + 1.06879*math.abs(A) - 0.465729*A^2)
+			if math.abs(A) > 0.4 then P = math.abs(A) end
+			if math.abs(A) < 0.05 then P = 0 end
+			if self.Speed < 10 then P = P*(1.0 + 0.5*(10.0-self.Speed)/10.0) end
 		self.RearBogey.MotorPower  = P*0.5*((A > 0) and 1 or -1)
 		self.FrontBogey.MotorPower = P*0.5*((A > 0) and 1 or -1)
 		--self.RearBogey.MotorPower  = P*0.5

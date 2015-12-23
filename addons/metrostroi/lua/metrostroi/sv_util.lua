@@ -151,7 +151,7 @@ function Metrostroi.TrainCount(...)
 
 	local N = 0
 	for k,v in pairs(#classnames > 0 and classnames or Metrostroi.TrainClasses) do
-		if  v == "gmod_subway_base" then continue end
+		if not baseclass.Get(v).SubwayTrain then continue end
 		N = N + #ents.FindByClass(v)
 	end
 	return N
@@ -159,23 +159,18 @@ end
 
 function Metrostroi.TrainCountOnPlayer(ply ,...)
 	local classnames = {...}
+	local typ
+	if type(classnames[1]) == "number" then
+		typ = classnames[1]
+		classnames = {}
+	end
 	if CPPI then
 		local N = 0
-		if #classnames == 1 then
-			local ents = ents.FindByClass(classnames[1])
-			for k,v in pairs(ents) do
-				if ply == v:CPPIGetOwner() then
-					N = N + 1
-				end
-			end
-			return N
-		end
-			
 		for k,v in pairs(#classnames > 0 and classnames or Metrostroi.TrainClasses) do
-			if  v == "gmod_subway_base" then continue end
+			if not baseclass.Get(v).SubwayTrain then continue end
 			local ents = ents.FindByClass(v)
 			for k2,v2 in pairs(ents) do
-				if ply == v2:CPPIGetOwner() then
+				if ply == v2:CPPIGetOwner() and (not typ or v2.SubwayTrain.WagType == typ) then
 					N = N + 1
 				end
 			end
