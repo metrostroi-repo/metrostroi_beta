@@ -453,7 +453,7 @@ if CLIENT then
 				draw.SimpleText("выход на линию","Metrostroi_PAM20",508, 13,Color(212,212,212),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
 				draw.SimpleText(Metrostroi.AnnouncerData[LastStation][1],"Metrostroi_PAM20",508, 30,Color(212,212,212),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
 			end
-			if Path > 0 then
+			if Path and Path > 0 then
 				draw.SimpleText("Путь "..Path,"Metrostroi_PAM25",260, 15,Color(254,237,142),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			else
 				draw.SimpleText("Путь N/A","Metrostroi_PAM25",260, 15,Color(254,237,142),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)

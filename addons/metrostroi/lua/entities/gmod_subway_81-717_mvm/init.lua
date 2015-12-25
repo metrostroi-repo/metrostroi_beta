@@ -1300,9 +1300,9 @@ function ENT:OnButtonPress(button,state)
 		end
 	end
 	--if button == "KVT2Set" then self.KVT:TriggerInput("Close",1) end
-	if button == "KDL" then self.KDL:TriggerInput("Close",1) self:OnButtonPress("KDLSet") end
-	if button == "KDP" then self.KDP:TriggerInput("Close",1) self:OnButtonPress("KDPSet") end
-	if button == "VDL" then self.VDL:TriggerInput("Close",1) self:OnButtonPress("VDLSet") end
+	if button == "KDL" and self.VUD1.Value < 1 then self.KDL:TriggerInput("Close",1) self:OnButtonPress("KDLSet") end
+	if button == "KDP" and self.VUD1.Value < 1 then self.KDP:TriggerInput("Close",1) self:OnButtonPress("KDPSet") end
+	if button == "VDL" and self.VUD1.Value < 1 then self.VDL:TriggerInput("Close",1) self:OnButtonPress("VDLSet") end
 	if button == "KRP" then 
 		self.KRP:TriggerInput("Set",1)
 		self:OnButtonPress("KRPSet")

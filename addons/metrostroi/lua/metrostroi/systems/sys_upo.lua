@@ -175,7 +175,7 @@ end
 function TRAIN_SYSTEM:Think()
 	self.Path = self.Train:ReadCell(49170)--Metrostroi.PathConverter[self.Train:ReadCell(65510)] or 0
 	self.Station = self.Train:ReadCell(49169)
-	self.Distance = math.min(900,self.Train:ReadCell(49165) + (self.Train.Autodrive.Corrections[self.Station] or 0) - 4.3)
+	self.Distance = math.min(3072,self.Train:ReadCell(49165) + (self.Train.Autodrive.Corrections[self.Station] or 0) - 4.3)
 	if self.Train.R_UPO.Value < 0.5 or self.Blocks == 2 and self["PA-KSD"].Trainsit or self.Train.KV.ReverserPosition == 0 then return end
 	if (self:GetSTNum(self.LastStation) > self:GetSTNum(self.FirstStation) and self.Path == 2) or (self:GetSTNum(self.FirstStation) > self:GetSTNum(self.LastStation)  and self.Path == 1) then
 		local old = self.LastStation

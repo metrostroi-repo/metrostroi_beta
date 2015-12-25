@@ -379,14 +379,14 @@ function ENT:Think()
 	-- Reset timer for horizontal lift stations
 	if self.HorliftStation > 0 then
 		if self.HorliftTimer2 then
-			if (CurTime() - self.HorliftTimer2) > 0.5 then
+			if (CurTime() - self.HorliftTimer2) > 1 then
 				self:FireHorliftDoors("Close")
 				self.HorliftTimer1 = nil
 				self.HorliftTimer2 = nil
 				self.HorliftTimer3 = CurTime()
 			end		
 		end
-		if self.HorliftTimer3 and (CurTime() - self.HorliftTimer3) > 2 then
+		if self.HorliftTimer3 and (CurTime() - self.HorliftTimer3) > 2.5 then
 			self.ARSOverride = false
 			self.HorliftTimer3 = nil
 		end

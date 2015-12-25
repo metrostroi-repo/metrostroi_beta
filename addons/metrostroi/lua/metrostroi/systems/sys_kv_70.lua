@@ -116,7 +116,7 @@ function TRAIN_SYSTEM:TriggerInput(name,value)
 		end		
 		
 	elseif name == "ReverserSet" then
-		if (self.Enabled ~= 0) and (math.floor(value) ~= self.ReverserPosition) then
+		if (self.Enabled ~= 0) and (math.floor(value) ~= self.ReverserPosition) and self.ControllerPosition == 0 then
 			local prevReverserPosition = self.ReverserPosition
 			self.ReverserPosition = math.floor(value)
 			if self.ReverserPosition >  1 then self.ReverserPosition =  1 end
