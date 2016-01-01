@@ -1,6 +1,10 @@
 --------------------------------------------------------------------------------
 -- ПА-М Поездная Аппаратура Модифицированная
 --------------------------------------------------------------------------------
+-- Коды ошибок:
+-- 0x0000 - норма
+-- 0x0001 -
+--------------------------------------------------------------------------------
 Metrostroi.DefineSystem("PA-KSD-M")
 TRAIN_SYSTEM.DontAccelerateSimulation = true
 
@@ -177,6 +181,14 @@ if CLIENT then
 		end
 			
 		if train:GetNWInt("PAKSDM:State",-1) == 3 then
+			self.ErrorCodes = {
+				[0x9999] = {"","Проверь хвостовую ПА"},
+				[0x0001] = {"","Хвостовая ПА загружается"},
+				[0x0002] = {"","Хвостовая ПА в режиме настрйки"},
+			}
+			local ErrorCode = train:GetNWInt("PAKSDM:ErrorCode",0)
+			local BackErrorCode = train:GetNWInt("PAKSDM:BErrorCode",0)
+
 			surface.SetDrawColor(Color(200,200,200))
 			surface.DrawRect(0,0,512,425)
 			
@@ -188,15 +200,25 @@ if CLIENT then
 			surface.DrawRect(17,70,180,20)
 			draw.SimpleText("РЕЗУЛЬТАТЫ","Metrostroi_PAM30",22, 80,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 
-			draw.SimpleText("Начальный тест","Metrostroi_PAM30",40, 125,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			draw.SimpleText("норма","Metrostroi_PAM30",480, 125,Color(110,172,95),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
-			draw.SimpleText("Начальная установка","Metrostroi_PAM30",40, 165,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			draw.SimpleText("норма","Metrostroi_PAM30",480, 165,Color(110,172,95),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
-			draw.SimpleText("Состояние \"хвостовой\" ПА","Metrostroi_PAM30",40, 205,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			draw.SimpleText("норма","Metrostroi_PAM30",480, 205,Color(110,172,95),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
-			draw.SimpleText("Версия ПО БЦВМ     =     0.3","Metrostroi_PAM30",80, 245,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			
-			if not train:GetNWBool("PAKSDM:RR",false) then
+			draw.SimpleText("Начальный тест","Metrostroi_PAM30",20, 125,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+			draw.SimpleText("норма","Metrostroi_PAM30",497, 125,Color(110,172,95),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
+			draw.SimpleText("Начальная установка","Metrostroi_PAM30",20, 165,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+			draw.SimpleText("норма","Metrostroi_PAM30",497, 165,Color(110,172,95),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
+			draw.SimpleText("Состояние \"хвостовой\" ПА","Metrostroi_PAM30",20, 205,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+
+			if not train:GetNWBool("PAKSDM:BackPA") or BackErrorCode == 0x9999 then
+				draw.SimpleText("не норма","Metrostroi_PAM30",497, 205,Color(200,0,0),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
+			elseif BackErrorCode == 0x0001 then
+				draw.SimpleText("загрузка","Metrostroi_PAM30",497, 205,Color(200,100,0),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
+			else
+				draw.SimpleText("норма","Metrostroi_PAM30",497, 205,Color(110,172,95),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
+			end
+			draw.SimpleText("Версия ПО БЦВМ     =     0.8","Metrostroi_PAM30",80, 245,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+			if not train:GetNWBool("PAKSDM:BackPA") then
+				draw.SimpleText("Нет связи с хвостовым БЦВМ","Metrostroi_PAM30",256, 350,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+			elseif BackErrorCode > 0 then
+				draw.SimpleText(self.ErrorCodes[BackErrorCode] and self.ErrorCodes[BackErrorCode][2] or ("Код ошибки:"..BackErrorCode),"Metrostroi_PAM30",256, 350,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+			elseif not train:GetNWBool("PAKSDM:RR",false) then
 				draw.SimpleText("ВСТАВЬТЕ РЕВЕРСИВНУЮ РУКОЯТКУ","Metrostroi_PAM30",256, 350,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			else
 				draw.SimpleText("Для перехода в начальное меню нажмите \"Enter\"","Metrostroi_PAM22",10, 320,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
@@ -204,6 +226,22 @@ if CLIENT then
 				--draw.SimpleText("нажми Enter","Metrostroi_PAM30",10, 360,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)T_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 				Metrostroi.DrawTextRectOL(216, 340, 80, 40,Color(200,200,200),gr_up,2,Color(110,110,110))
 				draw.SimpleText("Enter","Metrostroi_PAM30",256, 360,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+			end
+			if train:GetNWBool("PAKSDM:BackPAErrorNoAccepted") then
+				Metrostroi.DrawTextRectOL(102, 155, 308, 30,Color(42,58,148),gr_up,1,Color(110,110,110))
+				Metrostroi.DrawRectOL(102, 175, 308, 86,Color(110,110,110),1,Color(200,200,200))
+				draw.SimpleText("Ошибка задней ПА","Metrostroi_PAM25",256, 164,Color(255,255,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				--Metrostroi.DrawRectOutline(106, 125, 300, 150,Color(20,20,20),3 )
+				--surface.SetDrawColor(Color(200,200,200))
+				--surface.DrawRect(108, 127, 295, 146 )
+				draw.SimpleText("Задняя ПА сообщила об ошибке","Metrostroi_PAM22",256, 190,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				--draw.SimpleText("вводе данных","Metrostroi_PAM30",256, 190,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				--Metrostroi.DrawRectOutline(190, 220, 132, 40,Color(20,20,20),3 )
+				--draw.SimpleText("ENTER","Metrostroi_PAM30",256, 240,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(166, 210, 180, 40,train:GetNWBool("PAKSDM:NCCanc",false) and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("Подтвердить","Metrostroi_PAM30",256, 230,train:GetNWBool("PAKSDM:NCCanc") and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				
+				--draw.SimpleText(self.Questions[train:GetNWInt("PAKSDM:NeedConfirm",0)].."?","Metrostroi_PAM30",256, 180,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			end
 			
 		end
@@ -817,16 +855,23 @@ function TRAIN_SYSTEM:Touch(state,x,y)
 			self.g2048 = nil
 		end
 	end
-	if self.State == 3 and self:FindAimButton(x,y,216, 340, 80, 40) then
+	if self.State == 3 and self.BackPAEA  and self:FindAimButton(x,y,166, 210, 180, 40) then
+		self.BackPAEA = nil
+		return
+	end
+	if self.State == 3 and not self.BackPAEA and self.Train.KV.ReverserPosition ~= 0 and self.BackPA and not self.BackErrorCode and not self.ErrorCode and self:FindAimButton(x,y,216, 340, 80, 40) then
 		self:SetState(1.1,(self.FirstStation ~= "" and self.LastStation ~= "") and 5 or 4)
+		return
 	end
 	if self.State == 4 and self:FindAimButton(x,y,216, 320, 80, 40) then
 		if self.EnteredPass == "31173" then
 			self:SetState(1.1,-2)
+			return
 		elseif self.Pass ~= self.EnteredPass then
 			self.EnteredPass = "/"
 		else
 			self:SetState(1.1,5)
+			return
 		end
 	end
 	if self.State == 5 and self:FindAimButton(x,y,40, 140, 432, 40) then
@@ -1199,7 +1244,11 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		BM = 120,
 	}
 	if not nosnd then self.Train:PlayOnce("paksd","cabin",0.75,self.Pitches[name] or 120.0) end
-	if self.State == 3 and name == "BEnter" then
+	if self.State == 3 and name == "BEnter" and self.BackPAEA then
+		self.BackPAEA = nil
+		return
+	end
+	if self.State == 3 and name == "BEnter" and self.Train.KV.ReverserPosition ~= 0 and self.BackPA and not self.ErrorCode and not self.BackErrorCode and not self.BackPAEA then
 		self:SetState(1.1,(self.FirstStation ~= "" and self.LastStation ~= "") and 5 or 4)
 	elseif self.State == 4 then
 		if name == "BEnter" then
@@ -1780,6 +1829,16 @@ function TRAIN_SYSTEM:SetState(state,add,state9)
 	else
 		return
 	end
+	if state == 0 then
+		self.LoadTimer = math.random(3,9)
+	end
+	if state == 2 then
+		self.LoadTimer = math.random(2,6)
+	end
+	if state == 3 then
+		self.ErrorCode = nil
+		self.BackErrorCode = nil
+	end
 	if state == 4 then
 		self.EnteredPass = ""
 	end
@@ -1869,7 +1928,7 @@ function TRAIN_SYSTEM:Think(dT)
 	local Train = self.Train
 	local ARS = Train.ALS_ARS
 	local Announcer = Train.Announcer
-	if self.VPA and self.Train.VPA.Value < 1 and not self.OffTimer then
+	if self.Train.VPA.Value < 1 and not self.OffTimer then --self.VPA and 
 		self.OffTimer = CurTime() + 1
 		self.OnTimer = nil
 	end
@@ -1877,15 +1936,12 @@ function TRAIN_SYSTEM:Think(dT)
 		self.OffTimer = nil
 		self.OnTimer = nil
 	end
-	if not self.VPA and self.Train.VPA.Value > 1 and not self.OnTimer then
-		self.OffTimer = nil
-		self.OnTimer = CurTime() + 1
-	end
-	if self.OnTimer and (CurTime() - self.OnTimer) > 0 then
+	if self.Train.VPA.Value > 1 then --not self.VPA and 
 		for k,v in pairs(self.Train.WagonList) do
 			if v["PA-KSD-M"] then v["PA-KSD-M"].VPA = true end
 		end
-		self.OnTimer = nil
+	end
+	if self.OnTimer and (CurTime() - self.OnTimer) > 0 then
 	end
 	if self.OffTimer and (CurTime() - self.OffTimer) > 0 then
 		for k,v in pairs(self.Train.WagonList) do
@@ -1893,7 +1949,8 @@ function TRAIN_SYSTEM:Think(dT)
 		end
 		self.OffTimer = nil
 	end
-	if not self.VPA or Train.Panel["V1"] < 0.5 then self:SetState(-1) end
+	if Train.Panel["V1"] < 0.5 or Train.VB.Value < 0.5 then self.VPA = false end
+	if not self.VPA then self:SetState(-1) end
 	if self.VPA and self.State == -1 and Train.Panel["V1"] > 0.5 then self:SetState(0) end
 	
 	--self.Train.UPO.Station = self.Train:ReadCell(49160) > 0 and self.Train:ReadCell(49160) or self.Train:ReadCell(49161)
@@ -1911,10 +1968,35 @@ function TRAIN_SYSTEM:Think(dT)
 		end
 	end
 	if self.Train.KV.ReverserPosition == 0 and self.State > 3 and self.State < 8 and self.State ~= -9 then self:SetState(3) end
+	if self.State > 2 then
+		local Back = self.Train.WagonList[#self.Train.WagonList]
+		if #self.Train.WagonList > 1 and Back.SubwayTrain and Back.SubwayTrain.Type == "81" and Back.SubwayTrain.Manufacturer == "LVZ" then
+			self.BackPA = Back["PA-KSD-M"]
+		else
+			self.BackPA = nil
+		end
+		if self.BackPA then
+			if self.BackPA.State < 2 then
+				self.BackErrorCode = 0x9999
+			elseif self.BackPA.State == 3 then
+				self.BackErrorCode = self.BackPA.ErrorCode
+			elseif self.BackPA.State < 3 then
+				self.BackErrorCode = 0x0001
+			elseif self.BackPA.VPA then
+				self.BackErrorCode = 0x0002
+			end
+		else
+			self.BackErrorCode = nil
+		end
+		if self.BackErrorCode and self.BackErrorCode ~= 0x0002 and self.State > 3 then 
+			self:SetState(1,3)
+			self.BackPAEA = true
+		end
+	end
 	if self.State == 0 and self.RealState ~= 0 then
 	elseif self.State == 0 then
 		self:SetTimer(0.5)
-		if self:GetTimer(4) then
+		if self:GetTimer(self.LoadTimer) then
 			self:SetState(1,2)
 		end
 	elseif self.State == 1 then
@@ -1929,7 +2011,7 @@ function TRAIN_SYSTEM:Think(dT)
 		end
 	elseif self.State == 2 then
 		self:SetTimer(0.5)
-		if self:GetTimer(6) then
+		if self:GetTimer(self.LoadTimer) then
 			self:SetState(1,3)
 		end
 	elseif self.State == 8 then
@@ -2031,7 +2113,11 @@ function TRAIN_SYSTEM:Think(dT)
 		self.Time = CurTime()
 		Train:SetNWInt("PAKSDM:State",self.State)
 		if self.State == 3 then
+			Train:SetNWBool("PAKSDM:BackPAErrorNoAccepted",self.BackPAEA == true)
+			Train:SetNWBool("PAKSDM:BackPA",self.BackPA ~= nil)
 			Train:SetNWBool("PAKSDM:RR",self.Train.KV.ReverserPosition ~= 0)
+			Train:SetNWInt("PAKSDM:ErrorCode",self.ErrorCode or 0x0000)
+			Train:SetNWInt("PAKSDM:BErrorCode",self.BackErrorCode or 0x0000)
 		elseif self.State == 4 then
 			Train:SetNWInt("PAKSDM:Pass",self.EnteredPass ~= "/" and #self.EnteredPass or -1)
 		elseif self.State == 5 then

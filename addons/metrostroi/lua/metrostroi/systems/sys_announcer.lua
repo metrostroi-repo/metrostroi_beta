@@ -1407,8 +1407,8 @@ function TRAIN_SYSTEM:Announcer2()
 		end
 		if self.AnnState == 7 then
 			if self.Train.Custom1.Value > 0.5 then
-				if (self.AnnPath == 1 and self.AnnStationT > self.AnnStartStationT) or
-					(self.AnnPath == 2 and self.AnnEndStationT > self.AnnStationT) then
+				if (self.AnnPath == 1 and self.AnnStationT <= Metrostroi.WorkingStations[self.AnnMap][self.AnnRoute][self.AnnStartStation]) or
+					(self.AnnPath == 2 and Metrostroi.WorkingStations[self.AnnMap][self.AnnRoute][self.AnnEndStation] > self.AnnStationT) then
 					self.Arrive = not self.Arrive
 					if self.Arrive then self.AnnStationT = self.AnnStationT - (self.AnnPath == 1 and 1 or -1) end
 					self.AnnState = 17
@@ -1422,8 +1422,8 @@ function TRAIN_SYSTEM:Announcer2()
 			end
 
 			if self.Train.Custom2.Value > 0.5 then
-				if (self.AnnPath == 2 and self.AnnStationT > self.AnnStartStationT) or
-					(self.AnnPath == 1 and self.AnnEndStationT > self.AnnStationT) then
+				if (self.AnnPath == 2 and self.AnnStationT >Metrostroi.WorkingStations[self.AnnMap][self.AnnRoute][self.AnnStartStation]) or
+					(self.AnnPath == 1 and Metrostroi.WorkingStations[self.AnnMap][self.AnnRoute][self.AnnEndStation] > self.AnnStationT) then
 					self.Arrive = not self.Arrive
 					if not self.Arrive then self.AnnStationT = self.AnnStationT + (self.AnnPath == 1 and 1 or -1) end
 					self.AnnState = 27

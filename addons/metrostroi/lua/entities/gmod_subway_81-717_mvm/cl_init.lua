@@ -1698,10 +1698,10 @@ ENT.ClientProps["wiper"] = {
 	pos = Vector(463.8,0,53.8),
 	ang = Angle(0,-90,0)
 }
-for i = 1,23 do
-	ENT.ClientProps["lamp1_"..i] = {
+for i = 0,22 do
+	ENT.ClientProps["lamp1_"..i+1] = {
 		model = "models/metrostroi_train/81/lamp1.mdl",
-		pos = Vector(-455.5 + 34.80*i, 0, 77),
+		pos = Vector(-420.76 + 34.7985*i, 0, 77),
 		ang = Angle(180,0,0),
 		color = Color(255,175,100),
 	}
