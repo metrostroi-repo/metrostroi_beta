@@ -78,6 +78,7 @@
             <File name="lua\metrostroi\systems\sys_pa-ksd-m.lua" />
             <File name="lua\metrostroi\systems\sys_pa-m.lua" />
             <File name="lua\metrostroi\systems\sys_puav.lua" />
+            <File name="lua\metrostroi\systems\sys_motorola.lua" />
             <File name="lua\metrostroi\systems\sys_announcer.lua" />
             <File name="lua\metrostroi\systems\sys_battery.lua" />
             <File name="lua\metrostroi\systems\sys_bpsn.lua" />

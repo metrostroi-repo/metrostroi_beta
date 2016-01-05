@@ -846,7 +846,12 @@ function TRAIN_SYSTEM:FindAimButton(x,y,x1,y1,w,h)
 	if y < y1 or y > y1+h then return false end
 	return true
 end
-
+function TRAIN_SYSTEM:UpdateUPO()
+	for k,v in pairs(self.Train.WagonList) do
+		v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,v == self.Train)
+		v:OnButtonPress("RouteNumberUpdate",self.RouteNumber)
+	end
+end
 function TRAIN_SYSTEM:Touch(state,x,y)
 	local Announcer = self.Train.Announcer
 	if self.g2048 and self:FindAimButton(x,y,156, 330, 200, 40) then
@@ -959,16 +964,10 @@ function TRAIN_SYSTEM:Touch(state,x,y)
 								not Metrostroi.AnnouncerData[tonumber(self.EnteredStation)] or tonumber(self.EnteredStation) == self.FirstStation then
 								self.State6Error = not self.State6Error
 							else
+								self.FirstStation = self.EnteredStation
+								self.Line = self.FLine
 								self.Fix = nil
-								for k,v in pairs(self.Train.WagonList) do
-									if v["PA-KSD-M"] then
-										v["PA-KSD-M"].Line = self.FLine 
-										v["PA-KSD-M"].FirstStation = tostring(self.EnteredStation)
-									end
-									if v == self.Train then
-										v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,v == self.Train)
-									end
-								end
+								self:UpdateUPO()
 							end
 						end
 					end
@@ -985,16 +984,9 @@ function TRAIN_SYSTEM:Touch(state,x,y)
 								not Metrostroi.AnnouncerData[tonumber(self.EnteredStation)] then
 								self.State6Error = not self.State6Error
 							else
+								self.LastStation = self.EnteredStation
+								self:UpdateUPO()
 								self.Zon = nil
-								for k,v in pairs(self.Train.WagonList) do
-									if v["PA-KSD-M"] then
-										v["PA-KSD-M"].Line = self.FLine 
-										v["PA-KSD-M"].LastStation = tostring(self.EnteredStation)
-									end
-									if v == self.Train then
-										v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,v == self.Train)
-									end
-								end
 							end
 						end
 					end
@@ -1306,8 +1298,8 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			end
 			if self.State6Choose == 4 then
 				self.RouteNumber= self.RouteNumber:sub(1,-2)
-				self.Train:OnButtonPress("RouteNumberUpdate",self.RouteNumber)
 			end
+			self:UpdateUPO()
 		end
 		if name == "BEsc" then
 			self:SetState(1.1,5)
@@ -1342,8 +1334,8 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			end
 			if self.State6Choose == 4 and #self.RouteNumber < 3 then
 				self.RouteNumber= self.RouteNumber..tostring(Char)
-				self.Train:OnButtonPress("RouteNumberUpdate",self.RouteNumber)
 			end
+			self:UpdateUPO()
 		end
 	elseif self.State == 7 then
 		if self.State6Error then if name == "BEnter" then self.State6Error = false end return end
@@ -1360,8 +1352,8 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			end
 			if self.State6Choose == 3 then
 				self.RouteNumber= self.RouteNumber:sub(1,-2)
-				self.Train:OnButtonPress("RouteNumberUpdate",self.RouteNumber)
 			end
+			self:UpdateUPO()
 		end
 		if name == "BEsc" then
 			self:SetState(1.1,5)
@@ -1379,14 +1371,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				for k,v in pairs(self.Train.WagonList) do
 					if v ~= self.Train and v["PA-KSD-M"] then
 						v["PA-KSD-M"]:SetState(9)
-						v["PA-KSD-M"].Line = self.Line 
-						v["PA-KSD-M"].RouteNumber = self.RouteNumber
-						v["PA-KSD-M"].FirstStation = self.FirstStation
-						v["PA-KSD-M"].LastStation = self.LastStation
 					end
-					if v.UPO then v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,false) end
+					--if v.UPO then v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,false) end
 				end
-				self.Train.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,true)
+				--self.Train.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,true)
 			end
 		end
 		local Char = tonumber(name:sub(2,2))
@@ -1409,8 +1397,8 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			end
 			if self.State6Choose == 3 and #self.RouteNumber < 3 then
 				self.RouteNumber= self.RouteNumber..tostring(Char)
-				self.Train:OnButtonPress("RouteNumberUpdate",self.RouteNumber)
 			end
+			self:UpdateUPO()
 		end
 	elseif self.State == 8 then
 		if name == "BEnter" and self.Check == false then
@@ -1555,16 +1543,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 					not Metrostroi.AnnouncerData[tonumber(self.EnteredStation)] or tonumber(self.EnteredStation) == self.FirstStation then
 					self.State6Error = not self.State6Error
 				else
+					self.FirstStation = self.EnteredStation
+					self.Line = self.FLine
+					self:UpdateUPO()
 					self.Fix = nil
-					for k,v in pairs(self.Train.WagonList) do
-						if v["PA-KSD-M"] then
-							v["PA-KSD-M"].Line = self.FLine 
-							v["PA-KSD-M"].FirstStation = tostring(self.EnteredStation)
-						end
-						if v == self.Train then
-							v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,v == self.Train)
-						end
-					end
 				end
 			end
 			if name == "BDown" then
@@ -1598,14 +1580,9 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 					not Metrostroi.AnnouncerData[tonumber(self.EnteredStation)] or tonumber(self.EnteredStation) == self.LastStation then
 					self.State6Error = not self.State6Error
 				else
-					self.Fix = nil
-					for k,v in pairs(self.Train.WagonList) do
-						v["PA-KSD-M"].Line = self.FLine 
-						v["PA-KSD-M"].LastStation = tostring(self.EnteredStation)
-						if v == self.Train then
-							v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,v == self.Train)
-						end
-					end
+					self.LastStation = self.EnteredStation
+					self:UpdateUPO()
+					self.Zon = nil
 				end
 			end
 			--if name == "BDown" then
@@ -1856,8 +1833,7 @@ function TRAIN_SYSTEM:SetState(state,add,state9)
 			--self.FirstStation = "111"
 			--self.LastStation = "123"
 		end
-		self.FirstStation = ""
-		self.LastStation = ""
+		self:UpdateUPO()
 		self.State6Error = false
 	end
 	if state == 7 then
@@ -1874,12 +1850,13 @@ function TRAIN_SYSTEM:SetState(state,add,state9)
 			for k,v in pairs(self.Train.WagonList) do
 				if v ~= self.Train and v["PA-KSD-M"] then
 					v["PA-KSD-M"]:SetState(8,nil,true)
-					v["PA-KSD-M"].Line = self.Line 
-					v["PA-KSD-M"].RouteNumber = self.RouteNumber
-					v["PA-KSD-M"].FirstStation = self.FirstStation
-					v["PA-KSD-M"].LastStation = self.LastStation
+					--v["PA-KSD-M"].Line = self.Line 
+					--v["PA-KSD-M"].RouteNumber = self.RouteNumber
+					--v["PA-KSD-M"].FirstStation = self.FirstStation
+					--v["PA-KSD-M"].LastStation = self.LastStation
+					--v:OnButtonPress("RouteNumberUpdate",self.RouteNumber)
 				end
-				if v.UPO then v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,false) end
+				--if v.UPO then v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,false) end
 			end
 		end
 		self.Train.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,true)
@@ -2202,5 +2179,9 @@ function TRAIN_SYSTEM:Think(dT)
 	elseif not self.AutodriveWorking then
 		Train.Autodrive:Disable()
 	end
+	self.RouteNumber = string.gsub(Train.RouteNumber or "","^(0+)","")
+	self.Line = Train.UPO.Line
+	self.FirstStation = tostring(Train.UPO.FirstStation or "")
+	self.LastStation = tostring(Train.UPO.LastStation or "")
 	self.RealState = self.State
 end

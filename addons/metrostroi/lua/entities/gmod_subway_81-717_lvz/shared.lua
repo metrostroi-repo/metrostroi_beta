@@ -72,6 +72,9 @@ function ENT:InitializeSystems()
 	self:LoadSystem("PA-M")
 	self:LoadSystem("PA-KSD-M")
 	self:LoadSystem("PUAV")
+	
+	self:LoadSystem("Radiostation","Motorola")
+	
 	self:LoadSystem("PAKSD_DOOR","Relay","Switch")
 	self:LoadSystem("PAKSD_VUD","Relay","Switch")
 	self:LoadSystem("Horn")

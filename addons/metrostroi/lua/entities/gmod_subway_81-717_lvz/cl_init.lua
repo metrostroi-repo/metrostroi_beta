@@ -610,6 +610,53 @@ ENT.ButtonMap["IGLA"] = {
 	height = 190,
 	scale = 0.024,
 }
+ENT.ButtonMap["Motorola"] = {
+	--pos = Vector(453.9,-33.9,16.3),
+	pos = Vector(453.7,-33.7,16.3),
+	ang = Angle(-0.5,-125,90),
+	width = 180,
+	height = 120,
+	scale = 0.024,
+	buttons ={
+		{ID = "MotorolaF1Set",		x=13, y=04, w=18,h=30, tooltip="Моторола: F1\nMotorola: F1"},
+		{ID = "MotorolaMenuSet",	x=13, y=39, w=15,h=40, tooltip="Моторола: Меню\nMotorola: Menu"},
+		{ID = "MotorolaF2Set",		x=13, y=83, w=18,h=30, tooltip="Моторола: F2\nMotorola: F2"},
+		
+		{ID = "MotorolaOffSet", 	x=38, y=03, w=35,h=30, tooltip="Моторола: Отмена/Выкл\nMotorola: Cancel/Off"},
+		{ID = "MotorolaUpSet", 	x=46, y=36, w=20,h=20, tooltip="Моторола: Вверх\nMotorola: Up"},
+		{ID = "MotorolaDownSet",x=46, y=63, w=20,h=20, tooltip="Моторола: Вниз\nMotorola: Down"},
+		{ID = "MotorolaLeftSet", 	x=33, y=49, w=20,h=20, tooltip="Моторола: Влево\nMotorola: Left"},
+		{ID = "MotorolaRightSet",	x=59, y=49, w=20,h=20, tooltip="Моторола: Вправо\nMotorola: Right"},
+		{ID = "MotorolaOnSet", 	x=38, y=85, w=35,h=30, tooltip="Моторола: ОК/Вкл\nMotorola: OK/On"},
+
+		{ID = "Motorola1Set",x=87 + 29.4*0, y=2 + 23.7*0, w=23.7,h=18, tooltip="Моторола: 1\nMotorola: 1"},
+		{ID = "Motorola2Set",x=87 + 29.4*1, y=2 + 23.7*0, w=23.7,h=18, tooltip="Моторола: 2\nMotorola: 2"},
+		{ID = "Motorola3Set",x=87 + 29.4*2, y=2 + 23.7*0, w=23.7,h=18, tooltip="Моторола: 3\nMotorola: 3"},
+
+		{ID = "Motorola4Set",x=87 + 29.4*0, y=2 + 23.7*1, w=23.7,h=18, tooltip="Моторола: 4\nMotorola: 4"},
+		{ID = "Motorola5Set",x=87 + 29.4*1, y=2 + 23.7*1, w=23.7,h=18, tooltip="Моторола: 5\nMotorola: 5"},
+		{ID = "Motorola6Set",x=87 + 29.4*2, y=2 + 23.7*1, w=23.7,h=18, tooltip="Моторола: 6\nMotorola: 6"},
+		
+		{ID = "Motorola7Set",x=87 + 29.4*0, y=2 + 23.7*2, w=23.7,h=18, tooltip="Моторола: 7\nMotorola: 7"},
+		{ID = "Motorola8Set",x=87 + 29.4*1, y=2 + 23.7*2, w=23.7,h=18, tooltip="Моторола: 8\nMotorola: 8"},
+		{ID = "Motorola9Set",x=87 + 29.4*2, y=2 + 23.7*2, w=23.7,h=18, tooltip="Моторола: 9\nMotorola: 9"},
+
+		{ID = "Motorola*Set",x=87 + 29.4*0, y=2 + 23.7*3, w=23.7,h=18, tooltip="Моторола: *\nMotorola: *"},
+		{ID = "Motorola0Set",x=87 + 29.4*1, y=2 + 23.7*3, w=23.7,h=18, tooltip="Моторола: 0\nMotorola: 0"},
+		{ID = "Motorola#Set",x=87 + 29.4*2, y=2 + 23.7*3, w=23.7,h=18, tooltip="Моторола: #\nMotorola: #"},
+
+		{ID = "MotorolaF4Set",x=87 + 29.4*0, y=2 + 23.8*4, w=23.7,h=18, tooltip="Моторола: \nMotorola: "},
+		{ID = "MotorolaF5Set",x=87 + 29.4*1, y=2 + 23.8*4, w=23.7,h=18, tooltip="Моторола: \nMotorola: "},
+		{ID = "MotorolaF6Set",x=87 + 29.4*2, y=2 + 23.8*4, w=23.7,h=18, tooltip="Моторола: Подсветка\nMotorola: Light"},
+	}
+}
+ENT.ButtonMap["MotorolaDraw"] = {
+	pos = Vector(456.05,-30.95,16.16),
+	ang = Angle(-0.3,-125,90),
+	width = 140,
+	height = 107,
+	scale = 0.024,
+}
 
 -- Temporary panels (possibly temporary)
 ENT.ButtonMap["FrontPneumatic"] = {
@@ -2535,6 +2582,7 @@ function ENT:DrawPost(special)
 			self:DrawOnPanel("PAKSDM2",function(...) self["PA-KSD-M"]:PAKSDM(self,...) end)
 		end
 	end
+	self:DrawOnPanel("MotorolaDraw",function(...) self.Radiostation:Motorola(self,...) end)
 	self:DrawOnPanel("ARSKyiv",function()
 		if not self:GetPackedBool(32) then return end
 		

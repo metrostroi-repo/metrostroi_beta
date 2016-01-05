@@ -223,6 +223,13 @@ if CLIENT then
 	end
 end
 
+function TRAIN_SYSTEM:UpdateUPO()
+	for k,v in pairs(self.Train.WagonList) do
+		v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,v == self.Train)
+		v:OnButtonPress("RouteNumberUpdate",self.RouteNumber)
+	end
+end
+
 function TRAIN_SYSTEM:Trigger(name,nosnd)
 	if name == "P2" and self.Choose == 1 then
 		self.Line = (self.Line or 1) + 1
@@ -270,8 +277,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 	if self.Timer then
 		self.Timer = CurTime() + 3
 		self.TimeOverride = true
-		self.Train.UPO:SetStations(self.Line,self.FirstStation,self.LastStation)
 	end
+	self.FirstStation = Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line] and Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line][self.ChoosedFStation or 1] or 0
+	self.LastStation = Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line] and Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line][self.ChoosedLStation or 1] or 0
+	self:UpdateUPO()
 end
 function TRAIN_SYSTEM:Think(dT)
 	if self.Train.Blok and self.Train.Blok ~= 1 then return end
@@ -297,8 +306,8 @@ function TRAIN_SYSTEM:Think(dT)
 		self.Timer = nil
 		self.Choose = 0
 	end
-	self.FirstStation = Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line] and Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line][self.ChoosedFStation or 1] or 0
-	self.LastStation = Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line] and Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line][self.ChoosedLStation or 1] or 0
+	--self.FirstStation = Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line] and Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line][self.ChoosedFStation or 1] or 0
+	--self.LastStation = Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line] and Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line][self.ChoosedLStation or 1] or 0
 	if self.State ~= self.RealState then
 		self.RealState = self.State
 		self.TimeOverride = true
@@ -314,4 +323,8 @@ function TRAIN_SYSTEM:Think(dT)
 		Train:SetNWInt("PUAV:FirstStation",self.FirstStation or 1)
 		Train:SetNWInt("PUAV:Line",self.Line or 1)
 	end
+	self.RouteNumber = string.gsub(Train.RouteNumber or "","^(0+)","")
+	self.Line = Train.UPO.Line
+	self.FirstStation = tostring(Train.UPO.FirstStation or "")
+	self.LastStation = tostring(Train.UPO.LastStation or "")
 end
