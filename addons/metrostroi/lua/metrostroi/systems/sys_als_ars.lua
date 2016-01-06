@@ -336,10 +336,14 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 			
 		-- Parking brake limit
 		triggerSpeed = 5
-		if not self.RealNoFreq and self.Speed < triggerSpeed and self.TW1Timer and (CurTime() - self.TW1Timer) > 7 and not self.PneumaticBrake1 and not self.PneumaticBrake2 then
- 			self.PneumaticBrake1 = true
-			if self.Speed > 0.25 then
-				self.AntiRolling = true
+		if self.Speed < triggerSpeed and self.TW1Timer and (CurTime() - self.TW1Timer) > 7 and not self.PneumaticBrake1 and	not self.PneumaticBrake2 then
+			if (not self.RealNoFreq and (not self.Train.SubwayTrain or self.Train.SubwayTrain.Type ~= "E" or (self.Train.SubwayTrain.Type == "E" and not self.KVT))) then
+				self.PneumaticBrake1 = true
+				if self.Speed > 0.25 then
+					self.AntiRolling = true
+				end
+			else
+				self.TW1Timer =  CurTime()
 			end
 		end
 		--if self.AntiRolling and Train:ReadTrainWire(1) == 0 and Train.RRP and Train.RRP.Value == 0 and not Train.Pneumatic.EmergencyValveEPK then

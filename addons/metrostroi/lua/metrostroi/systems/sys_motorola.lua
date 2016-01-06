@@ -78,6 +78,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.LastStation = ""
 	self.Bright = 1
 	self.MenuChoosed = 0
+	self.AnnMenuChoosed = 0
 	self.Mode = 0
 	self.Mode1 = 0
 end
@@ -102,7 +103,7 @@ if CLIENT then
 			surface.SetDrawColor(Color(0,0,0))
 			surface.DrawRect(0,0,140,107)
 		end
-		surface.SetAlphaMultiplier(train:GetNWInt("Motorola:Bright",1))
+		--surface.SetAlphaMultiplier(train:GetNWInt("Motorola:Bright",1))
 		if train:GetNWInt("Motorola:State",-1) == 1 then
 			surface.SetDrawColor(Color(255,255,255))
 			surface.DrawRect(0,0,94,107)
@@ -117,13 +118,17 @@ if CLIENT then
 			Metrostroi.DrawLine(20, 4, 20, 9,Color(060,240,106),1)
 			Metrostroi.DrawLine(22, 2, 22, 9,Color(060,240,106),1)
 			if not train:GetNWBool("Motorola:Menu",false) and train:GetNWInt("Motorola:Mode",0) == 0 then
-				draw.SimpleText(train:EntIndex().."/64","Metrostroi_PAM1_20",47, 30,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				local RouteNumber = train:GetNWInt("Motorola:RouteNumber",-1) > -1 and tostring(train:GetNWInt("Motorola:RouteNumber")) or ""
+				draw.SimpleText(train:EntIndex().."/"..RouteNumber,"Metrostroi_PAM1_20",47, 30,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				draw.SimpleText("Folder 1","Metrostroi_PAM1_20",47, 48,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				draw.SimpleText("TRL "..(train:GetNWInt("Motorola:Line",0) > 0 and train:GetNWInt("Motorola:Line") or "N/A"),"Metrostroi_PAM1_20",47, 66,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				draw.SimpleText(os.date("%d-%m-%y %H.%M",os.time()),"Metrostroi_PAM15",47, 82,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				draw.SimpleText("DURA","Metrostroi_PAM15",117, 23,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				Metrostroi.DrawLine(94, 47, 140, 47,Color(89,150,175),1)
 				draw.SimpleText("Menu","Metrostroi_PAM15",117, 53,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+		
+				draw.SimpleText("Annou-","Metrostroi_PAM15",117, 77,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("nces	","Metrostroi_PAM15",117, 89,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				Metrostroi.DrawLine(94, 61, 140, 61,Color(89,150,175),1)
 			elseif train:GetNWInt("Motorola:Mode",0) == 0 then
 				Metrostroi.DrawRectOL(1,13*1, 93, 13,Color(89,150,175),1,Color(139,200,235))
@@ -139,10 +144,11 @@ if CLIENT then
 
 				draw.SimpleText("UPO","Metrostroi_PAM15",13, 7+13*2,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 				draw.SimpleText("Route number","Metrostroi_PAM15",13, 7+13*3,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-				draw.SimpleText("DURA","Metrostroi_PAM15",13, 7+13*4,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Announces","Metrostroi_PAM15",13, 7+13*4,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+				draw.SimpleText("DURA","Metrostroi_PAM15",13, 7+13*5,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			else
 				surface.SetDrawColor(Color(255,255,255))
-				if train:GetNWInt("Motorola:Mode",0) ~= 1 then surface.DrawRect(94,47,46,60) else surface.DrawRect(94,47,46,14) end
+				if train:GetNWInt("Motorola:Mode",0) ~= 1 and train:GetNWInt("Motorola:Mode",0) ~= 3 then surface.DrawRect(94,47,46,60) else surface.DrawRect(94,47,46,14) end
 				draw.SimpleText("Back","Metrostroi_PAM15",117, 23,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				if train:GetNWInt("Motorola:Mode",0) == 1 then draw.SimpleText("OK","Metrostroi_PAM15",117, 83,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) end
 				if train:GetNWInt("Motorola:Mode",0) == 1 then
@@ -173,9 +179,29 @@ if CLIENT then
 					draw.SimpleText(RouteNumber,"Metrostroi_PAM1_20",5, 35,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 					if CurTime()%0.5>0.25 then Metrostroi.DrawLine(5 +9*#RouteNumber, 40, 15+9*#RouteNumber, 40,Color(0,0,0),2) end
 				end
+				if train:GetNWInt("Motorola:Mode",0) == 3 then
+					Metrostroi.DrawRectOL(1,13*1, 93, 13,Color(89,150,175),1,Color(139,200,235))
+					draw.SimpleText("Announces","Metrostroi_PAM15",46, 6+13*1,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+					--surface.DrawRect(0,13*1,94,13)
+					surface.SetDrawColor(Color(255,255,255))
+					surface.DrawRect(94,47,46,14)
+					draw.SimpleText("Back","Metrostroi_PAM15",117, 23,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+					draw.SimpleText("Play","Metrostroi_PAM15",117, 83,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+
+					surface.SetDrawColor(Color(103,178,209))
+					surface.DrawRect(3,1+13*(2+train:GetNWInt("Motorola:AnnMenuChoosed",0)) , 88, 13)
+
+					draw.SimpleText("Go out from tr..","Metrostroi_PAM15",5, 7+13*2,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+					draw.SimpleText("Go faster","Metrostroi_PAM15",5, 7+13*3,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+					draw.SimpleText("Release doors","Metrostroi_PAM15",5, 7+13*4,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+					draw.SimpleText("Train dep. soon","Metrostroi_PAM15",5, 7+13*5,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+				end
 				
 			end
 		end
+		surface.SetAlphaMultiplier(1-train:GetNWInt("Motorola:Bright",1))
+		surface.SetDrawColor(Color(20,20,20))
+		surface.DrawRect(0,0,145,110)
 		surface.SetAlphaMultiplier(1)
 	end
 	function TRAIN_SYSTEM:ClientThink()
@@ -199,18 +225,26 @@ function TRAIN_SYSTEM:Trigger(name)
 				self.MenuChoosed = math.max(0,self.MenuChoosed  - 1)
 			end
 			if name == "MotorolaDown" then
-				self.MenuChoosed = math.min(2,self.MenuChoosed  + 1)
+				self.MenuChoosed = math.min(3,self.MenuChoosed  + 1)
 			end
 			if name == "MotorolaF2" then
 				self.Mode = self.MenuChoosed + 1
 				
-				if self.Mode == 2 then
-					self.RouteNumber = self.Train.RouteNumber
+				if self.Mode == 3 then
+					self.AnnChoosed = 0
 				end
 			end
+			local Char = tonumber(name:sub(9,9))
+			if Char and Char > 0 and Char < 5 then
+				self.Mode = Char
+			end
 		else
-			if name == "MotorolaF1" then
+			if name == "MotorolaF2" then
 				self.Mode = 3
+				self.AnnChoosed = 0
+			end
+			if name == "MotorolaF1" then
+				self.Mode = 4
 			end
 			if name == "MotorolaMenu" then
 				self.Menu = true
@@ -284,6 +318,26 @@ function TRAIN_SYSTEM:Trigger(name)
 			if Char and self.RouteNumber and #self.RouteNumber < 3 then
 				self.RouteNumber= self.RouteNumber..tostring(Char)
 				self.Train:OnButtonPress("RouteNumberUpdate",self.RouteNumber)
+			end
+		end
+		
+		if self.Mode == 3 then
+			if name == "MotorolaUp" then
+				self.AnnMenuChoosed = math.max(0,self.AnnMenuChoosed  - 1)
+			end
+			if name == "MotorolaDown" then
+				self.AnnMenuChoosed = math.min(3,self.AnnMenuChoosed  + 1)
+			end
+			if name == "MotorolaF2" then
+				self.Mode = 0
+				
+				self.Train.UPO:II(self.AnnMenuChoosed+1)
+			end
+			local Char = tonumber(name:sub(9,9))
+			if Char and Char > 0 and Char < 5 and self.Train.R_UPO.Value > 0 then
+				self.Mode = 0
+				self.Train.UPO:II(Char)
+				self.AnnChoosed = 0
 			end
 		end
 		if name == "MotorolaF1" then
@@ -380,6 +434,7 @@ function TRAIN_SYSTEM:Think(dT)
 		self.Time = CurTime()
 		Train:SetNWInt("Motorola:State",self.State)
 		Train:SetNWInt("Motorola:Line",Train.UPO.Line)
+		Train:SetNWInt("Motorola:RouteNumber",tonumber(self.RouteNumber ~= "" and self.RouteNumber or -1))
 		Train:SetNWInt("Motorola:Bright",self.Bright)
 		Train:SetNWBool("Motorola:Menu",self.Menu == true)
 		Train:SetNWInt("Motorola:MenuChoosed",self.MenuChoosed)
@@ -390,7 +445,8 @@ function TRAIN_SYSTEM:Think(dT)
 			Train:SetNWInt("Motorola:FirstStation",tonumber(self.FirstStation ~= "" and self.FirstStation or -1))
 			Train:SetNWInt("Motorola:LastStation",tonumber(self.LastStation ~= "" and self.LastStation or -1))
 		elseif self.Mode == 2 then
-			Train:SetNWInt("Motorola:RouteNumber",tonumber(self.RouteNumber ~= "" and self.RouteNumber or -1))
+		elseif self.Mode == 3 then
+			Train:SetNWInt("Motorola:AnnMenuChoosed",self.AnnMenuChoosed)
 		end
 	end
 	self.RouteNumber = string.gsub(Train.RouteNumber or "","^(0+)","")

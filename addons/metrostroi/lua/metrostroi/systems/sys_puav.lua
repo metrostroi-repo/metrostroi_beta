@@ -278,8 +278,8 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		self.Timer = CurTime() + 3
 		self.TimeOverride = true
 	end
-	self.FirstStation = Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line] and Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line][self.ChoosedFStation or 1] or 0
-	self.LastStation = Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line] and Metrostroi.EndStations[Train.Announcer.AnnMap][self.Line][self.ChoosedLStation or 1] or 0
+	self.FirstStation = Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line] and Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line][self.ChoosedFStation or 1] or 0
+	self.LastStation = Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line] and Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line][self.ChoosedLStation or 1] or 0
 	self:UpdateUPO()
 end
 function TRAIN_SYSTEM:Think(dT)
