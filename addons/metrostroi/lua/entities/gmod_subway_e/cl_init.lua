@@ -1386,10 +1386,10 @@ function ENT:Think()
 	if self.PreviousCompressorState ~= state then
 		self.PreviousCompressorState = state
 		if not state then
-			self:PlayOnce("compressor_end",nil,0.75)		
+			self:PlayOnce("compressor_end",nil,0.80)
 		end
 	end
-	self:SetSoundState("compressor",state and 1 or 0,1)
+	self:SetSoundState("compressor",state and 1 or 0,1,nil,0.80)
 	
 	-- ARS/ringer alert
 	local state = self:GetPackedBool(39)
@@ -1397,10 +1397,10 @@ function ENT:Think()
 	if self.PreviousAlertState ~= state then
 		self.PreviousAlertState = state
 		if state then
-			self:SetSoundState("ring",0.20,1)
+			self:SetSoundState("ring4",1,1)
 		else
-			self:SetSoundState("ring",0,0)
-			self:PlayOnce("ring_end","cabin",0.45)		
+			self:SetSoundState("ring4",0,0)
+			self:PlayOnce("ring4_end","cabin",1,101)
 		end
 	end
 	

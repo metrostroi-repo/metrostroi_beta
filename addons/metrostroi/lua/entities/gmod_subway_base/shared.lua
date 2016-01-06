@@ -175,6 +175,11 @@ function ENT:InitializeSounds()
 	self.SoundPositions["ring3"] 	= "cabin"
 	self.SoundPositions["ring3_end"]= "cabin"
 	
+	self.SoundNames["ring4"]		= "subway_trains/new/ring7.wav"
+	self.SoundNames["ring4_end"]	= "subway_trains/new/ring8.wav"
+	self.SoundPositions["ring4"] 	= "cabin"
+	self.SoundPositions["ring4_end"]= "cabin"
+	
 	self.SoundNames["upps"]			= "subway_trains/upps.wav"
 	
 	self.SoundNames["dura1"]		= "subway_trains/dura_alarm_1.wav"
@@ -277,8 +282,8 @@ function ENT:InitializeSounds()
 		"subway_trains/new/plomb2.wav",
 	}
 	
-	self.SoundNames["compressor"]		= "subway_trains/compressor_1.wav"
-	self.SoundNames["compressor_end"] 	= "subway_trains/compressor_2.wav"
+	self.SoundNames["compressor"]		= "subway_trains/new/compressor1.wav"
+	self.SoundNames["compressor_end"] 	= "subway_trains/new/compressor2.wav"
 
 	self.SoundNames["revers_f"]		= "subway_trains/new/revers_f.wav"
 	self.SoundNames["revers_0"]		= "subway_trains/new/revers_0.wav"

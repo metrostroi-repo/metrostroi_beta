@@ -848,7 +848,7 @@ function TRAIN_SYSTEM:FindAimButton(x,y,x1,y1,w,h)
 end
 function TRAIN_SYSTEM:UpdateUPO()
 	for k,v in pairs(self.Train.WagonList) do
-		v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,v == self.Train)
+		if v.UPO then v.UPO:SetStations(self.Line,self.FirstStation,self.LastStation,v == self.Train) end
 		v:OnButtonPress("RouteNumberUpdate",self.RouteNumber)
 	end
 end
