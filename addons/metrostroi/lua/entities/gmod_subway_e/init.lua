@@ -24,7 +24,7 @@ function ENT:Initialize()
 	self:SetPos(self:GetPos() + Vector(0,0,140))
 	
 	-- Create seat entities
-	self.DriverSeat = self:CreateSeat("driver",Vector(418,-45,-48+6+2.5),Angle(0,90,0),"models/vehicles/prisoner_pod_inner.mdl")
+	self.DriverSeat = self:CreateSeat("driver",Vector(418+9.15,-41,-48+6+2.5),Angle(0,90,0),"models/vehicles/prisoner_pod_inner.mdl")	
 	self.InstructorsSeat = self:CreateSeat("instructor",Vector(430,40,-48+6+2.5),Angle(0,90,0),"models/vehicles/prisoner_pod_inner.mdl")
 	self.ExtraSeat1 = self:CreateSeat("instructor",Vector(443,0,-48+6+2.5),Angle(0,90,0),"models/vehicles/prisoner_pod_inner.mdl")
 	self.ExtraSeat2 = self:CreateSeat("instructor",Vector(420,-20,-48+6),Angle(0,90,0),"models/vehicles/prisoner_pod_inner.mdl")
@@ -41,8 +41,8 @@ function ENT:Initialize()
 	self.ExtraSeat2:SetRenderMode(RENDERMODE_TRANSALPHA)
 	
 	-- Create bogeys
-	self.FrontBogey = self:CreateBogey(Vector( 325-10,0,-80),Angle(0,180,0),true)
-	self.RearBogey  = self:CreateBogey(Vector(-325-10,0,-80),Angle(0,0,0),false)
+	self.FrontBogey = self:CreateBogey(Vector( 313,0,-80),Angle(0,180,0),true)
+	self.RearBogey  = self:CreateBogey(Vector(-313,0,-80),Angle(0,0,0),false)
 	
 	-- Initialize key mapping
 	self.KeyMap = {
@@ -163,54 +163,53 @@ function ENT:Initialize()
 			ID = "CabinDoor4" },
 	}
 
-	-- Lights
 	self.Lights = {
 		-- Head
-		[1] = { "headlight",		Vector(465,0,-20), Angle(0,0,0), Color(216,161,92), fov = 100 },
-		[2] = { "glow",				Vector(460, 49,-28), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 1.0 },
-		[3] = { "glow",				Vector(460,-49,-28), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 1.0 },
-		[4] = { "glow",				Vector(458,-15, 57), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
-		[5] = { "glow",				Vector(458,-5,  57), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
-		[6] = { "glow",				Vector(458, 5,  57), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
-		[7] = { "glow",				Vector(458, 15, 57), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
+		[1] = { "headlight",		Vector(465+11,0,-20), Angle(0,0,0), Color(216,161,92), fov = 100 },
+		[2] = { "glow",				Vector(469.4, 45.43,-30.7), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 1.0 },
+		[3] = { "glow",				Vector(469.4,-45.43,-30.7), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 1.0 },
+		[4] = { "glow",				Vector(458+11,-14.86, 58), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
+		[5] = { "glow",				Vector(458+11,0,  58), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
+		[6] = { "glow",				Vector(458+11, 14.86,  58), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
 		
 		-- Reverse
-		[8] = { "light",			Vector(458,-31, 58), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
-		[9] = { "light",			Vector(458, 31, 58), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
+		[8] = { "light",			Vector(458+11,-30.7, 54.2), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
+		[9] = { "light",			Vector(458+11, 30.7, 54.2), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
 		
 		-- Cabin
-		[10] = { "dynamiclight",	Vector( 420, -40, 35), Angle(0,0,0), Color(255,255,255), brightness = 0.1, distance = 550 },
+		[10] = { "dynamiclight",	Vector(430,-41,-38), Angle(0,-0,0), Color(255,197,150), brightness = 0.0004, distance = 800, shadows = 0},
 		
 		-- Interior
-		[11] = { "dynamiclight",	Vector( 250, 0, 5), Angle(0,0,0), Color(255,255,255), brightness = 3, distance = 400 },
-		[12] = { "dynamiclight",	Vector(   0, 0, 5), Angle(0,0,0), Color(255,255,255), brightness = 3, distance = 400 },
-		[13] = { "dynamiclight",	Vector(-250, 0, 5), Angle(0,0,0), Color(255,255,255), brightness = 3, distance = 400 },
+		[11] = { "dynamiclight",	Vector( 200, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400 , fov=180,farz = 128 },
+		[12] = { "dynamiclight",	Vector(   0, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400, fov=180,farz = 128 },
+		[13] = { "dynamiclight",	Vector(-200, 0, 10), Angle(0,0,0), Color(255,175,50), brightness = 3, distance = 400 , fov=180,farz = 128 },
 		
 		-- Side lights
-		[14] = { "light",			Vector(390, 69, 54), Angle(0,0,0), Color(255,0,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[15] = { "light",			Vector(390, 69, 51), Angle(0,0,0), Color(150,255,255), brightness = 0.6, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[16] = { "light",			Vector(390, 69, 48), Angle(0,0,0), Color(50,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[17] = { "light",			Vector(390, 69, 45), Angle(0,0,0), Color(255,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--//[14] = { "light",			Vector(390+12.15, 69, 54), Angle(0,0,0), Color(255,0,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[15] = { "light",			Vector(390+12.15, 69, 51), Angle(0,0,0), Color(150,255,255), brightness = 0.6, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[16] = { "light",			Vector(390+12.15, 69, 48), Angle(0,0,0), Color(50,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[17] = { "light",			Vector(390+12.15, 69, 45), Angle(0,0,0), Color(255,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		
-		[18] = { "light",			Vector(390, -69, 54), Angle(0,0,0), Color(255,0,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[19] = { "light",			Vector(390, -69, 51), Angle(0,0,0), Color(150,255,255), brightness = 0.6, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[20] = { "light",			Vector(390, -69, 48), Angle(0,0,0), Color(50,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		[21] = { "light",			Vector(390, -69, 45), Angle(0,0,0), Color(255,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[18] = { "light",			Vector(390+12.15, -69, 54), Angle(0,0,0), Color(255,0,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[19] = { "light",			Vector(390+12.15, -69, 51), Angle(0,0,0), Color(150,255,255), brightness = 0.6, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[20] = { "light",			Vector(390+12.15, -69, 48), Angle(0,0,0), Color(50,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[21] = { "light",			Vector(390+12.15, -69, 45), Angle(0,0,0), Color(255,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		
-		-- Custom D
-		[35] = { "light", 			Vector(447.7,-54.5,17.4-4.4), Angle(0,-0,0), Color(255,0,0), brightness = 1.0, scale = 0.020 },
-		-- Custom E
-		[36] = { "light", 			Vector(447,-55.5,17.4-4.4), Angle(0,0,0), Color(255,255,255), brightness = 1.0, scale = 0.020 },
-		-- Custom F
-		[37] = { "light", 			Vector(444.7,-58.5,17.4-4.4), Angle(0,0,0), Color(255,160,0), brightness = 1.0, scale = 0.020 },
-		-- Custom G
-		[38] = { "light", 			Vector(444,-59.5,17.4-4.4), Angle(0,0,0), Color(100,255,0), brightness = 1.0, scale = 0.020 },
+		[15] = { "light",			Vector(15,   69, 58.3), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[16] = { "light",			Vector(12,   69, 58.3), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[17] = { "light",			Vector(9,  69, 58.3), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		
+		[19] = { "light",			Vector(15,   -69, 58.3), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[20] = { "light",			Vector(12,   -69, 58.3), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[21] = { "light",			Vector(9,  -69, 58.3), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+
 	}
-		
+	-- Lights
+		--[[
 	for i = 1,23 do
 		self.Lights[69+i] = { "light", Vector(-470 + 35*i, 0, 65), Angle(180,0,0), Color(255,220,180), brightness = 0.25, scale = 0.75}
 		--self:SetLightPower(69+i,RealTime()%1*2>1)
-	end
+	end]]
 
 	-- Cross connections in train wires
 	self.TrainWireCrossConnections = {
@@ -277,34 +276,76 @@ function ENT:Think()
 						math.min(1,self.Panel["HeadLights2"])*0.25 + 
 						math.min(1,self.Panel["HeadLights3"])*0.25)
 	)
-	self:SetLightPower(2, self.Panel["HeadLights3"] > 0.5)
-	self:SetLightPower(3, self.Panel["HeadLights3"] > 0.5)
-	self:SetLightPower(4, self.Panel["HeadLights2"] > 0.5)
+	self:SetLightPower(2, self.Panel["HeadLights2"] > 0.5)
+	self:SetLightPower(3, self.Panel["HeadLights2"] > 0.5)
+	self:SetLightPower(4, self.Panel["HeadLights1"] > 0.5)
 	self:SetLightPower(5, self.Panel["HeadLights1"] > 0.5)
 	self:SetLightPower(6, self.Panel["HeadLights1"] > 0.5)
-	self:SetLightPower(7, self.Panel["HeadLights2"] > 0.5)
+	--self:SetLightPower(7, self.Panel["HeadLights2"] > 0.5)
 	-- Reverser lights
 	self:SetLightPower(8, self.Panel["RedLightRight"] > 0.5)
 	self:SetLightPower(9, self.Panel["RedLightLeft"] > 0.5)
 	
+	self.Lights = {
+		-- Head
+		[1] = { "headlight",		Vector(465+11,0,-20), Angle(0,0,0), Color(216,161,92), fov = 100 },
+		[2] = { "glow",				Vector(469.4, 45.43,-30.7), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 1.0 },
+		[3] = { "glow",				Vector(469.4,-45.43,-30.7), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 1.0 },
+		[4] = { "glow",				Vector(458+11,-14.86, 58), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
+		[5] = { "glow",				Vector(458+11,0,  58), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
+		[6] = { "glow",				Vector(458+11, 14.86,  58), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
+		
+		-- Reverse
+		[8] = { "light",			Vector(458+11,-30.7, 54.2), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
+		[9] = { "light",			Vector(458+11, 30.7, 54.2), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
+		
+		-- Cabin
+		[10] = { "dynamiclight",	Vector(435,0,20), Angle(0,-0,0), Color(255,107,50), brightness = 0.004, distance = 600, shadows = 1},
+		
+		-- Interior
+		[11] = { "dynamiclight",	Vector( 250, 0, 0), Angle(0,0,0), Color(255,95,10), brightness = 5, distance = 300 , fov=180,farz = 128 },
+		[12] = { "dynamiclight",	Vector(   0, 0, 0), Angle(0,0,0), Color(255,95,10), brightness = 5, distance = 400, fov=180,farz = 128 },
+		[13] = { "dynamiclight",	Vector(-300, 0, 0), Angle(0,0,0), Color(255,95,10), brightness = 5, distance = 400 , fov=180,farz = 128 },
+		
+		-- Side lights
+		--//[14] = { "light",			Vector(390+12.15, 69, 54), Angle(0,0,0), Color(255,0,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[15] = { "light",			Vector(390+12.15, 69, 51), Angle(0,0,0), Color(150,255,255), brightness = 0.6, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[16] = { "light",			Vector(390+12.15, 69, 48), Angle(0,0,0), Color(50,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[17] = { "light",			Vector(390+12.15, 69, 45), Angle(0,0,0), Color(255,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		
+		--[18] = { "light",			Vector(390+12.15, -69, 54), Angle(0,0,0), Color(255,0,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[19] = { "light",			Vector(390+12.15, -69, 51), Angle(0,0,0), Color(150,255,255), brightness = 0.6, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[20] = { "light",			Vector(390+12.15, -69, 48), Angle(0,0,0), Color(50,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		--[21] = { "light",			Vector(390+12.15, -69, 45), Angle(0,0,0), Color(255,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
+		
+		[15] = { "light",			Vector(15,   69, 58.3), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[16] = { "light",			Vector(12,   69, 58.3), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[17] = { "light",			Vector(9,  69, 58.3), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		
+		[19] = { "light",			Vector(15,   -69, 58.3), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[20] = { "light",			Vector(12,   -69, 58.3), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+		[21] = { "light",			Vector(9,  -69, 58.3), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "sprites/light_glow02.vmt" },
+
+	}
 	-- Interior/cabin lights
 	self:SetLightPower(10, self.Panel["CabinLight"] > 0.5)
 
 	local lightsActive2 = self.PowerSupply.XT3_4 > 65.0
 	local lightsActive1 = self.Panel["EmergencyLight"] > 0.5
+	self:SetPackedBool("Lamps",lightsActive2)
+
 	self:SetLightPower(11, lightsActive2, 0.8)
-	self:SetLightPower(12, lightsActive1,0.1 + ((self.PowerSupply.XT3_4 > 65.0) and 0.7 or 0))
+	self:SetLightPower(12, lightsActive2, 0.8)
 	self:SetLightPower(13, lightsActive2, 0.8)
-	for i = 1,23 do
-		self:SetLightPower(69+i,lightsActive2 and true or lightsActive1 and i%5==1 or false)
-	end
+	--self:SetLightPower(12, lightsActive1,0.1 + ((self.PowerSupply.XT3_4 > 65.0) and 0.7 or 0))
+	--self:SetLightPower(13, lightsActive2, 0.8)
+	--for i = 1,23 do
+		--self:SetLightPower(69+i,lightsActive2 and true or lightsActive1 and i%5==1 or false)
+	--end
 	--self:SetLightPower(12, self.Panel["EmergencyLight"] > 0.5)
 	--self:SetLightPower(13, self.PowerSupply.XT3_4 > 65.0)
 	
 	-- Side lights
-	self:SetLightPower(14, false)
-	self:SetLightPower(18, false)
-	
 	self:SetLightPower(15, self.Panel["TrainDoors"] > 0.5)
 	self:SetLightPower(19, self.Panel["TrainDoors"] > 0.5)
 	
@@ -370,10 +411,10 @@ function ENT:Think()
 	self:SetPackedBool(121,self.Custom8.Value == 1.0)
 	self:SetPackedBool(122,self.CustomA.Value == 1.0)
 	self:SetPackedBool(124,self.CustomC.Value == 1.0)]]--
-	self:SetLightPower(35,self.CustomD.Value == 1.0)
-	self:SetLightPower(36,self.CustomE.Value == 1.0)
-	self:SetLightPower(37,self.CustomF.Value == 1.0)
-	self:SetLightPower(38,self.CustomG.Value == 1.0)
+--	self:SetLightPower(35,self.CustomD.Value == 1.0)
+--	self:SetLightPower(36,self.CustomE.Value == 1.0)
+--	self:SetLightPower(37,self.CustomF.Value == 1.0)
+--	self:SetLightPower(38,self.CustomG.Value == 1.0)
 	self:SetPackedBool(125,self.R_G.Value == 1.0)
 	self:SetPackedBool(126,self.R_Radio.Value == 1.0)
 	self:SetPackedBool(127,self.R_UNch.Value == 1.0)
@@ -443,8 +484,11 @@ function ENT:Think()
 	self:SetPackedBool(47,self.ALS_ARS.LKT)
 	-- KVD
 	self:SetPackedBool(48,self.ALS_ARS.LVD)
+	-- LST
+	self:SetPackedBool(49,self:ReadTrainWire(6) > 0.5)
 	-- LVD
 	self:SetPackedBool(50,self:ReadTrainWire(1) > 0.5)
+	self:SetPackedBool(165,self.PB.Value > 0)
 	
 	-- AV states
 	for i,v in ipairs(self.Panel.AVMap) do
@@ -478,6 +522,7 @@ function ENT:Think()
 	
 	-- Update ARS system
 	self:SetPackedRatio(3, self.ALS_ARS.Speed/100.0)
+	self:SetPackedRatio("Speed", self.Speed/120)
 	if (self.ALS_ARS.Ring == true) then
 		self:SetPackedBool(39,true)
 	end

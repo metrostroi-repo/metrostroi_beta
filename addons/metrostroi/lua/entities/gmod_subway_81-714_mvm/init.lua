@@ -50,8 +50,8 @@ function ENT:Initialize()
 	--self.InstructorsSeat:SetRenderMode(RENDERMODE_TRANSALPHA)
 
 	-- Create bogeys
-	self.FrontBogey = self:CreateBogey(Vector( 325-5,0,-75),Angle(0,180,0),true)
-	self.RearBogey  = self:CreateBogey(Vector(-325+0,0,-75),Angle(0,0,0),false)
+	self.FrontBogey = self:CreateBogey(Vector( 317-5,0,-75),Angle(0,180,0),true)
+	self.RearBogey  = self:CreateBogey(Vector(-317+0,0,-75),Angle(0,0,0),false)
 
 	-- Initialize key mapping
 	self.KeyMap = {

@@ -175,9 +175,9 @@ function TRAIN_SYSTEM:Think(dT)
 	self.Main750V = 0
 	self.DropByPeople = 0
 	for i=1,4 do
-		if self.ContactStates[i] then self.Main750V = (self.Udochkas[i] and Metrostroi.Voltage or 750) + self.VoltageDrop end
+		if self.ContactStates[i] then self.Main750V = Metrostroi.Voltage + self.VoltageDrop end
 		if self.Udochkas[i] then
-			self.Main750V = 750
+			self.Main750V = Metrostroi.Voltage
 		end
 	end
 	if self.VoltageDropByTouch > 0 then
