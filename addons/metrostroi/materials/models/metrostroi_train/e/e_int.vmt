@@ -1,0 +1,22 @@
+VertexLitGeneric
+{
+	$basetexture "models/metrostroi_train/e/e_int"
+	$bumpmap "models/metrostroi_train/e/e_int_n"
+	$surfaceprop Canister
+	$ssbump 1
+
+	$lightwarptexture "models/metrostroi_train/e/ramp_tf2"
+
+	$envmap "env_cubemap"
+	$envmapmask "models/metrostroi_train/e/e_int_p.hdr.hdr"
+	$envmaptint "[0.47 0.47 0.47]"
+	$envmapcontrast 0.03
+	$envmapsaturation 0.56
+	$fresnelreflection 0.15
+
+	$phong 1
+	$phongexponenttexture "models/metrostroi_train/e/e_int_p"
+	$phongfresnelranges "[1 1 1]"
+	$phongalbedotint 1
+	$phongboost 10
+}

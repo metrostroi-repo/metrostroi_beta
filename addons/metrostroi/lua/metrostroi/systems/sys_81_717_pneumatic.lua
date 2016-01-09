@@ -444,7 +444,7 @@ function TRAIN_SYSTEM:Think(dT)
 	if Train.SubwayTrain.Type == "E" then Ratio = 38/420 end
 	self.TrainLinePressure = self.TrainLinePressure - 0.07*trainLineConsumption_dPdT*dT -- 0.190 --0.170
 	if self.Compressor == 1 then self:equalizePressure(dT,"TrainLinePressure", 10.0, 0.04) end
-	
+	self:equalizePressure(dT,"TrainLinePressure", 0,0.001)
 	-- Overpressure
 	if self.TrainLinePressure > 9.0 then self.TrainLineOverpressureValve = 1 end
 	if self.TrainLineOverpressureValve == 1 then
@@ -603,7 +603,7 @@ function TRAIN_SYSTEM:Think(dT)
 		self.RealDriverValvePosition = self.RealDriverValvePosition - 1		if not ValveType then
 			self.Train:PlayOnce("br_334","cabin")
 		else
-			self.Train	:PlayOnce("br_013","cabin")
+			self.Train:PlayOnce("br_013","cabin")
 		end
 	end
 	if self.Train.LK1 then

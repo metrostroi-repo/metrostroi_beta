@@ -1,6 +1,16 @@
-"VertexLitGeneric"
+VertexLitGeneric
 {
-	"$basetexture" "models/metrostroi_train/E/backwall"
-	"$bumpmap" "models/metrostroi_train/E/backwall_n"
-	"$model" "1"
+	$basetexture "models/metrostroi_train/e/backwall"
+	$bumpmap "models/metrostroi_train/e/backwall_n"
+	$surfaceprop Metal_Barrel
+	$ssbump 1
+	
+	$envmap "env_cubemap"
+	$envmaptint "[0.25 0.25 0.25]"
+
+	$phong 1
+	$phongfresnelranges "[0 0.5 1]"
+	$phongalbedotint 1
+	$phongexponent 255
+	$phongboost 1
 }

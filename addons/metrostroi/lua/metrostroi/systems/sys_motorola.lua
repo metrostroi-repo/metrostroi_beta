@@ -69,6 +69,7 @@ function TRAIN_SYSTEM:Initialize()
 		"MotorolaF5",
 		"MotorolaF6",
 	}
+	self.Enabled = true
 	self.Triggers = {}
 	self.Timer = CurTime()
 	self.State = 0
@@ -411,9 +412,9 @@ function TRAIN_SYSTEM:Think(dT)
 	if Train.MotorolaOff.Value <0.5  and self.OffTimer then
 		self.OffTimer = nil
 	end
-	if Train.Panel["V1"] < 0.5 or Train.VB.Value < 0.5 then self.Enabled = false end
+	if Train.Panel["V1"] < 0.5 or Train.VB.Value < 0.5 then self:SetState(-1) end
 	if not self.Enabled then self:SetState(-1) end
-	if self.Enabled and self.State == -1 and Train.Panel["V1"] > 0.5 then self:SetState(0) end
+	if self.Enabled and self.State == -1 and Train.Panel["V1"] > 0.5 and Train.VB.Value > 0.5 then self:SetState(0) end
 	
 	--self.Train.UPO.Station = self.Train:ReadCell(49160) > 0 and self.Train:ReadCell(49160) or self.Train:ReadCell(49161)
 	--self.Train.UPO.Path = self.Train:ReadCell(49170)
