@@ -1,4 +1,5 @@
 "VertexLitGeneric"
 {
 	"$basetexture" "models/metrostroi_train/E/doors"
+	"$model" "1"
 }

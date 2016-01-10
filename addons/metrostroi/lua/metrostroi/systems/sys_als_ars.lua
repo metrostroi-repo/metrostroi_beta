@@ -622,7 +622,7 @@ function TRAIN_SYSTEM:Think(dT)
 	local KRUEnabled =  Train.KRU and Train.KRU.Position > 0
 	local EnableARS = (OverrideState or (Train.VB.Value == 1.0) and (Train.KV.ReverserPosition ~= 0.0 or KRUEnabled))
 	if Train.A42 and Train.A42.Value == 0.0 then EnableARS = false end
-	local EnableALS = OverrideState or (Train.VB.Value == 1.0) and Train.A43.Value == 1.0 
+	local EnableALS = OverrideState or (Train.VB.Value == 1.0) and (not Train.A43 or Train.A43.Value == 1.0)
 	local EnableUOS = OverrideState or (Train.VB.Value == 1.0) and ((Train.KV.ReverserPosition ~= 0.0) or KRUEnabled)
 	--if self.Train.ARSType == 3 and self.Train:EntIndex() ~= 3472 then self.Train.ARSType = 1 end
 	if not OverrideState then

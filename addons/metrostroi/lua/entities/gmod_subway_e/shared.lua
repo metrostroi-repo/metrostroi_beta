@@ -34,7 +34,7 @@ end
 
 function ENT:InitializeSystems()	
 	-- Электросистема 81-705
-	self:LoadSystem("Electric","81_705_Electric")
+	self:LoadSystem("Electric","81_701_Electric")
 
 	-- Токоприёмник
 	self:LoadSystem("TR","TR_3B")	
@@ -42,7 +42,7 @@ function ENT:InitializeSystems()
 	self:LoadSystem("Engines","DK_117DM")	
 
 	-- Резисторы для реостата/пусковых сопротивлений
-	self:LoadSystem("KF_47A")
+	self:LoadSystem("KF_47A","KF_47A")
 	-- Резисторы для ослабления возбуждения
 	self:LoadSystem("KF_50A")
 	-- Ящик с предохранителями
@@ -73,7 +73,7 @@ function ENT:InitializeSystems()
 	-- Пневмосистема 81-705
 	self:LoadSystem("Pneumatic","81_717_Pneumatic")
 	-- Панель управления Е
-	self:LoadSystem("Panel","e_panel")
+	self:LoadSystem("Panel","81_701_Panel")
 	-- Everything else
 	self:LoadSystem("Battery")
 	self:LoadSystem("PowerSupply","DIP_01K")

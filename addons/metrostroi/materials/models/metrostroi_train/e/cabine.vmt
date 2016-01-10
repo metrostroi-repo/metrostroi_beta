@@ -1,6 +1,7 @@
 VertexLitGeneric
 {
 	$basetexture "models/metrostroi_train/e/cabine"
+	"$model" "1"
 	$bumpmap "models/metrostroi_train/e/cabine_n"
 	$surfaceprop Canister
 	$ssbump 1

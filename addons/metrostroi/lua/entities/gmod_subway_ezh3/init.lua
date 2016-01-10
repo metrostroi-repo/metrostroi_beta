@@ -247,10 +247,10 @@ end
 
 --------------------------------------------------------------------------------
 function ENT:Think()
-	if self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
+	if self.YAR_13A and self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
 		self.YAR_13A:TriggerInput("Slope",true)
 	end
-	if self.YAR_13A.Slope > 0 and self:GetAngles().pitch*self.SpeedSign > -1 then
+	if self.YAR_13A and self.YAR_13A.Slope > 0 and self:GetAngles().pitch*self.SpeedSign > -1 then
 		self.YAR_13A:TriggerInput("Slope",false)
 	end
 	if self.ARSType then self.ARSType = nil end

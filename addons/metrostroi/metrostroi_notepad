@@ -62,9 +62,11 @@
             <File name="lua\entities\gmod_train_spawner\shared.lua" />
         </Folder>
         <Folder name="system">
+            <File name="lua\metrostroi\systems\sys_81_701_panel.lua" />
+            <File name="lua\metrostroi\systems\sys_81_701_electric.lua" />
             <File name="lua\metrostroi\systems\sys_81_704_electric.lua" />
-            <File name="lua\metrostroi\systems\sys_81_705_electric.lua" />
             <File name="lua\metrostroi\systems\sys_81_705_panel.lua" />
+            <File name="lua\metrostroi\systems\sys_81_705_electric.lua" />
             <File name="lua\metrostroi\systems\sys_81_717_panel.lua" />
             <File name="lua\metrostroi\systems\sys_81_717lvz_panel.lua" />
             <File name="lua\metrostroi\systems\sys_81_714_electric.lua" />
