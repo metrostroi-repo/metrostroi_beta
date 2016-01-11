@@ -1300,7 +1300,7 @@ function ENT:OnButtonPress(button,state)
 		end
 	end
 	if button == "KVWrenchNone" then
-		if self.KVWrenchMode ~= 3 then
+		if self.KVWrenchMode ~= 3 and self.KV.ReverserPosition == 0 then
 			if self.KVWrenchMode == 2 then
 				self:PlayOnce("kru_out","cabin",0.7,120.0)
 				local drv = self:GetDriverName()

@@ -310,7 +310,7 @@ function TRAIN_SYSTEM:GetCurrentCommand()
 	if not self.Commands[self.PathID] or not self.Commands[self.PathID][self.Train.UPO.Station] then return 2 end
 	if self.Train:ReadCell(49165) < 20 and not self.OnStation then return 2 end
 	local max-- = self.Train:ReadCell(49165)
-	local pos
+	local pos = 0
 	for k,v in ipairs(self.Commands[self.PathID][self.Train.UPO.Station]) do
 		if v[1] > self.Train:ReadCell(49165) then
 			max = v[1]

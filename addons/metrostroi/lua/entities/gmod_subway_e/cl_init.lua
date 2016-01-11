@@ -38,6 +38,7 @@ ENT.ButtonMap["Main"] = {
 		{ID = "DIPoffSet",		x=35 + 51*1.03-1,  y=94, radius=20, tooltip="КУ5:Отключение ДИП и освещения\nTurn DIP and interior lights off"},
 		{ID = "VozvratRPSet",	x=35 + 51*2-1,  y=94, radius=20, tooltip="КУ9:Возврат РП\nReset overload relay"},
 		{ID = "KSNSet",			x=35 + 51*2.98-1,  y=94, radius=20,  tooltip="КУ8:Принудительное срабатывание РП на неисправном вагоне (сигнализация неисправности)\nKSN: Failure indication button"},
+		{ID = "KVTSet",	x=35 + 51*3.92-1,  y=94, radius=20, tooltip="КБ: Кнопка Бдительности\nKB: Attention button"},
 		{ID = "KDPSet",			x=35 + 51*4.85-1,  y=94, radius=20, tooltip="КДП:Правые двери\nKDP: Right doors open"},
 		----Down Panel
 		{ID = "KU1Toggle",			x=17,y=128,w=45,h=90, tooltip="КУ1:Включение мотор-компрессора\nTurn motor-compressor on"},
@@ -623,13 +624,13 @@ ENT.ClientProps["parking_brake"] = {
 --------------------------------------------------------------------------------
 ENT.ClientProps["train_line"] = {
 	model = "models/metrostroi_train/e/black_pneumo_needle.mdl",
-	pos = Vector(451.12189,-56.05577,13.15),
-	ang = Angle(90,-90-54.75,90)
+	pos = Vector(451.33,-56.03,13.2),
+	ang = Angle(87,-90-54,90)
 }
 ENT.ClientProps["brake_line"] = {
 	model = "models/metrostroi_train/e/red_pneumo_needle.mdl",
-	pos = Vector(451.09103,-56.01302,13.15),
-	ang = Angle(90,-90-54.75,90)
+	pos = Vector(451.3,-56.00,13.2),
+	ang = Angle(87,-90-54,90)
 }
 ENT.ClientProps["brake_cylinder"] = {
 	model = "models/metrostroi_train/e/small_pneumo_needle.mdl",
@@ -703,6 +704,13 @@ Metrostroi.ClientPropForButton("DIPon",{
 Metrostroi.ClientPropForButton("VozvratRP",{
 	panel = "Main",
 	button = "VozvratRPSet",	
+	model = "models/metrostroi_train/e/buttonwhite.mdl",
+	ang = 0,
+	z = -6,
+})
+Metrostroi.ClientPropForButton("KVT",{
+	panel = "Main",
+	button = "KVTSet",	
 	model = "models/metrostroi_train/e/buttonwhite.mdl",
 	ang = 0,
 	z = -6,
@@ -1198,11 +1206,11 @@ function ENT:Think()
 	self:ShowHideSmooth("L60",self:Animate("light_60",self:GetPackedBool(44) and 1 or 0,0,1,10,false))
 	self:ShowHideSmooth("L70",self:Animate("light_70",self:GetPackedBool(45) and 1 or 0,0,1,10,false))
 	self:ShowHideSmooth("L80",self:Animate("light_80",self:GetPackedBool(46) and 1 or 0,0,1,10,false))
-	
+
 	--MainPanel Lamps
 	self:ShowHideSmooth("SD",self:Animate("light_SD",self:GetPackedBool(40) and 1 or 0,0,1,10,false))
 	self:ShowHideSmooth("gRP",self:Animate("light_gRP",self:GetPackedBool(36) and 1 or 0,0,1,10,false))
-	self:ShowHideSmooth("rRP",self:Animate("light_rRP",self:GetPackedBool(35) and 1 or 0,0,1,12,false) + self:Animate("light_rLSN",self:GetPackedBool(131) and 1 or 0,0,0.3,12,false))
+	self:ShowHideSmooth("rRP",self:Animate("light_rRP",self:GetPackedBool(35) and 1 or 0,0,1,12,false) + self:Animate("light_rLSN",self:GetPackedBool(131) and 1 or 0,0,0.2,12,false))
 	self:ShowHideSmooth("r2RP",self:Animate("light_LhRK",self:GetPackedBool(112) and 1 or 0,0,1,10,false))
 	self:ShowHideSmooth("LST",self:Animate("light_LST",self:GetPackedBool(49) and 1 or 0,0,1,10,false))
 	self:ShowHideSmooth("LVD",self:Animate("light_LVD",self:GetPackedBool(50) and 1 or 0,0,1,5,false))
@@ -1222,8 +1230,8 @@ function ENT:Think()
 	self:ShowHide("brake334",		not self:GetPackedBool(22))
 	self:ShowHide("brake334_body",	not self:GetPackedBool(22))
 
-	self:Animate("brake_line",		self:GetPackedRatio(4),				0.61, 0.86,  256,2)--,,0.01)
-	self:Animate("train_line",		self:GetPackedRatio(5)-transient,	0.61, 0.86,  256,2)--,,0.01)
+	self:Animate("brake_line",		self:GetPackedRatio(4),				0.626, 0.88,  256,2)--,,0.01)
+	self:Animate("train_line",		self:GetPackedRatio(5)-transient,	0.626, 0.88,  256,2)--,,0.01)
 	self:Animate("brake_cylinder",	self:GetPackedRatio(6),	 			0.121, 0.865,  256,2)--,,0.03)
 	self:Animate("voltmeter",		self:GetPackedRatio(7),				0.598, 0.865)
 	self:Animate("ampermeter",		self:GetPackedRatio(8),				0.628, 0.875)
@@ -1406,7 +1414,7 @@ function ENT:Think()
 			self:SetSoundState("ring4",1,1)
 		else
 			self:SetSoundState("ring4",0,0)
-			self:PlayOnce("ring4_end","cabin",1,101)		
+			self:PlayOnce("ring4_end","cabin",nil,101)		
 		end
 	end
 	

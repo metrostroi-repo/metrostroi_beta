@@ -306,7 +306,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		self.PrevNoFreq = self.RealNoFreq
 		-- Check overspeed
 		if self.Overspeed and not self.ARSBrake then
-			--self.ElectricBrake = true
+			self.ElectricBrake = true
 			self.ARSBrake = true
 			self.PneumaticBrake1 = true
 			self.PV1Timer = CurTime() - (self.SpeedLimit <= 20 and 2 or 0)
@@ -322,18 +322,20 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 			self.PneumaticBrake2 = false
 		end
 		-- Check use of valve #1 during overspeed
-		self.PV1Timer = self.PV1Timer or -1e9
-		if ((CurTime() - self.PV1Timer) >= 1) then 
-			--print(CurTime() - self.PV1Timer)
+		--self.PV1Timer = self.PV1Timer or -1e9
+		if self.PV1Timer and ((CurTime() - self.PV1Timer) >= 1) then 
 			if self.Overspeed then
-				self.PneumaticBrake1 = false
 				self.ElectricBrake = true
+				self.PneumaticBrake2 = true
+			else
+				self.PneumaticBrake1 = false
+				print(self.Overspeed)
 			end
+			self.PV1Timer = nil
 		end
 		if self.ARSBrake and self.ElectricBrake and self.Speed < 0.25 then
 			self.PneumaticBrake2 = true
 		end
-			
 		-- Parking brake limit
 		triggerSpeed = 5
 		if self.Speed < triggerSpeed and self.TW1Timer and (CurTime() - self.TW1Timer) > 7 and not self.PneumaticBrake1 and	not self.PneumaticBrake2 then
@@ -437,7 +439,6 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 			+ (self.BPSActive and 1 or 0)
 			+ (self.AntiRolling and 1 or 0)
 			+ (1 - ((EPKActivated and 1 or 0) or 1))
-
 		---self.LKT = (self["33G"] > 0.5) or (self["29"] > 0.5) or (Train:ReadTrainWire(35) > 0)
 		self.LVD = self.LVD or self["33D"] < 0.5
 		if Train:ReadTrainWire(6) < 1 and self["33D"] > 0.5  then  self.LVD = false end
@@ -493,7 +494,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		self.Train:WriteTrainWire(21,0)
 	end
 	-- ARS anti-door-closing
-	if EnableARS then
+	if EnableARS and self.Train.SubwayTrain and self.Train.SubwayTrain.HaveASNP then
 		local SD = self.Train:ReadTrainWire(15)
 		if (SD < 1.0) and (self.Speed > 6.0) then
 			self["31"] = CurTime()%(1/10)*10
@@ -687,7 +688,7 @@ function TRAIN_SYSTEM:Think(dT)
 						if not Train.Pneumatic.UAVA then
 							RunConsoleCommand("say","Autostop braking",Train:GetDriverName(),arsback.Name)
 						end
-						if Train.A5.Value < 1 then
+						if Train.A5 and Train.A5.Value < 1 then
 							RunConsoleCommand("say","Passed stop signal",Train:GetDriverName(),arsback.Name)
 						end
 					end

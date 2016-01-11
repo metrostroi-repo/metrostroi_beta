@@ -12,7 +12,7 @@ ENT.ButtonMap["Main"] = {
 	width = 460,
 	height = 230,
 	scale = 0.0625,
-	
+
 	buttons = {
 		{ID = "R_UNchToggle",	x=39+28*0, y=37, radius=20, tooltip="УНЧ: Усилитель низких частот (информатор салона)\nUNCh: Low frequency amplifier(sound in wagons enable)"},
 		{ID = "R_ZSToggle",		x=36+28*1, y=37, radius=20, tooltip="ЗС\nZS"},

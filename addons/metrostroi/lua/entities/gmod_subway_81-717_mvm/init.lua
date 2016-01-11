@@ -16,6 +16,9 @@ ENT.SubwayTrain = {
 	Name = "81-717",
 	WagType = 1,
 	Manufacturer = "MVM",
+	ARS = {
+		HaveASNP = true,
+	}
 }
 function ENT:Initialize()
 	self.Plombs = {
@@ -787,7 +790,7 @@ function ENT:Think()
 	self:SetPackedBool(34,(self.NR.Value == 1.0) or (self.RPU.Value == 1.0))
 	-- Red RP
 	self.RTW18 = self:GetTrainWire18Resistance()
-	if (self.KV.ControllerPositionAutodrive == 0 and self.KV.ControllerPosition == 0) or (self.Panel["V1"] < 0.5) then self.RTW18 = 1e9 end
+	if self:ReadTrainWire(20) == 0 or (self.Panel["V1"] < 0.5) then self.RTW18 = 1e9 end--(self.KV.ControllerPositionAutodrive == 0 and self.KV.ControllerPosition == 0)
 	self:SetPackedBool(35,self.RTW18 < 1.39-0.208*self:GetWagonCount())
 	self:SetPackedBool(131,self.RTW18 < 100)
 	-- Green RP

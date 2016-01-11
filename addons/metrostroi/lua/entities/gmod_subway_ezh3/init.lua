@@ -15,6 +15,9 @@ ENT.SubwayTrain = {
 	Name = "Ezh3",
 	Manufacturer = "MVM",
 	WagType = 0,
+	ARS = {
+		HaveASNP = true,
+	}
 }
 
 function ENT:Initialize()
@@ -416,7 +419,7 @@ function ENT:Think()
 	self:SetPackedBool(34,(self.NR.Value == 1.0) or (self.RPU.Value == 1.0))
 	-- Red RP
 	local RTW18 = self:GetTrainWire18Resistance()
-	if (self.KV.ControllerPosition == 0) or (self.Panel["V1"] < 0.5) then RTW18 = 1e9 end
+	if (self:ReadTrainWire(20) == 0) or (self.Panel["V1"] < 0.5) then self.RTW18 = 1e9 end
 	self:SetPackedBool(35,RTW18 < 1.39-0.208*self:GetWagonCount())
 	self:SetPackedBool(131,RTW18 < 100)
 	-- Green RP
@@ -769,7 +772,7 @@ function ENT:OnButtonPress(button)
 		end
 	end]]
 	if button == "KVWrenchNone" then
-		if self.KVWrenchMode ~= 3 then
+		if self.KVWrenchMode ~= 3 and self.KV.ReverserPosition == 0 then
 			if self.KVWrenchMode == 2 then
 				self:PlayOnce("kru_out","cabin",0.7,120.0)
 			else

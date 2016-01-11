@@ -15,6 +15,9 @@ ENT.SubwayTrain = {
 	Type = "E",
 	Name = "E",
 	WagType = 0,
+	ARS = {
+		HaveASNP = false,
+	}
 }
 function ENT:Initialize()
 
@@ -62,8 +65,10 @@ function ENT:Initialize()
 		
 		[KEY_0] = "KVReverserUp",
 		[KEY_9] = "KVReverserDown",
-		[KEY_W] = "KVControllerUp",
-		[KEY_S] = "KVControllerDown",
+		[KEY_PAD_PLUS] = "KVReverserUp",
+		[KEY_PAD_MINUS] = "KVReverserDown",
+		[KEY_W] = "KVUp",
+		[KEY_S] = "KVDown",
 		[KEY_F] = "PneumaticBrakeUp",
 		[KEY_R] = "PneumaticBrakeDown",
 		
@@ -71,24 +76,37 @@ function ENT:Initialize()
 		[KEY_D] = "KDP",
 		[KEY_V] = "VUD1Toggle",
 		[KEY_L] = "HornEngage",
+		[KEY_N] = "VZ1Set",
+		[KEY_PAD_1] = "PneumaticBrakeSet1",
+		[KEY_PAD_2] = "PneumaticBrakeSet2",
+		[KEY_PAD_3] = "PneumaticBrakeSet3",
+		[KEY_PAD_4] = "PneumaticBrakeSet4",
+		[KEY_PAD_5] = "PneumaticBrakeSet5",
+		[KEY_PAD_6] = "PneumaticBrakeSet6",
+		[KEY_PAD_7] = "PneumaticBrakeSet7",
+		[KEY_PAD_DIVIDE] = "KRPSet",
+		[KEY_PAD_MULTIPLY] = "KAHSet",
 		
 		[KEY_SPACE] = "PBSet",
 		[KEY_BACKSPACE] = "EmergencyBrake",
 
+		[KEY_PAD_0] = "DriverValveDisconnectToggle",
+		[KEY_PAD_DECIMAL] = "EPKToggle",
 		[KEY_LSHIFT] = {
-			--[KEY_SPACE] = "KBSet",
+			[KEY_W] = "KVUp_Unlocked",
+			[KEY_SPACE] = "KVTSet",
+		
 			[KEY_A] = "DURASelectAlternate",
 			[KEY_D] = "DURASelectMain",
 			[KEY_V] = "DURAToggleChannel",
 			[KEY_1] = "DIPonSet",
 			[KEY_2] = "DIPoffSet",
-			[KEY_L] = "DriverValveDisconnectToggle",
-			[KEY_K] = "EPKToggle",
-			
 			[KEY_4] = "KVSet0Fast",
+			[KEY_L] = "DriverValveDisconnectToggle",
+			
 			[KEY_7] = "KVWrenchNone",
 			[KEY_8] = "KVWrenchKRU",
-			[KEY_9] = "KVWrenchKV",
+			[KEY_9] = "KVWrenchKV", 
 			[KEY_0] = "KVWrench0",
 			[KEY_6] = "KVSetT1A",
 		},
@@ -99,20 +117,16 @@ function ENT:Initialize()
 			[KEY_9] = "KVWrenchKV",
 			[KEY_0] = "KVWrench0",
 			[KEY_L] = "DriverValveDisconnectToggle",
+			[KEY_F] = "BCCDSet",
+			[KEY_R] = "VZPSet",
 		},
 		[KEY_LALT] = {
+			[KEY_V] = "VUD1Toggle",
 			[KEY_L] = "EPKToggle",
 		},
 		[KEY_RALT] = {
 			[KEY_L] = "EPKToggle",
 		},
-		[KEY_PAD_1] = "PneumaticBrake1",
-		[KEY_PAD_2] = "PneumaticBrake2",
-		[KEY_PAD_3] = "PneumaticBrake3",
-		[KEY_PAD_4] = "PneumaticBrake4",
-		[KEY_PAD_5] = "PneumaticBrake5",
-		[KEY_PAD_6] = "PneumaticBrake6",
-		[KEY_PAD_7] = "PneumaticBrake7",
 	}
 	
 	self.InteractionZones = {
@@ -191,6 +205,9 @@ function ENT:Initialize()
 		[36] = { "headlight", 		Vector(455.2,-53.2,5.35), Angle(-90,-90,-180), Color(216,161,92), farz = 4, nearz = 4, shadows = 0, brightness = 2, fov = 130 },
 		
 		[37] = { "headlight", 		Vector(458.3,-20.32,19.6), Angle(-90,-120,-180), Color(216,161,92), farz = 4, nearz = 4, shadows = 0, brightness = 3, fov = 160 },
+
+		[38] = { "headlight",	Vector( -20, 0, 30), Angle(90,0,90), Color(255,95,10), brightness = 1, distance = 999,fov=179, shadows = 0, farz = 500},
+		[39] = { "headlight",	Vector( -20, 0, 10), Angle(-90,0,90), Color(255,95,10), brightness = 1, distance = 999,fov=179, shadows = 0, farz = 500},
 
 	}
 	-- Lights
@@ -409,7 +426,7 @@ function ENT:Think()
 	self:SetPackedBool(34,(self.NR.Value == 1.0) or (self.RPU.Value == 1.0))
 	-- Red RP
 	self.RTW18 = self:GetTrainWire18Resistance()
-	if (self.KV.ControllerPositionAutodrive == 0 and self.KV.ControllerPosition == 0) or (self.Panel["V1"] < 0.5) then self.RTW18 = 1e9 end
+	if (self:ReadTrainWire(20) == 0) or (self.Panel["V1"] < 0.5) then self.RTW18 = 1e9 end
 	self:SetPackedBool(35,self.RTW18 < 1.39-0.208*self:GetWagonCount())
 	self:SetPackedBool(131,self.RTW18 < 100)
 	-- Green RP
@@ -765,7 +782,7 @@ function ENT:OnButtonPress(button)
 		end
 	end]]
 	if button == "KVWrenchNone" then
-		if self.KVWrenchMode ~= 3 then
+		if self.KVWrenchMode ~= 3 and self.KV.ReverserPosition == 0 then
 			if self.KVWrenchMode == 2 then
 				self:PlayOnce("kru_out","cabin",0.7,120.0)
 			else
@@ -779,9 +796,9 @@ function ENT:OnButtonPress(button)
 		end
 	end
 	--if button == "KVT2Set" then self.KVT:TriggerInput("Close",1) end
-	if button == "KDL" then self.KDL:TriggerInput("Close",1) self:OnButtonPress("KDLSet") end
-	if button == "KDP" then self.KDP:TriggerInput("Close",1) self:OnButtonPress("KDPSet") end
-	if button == "VDL" then self.VDL:TriggerInput("Close",1) self:OnButtonPress("VDLSet") end
+	if button == "KDL" and self.VUD1.Value < 1 then self.KDL:TriggerInput("Close",1) self:OnButtonPress("KDLSet") end
+	if button == "KDP" and self.VUD1.Value < 1 then self.KDP:TriggerInput("Close",1) self:OnButtonPress("KDPSet") end
+	if button == "VDL" and self.VUD1.Value < 1 then self.VDL:TriggerInput("Close",1) self:OnButtonPress("VDLSet") end
 	if button == "KRP" then 
 		self.KRP:TriggerInput("Set",1)
 		self:OnButtonPress("KRPSet")
@@ -828,11 +845,7 @@ function ENT:OnButtonPress(button)
 	end
 	
 	if button == "DriverValveDisconnectToggle" then
-		if self.DriverValveDisconnect.Value == 1.0 then
-			if self.Pneumatic.ValveType == 2 then
-				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
-			end
-		else
+		if self.DriverValveDisconnect.Value == 0.0 then
 			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
 		end
 		return
@@ -846,9 +859,9 @@ function ENT:OnButtonRelease(button)
 		return
 	end
 	--if button == "KVT2Set" then self.KVT:TriggerInput("Open",1) end
-	if button == "KDL" then self.KDL:TriggerInput("Open",1) self:OnButtonRelease("KDLSet") end
-	if button == "KDP" then self.KDP:TriggerInput("Open",1) self:OnButtonRelease("KDPSet") end
-	if button == "VDL" then self.VDL:TriggerInput("Open",1) self:OnButtonRelease("VDLSet") end
+	if button == "KDL" and self.VUD1.Value < 1 then self.KDL:TriggerInput("Open",1) self:OnButtonRelease("KDLSet") end
+	if button == "KDP" and self.VUD1.Value < 1 then self.KDP:TriggerInput("Open",1) self:OnButtonRelease("KDPSet") end
+	if button == "VDL" and self.VUD1.Value < 1 then self.VDL:TriggerInput("Open",1) self:OnButtonRelease("VDLSet") end
 	if button == "KRP" then 
 		self.KRP:TriggerInput("Set",0)
 		self:OnButtonRelease("KRPSet")
