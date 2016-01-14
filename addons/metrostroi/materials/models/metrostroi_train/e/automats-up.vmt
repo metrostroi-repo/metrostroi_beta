@@ -1,5 +1,15 @@
-"VertexLitGeneric"
+VertexLitGeneric
 {
-	$basetexture "models\metrostroi_train\E\automats-up"
-	"$model" "1"
+	$basetexture "models/metrostroi_train/e/automats-up"
+	$bumpmap "models/metrostroi_train/e/automats-up_n"
+	$surfaceprop Canister
+
+	$envmap "models/metrostroi_train/e/controller_s"
+
+	$phong 1
+	$phongfresnelranges "[0 0.5 1]"
+	$phongexponent 26
+	$phongboost 0.73
+
+	$model 1
 }

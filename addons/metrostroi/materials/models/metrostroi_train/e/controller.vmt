@@ -1,18 +1,14 @@
 VertexLitGeneric
 {
 	$basetexture "models/metrostroi_train/e/controller"
-	"$model" "1"
 	$bumpmap "models/metrostroi_train/e/controller_n"
-	$surfaceprop Metalpanel
-
-	$envmap "env_cubemap"
+	$surfaceprop Grenade
 
 	$phong 1
-	$phongfresnelranges "[0 0.1 0.3]"
-	$phongalbedotint 1
-	$phongexponent 152
-	$phongboost 0.5
+	$phongexponenttexture "models/metrostroi_train/e/controller_s"
+	$phongfresnelranges "[1 1 1]"
+	$phongboost 0.68
 
+	$model 1
 	$selfillum 1
-	$selfillumfresnelminmaxexp "[0 0.9 0.9]"
 }

@@ -1,5 +1,12 @@
-"VertexLitGeneric"
+VertexLitGeneric
 {
-	"$basetexture" "models/metrostroi_train/E/doorint"
-	"$model" "1"
+	$basetexture "models/metrostroi_train/e/doorint"
+	$surfaceprop Canister
+	$ssbump 1
+
+	$alphatest 1
+
+	$allowalphatocoverage 1
+
+	$model 1
 }

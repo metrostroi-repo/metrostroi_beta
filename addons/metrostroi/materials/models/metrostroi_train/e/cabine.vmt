@@ -1,23 +1,19 @@
 VertexLitGeneric
 {
 	$basetexture "models/metrostroi_train/e/cabine"
-	"$model" "1"
 	$bumpmap "models/metrostroi_train/e/cabine_n"
 	$surfaceprop Canister
-	$ssbump 1
-	$selfillum 1
-	//$selfillumtint "[1 0.3 0.3]"
 
 	$lightwarptexture "models/metrostroi_train/e/ramp_tf2"
 
-	$envmap "env_cubemap"
-	$envmapmask "models/metrostroi_train/e/cabine_n.hdr"
-	$fresnelreflection 0.95
+	$envmap "models/metrostroi_train/e/controller_s"
 
 	$phong 1
-	$phongexponenttexture "models/metrostroi_train/e/cabine_p"
-	$phongfresnelranges "[0 0.01 0.3]"
-	$phongtint "[0.65 0.65 0.65]"
-	$phongalbedotint 1
-	$phongboost 10
+	$phongfresnelranges "[1 1 1]"
+	$phongtint "[0.87 0.87 0.87]"
+	$phongexponent 147
+	$phongboost 0.83
+
+	$model 1
+	$selfillum 1
 }

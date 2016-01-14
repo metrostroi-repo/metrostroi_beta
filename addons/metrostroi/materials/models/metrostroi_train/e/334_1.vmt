@@ -1,5 +1,17 @@
-"VertexLitGeneric"
+VertexLitGeneric
 {
-	"$basetexture" "models/metrostroi_train/81/334_1"
-	"$model" "1"
+	$basetexture "models/metrostroi_train/81/334_1"
+
+	$envmap "models/metrostroi_train/e/controller_s"
+	$envmaptint "[0.92 0.92 0.92]"
+	$fresnelreflection 0.9
+
+	$phong 1
+	$phongfresnelranges "[0 0.5 1]"
+	$halflambert 1
+	$phongalbedotint 1
+	$phongexponent 8
+	$phongboost 0.42
+
+	$model 1
 }
