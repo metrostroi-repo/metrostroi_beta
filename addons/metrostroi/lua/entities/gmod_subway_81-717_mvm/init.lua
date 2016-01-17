@@ -421,6 +421,10 @@ function ENT:Think()
 			self:SetNWString("passtexture",self.PassTexture)
 		end
 	end
+	if self.ARSType ~= self.OldARSType then
+		self.OldARSType = self.ARSType
+		self.RVT:TriggerInput("OpenTime",self.ARSType == 4 and 1.3 or 0.3 )
+	end
 	self:SetBodygroup(1,(self.Breakers or 0))
 	self:SetBodygroup(2,math.min(3,self.Adverts or 1)-1)
 	self:SetBodygroup(3,(self.ARSType or 0)-1)

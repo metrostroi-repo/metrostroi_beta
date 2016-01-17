@@ -137,7 +137,7 @@ function TRAIN_SYSTEM:Initialize(parameters,extra_parameters)
 end
 
 function TRAIN_SYSTEM:Inputs()
-	return { "Open","Close","Set","Toggle","Block","OpenBypass","Check"}
+	return { "Open","Close","Set","Toggle","Block","OpenBypass","Check","OpenTime","CloseTime"}
 end
 
 function TRAIN_SYSTEM:Outputs()
@@ -147,6 +147,14 @@ end
 function TRAIN_SYSTEM:TriggerInput(name,value)
 	-- Boolean values accepted
 	if type(value) == "boolean" then value = value and 1 or 0 end
+	if name == "OpenTime" then
+		self.open_time = value
+		FailSim.AddParameter(self,"OpenTime", 		{ value = self.open_time})
+	end
+	if name == "CloseTime" then
+		self.close_time = value
+		FailSim.AddParameter(self,"CloseTime", 		{ value = self.close_time})
+	end
 	if name == "Reset" then
 		if self.normally_closed then
 			self:TriggerInput("Set",1)

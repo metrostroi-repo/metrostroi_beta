@@ -418,10 +418,10 @@ function ENT:Think()
 	-- NR1
 	self:SetPackedBool(34,(self.NR.Value == 1.0) or (self.RPU.Value == 1.0))
 	-- Red RP
-	local RTW18 = self:GetTrainWire18Resistance()
+	self.RTW18 = self:GetTrainWire18Resistance()
 	if (self:ReadTrainWire(20) == 0) or (self.Panel["V1"] < 0.5) then self.RTW18 = 1e9 end
-	self:SetPackedBool(35,RTW18 < 1.39-0.208*self:GetWagonCount())
-	self:SetPackedBool(131,RTW18 < 100)
+	self:SetPackedBool(35,self.RTW18 < 1.39-0.208*self:GetWagonCount())
+	self:SetPackedBool(131,self.RTW18 < 100)
 	-- Green RP
 	self:SetPackedBool(36,self.Panel["GreenRP"] > 0.5)
 	-- Cabin heating
@@ -542,6 +542,18 @@ function ENT:Think()
 	--self:SetNWFloat("V",self.Speed)
 	--self:SetNWFloat("A",self.Acceleration)
 
+	if self:ReadTrainWire(5)*self:ReadTrainWire(4) > 0 and not self.RevCheck then
+		self.RevCheck = CurTime()+0.25
+	end
+	if self.RevCheck and CurTime() - self.RevCheck > 0 then
+		if self:ReadTrainWire(5)*self:ReadTrainWire(4) > 0 then
+			self:TriggerInput("VUOpenBypass")
+			if self.VU.TargetValue == 0 then
+				--self:PlayOnce("av_off","cabin")
+			end
+		end
+		self.RevCheck = nil
+	end
 	return self.RetVal
 end
 

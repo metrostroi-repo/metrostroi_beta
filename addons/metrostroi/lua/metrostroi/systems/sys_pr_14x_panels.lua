@@ -39,8 +39,8 @@ function TRAIN_SYSTEM:Think()
 	--print("RVT",self.Train.RVT.Value)
 	if not self.Checked then
 		if not self.Train.Electric.TrainSolver:find("81") then
-			self.Train.RVT.open_time = 1
-			FailSim.AddParameter(self.Train.RVT,"OpenTime",		{ value = self.Train.RVT.open_time })--, precision = self.Train.RVT.contactor and 0.35 or 0.10, min = 0.010, varies = true })
+			self.Train.RVT:TriggerInput("OpenTime",1)
+			--FailSim.AddParameter(self.Train.RVT,"OpenTime",		{ value = self.Train.RVT.open_time })--, precision = self.Train.RVT.contactor and 0.35 or 0.10, min = 0.010, varies = true })
 		end
 		self.Checked = true
 	end
