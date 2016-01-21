@@ -482,11 +482,11 @@ function ENT:Think()
 	self:SetPackedRatio(1, (self.KV.ControllerPosition+3)/7)
 	self:SetPackedRatio(2, 1-(self.KV.ReverserPosition+1)/2)
 	if self.Pneumatic.ValveType == 1 then
-		self:SetPackedRatio(4, self.Pneumatic.ReservoirPressure/16.0)
+		self:SetPackedRatio(4, self.Pneumatic.ReservoirPressure/12.0)
 	else
-		self:SetPackedRatio(4, self.Pneumatic.BrakeLinePressure/16.0)	
+		self:SetPackedRatio(4, self.Pneumatic.BrakeLinePressure/12.0)	
 	end	
-	self:SetPackedRatio(5, self.Pneumatic.TrainLinePressure/16.0)
+	self:SetPackedRatio(5, self.Pneumatic.TrainLinePressure/12.0)
 	self:SetPackedRatio(6, (self.Pneumatic.BrakeCylinderPressure + 4.0*self.ManualBrake)/6.0)
 	self:SetPackedRatio(7, self.Electric.Power750V/1000.0)
 	self:SetPackedRatio(8, math.abs(self.Electric.I24)/1000.0)	
@@ -706,7 +706,19 @@ function ENT:OnButtonPress(button)
 		self.ManualBrake = math.min(1.0,self.ManualBrake + 0.008)
 		if self.ManualBrake == 1.0 then return end
 		--print(self.ManualBrake)
-	end	
+	end
+	
+	if button == "KVUp" then
+		if self.KV.ControllerPosition ~= -1 then
+			self.KV:TriggerInput("ControllerUp",1.0)
+		end
+	end
+	if button == "KVUp_Unlocked" then
+		self.KV:TriggerInput("ControllerUp",1.0)
+	end
+	if button == "KVDown" then
+		self.KV:TriggerInput("ControllerDown",1.0)
+	end
 	
 	-- KRU
 	if (self.KVWrenchMode == 2) and (button == "KVReverserUp") then
