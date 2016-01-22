@@ -25,6 +25,10 @@ function ENT:InitializeSounds()
 		"subway_trains/pneumo_8.wav",
 		"subway_trains/pneumo_9.wav",
 	}
+	self.SoundNames["rvt_close"] = "subway_trains/sbor.wav"
+	self.SoundNames["r1_5_close"] = "subway_trains/sbor_hod.wav"
+	self.SoundNames["rvt_open"] = "subway_trains/razbor_t.wav"
+	self.SoundNames["r1_5_open"] = "subway_trains/razbor_hod.wav"
 end
 
 function ENT:InitializeSystems()

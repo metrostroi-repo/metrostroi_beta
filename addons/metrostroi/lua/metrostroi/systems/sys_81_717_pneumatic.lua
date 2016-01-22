@@ -89,6 +89,7 @@ function TRAIN_SYSTEM:Initialize()
 	
 	-- Disconnect valve status
 	self.DriverValveDisconnectPrevious = 0
+	self.EPKPrevious = 0
 	
 	-- Doors state
 	--[[self.Train:LoadSystem("LeftDoor1","Relay",{ open_time = 0.5, close_time = 0.5 })
@@ -574,6 +575,15 @@ function TRAIN_SYSTEM:Think(dT)
 		self.DriverValveDisconnectPrevious = Train.DriverValveDisconnect.Value
 		if Train.DriverValveDisconnect.Value == 0 and self.ValveType == 2 then
 			self.BrakeLinePressure = math.max(0.0,self.BrakeLinePressure - 3.0)
+		end
+	end
+	if self.EPKPrevious ~= Train.EPK.Value then
+		self.EPKPrevious = Train.EPK.Value
+		if Train.EPK.Value == 1 then
+			if self.ValveType == 1 then
+				self.ReservoirPressure = math.max(0.0,self.ReservoirPressure - 1.0)
+			end
+			self.BrakeLinePressure = math.max(0.0,self.BrakeLinePressure - 1.0)
 		end
 	end
 	

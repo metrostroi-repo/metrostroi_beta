@@ -505,17 +505,6 @@ function TRAIN_SYSTEM:Think(dT)
 		if Train[KSDType].KD or self.Train:ReadTrainWire(15) > 0.0 and (PAKSD or PAM or PAKSDM) then
 			self.KD = false
 		end
-		-- Door close cancel pneumatic brake 1 command trigger
-		if (Train:GetSkin() == 1) and (Train.KD) and Train.SubwayTrain.Name:sub(1,-2) == "81-71" then
-			-- Prepare
-			if (Train.KD.Value == 0) then
-				self.KDReadyToRelease = true
-			end
-			if (Train.KD.Value == 1) and (self.KDReadyToRelease == true) then
-				self.KDReadyToRelease = false
-				self.PneumaticBrake1 = false
-			end
-		end
 		-- ARS signals
 		local Ebrake, Abrake, NFBrake, Pbrake1,Pbrake2 =
 			((self.ElectricBrake) and 1 or 0),

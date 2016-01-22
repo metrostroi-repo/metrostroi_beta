@@ -199,7 +199,7 @@ function ENT:Initialize()
 	end
 	
 	-- BPSN type
-	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*6+0.5)
+	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*7+0.5)
 	self:SetNWInt("BPSNType",self.BPSNType)
 	self.OldTexture = 0
 	
@@ -293,7 +293,7 @@ function ENT:Think()
 	-- Interior/cabin lights
 	local lightsActive1 = (self.Battery.Voltage > 55.0 and self.Battery.Voltage < 85.0) and
 		((self:ReadTrainWire(33) > 0) or (self:ReadTrainWire(34) > 0))
-	local lightsActive2 = (self.PowerSupply.XT3_4 > 55.0) and
+	local lightsActive2 = (self.PowerSupply.LightsActive > 55.0) and
 		(self:ReadTrainWire(33) > 0)
 	local mul = 0
 
@@ -538,25 +538,8 @@ function ENT:OnButtonPress(button)
 		self.Pneumatic:TriggerInput("BrakeSet",tonumber(button:sub(-1,-1)))
 		return
 	end
-	if (not string.find(button,"KVT")) and string.find(button,"KV") then return end
-	if string.find(button,"KRU") then return end
 	
 
-	if button == "VBToggle" then 
-		if self.VUD1.Value > 0.5 then
-			--self:PlayOnce("vu22_off","cabin")
-		else
-			--self:PlayOnce("vu22_on","cabin")
-		end
-		return
-	end
-	-- Generic button or switch sound
-	if string.find(button,"Set") then
-		--self:PlayOnce("button_press","cabin")
-	end
-	if string.find(button,"Toggle") then
-		--self:PlayOnce("switch2","cabin",0.7)
-	end
 end
 
 function ENT:OnButtonRelease(button)

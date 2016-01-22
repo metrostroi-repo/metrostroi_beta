@@ -111,12 +111,28 @@ function ENT:InitializeSounds()
 		"subway_trains/new/vud_up_3.wav"
 	}
 	self.SoundNames["button_press"]		= {
-		"subway_trains/new/button_1_on.wav",
+		"subway_trains/but_on1.wav",
+		"subway_trains/but_on2.wav",
+		"subway_trains/but_on3.wav",
+		"subway_trains/but_on4.wav",
+		"subway_trains/but_on5.wav",
+		"subway_trains/but_on6.wav",
+		--"subway_trains/button_1_on.wav",
 	}
 	self.SoundNames["button_release"]		= {
-		"subway_trains/new/button_1_off.wav",
-		"subway_trains/new/button_2_off.wav",
+		--"subway_trains/button_1_off.wav",
+		--"subway_trains/button_2_off.wav",
+		"subway_trains/but_off1.wav",
+		"subway_trains/but_off2.wav",
+		"subway_trains/but_off3.wav",
+		"subway_trains/but_off4.wav",
+		"subway_trains/but_off5.wav",
+		"subway_trains/but_off6.wav",
+		"subway_trains/but_off7.wav",
 	}
+
+	self.SoundNames["epv_on"]			= "subway_trains/epv_on.wav"
+	self.SoundNames["epv_off"]			= "subway_trains/epv_off.wav"
 	
 	self.SoundNames["kru_in"]			= "subway_trains/new/kru_in.wav"
 	self.SoundNames["kru_out"]			= "subway_trains/new/kru_out.wav"
@@ -130,7 +146,14 @@ function ENT:InitializeSounds()
 	self.SoundNames["bpsn2"] 		= "subway_trains/bpsn_3.wav"
 	self.SoundNames["bpsn3"] 		= "subway_trains/bpsn_4.wav"
 	self.SoundNames["bpsn4"] 		= "subway_trains/bpsn_5.wav"
-	self.SoundNames["bpsn5"] 		= "subway_trains/bpsn_7.wav"
+	self.SoundNames["bpsn5"] 		= "subway_trains/bpsn_6.wav"
+	self.SoundNames["bpsn6"] 		= "subway_trains/bpsn_7.wav"
+
+	self.SoundNames["bpsn2_off"] 		= "subway_trains/bpsn3_off.wav"
+	self.SoundNames["bpsn3_off"] 		= "subway_trains/bpsn4_off.wav"
+	self.SoundNames["bpsn4_off"] 		= "subway_trains/bpsn5_off.wav"
+	self.SoundNames["bpsn5_off"] 		= "subway_trains/bpsn6_off.wav"
+	self.SoundNames["bpsn6_off"] 		= "subway_trains/bpsn7_off.wav"
 	self.SoundNames["bpsn_ann_pnm"] 	= "subway_announcer_pnm/00_07.wav"
 	self.SoundNames["bpsn_ann_pnm_cab"] 	= "subway_announcer_pnm/00_07.wav"
 	self.SoundPositions["bpsn_ann_pnm_cab"]	= "cabin"
@@ -282,8 +305,10 @@ function ENT:InitializeSounds()
 		"subway_trains/new/plomb2.wav",
 	}
 	
-	self.SoundNames["compressor"]		= "subway_trains/new/compressor1.wav"
-	self.SoundNames["compressor_end"] 	= "subway_trains/new/compressor2.wav"
+	self.SoundNames["compressor"]		= "subway_trains/compressor_717.wav"
+	self.SoundNames["compressor_end"] 	= "subway_trains/compressor_717_off.wav"
+	self.SoundNames["compressor_ezh"]		= "subway_trains/compressor_ezh.wav"
+	self.SoundNames["compressor_ezh_end"] 	= "subway_trains/compressor_ezh_off.wav"
 
 	self.SoundNames["revers_f"]		= "subway_trains/new/revers_f.wav"
 	self.SoundNames["revers_0"]		= "subway_trains/new/revers_0.wav"
@@ -406,7 +431,7 @@ end
 	return false
 end
 ]]--
-function ENT:PlayOnce(soundid,location,range,pitch)
+function ENT:PlayOnce(soundid,location,range,pitch,randoff)
 	--soundid = "zombie"
 	--if self:CheckActionTimeout(soundid,self.SoundTimeout[soundid] or 0.0) then return end
 
@@ -421,24 +446,24 @@ function ENT:PlayOnce(soundid,location,range,pitch)
 
 	-- Emit sound from right location
 	if not location then
-		self:EmitSound(sound, 100*(range or default_range), pitch or math.random(95,105))
+		self:EmitSound(sound, 100*(range or default_range), pitch or (not randoff) and  math.random(95,105) or nil)
 	elseif (location == true) or (location == "cabin") then
 		if CLIENT then self.DriverSeat = self:GetNWEntity("seat_driver") end				
 		if IsValid(self.DriverSeat) then
-			self.DriverSeat:EmitSound(sound, 100*(range or default_range),pitch or math.random(95,105))
+			self.DriverSeat:EmitSound(sound, 100*(range or default_range),pitch or (not randoff) and  math.random(95,105) or nil)
 		end
 	elseif (location == true) or (location == "instructor") then
 		if CLIENT then self.InstructorsSeat = self:GetNWEntity("seat_instructor") end				
 		if IsValid(self.InstructorsSeat) then
-			self.InstructorsSeat:EmitSound(sound, 100*(range or default_range),pitch or math.random(95,105))
+			self.InstructorsSeat:EmitSound(sound, 100*(range or default_range),pitch or (not randoff) and  math.random(95,105) or nil)
 		end
 	elseif location == "front_bogey" then
 		if IsValid(self.FrontBogey) then
-			self.FrontBogey:EmitSound(sound, 100*(range or default_range),pitch or math.random(95,105))
+			self.FrontBogey:EmitSound(sound, 100*(range or default_range),pitch or (not randoff) and  math.random(95,105) or nil)
 		end
 	elseif location == "rear_bogey" then
 		if IsValid(self.RearBogey) then
-			self.RearBogey:EmitSound(sound, 100*(range or default_range),pitch or math.random(95,105))
+			self.RearBogey:EmitSound(sound, 100*(range or default_range),pitch or (not randoff) and  math.random(95,105) or nil)
 		end
 	end
 end

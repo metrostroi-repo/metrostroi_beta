@@ -66,8 +66,12 @@ function ENT:Initialize()
 		
 		[KEY_0] = "KVReverserUp",
 		[KEY_9] = "KVReverserDown",
-		[KEY_W] = "KVControllerUp",
-		[KEY_S] = "KVControllerDown",
+		[KEY_PAD_PLUS] = "KVReverserUp",
+		[KEY_PAD_MINUS] = "KVReverserDown",
+		[KEY_W] = "KVUp",
+		[KEY_S] = "KVDown",
+		["invprev"] = "KVUp",
+		["invnext"] = "KVDown",
 		[KEY_F] = "PneumaticBrakeUp",
 		[KEY_R] = "PneumaticBrakeDown",
 		
@@ -75,27 +79,49 @@ function ENT:Initialize()
 		[KEY_D] = "KDP",
 		[KEY_V] = "VUD1Toggle",
 		[KEY_L] = "HornEngage",
+		[KEY_N] = "VZ1Set",
+		[KEY_PAD_1] = "PneumaticBrakeSet1",
+		[KEY_PAD_2] = "PneumaticBrakeSet2",
+		[KEY_PAD_3] = "PneumaticBrakeSet3",
+		[KEY_PAD_4] = "PneumaticBrakeSet4",
+		[KEY_PAD_5] = "PneumaticBrakeSet5",
+		[KEY_PAD_6] = "PneumaticBrakeSet6",
+		[KEY_PAD_7] = "PneumaticBrakeSet7",
+		[KEY_PAD_DIVIDE] = "KRPSet",
+		[KEY_PAD_MULTIPLY] = "KAHSet",
 		
 		[KEY_SPACE] = "PBSet",
 		[KEY_BACKSPACE] = "EmergencyBrake",
-		[KEY_PAD_MULTIPLY] = "KAHSet",
 
+		[KEY_PAD_0] = "DriverValveDisconnectToggle",
+		[KEY_PAD_DECIMAL] = "EPKToggle",
 		[KEY_LSHIFT] = {
-			--[KEY_SPACE] = "KBSet",
+			[KEY_W] = "KVUp_Unlocked",
+			[KEY_SPACE] = "KVTSet",
+			[KEY_F] = "BCCDSet",
+			[KEY_R] = "VZPSet",
+		
 			[KEY_A] = "DURASelectAlternate",
 			[KEY_D] = "DURASelectMain",
 			[KEY_V] = "DURAToggleChannel",
 			[KEY_1] = "DIPonSet",
 			[KEY_2] = "DIPoffSet",
-			[KEY_L] = "DriverValveDisconnectToggle",
-			[KEY_K] = "EPKToggle",
-			
 			[KEY_4] = "KVSet0Fast",
+			[KEY_L] = "DriverValveDisconnectToggle",
+			
 			[KEY_7] = "KVWrenchNone",
 			[KEY_8] = "KVWrenchKRU",
-			[KEY_9] = "KVWrenchKV",
+			[KEY_9] = "KVWrenchKV", 
 			[KEY_0] = "KVWrench0",
 			[KEY_6] = "KVSetT1A",
+
+			[KEY_PAD_7] = "BFSet",
+			[KEY_PAD_8] = "BUpSet",
+			[KEY_PAD_9] = "BMSet",
+			[KEY_PAD_4] = "BLeftSet",
+			[KEY_PAD_5] = "BDownSet",
+			[KEY_PAD_6] = "BRightSet",
+			[KEY_PAD_ENTER] = "BPSet",
 		},
 		
 		[KEY_RSHIFT] = {
@@ -104,20 +130,15 @@ function ENT:Initialize()
 			[KEY_9] = "KVWrenchKV",
 			[KEY_0] = "KVWrench0",
 			[KEY_L] = "DriverValveDisconnectToggle",
+
 		},
 		[KEY_LALT] = {
+			[KEY_V] = "VUD1Toggle",
 			[KEY_L] = "EPKToggle",
 		},
 		[KEY_RALT] = {
 			[KEY_L] = "EPKToggle",
 		},
-		[KEY_PAD_1] = "PneumaticBrake1",
-		[KEY_PAD_2] = "PneumaticBrake2",
-		[KEY_PAD_3] = "PneumaticBrake3",
-		[KEY_PAD_4] = "PneumaticBrake4",
-		[KEY_PAD_5] = "PneumaticBrake5",
-		[KEY_PAD_6] = "PneumaticBrake6",
-		[KEY_PAD_7] = "PneumaticBrake7",
 	}
 	
 	self.InteractionZones = {
@@ -690,14 +711,6 @@ function ENT:OnButtonPress(button)
 		end
 	end
 
-	if button == "VBToggle" then
-		if self.VB.Value == 1 then
-			self:PlayOnce("vu22_on","cabin")
-		else
-			self:PlayOnce("vu22_off","cabin")
-		end
-		return
-	end
 	-- Parking brake
 	if button == "ManualBrakeLeft" then
 		self.ManualBrake = math.max(0.0,self.ManualBrake - 0.008)
@@ -811,10 +824,6 @@ function ENT:OnButtonPress(button)
 		self.DriverValveDisconnect:TriggerInput("Set",1)
 		return
 	end
-	if button == "VDLSet" then
-		self:PlayOnce("vu22_on","instructor")
-		return
-	end
 	-- Special logic
 	if (button == "VDL") or (button == "KDL") or (button == "KDP") then
 		--self.VUD1:TriggerInput("Open",1)
@@ -828,57 +837,12 @@ function ENT:OnButtonPress(button)
 		self.KDL:TriggerInput("Open",1)
 		self.KDP:TriggerInput("Open",1)
 	end
-	
-	-- Special sounds
-	if (button == "VUToggle") or ((string.sub(button,1,1) == "A") and (tonumber(string.sub(button,2,2)))) then
-		local name = string.sub(button,1,(string.find(button,"Toggle") or 0)-1)
-		if self[name] then
-			if self[name].Value > 0.5 then
-				self:PlayOnce("av_off","cabin")
-			else
-				self:PlayOnce("av_on","cabin")
-			end
-		end
-		return
-	end
-	if button == "PBSet" then self:PlayOnce("switch6","cabin",0.55,100) return end
+
 	if button == "GVToggle" then
 		if self.GV.Value > 0.5 then
 			self:PlayOnce("revers_f",nil,0.7)
 		else
 			self:PlayOnce("revers_b",nil,0.7)
-		end
-		return
-	end
-
-	if button == "VUD1Toggle" then 
-		if self.VUD1.Value > 0.5 then
-			self:PlayOnce("vu22_off","cabin")
-		else
-			self:PlayOnce("vu22_on","cabin")
-		end
-		return
-	end
-	if button == "VUD2Toggle" then 
-		if self.VUD2.Value > 0.5 then
-			self:PlayOnce("vu22_off","instructor")
-		else
-			self:PlayOnce("vu22_on","instructor")
-		end
-		return
-	end
-	if button == "VUD1Set" then 
-		self:PlayOnce("vu22_on","cabin")
-		return
-	end
-
-	if (button == "UAVAToggle") then
-		if self.UAVA then
-			if self.UAVA.Value > 0.5 then
-				self:PlayOnce("uava_off","cabin")
-			else
-				self:PlayOnce("uava_off","cabin")
-			end
 		end
 		return
 	end
@@ -893,15 +857,13 @@ function ENT:OnButtonPress(button)
 		end
 		return
 	end
-	if (not string.find(button,"KVT")) and string.find(button,"KV") then return end
-	if string.find(button,"KRU") then return end
-
-	-- Generic button or switch sound
-	if string.find(button,"Set") or string.find(button,"DURASelect") then
-		self:PlayOnce("button_press","cabin")
-	end
-	if string.find(button,"Toggle") then
-		self:PlayOnce("switch2","cabin",0.7)
+	if button == "EPKToggle" then
+		if self.EPK.Value == 1.0 then
+			self:PlayOnce("epv_off","cabin",0.9)
+		else
+			self:PlayOnce("epv_on","cabin",0.9)
+		end
+		return
 	end
 end
 
@@ -913,16 +875,11 @@ function ENT:OnButtonRelease(button)
 	if button == "KDL" then self.KDL:TriggerInput("Open",1) self:OnButtonRelease("KDLSet") end
 	if button == "KDP" then self.KDP:TriggerInput("Open",1) self:OnButtonRelease("KDPSet") end
 	if button == "VDL" then self.VDL:TriggerInput("Open",1) self:OnButtonRelease("VDLSet") end
-	if button == "VDLSet" then
-		self:PlayOnce("vu22_off","instructor")
-		return
-	end
+
 	if button == "KRP" then 
 		self.KRP:TriggerInput("Set",0)
 		self:OnButtonRelease("KRPSet")
 	end
-	
-	if button == "PBSet" then self:PlayOnce("switch6_off","cabin",0.55,100) return end
 	--[[
 	if (button == "PneumaticBrakeDown") and (self.Pneumatic.DriverValvePosition == 1) then
 		self.Pneumatic:TriggerInput("BrakeSet",2)
@@ -933,17 +890,7 @@ function ENT:OnButtonRelease(button)
 		end
 	end
 	]]
-	if button == "VUD1Set" then
-		self:PlayOnce("vu22_off","cabin")
-		return
-	end
-	
-	if (not string.find(button,"KVT")) and string.find(button,"KV") then return end
-	if string.find(button,"KRU") then return end
 
-	if string.find(button,"Set") or string.find(button,"DURASelect") then
-		self:PlayOnce("button_release","cabin")
-	end
 end
 
 function ENT:OnCouple(train,isfront)

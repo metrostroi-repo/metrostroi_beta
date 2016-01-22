@@ -322,7 +322,7 @@ function ENT:Initialize()
 	self.KVPType = self.KVPType or 0+math.floor(math.random()*4+1.5)
 	if self.KVPType == 1 then self.KVPType = 0 end
 	-- BPSN type
-	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*6+0.5)
+	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*7+0.5)
 	self:SetNWInt("BPSNType",self.BPSNType)
 	self:SetNWInt("KVPType",self.KVPType)
 
@@ -610,7 +610,7 @@ function ENT:Think()
 	
 	local lightsActive1 = (self.Battery.Voltage > 55.0 and self.Battery.Voltage < 85.0) and
 		((self:ReadTrainWire(33) > 0) or (self:ReadTrainWire(34) > 0))
-	local lightsActive2 = (self.PowerSupply.XT3_4 > 55.0) and
+	local lightsActive2 = (self.PowerSupply.LightsActive > 0.0) and
 		(self:ReadTrainWire(33) > 0)
 	local mul = 0
 
@@ -1415,30 +1415,14 @@ function ENT:OnButtonPress(button,state)
 		end
 		return
 	end
-	if (not string.find(button,"KVT")) and string.find(button,"KV") then return end
-	if string.find(button,"KRU") then return end
-
-	if button == "R_Program1Helper" then
-		self.R_Program1:TriggerInput("Set",1)
-		--self:PlayOnce("inf_on","instructor",0.7)
-		return
-	end
-	if button == "R_Program2Helper" then
-		self.R_Program2:TriggerInput("Set",1)
-		--self:PlayOnce("inf_on","instructor",0.7)
-		return
-	end
-	if string.find(button,"R_Program") then
-		--self:PlayOnce("inf_on","cabin",0.7)
-		return
-	end
 	
-	-- Generic button or switch sound
-	if string.find(button,"Set") or string.find(button,"DURASelect") then
-		--self:PlayOnce("button_press","cabin")
-	end
-	if string.find(button,"Toggle") then
-		--self:PlayOnce("switch2","cabin",0.7)
+	if button == "EPKToggle" then
+		if self.EPK.Value == 1.0 then
+			self:PlayOnce("epv_off","cabin",0.9)
+		else
+			self:PlayOnce("epv_on","cabin",0.9)
+		end
+		return
 	end
 end
 

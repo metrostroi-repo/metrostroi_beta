@@ -562,7 +562,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 			self.UPPSTimer2 = CurTime() + 1
 		end
 		if self.UPPSArmed2 and Train.KV and (Train.KV.ReverserPosition == 1.0) and Train.VB.Value == 1.0 and self.UPPSTimer2 and (CurTime() > self.UPPSTimer2) then
-			Train:PlayOnce("upps","cabin",0.55,100.0)
+			Train:PlayOnce("upps","cabin",1,nil,true)
 			self.UPPSArmed2 = false
 		end
 	elseif self.UPPSBraking then

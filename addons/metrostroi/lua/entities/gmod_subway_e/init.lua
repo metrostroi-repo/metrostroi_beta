@@ -862,8 +862,14 @@ function ENT:OnButtonPress(button)
 		end
 		return
 	end
-	if (not string.find(button,"KVT")) and string.find(button,"KV") then return end
-	if string.find(button,"KRU") then return end
+	if button == "EPKToggle" then
+		if self.EPK.Value == 1.0 then
+			self:PlayOnce("epv_off","cabin",0.9)
+		else
+			self:PlayOnce("epv_on","cabin",0.9)
+		end
+		return
+	end
 end
 
 function ENT:OnButtonRelease(button)

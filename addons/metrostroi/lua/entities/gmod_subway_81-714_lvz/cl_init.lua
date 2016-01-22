@@ -588,10 +588,10 @@ function ENT:Think()
 	if self.PreviousCompressorState ~= state then
 		self.PreviousCompressorState = state
 		if not state then
-			self:PlayOnce("compressor_end",nil,0.80)
+			self:PlayOnce("compressor_end",nil,0.70)
 		end
 	end
-	self:SetSoundState("compressor",state and 1 or 0,1,nil,0.80)
+	self:SetSoundState("compressor",state and 1 or 0,1,nil,0.70)
 	
 	-- RK rotation
 	if self:GetPackedBool(112) then self.RKTimer = CurTime() end
@@ -607,26 +607,43 @@ function ENT:Think()
 		end
 	end
 	
-	-- DIP sound
-	self.BPSNType = self:GetNWInt("BPSNType",7)
-	if not self.OldBPSNType then self.OldBPSNType = self.BPSNType end
-	if self.BPSNType ~= self.OldBPSNType then
-		if self.OldBPSNType ~= 6 then
-			self:SetSoundState("bpsn"..self.OldBPSNType,0,1.0)
+	local state = self:GetPackedBool(52)
+	self.PreviousBPSNState = self.PreviousBPSNState or false
+	if self.PreviousBPSNState ~= state then
+		if state then	
+			if self.BPSNType ~= 7 then
+				self:SetSoundState("bpsn"..self.BPSNType,2,1.0,nil,0.9)
+			else
+				self:SetSoundState("bpsn2",0.2,1.0)
+				self:SetSoundState("bpsn3",0.4,1)
+				self:SetSoundState("bpsn6",1,1)
+			end
+			self.BPSNOff = nil
+		else
+			if self.BPSNOff == nil then self.BPSNOff = CurTime() + 2 end
+		end
+		
+		self.PreviousBPSNState = state
+	end
+	if self.BPSNOff and self.BPSNOff - CurTime() < 0 then self.BPSNOff = false end
+	--if self.BPSNOff then print(1-math.cos((self.BPSNOff - CurTime()) / 2 * math.pi/2),(self.BPSNOff - CurTime()) / 2) end
+	if self.BPSNOff then
+		if self.BPSNType ~= 7 then
+			self:SetSoundState("bpsn"..self.BPSNType,1-math.cos((self.BPSNOff - CurTime()) / 2 * math.pi/2),1)
+		else
+			self:SetSoundState("bpsn2",1-math.cos((self.BPSNOff - CurTime()) / 2 * math.pi/2),1)
+			self:SetSoundState("bpsn3",1-math.cos((self.BPSNOff - CurTime()) / 2 * math.pi/2),1)
+			self:SetSoundState("bpsn6",1-math.cos((self.BPSNOff - CurTime()) / 2 * math.pi/2),1)
+		end
+	elseif self.BPSNOff == false then
+		if self.BPSNType ~= 7 then
+			self:SetSoundState("bpsn"..self.BPSNType,0,0)
 		else
 			self:SetSoundState("bpsn2",0,1.0)
-			self:SetSoundState("bpsn3",0,1.0)
-			self:SetSoundState("bpsn5",0,1.0)
+			self:SetSoundState("bpsn3",0,1)
+			self:SetSoundState("bpsn6",0,1)
 		end
-	end
-	if self.BPSNType ~= 6 then
-		self:SetSoundState("bpsn"..self.BPSNType,self:GetPackedBool(52) and 2 or 0,1.0,nil,0.9)
-	else
-		self:SetSoundState("bpsn2",self:GetPackedBool(52) and 0.2 or 0,1.0)
-		self:SetSoundState("bpsn3",self:GetPackedBool(52) and 0.4 or 0,1)
-		--self:SetSoundState("bpsn2",0,1.0)
-		--self:SetSoundState("bpsn3",0,1.0)
-		self:SetSoundState("bpsn5",self:GetPackedBool(52) and 1 or 0,1)
+		self.BPSNOff = nil
 	end
 	self.OldBPSNType = self.BPSNType
 end

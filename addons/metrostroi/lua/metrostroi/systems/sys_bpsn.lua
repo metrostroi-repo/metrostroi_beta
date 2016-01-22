@@ -27,7 +27,7 @@ function TRAIN_SYSTEM:Inputs()
 end
 
 function TRAIN_SYSTEM:Outputs()
-	return { "XT3_1", "XT3_4", "XT1_2" }
+	return { "XT3_1", "XT3_4", "XT1_2", "LightsActive" }
 end
 
 
@@ -59,7 +59,7 @@ function TRAIN_SYSTEM:Think()
 	
 	-- Check if enable signal is present
 	if self.XR3[2] > 0 then self.Active = 1 else self.Active = 0 end
-	self.LightsActive = 1
+	--self.LightsActive = 1
 	--if self.XR3[3] > 0 then self.Active = 0 self.LightsActive = 0 end
 	--if self.XR3[4] > 0 then self.LightsActive = 1 end
 	--if self.XR3[6] > 0 then self.Active = 1 end
@@ -77,4 +77,14 @@ function TRAIN_SYSTEM:Think()
 	self.XT3_1 = voltage * self.Active
 	self.XT3_4 = voltage * self.Active
 	Train.KPP:TriggerInput("Open",1.0 - self.Active)
+	
+	if self.Active == 0 and self.Active ~= self.NextActive and not self.ActiveTimer  then
+		self.ActiveTimer = CurTime() + 1.3
+	end
+	if self.ActiveTimer  and CurTime() - self.ActiveTimer  > 0 then self.NextActive = 0 self.ActiveTimer = nil end
+	if self.Active == 1 then 
+		if self.ActiveTimer then self.ActiveTimer = nil  end
+		self.NextActive = 1
+	end
+	 self.LightsActive = self.NextActive
 end
