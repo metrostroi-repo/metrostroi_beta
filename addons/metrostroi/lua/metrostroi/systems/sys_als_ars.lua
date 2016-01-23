@@ -329,7 +329,6 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 				self.PneumaticBrake2 = true
 			else
 				self.PneumaticBrake1 = false
-				print(self.Overspeed)
 			end
 			self.PV1Timer = nil
 		end
@@ -552,7 +551,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		-- Default trigger
 		if (distance > 120) and (distance < 210) and (not skip_station) then self.UPPSArmed1 = true end
 		if self.UPPSArmed1 and (distance < 120) and Train.VB.Value == 1.0 then
-			Train:PlayOnce("upps","cabin",1,nil,true)
+			Train:PlayOnce("upps","cabin",0.6,nil,true)
 			self.UPPSArmed1 = false
 		end
 
@@ -562,7 +561,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 			self.UPPSTimer2 = CurTime() + 1
 		end
 		if self.UPPSArmed2 and Train.KV and (Train.KV.ReverserPosition == 1.0) and Train.VB.Value == 1.0 and self.UPPSTimer2 and (CurTime() > self.UPPSTimer2) then
-			Train:PlayOnce("upps","cabin",1,nil,true)
+			Train:PlayOnce("upps","cabin",0.6,nil,true)
 			self.UPPSArmed2 = false
 		end
 	elseif self.UPPSBraking then

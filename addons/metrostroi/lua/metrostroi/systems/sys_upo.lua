@@ -9,6 +9,7 @@ function TRAIN_SYSTEM:Initialize()
 		"PUAV",
 		"PA-KSD",
 		"PA-M",
+		"PA-KSD-M",
 	}
 end
 

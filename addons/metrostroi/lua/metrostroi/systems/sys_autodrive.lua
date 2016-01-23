@@ -55,7 +55,6 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 	local speedLimit = (Train.ALS_ARS.Signal0 or Train.ALS_ARS.RealNoFreq) and 0 or Train.ALS_ARS.Signal40 and 40 or Train.ALS_ARS.Signal60 and 60 or Train.ALS_ARS.Signal70 and 70 or Train.ALS_ARS.Signal80 and 80 or 0
 	local OnStation = dX < (160+35*self.MU - (speedLimit == 40 and 30 or 0)) and not self.StartMoving and Metrostroi.AnnouncerData[self.Train.UPO.Station]and Metrostroi.AnnouncerData[self.Train.UPO.Station][1]
 	if StationBraking and (dX >= (160+35*self.MU - (speedLimit == 40 and 30 or 0)) or not OnStation) then self.Train.UPO.StationAutodrive = false return end
-	--print(Train:ReadCell(49165) + (Corrections[self.Train.UPO.Station] or 0) - 4.3)
 	-- Target and real RK position (0 if not braking)
 	local TargetBrakeRKPosition = 0
 
@@ -95,7 +94,6 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 	-- How smooth braking should be (higher self.MU = more gentle braking)
 	-- Full stop command
 	if Train.ALS_ARS.SpeedLimit < 30 then TargetBrakeRKPosition = 18 Brake = true end
-	--print(OnStation,dX,self.Train.UPO.Station)
 	-- Calculate RK position based on distance and autodrive profile
 	if OnStation then
 		TargetBrakeRKPosition = self:GetStationRK(dX)
@@ -111,10 +109,10 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 	local RheostatBrakeRotating = Brake or RKPosition < TargetBrakeRKPosition
 	-- Generate accel rheostat rotation
 	local PP = math.floor(Train.PositionSwitch.Position + 0.5) == 2
-	--print(Train.Electric.Itotal,RKPosition)
+
 	local AmpNorm = true --Train.Electric.Itotal < (350 - (Train:GetPhysicsObject():GetMass()-30000)/24) * math.floor(Train.PositionSwitch.Position + 0.5)
 	local RheostatAccelRotating = AcceleratingActive
-	--	print(math.floor(Train.PositionSwitch.Position + 0.5) , RKPosition , Train.Electric.Itotal)
+
 	if Slope < -2 and (math.floor(Train.PositionSwitch.Position + 0.5) == 2 and RKPosition == 10 and Train.Electric.Itotal > 500) then
 		--if PP and (8 <= RKPosition and RKPosition <= 12) then
 			RheostatAccelRotating = false
@@ -129,7 +127,6 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 	if (TargetBrakeRKPosition == 18 and Train.ALS_ARS.Speed < 0.1 and not self.StartMoving and OnStation) or (self.StartMoving and 10 < dX and dX < 160) then
 		if (TargetBrakeRKPosition == 18 and Train.ALS_ARS.Speed < 0.1 and not self.StartMoving and OnStation) then
 			self.Train.UPO.StationAutodrive = false
-			--print("Stopped on "..Curr[1]..", "..(Curr[2] and "right side" or "left side")..", next station is "..(Next and (Next[1]..", "..(Next[2] and "right side" or "left side")) or "nil"))
 
 			--
 			--self.VUDOverride = true
@@ -302,8 +299,6 @@ function TRAIN_SYSTEM:GetCurrentCommand()
 			},
 		}
 	}
-	--print(self.Train:ReadCell(49165))
-	--print(self.Commands[2][self.Train.UPO.Station],self.Train.UPO.Station)
 	if (Metrostroi.TrainPositions[self.Train] and Metrostroi.TrainPositions[self.Train][1]) then
 		self.PathID = Metrostroi.TrainPositions[self.Train][1].path.id
 	end
@@ -340,12 +335,10 @@ function TRAIN_SYSTEM:BoardAutodrive()
 	local dX = Train:ReadCell(49165) + (self.Corrections[self.Train.UPO.Station] or 0) - 4.3
 	local OnStation = dX < (160+35*self.MU - (speedLimit == 40 and 30 or 0)) and not self.StartMoving and Metrostroi.AnnouncerData[self.Train.UPO.Station]and Metrostroi.AnnouncerData[self.Train.UPO.Station][1]
 	--if StationBraking and (dX >= (160+35*self.MU - (speedLimit == 40 and 30 or 0)) or not OnStation) then self.Train.UPO.StationAutodrive = false return end
-	--print(Train:ReadCell(49165) + (Corrections[self.Train.UPO.Station] or 0) - 4.3)
 	-- Target and real RK position (0 if not braking)
 	local TargetBrakeRKPosition = 0
 
 	local Command = self:GetCurrentCommand()
-	--print(self.Train.Owner,Command)
 	local KVPos = Command
 	if ElectricBrakeActive then
 		if (RheostatBrakeRotating or RKPosition == 18 and not OnStation) and not Train:GetPackedBool(35) then
@@ -445,5 +438,4 @@ function TRAIN_SYSTEM:Think()
 		self.RealControllerPosition = self.Train.KV.RealControllerPosition
 	end
 	--self:GetCurrentCommand()
-	--print(Metrostroi.TrainPositions[self.Train][1].x)
 end

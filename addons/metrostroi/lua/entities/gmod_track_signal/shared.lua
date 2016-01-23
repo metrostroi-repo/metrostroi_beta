@@ -14,6 +14,15 @@ Metrostroi.Signal_3 = 2
 Metrostroi.Signal_IS = 3
 Metrostroi.Signal_RP = 4
 
+Metrostroi.LiterWarper = {
+	C = "ce",
+	H = "x",
+	Q = "ya",
+	W = "sh2",
+	J = "ge",
+	U = "y",
+	Z = "ze",
+}
 
 -- Lamp indexes
 -- 0 Red

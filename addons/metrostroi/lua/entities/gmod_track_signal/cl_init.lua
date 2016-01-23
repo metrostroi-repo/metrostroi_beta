@@ -242,29 +242,29 @@ function ENT:Think()
 				for i = 1,#v do
 					ID2 = ID2 + 1
 					if not self.Signals[ID] then self.Signals[ID] = {} end
-					if not self.Signals[ID][i] then self.Signals[ID][i] = 0 end
 					--if self.Sig[ID2] == "1" or (self.Sig[ID2] == "2" and (RealTime() % 2 > 0.25)) then 
 					--else
 					--end
 					local State = self:Animate(ID.."/"..i,	((tonumber(self.Sig[ID2]) == 1 or (tonumber(self.Sig[ID2]) == 2 and (RealTime() % 1.2 > 0.5))) and not self.SigStop) and 1 or 0, 	0,1, 256)
+					if not IsValid(self.Models[3][ID..ID2]) and State > 0 then self.Signals[ID][i] = nil end
+					
+					if State >0 and self.Signals[ID][i] ~= State  and not IsValid(self.Models[3][ID..ID2]) then
+						self.Models[3][ID..ID2] = ClientsideModel("models/metrostroi/train/sign_lense.mdl",RENDERGROUP_OPAQUE)
+						self.Models[3][ID..ID2]:SetPos(self:LocalToWorld(self.BasePosition + offset + data[3][i-1]*Vector(1,self.Left and -1.1 or 1,1)+Vector(0,0.1,0)))
+						self.Models[3][ID..ID2]:SetAngles(self:LocalToWorldAngles(Angle(0,90*(self.Left and -1 or 1),0)))
+						self.Models[3][ID..ID2]:SetSkin(self.SignalConverter[v[i]])
+						self.Models[3][ID..ID2]:SetParent(self)
+						self.Models[3][ID..ID2]:SetRenderMode(RENDERMODE_TRANSALPHA)
+						self.Models[3][ID..ID2]:SetColor(Color(255,255,255,0))
+					end
 					if IsValid(self.Models[3][ID..ID2]) then 
-						if State > 0 then
+						if State > 0 and self.Signals[ID][i] ~= State then
 							self.Models[3][ID..ID2]:SetColor(Color(255,255,255,State*255))
-						else
+						elseif  State == 0 and self.State ~= State then
 							self.Models[3][ID..ID2]:Remove()
-							if self.Name == "23" then print(self.Name,State) end
-						end
-					else
-						if State >0 then
-							self.Models[3][ID..ID2] = ClientsideModel("models/metrostroi/train/sign_lense.mdl",RENDERGROUP_OPAQUE)
-							self.Models[3][ID..ID2]:SetPos(self:LocalToWorld(self.BasePosition + offset + data[3][i-1]*Vector(1,self.Left and -1.1 or 1,1)+Vector(0,0.1,0)))
-							self.Models[3][ID..ID2]:SetAngles(self:LocalToWorldAngles(Angle(0,90*(self.Left and -1 or 1),0)))
-							self.Models[3][ID..ID2]:SetSkin(self.SignalConverter[v[i]])
-							self.Models[3][ID..ID2]:SetParent(self)
-							self.Models[3][ID..ID2]:SetRenderMode(RENDERMODE_TRANSALPHA)
-							self.Models[3][ID..ID2]:SetColor(Color(255,255,255,0))
 						end
 					end
+					self.Signals[ID][i] = State
 				end
 			else
 				self.Models[1][self.RouteNumber]:SetSkin(Metrostroi.RoutePointer[self.Num])
@@ -301,7 +301,7 @@ function ENT:Think()
 					self.Models[2][i]:SetParent(self)
 					for k,v in pairs(self.Models[2][i]:GetMaterials()) do
 						if v == "models/metrostroi_signals/signal_001" then
-							self.Models[2][i]:SetSubMaterial(k-1,"models/metrostroi_signals/signs/"..self.Name[i+1])
+							self.Models[2][i]:SetSubMaterial(k-1,"models/metrostroi_signals/signs/"..(Metrostroi.LiterWarper[self.Name[i+1]] or self.Name[i+1]))
 						end
 					end
 				end

@@ -518,7 +518,7 @@ function ENT:Think()
 	end
 	
 	-- Update CSEnts
-	if CurTime() - (self.PrevThinkTime or 0) > .5 then
+	if CurTime() - (self.PrevThinkTime or 0) > 1 or self.UpdateRender then
 		self.PrevThinkTime = CurTime()
 		
 		-- Invalidate entities if needed, for hotloading purposes
@@ -529,7 +529,7 @@ function ENT:Think()
 		end
 		
 		local shouldrender = self:ShouldRenderClientEnts()
-		if self.RenderClientEnts ~= shouldrender then
+		if self.RenderClientEnts ~= shouldrender or self.UpdateRender then
 			self.RenderClientEnts = shouldrender
 			if self.RenderClientEnts then
 				self:CreateCSEnts()
@@ -546,6 +546,7 @@ function ENT:Think()
 			end
 		end
 		]]--
+		self.UpdateRender = false
 	end
 	
 	--print("Acceleration at (0,0,0)",self:GetTrainAccelerationAtPos(Vector(0,0,0)))
@@ -559,7 +560,7 @@ function ENT:Think()
 	
 	-- Update passengers
 	if self.RenderClientEnts then
-		if #self.PassengerEnts ~= self:GetNWFloat("PassengerCount") then
+		if #self.PassengerEnts ~= self:GetNWFloat("PassengerCount") then	
 
 			-- Passengers go out
 			while #self.PassengerEnts > self:GetNWFloat("PassengerCount") do
@@ -898,17 +899,21 @@ function ENT:AnimateFrom(clientProp,from)
 end
 
 function ENT:ShowHide(clientProp, value, over)
-	if IsValid(self.ClientEnts[clientProp]) then
+	--if IsValid(self.ClientEnts[clientProp]) then
 		if value == true and (self.Hidden[clientProp] or over) then
 			if not IsValid(self.ClientEnts[clientProp]) then
+				self.Hidden[clientProp] = false
 				self:SpawnCSEnt(clientProp)
+				self.UpdateRender = true
 			end
 			--self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_NORMAL)
 			--self.ClientEnts[clientProp]:SetColor(Color(255,255,255,255))
 			--self.Hidden[clientProp] = false
 		elseif value ~= true and (not self.Hidden[clientProp] or over) then
 			if IsValid(self.ClientEnts[clientProp]) then
+				self.Hidden[clientProp] = true
 				self.ClientEnts[clientProp]:Remove()
+				self.UpdateRender = true
 			end
 			--self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_NONE)
 			--self.ClientEnts[clientProp]:SetColor(Color(0,0,0,0))
@@ -916,8 +921,7 @@ function ENT:ShowHide(clientProp, value, over)
 		end	
 		--self.HiddenQuele[clientProp] = nil
 	--else
-	end
-	self.Hidden[clientProp] = value ~= true
+	--end
 end
 
 function ENT:HideButton(clientProp, value)
@@ -933,10 +937,10 @@ function ENT:ShowHideSmooth(clientProp, value)
 	end
 	if self.Anims[clientProp].alpha == value then return end
 	if value > 0 and not IsValid(self.ClientEnts[clientProp]) then
-		self:SpawnCSEnt(clientProp)
+		self:ShowHide(clientProp,false)
 	end
 	if value == 0 and IsValid(self.ClientEnts[clientProp]) then
-		self.ClientEnts[clientProp]:Remove()
+		self:ShowHide(clientProp,true)
 	end
 	if IsValid(self.ClientEnts[clientProp]) then
 		local v = self.ClientProps[clientProp]
@@ -949,6 +953,7 @@ function ENT:ShowHideSmooth(clientProp, value)
 		--self.HiddenQuele[clientProp] = nil
 	--else
 	end
+	self.Anims[clientProp].val = value
 	self.HiddenAnim[clientProp] = value == 0
 end
 

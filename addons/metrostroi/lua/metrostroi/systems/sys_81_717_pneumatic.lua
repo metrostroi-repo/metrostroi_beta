@@ -581,7 +581,7 @@ function TRAIN_SYSTEM:Think(dT)
 		self.EPKPrevious = Train.EPK.Value
 		if Train.EPK.Value == 1 then
 			if self.ValveType == 1 then
-				self.ReservoirPressure = math.max(0.0,self.ReservoirPressure - 3.0)
+				self.ReservoirPressure = math.max(0.0,self.ReservoirPressure - 1)
 			end
 			self.BrakeLinePressure = math.max(0.0,self.BrakeLinePressure - 3.0)
 		end
