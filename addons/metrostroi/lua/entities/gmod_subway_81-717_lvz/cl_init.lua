@@ -2507,6 +2507,19 @@ function ENT:Think()
 	--local state = true --self:GetPackedBool(39)
 	--self:SetSoundState("ring2",0.20,1)
 	
+	-- BPSN sound
+	self.BPSNType = self:GetNWInt("BPSNType",7)
+	if not self.OldBPSNType then self.OldBPSNType = self.BPSNType end
+	if self.BPSNType ~= self.OldBPSNType then
+		if self.OldBPSNType ~= 7 then
+			self:SetSoundState("bpsn"..self.OldBPSNType,0,1.0)
+		else
+			self:SetSoundState("bpsn2",0,1.0)
+			self:SetSoundState("bpsn3",0,1.0)
+			self:SetSoundState("bpsn6",0,1.0)
+		end
+	end
+
 	local state = self:GetPackedBool(52)
 	self.PreviousBPSNState = self.PreviousBPSNState or false
 	if self.PreviousBPSNState ~= state then
