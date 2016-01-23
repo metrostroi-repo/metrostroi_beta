@@ -287,10 +287,10 @@ function TRAIN_SYSTEM:Trigger(name)
 			if Char then
 				if self.Mode1 == 0 then
 					self.Line = Char
-					if Metrostroi.WorkingStations[self.Train.Announcer.AnnMap][self.Line] then
-						local Routelength = #Metrostroi.WorkingStations[self.Train.Announcer.AnnMap][self.Line]
-						self.FirstStation = tostring(Metrostroi.WorkingStations[self.Train.Announcer.AnnMap][self.Line][1])
-						self.LastStation = tostring(Metrostroi.WorkingStations[self.Train.Announcer.AnnMap][self.Line][Routelength])
+					if Metrostroi.WorkingStations[self.Line] then
+						local Routelength = #Metrostroi.WorkingStations[self.Line]
+						self.FirstStation = tostring(Metrostroi.WorkingStations[self.Line][1])
+						self.LastStation = tostring(Metrostroi.WorkingStations[self.Line][Routelength])
 					end
 				end
 				if self.Mode1 == 1 and #self.FirstStation < 3 and (Char ~= 0 or #self.FirstStation > 0) then
@@ -302,10 +302,10 @@ function TRAIN_SYSTEM:Trigger(name)
 				self:UpdateUPO()
 			end
 			if name == "MotorolaF2" then
-				if not Metrostroi.WorkingStations[self.Train.Announcer.AnnMap][self.Line] or
-					not Metrostroi.WorkingStations[self.Train.Announcer.AnnMap][self.Line][tonumber(self.FirstStation)] or 
+				if not Metrostroi.WorkingStations[self.Line] or
+					not Metrostroi.WorkingStations[self.Line][tonumber(self.FirstStation)] or 
 					not Metrostroi.AnnouncerData[tonumber(self.FirstStation)] or
-					not Metrostroi.WorkingStations[self.Train.Announcer.AnnMap][self.Line][tonumber(self.LastStation)] or 
+					not Metrostroi.WorkingStations[self.Line][tonumber(self.LastStation)] or 
 					not Metrostroi.AnnouncerData[tonumber(self.LastStation)] then
 					self.Error = not self.Error
 				else

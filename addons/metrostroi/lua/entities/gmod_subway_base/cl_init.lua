@@ -937,10 +937,10 @@ function ENT:ShowHideSmooth(clientProp, value)
 	end
 	if self.Anims[clientProp].alpha == value then return end
 	if value > 0 and not IsValid(self.ClientEnts[clientProp]) then
-		self:ShowHide(clientProp,false)
+		self:ShowHide(clientProp,true)
 	end
 	if value == 0 and IsValid(self.ClientEnts[clientProp]) then
-		self:ShowHide(clientProp,true)
+		self:ShowHide(clientProp,false)
 	end
 	if IsValid(self.ClientEnts[clientProp]) then
 		local v = self.ClientProps[clientProp]
@@ -953,7 +953,7 @@ function ENT:ShowHideSmooth(clientProp, value)
 		--self.HiddenQuele[clientProp] = nil
 	--else
 	end
-	self.Anims[clientProp].val = value
+	--self.Anims[clientProp].val = value
 	self.HiddenAnim[clientProp] = value == 0
 end
 
@@ -1334,6 +1334,7 @@ function ENT:HidePanel(kp,hide)
 		if self.ButtonMap[kp].props then
 			for k,v in pairs(self.ButtonMap[kp].props) do
 				self:ShowHide(v,false,true)
+				self.Hidden[v] = true
 			end
 			self.HiddenPanels[kp] = true
 		end
@@ -1342,6 +1343,7 @@ function ENT:HidePanel(kp,hide)
 		if self.ButtonMap[kp].props then
 			for k,v in pairs(self.ButtonMap[kp].props) do
 				self:ShowHide(v,true,true)
+				self.Hidden[v] = false
 			end
 			self.HiddenPanels[kp] = nil
 		end

@@ -289,7 +289,7 @@ function TRAIN_SYSTEM:Think(dT)
 		if self.relay_type == "VB-11" and (self.Value ~= 0.0) then	self.Train:PlayOnce("switch2","cabin")		end
 		if self.relay_type == "Switch" then
 			if self.Value ~= 0.0 and self.maxvalue ~= 2 or self.Value ~= 1.0 and self.maxvalue == 2 then
-				if self.button then self.Train:PlayOnce("button_press","cabin",0.45) end
+				if self.button then self.Train:PlayOnce("button_press","cabin",0.51) end
 				if self.vud then self.Train:PlayOnce("vu22_on","cabin") end
 				if self.uava then self.Train:PlayOnce("uava_on","cabin") end
 				if self.pb then self.Train:PlayOnce("switch6","cabin") end
@@ -298,7 +298,7 @@ function TRAIN_SYSTEM:Think(dT)
 				if self.mainav then self.Train:PlayOnce("mainauto_on","cabin") end
 			end
 			if self.Value == 0.0 and self.maxvalue ~= 2 or self.Value == 1.0 and self.maxvalue == 2 then
-				if self.button then self.Train:PlayOnce("button_release","cabin",0.5) end
+				if self.button then self.Train:PlayOnce("button_release","cabin",0.56) end
 				if self.vud then self.Train:PlayOnce("vu22_off","cabin") end
 				if self.uava then self.Train:PlayOnce("uava_off","cabin") end
 				if self.pb then self.Train:PlayOnce("switch6_off","cabin") end

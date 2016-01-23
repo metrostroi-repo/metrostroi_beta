@@ -233,19 +233,19 @@ end
 function TRAIN_SYSTEM:Trigger(name,nosnd)
 	if name == "P2" and self.Choose == 1 then
 		self.Line = (self.Line or 1) + 1
-		if self.Line > #Metrostroi.EndStations[self.Train.Announcer.AnnMap] then
+		if self.Line > #Metrostroi.EndStations then
 			self.Line = 1
 		end
 	end
 	if name == "P3" and self.Choose == 2 then
 		self.ChoosedFStation = (self.ChoosedFStation or 1) + 1
-		if self.ChoosedFStation > #Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line] then
+		if self.ChoosedFStation > #Metrostroi.EndStations[self.Line] then
 			self.ChoosedFStation = 1
 		end
 	end
 	if name == "P4" and self.Choose == 3 then
 		self.ChoosedLStation = (self.ChoosedLStation or 1) + 1
-		if self.ChoosedLStation > #Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line] then
+		if self.ChoosedLStation > #Metrostroi.EndStations[self.Line] then
 			self.ChoosedLStation = 1
 		end
 	end
@@ -253,21 +253,21 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		self.Choose = 1
 		self.Line = self.Line or 1
 		self.ChoosedFStation = self.ChoosedFStation or 1
-		self.ChoosedLStation = self.ChoosedLStation or #Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line]
+		self.ChoosedLStation = self.ChoosedLStation or #Metrostroi.EndStations[self.Line]
 		self.Timer = CurTime() + 3
 	end
 	if name == "P3" and self.Choose == 0 then
 		self.Choose = 2
 		self.Line = self.Line or 1
 		self.ChoosedFStation = self.ChoosedFStation or 1
-		self.ChoosedLStation = self.ChoosedLStation or #Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line]
+		self.ChoosedLStation = self.ChoosedLStation or #Metrostroi.EndStations[self.Line]
 		self.Timer = CurTime() + 3
 	end
 	if name == "P4" and self.Choose == 0 then
 		self.Choose = 3
 		self.Line = self.Line or 1
 		self.ChoosedFStation = self.ChoosedFStation or 1
-		self.ChoosedLStation = self.ChoosedLStation or #Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line]
+		self.ChoosedLStation = self.ChoosedLStation or #Metrostroi.EndStations[self.Line]
 		self.Timer = CurTime() + 3
 	end
 	if name == "P5" and self.Choose == 0 then
@@ -278,8 +278,8 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		self.Timer = CurTime() + 3
 		self.TimeOverride = true
 	end
-	self.FirstStation = Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line] and Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line][self.ChoosedFStation or 1] or 0
-	self.LastStation = Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line] and Metrostroi.EndStations[self.Train.Announcer.AnnMap][self.Line][self.ChoosedLStation or 1] or 0
+	self.FirstStation = Metrostroi.EndStations[self.Line] and Metrostroi.EndStations[self.Line][self.ChoosedFStation or 1] or 0
+	self.LastStation = Metrostroi.EndStations[self.Line] and Metrostroi.EndStations[self.Line][self.ChoosedLStation or 1] or 0
 	self:UpdateUPO()
 end
 function TRAIN_SYSTEM:Think(dT)

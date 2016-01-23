@@ -331,9 +331,9 @@ if CLIENT then
 			draw.SimpleText("Ввод","Metrostroi_PAM30",200, 344,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			Metrostroi.DrawTextRectOL(260, 330, 100, 30,Color(230,230,230),gr_up,1,Color(110,110,110))
 			draw.SimpleText("Назад","Metrostroi_PAM30",310, 344,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-			if train:GetNWInt("PAKSDM:State6",1) == 2 and tbl[Announcer.AnnMap][Line] then
+			if train:GetNWInt("PAKSDM:State6",1) == 2 and tbl[Line] then
 				local i = 1
-				for k,v in pairs(tbl[Announcer.AnnMap][Line]) do
+				for k,v in pairs(tbl[Line]) do
 					if Metrostroi.AnnouncerData[v] and (tostring(v):find(FirstStation) or FirstStation == -1) then
 						i = i + 1
 						if i > 10 then break end
@@ -342,7 +342,7 @@ if CLIENT then
 				if i > 1 then
 					Metrostroi.DrawRectOL(310, 177, 200, -18 + i*18,Color(110,110,110),1,Color(250,250,250) )
 					local i = 1
-					for k,v in pairs(tbl[Announcer.AnnMap][Line]) do
+					for k,v in pairs(tbl[Line]) do
 						if Metrostroi.AnnouncerData[v] and (tostring(v):find(FirstStation) or FirstStation == -1) then
 						if i > 10 then break end
 						draw.SimpleText(v,"Metrostroi_PAM1_20",311, 167+i*18,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
@@ -354,9 +354,9 @@ if CLIENT then
 					--Metrostroi.DrawLine(140, 155, 140, 145 + i*22,Color(20,20,20),3 )
 				end
 			end
-			if train:GetNWInt("PAKSDM:State6",1) == 3 and tbl[Announcer.AnnMap][Line] then
+			if train:GetNWInt("PAKSDM:State6",1) == 3 and tbl[Line] then
 				local i = 1
-				for k,v in pairs(tbl[Announcer.AnnMap][Line]) do
+				for k,v in pairs(tbl[Line]) do
 					if Metrostroi.AnnouncerData[v] and (tostring(v):find(LastStation) or LastStation == -1) then
 						i = i + 1
 						if i > 10 then break end
@@ -365,7 +365,7 @@ if CLIENT then
 				if i > 1 then
 					Metrostroi.DrawRectOL(310, 207, 200, -18 + i*18,Color(110,110,110),1,Color(250,250,250) )
 					local i = 1
-					for k,v in pairs(tbl[Announcer.AnnMap][Line]) do
+					for k,v in pairs(tbl[Line]) do
 						if Metrostroi.AnnouncerData[v] and (tostring(v):find(LastStation) or LastStation == -1) then
 							if i > 10 then break end
 							draw.SimpleText(v,"Metrostroi_PAM1_20",311, 197+i*18,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
@@ -424,9 +424,9 @@ if CLIENT then
 			Metrostroi.DrawTextRectOL(260, 330, 100, 30,Color(230,230,230),gr_up,1,Color(110,110,110))
 			draw.SimpleText("Назад","Metrostroi_PAM30",310, 344,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 
-			if train:GetNWInt("PAKSDM:State6",1) == 2 and tbl[Announcer.AnnMap][Line] then
+			if train:GetNWInt("PAKSDM:State6",1) == 2 and tbl[Line] then
 				local i = 1
-				for k,v in pairs(tbl[Announcer.AnnMap][Line]) do
+				for k,v in pairs(tbl[Line]) do
 					if Metrostroi.AnnouncerData[v] and (tostring(v):find(LastStation) or LastStation == -1) then
 						i = i + 1
 						if i > 10 then break end
@@ -435,7 +435,7 @@ if CLIENT then
 				if i > 1 then
 					Metrostroi.DrawRectOL(310, 177, 200, -18 + i*18,Color(110,110,110),1,Color(250,250,250) )
 					local i = 1
-					for k,v in pairs(tbl[Announcer.AnnMap][Line]) do
+					for k,v in pairs(tbl[Line]) do
 						if Metrostroi.AnnouncerData[v] and (tostring(v):find(LastStation) or LastStation == -1) then
 						if i > 10 then break end
 						draw.SimpleText(v,"Metrostroi_PAM1_20",311, 167+i*18,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
@@ -753,7 +753,7 @@ if CLIENT then
 				local tbl = Metrostroi.WorkingStations
 				if Station > -1 then
 					draw.SimpleText(Station,"Metrostroi_PAM22",365,247,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-					if tbl[Announcer.AnnMap][Line] and tbl[Announcer.AnnMap][Line][Station] and Metrostroi.AnnouncerData[Station] then
+					if tbl[Line] and tbl[Line][Station] and Metrostroi.AnnouncerData[Station] then
 						draw.SimpleText(Metrostroi.AnnouncerData[Station][1],"Metrostroi_PAM22",256,270,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 					end
 				end
@@ -761,9 +761,9 @@ if CLIENT then
 				draw.SimpleText("Ввод","Metrostroi_PAM30",150, 300,train:GetNWBool("PAKSDM:NCOk",false) and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				Metrostroi.DrawTextRectOL(294, 286, 115, 30,train:GetNWBool("PAKSDM:NCCanc",false) and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
 				draw.SimpleText("Закрыть","Metrostroi_PAM30",349, 300,train:GetNWBool("PAKSDM:NCCanc",false) and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				if choosed == 1 and tbl[Announcer.AnnMap][Line] and not Metrostroi.AnnouncerData[Station] then
+				if choosed == 1 and tbl[Line] and not Metrostroi.AnnouncerData[Station] then
 					local i = 1
-					for k,v in pairs(tbl[Announcer.AnnMap][Line]) do
+					for k,v in pairs(tbl[Line]) do
 						if Metrostroi.AnnouncerData[v] and (tostring(v):find(Station) or Station == -1) then
 							i = i + 1
 							if i > 8 then break end
@@ -772,7 +772,7 @@ if CLIENT then
 					if i > 1 then
 						Metrostroi.DrawRectOL(280, 257, 200, -18 + i*18,Color(110,110,110),1,Color(250,250,250) )
 						local i = 1
-						for k,v in pairs(tbl[Announcer.AnnMap][Line]) do
+						for k,v in pairs(tbl[Line]) do
 							if Metrostroi.AnnouncerData[v] and (tostring(v):find(Station) or Station == -1) then
 							if i > 8 then break end
 							draw.SimpleText(v,"Metrostroi_PAM1_20",281, 247+i*18,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
@@ -901,10 +901,10 @@ function TRAIN_SYSTEM:Touch(state,x,y)
 		end
 	end
 	if self.State == 6 and not self.State6Error and self:FindAimButton(x,y,150, 330, 100, 30) then
-		if not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line] or
-			not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][tonumber(self.FirstStation)] or 
+		if not Metrostroi.WorkingStations[self.Line] or
+			not Metrostroi.WorkingStations[self.Line][tonumber(self.FirstStation)] or 
 			not Metrostroi.AnnouncerData[tonumber(self.FirstStation)] or
-			not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][tonumber(self.LastStation)] or 
+			not Metrostroi.WorkingStations[self.Line][tonumber(self.LastStation)] or 
 			not Metrostroi.AnnouncerData[tonumber(self.LastStation)] or
 			#self.RouteNumber < 3 or self.LastStation == self.FirstStation then
 			self.State6Error = not self.State6Error
@@ -919,10 +919,10 @@ function TRAIN_SYSTEM:Touch(state,x,y)
 		self.State6Error = false
 	end
 	if self.State == 7 and not self.State6Error and self:FindAimButton(x,y,150, 330, 100, 30) then
-		if not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line] or
-			not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][tonumber(self.FirstStation)] or 
+		if not Metrostroi.WorkingStations[self.Line] or
+			not Metrostroi.WorkingStations[self.Line][tonumber(self.FirstStation)] or 
 			not Metrostroi.AnnouncerData[tonumber(self.FirstStation)] or
-			not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][tonumber(self.LastStation)] or 
+			not Metrostroi.WorkingStations[self.Line][tonumber(self.LastStation)] or 
 			not Metrostroi.AnnouncerData[tonumber(self.LastStation)] or
 			#self.RouteNumber < 3 or self.LastStation == self.FirstStation then
 			self.State6Error = not self.State6Error
@@ -959,8 +959,8 @@ function TRAIN_SYSTEM:Touch(state,x,y)
 					if self:FindAimButton(x,y,100, 286, 100, 30) then
 						self.NCOk = state
 						if not state then
-							if not Metrostroi.WorkingStations[Announcer.AnnMap][self.FLine] or
-								not Metrostroi.WorkingStations[Announcer.AnnMap][self.FLine][tonumber(self.EnteredStation)] or 
+							if not Metrostroi.WorkingStations[self.FLine] or
+								not Metrostroi.WorkingStations[self.FLine][tonumber(self.EnteredStation)] or 
 								not Metrostroi.AnnouncerData[tonumber(self.EnteredStation)] or tonumber(self.EnteredStation) == self.FirstStation then
 								self.State6Error = not self.State6Error
 							else
@@ -979,8 +979,8 @@ function TRAIN_SYSTEM:Touch(state,x,y)
 					if self:FindAimButton(x,y,100, 286, 100, 30) then
 						self.NCOk = state
 						if not state then
-							if not Metrostroi.WorkingStations[Announcer.AnnMap][self.FLine] or
-								not Metrostroi.WorkingStations[Announcer.AnnMap][self.FLine][tonumber(self.EnteredStation)] or 
+							if not Metrostroi.WorkingStations[self.FLine] or
+								not Metrostroi.WorkingStations[self.FLine][tonumber(self.EnteredStation)] or 
 								not Metrostroi.AnnouncerData[tonumber(self.EnteredStation)] then
 								self.State6Error = not self.State6Error
 							else
@@ -1305,10 +1305,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			self:SetState(1.1,5)
 		end
 		if name == "BEnter" then
-			if not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line] or
-				not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][tonumber(self.FirstStation)] or 
+			if not Metrostroi.WorkingStations[self.Line] or
+				not Metrostroi.WorkingStations[self.Line][tonumber(self.FirstStation)] or 
 				not Metrostroi.AnnouncerData[tonumber(self.FirstStation)] or
-				not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][tonumber(self.LastStation)] or 
+				not Metrostroi.WorkingStations[self.Line][tonumber(self.LastStation)] or 
 				not Metrostroi.AnnouncerData[tonumber(self.LastStation)] or
 				#self.RouteNumber < 3 or self.LastStation == self.FirstStation then
 				self.State6Error = not self.State6Error
@@ -1320,10 +1320,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		if Char then
 			if self.State6Choose == 1 then
 				self.Line = Char
-				if Metrostroi.WorkingStations[Announcer.AnnMap][self.Line] then
-					--local Routelength = #Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
-					--self.FirstStation = tostring(Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][1])
-					--self.LastStation = tostring(Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][Routelength])
+				if Metrostroi.WorkingStations[self.Line] then
+					--local Routelength = #Metrostroi.WorkingStations[self.Line]
+					--self.FirstStation = tostring(Metrostroi.WorkingStations[self.Line][1])
+					--self.LastStation = tostring(Metrostroi.WorkingStations[self.Line][Routelength])
 				end
 			end
 			if self.State6Choose == 2 and #self.FirstStation < 3 and (Char ~= 0 or #self.FirstStation > 0) then
@@ -1359,10 +1359,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			self:SetState(1.1,5)
 		end
 		if name == "BEnter" and self.State6Choose == 4 then
-			if not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line] or
-				not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][tonumber(self.FirstStation)] or 
+			if not Metrostroi.WorkingStations[self.Line] or
+				not Metrostroi.WorkingStations[self.Line][tonumber(self.FirstStation)] or 
 				not Metrostroi.AnnouncerData[tonumber(self.FirstStation)] or
-				not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][tonumber(self.LastStation)] or 
+				not Metrostroi.WorkingStations[self.Line][tonumber(self.LastStation)] or 
 				not Metrostroi.AnnouncerData[tonumber(self.LastStation)] or
 				#self.RouteNumber < 3 or self.LastStation == self.FirstStation then
 				self.State6Error = not self.State6Error
@@ -1381,10 +1381,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		if Char then
 			if self.State6Choose == 1 then
 				self.Line = Char
-				if Metrostroi.WorkingStations[Announcer.AnnMap][self.Line] then
-					local Routelength = #Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
-					self.FirstStation = self.FirstStation ~= "" and self.FirstStation or tostring(Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][1])
-					self.LastStation = tostring(Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][Routelength])
+				if Metrostroi.WorkingStations[self.Line] then
+					local Routelength = #Metrostroi.WorkingStations[self.Line]
+					self.FirstStation = self.FirstStation ~= "" and self.FirstStation or tostring(Metrostroi.WorkingStations[self.Line][1])
+					self.LastStation = tostring(Metrostroi.WorkingStations[self.Line][Routelength])
 					if tonumber(self.LastStation) < tonumber(self.FirstStation) then
 						local temp = self.FirstStation
 						self.FirstStation = self.LastStation
@@ -1538,8 +1538,8 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				end
 			end
 			if name == "BEnter" then
-				if not Metrostroi.WorkingStations[Announcer.AnnMap][self.FLine] or
-					not Metrostroi.WorkingStations[Announcer.AnnMap][self.FLine][tonumber(self.EnteredStation)] or 
+				if not Metrostroi.WorkingStations[self.FLine] or
+					not Metrostroi.WorkingStations[self.FLine][tonumber(self.EnteredStation)] or 
 					not Metrostroi.AnnouncerData[tonumber(self.EnteredStation)] or tonumber(self.EnteredStation) == self.FirstStation then
 					self.State6Error = not self.State6Error
 				else
@@ -1575,8 +1575,8 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				end
 			end
 			if name == "BEnter" then
-				if not Metrostroi.WorkingStations[Announcer.AnnMap][self.FLine] or
-					not Metrostroi.WorkingStations[Announcer.AnnMap][self.FLine][tonumber(self.EnteredStation)] or 
+				if not Metrostroi.WorkingStations[self.FLine] or
+					not Metrostroi.WorkingStations[self.FLine][tonumber(self.EnteredStation)] or 
 					not Metrostroi.AnnouncerData[tonumber(self.EnteredStation)] or tonumber(self.EnteredStation) == self.LastStation then
 					self.State6Error = not self.State6Error
 				else
@@ -1637,7 +1637,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				elseif self.MenuChoosed == 8 and not self.Arrived then
 					--self.Arrived = true
 					--if self.Train.R_UPO.Value > 0 then
-	--						local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
+	--						local tbl = Metrostroi.WorkingStations[self.Line]
 						--self.UPO:PlayArriving(self.Train.UPO.Station,tbl[tbl[self.Train.UPO.Station] + (self.Train.UPO.Path == 1 and 1 or -1)],self.Train.UPO.Path)
 					--end
 				end
@@ -1749,7 +1749,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				elseif self.MenuChoosed == 8 and not self.Arrived then
 					--self.Arrived = true
 					--if self.Train.R_UPO.Value > 0 then
---						local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
+--						local tbl = Metrostroi.WorkingStations[self.Line]
 						--self.UPO:PlayArriving(self.Train.UPO.Station,tbl[tbl[self.Train.UPO.Station] + (self.Train.UPO.Path == 1 and 1 or -1)],self.Train.UPO.Path)
 					--end
 				end
@@ -1825,10 +1825,10 @@ function TRAIN_SYSTEM:SetState(state,add,state9)
 	if state == 6 then
 		self.State6Choose = 1
 		self.Line = 1
-		if Metrostroi.WorkingStations[Announcer.AnnMap][self.Line] then
-			local Routelength = #Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
-			--self.FirstStation = tostring(self.Train.UPO.Path == 2 and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][Routelength] or Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][1])
-			--self.LastStation = tostring(self.Train.UPO.Path == 1 and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][Routelength] or Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][1])
+		if Metrostroi.WorkingStations[self.Line] then
+			local Routelength = #Metrostroi.WorkingStations[self.Line]
+			--self.FirstStation = tostring(self.Train.UPO.Path == 2 and Metrostroi.WorkingStations[self.Line][Routelength] or Metrostroi.WorkingStations[self.Line][1])
+			--self.LastStation = tostring(self.Train.UPO.Path == 1 and Metrostroi.WorkingStations[self.Line][Routelength] or Metrostroi.WorkingStations[self.Line][1])
 		else
 			--self.FirstStation = "111"
 			--self.LastStation = "123"
@@ -2037,15 +2037,15 @@ function TRAIN_SYSTEM:Think(dT)
 			end
 				
 			if not self.Transit then
-				if self.Train.UPO.Distance < 75 and self.Arrived == nil and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] and ARS.Speed <= 1 then
+				if self.Train.UPO.Distance < 75 and self.Arrived == nil and Metrostroi.WorkingStations[self.Line][self.Train.UPO.Station] and ARS.Speed <= 1 then
 					self.Arrived = true
 				end
 			end
 			--[[
-			if not self.Transit and 45 < self.Train.UPO.Distance and self.Train.UPO.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] then
+			if not self.Transit and 45 < self.Train.UPO.Distance and self.Train.UPO.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[self.Line][self.Train.UPO.Station] then
 				self.Arrived = true
 				if self.Train.R_UPO.Value > 0 then
-					local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
+					local tbl = Metrostroi.WorkingStations[self.Line]
 					self.UPO:PlayArriving(self.Train.UPO.Station,tbl[tbl[self.Train.UPO.Station] + (self.Train.UPO.Path == 1 and 1 or -1)],self.Train.UPO.Path)
 				end
 			end

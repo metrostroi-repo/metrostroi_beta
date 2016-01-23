@@ -69,5 +69,7 @@ function ENT:InitializeSystems()
 	self:LoadSystem("PAKSD_DOOR","Relay","Switch")
 	self:LoadSystem("PAKSD_VUD","Relay","Switch")
 	self:LoadSystem("Horn")
+
 	self:LoadSystem("Announcer")
+	self:LoadSystem("ASNP")
 end

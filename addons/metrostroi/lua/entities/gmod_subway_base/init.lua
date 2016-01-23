@@ -292,17 +292,6 @@ function ENT:Initialize()
 	]]
 	self.FailSim:TriggerInput("TrainWires",self.TrainWireCount)
 	self:UpdateWagonList()
-	self.Map = ""
-	local Map = game.GetMap() or ""
-	if Map:find("gm_metrostroi") and Map:find("lite") then
-		self.Map = "gm_metrostroi_lite"
-	elseif Map:find("gm_metrostroi") then
-		self.Map = "gm_metrostroi"
-	elseif Map:find("gm_mus_orange_line") and Map:find("long") then
-		self.Map = "gm_orange"
-	elseif Map:find("gm_mus_orange_line") then
-		self.Map = "gm_orange_lite"
-	end
 end
 
 -- Remove entity
@@ -718,7 +707,7 @@ Metrostroi.SignsTextures["special"] = {
 function ENT:PrepareSigns()
 	if not self.SignsList then
 		self.SignsList = { "" }
-		for k,v in SortedPairs(Metrostroi.SignsTextures[self.Map] or {}) do
+		for k,v in SortedPairs(Metrostroi.SignsTextures[Metrostroi.CurrentMap] or {}) do
 			local x = table.insert(self.SignsList,v)
 			self.SignsList[k] = x
 		end

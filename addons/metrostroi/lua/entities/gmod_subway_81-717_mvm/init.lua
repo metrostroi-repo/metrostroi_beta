@@ -143,22 +143,11 @@ function ENT:Initialize()
 		[KEY_LALT] = {
 			[KEY_V] = "VUD1Toggle",
 			[KEY_L] = "EPKToggle",
-			[KEY_PAD_1] = "B1Set",
-			[KEY_PAD_2] = "B2Set",
-			[KEY_PAD_3] = "B3Set",
-			[KEY_PAD_4] = "B4Set",
-			[KEY_PAD_5] = "B5Set",
-			[KEY_PAD_6] = "B6Set",
-			[KEY_PAD_7] = "B7Set",
-			[KEY_PAD_8] = "B8Set",
-			[KEY_PAD_9] = "B9Set",
-			[KEY_PAD_0] = "B0Set",
-			[KEY_PAD_DIVIDE] = "BLeftSet",
-			[KEY_PAD_MULTIPLY] = "BUpSet",
-			[KEY_PAD_DECIMAL] = "BDownSet",
-			[KEY_PAD_PLUS] = "BPlusSet",
-			[KEY_PAD_MINUS] = "BMinusSet",
-			[KEY_PAD_ENTER] = "BEnterSet",
+			[KEY_PAD_PLUS] = "Custom2Set",
+			[KEY_PAD_MINUS] = "Custom1Set",
+			[KEY_PAD_ENTER] = "Custom3Set",
+			[KEY_PAD_ENTER] = "Custom3Set",
+			[KEY_PAD_MULTIPLY] = "CustomCToggle",
 		},
 		[KEY_RALT] = {
 			[KEY_L] = "EPKToggle",
@@ -334,18 +323,16 @@ function ENT:Initialize()
 	self.FrontDoor = false
 	self.CabinDoor = false
 	self.PassengerDoor = false
-	if not self.Map:find("metrostroi") then
-		self.A45:TriggerInput("Set",0)
-	end
+
 	for k,v in pairs(self:GetMaterials()) do
 		if v == "models/metrostroi_train/81/int02" then
-			if self.Map == "" then
+			if Metrostroi.CurrentMap == "" then
 				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
 			else
 				if not self.Adverts or self.Adverts ~= 4 then
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..self.Map:sub(4,-1)].path1)
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..Metrostroi.CurrentMap:sub(4,-1)].path1)
 				else
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..self.Map:sub(4,-1)].path2)
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..Metrostroi.CurrentMap:sub(4,-1)].path2)
 				end
 			end
 		end

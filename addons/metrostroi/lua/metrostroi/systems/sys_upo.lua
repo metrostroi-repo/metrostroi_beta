@@ -32,10 +32,10 @@ end
 function TRAIN_SYSTEM:GetSTNum(station)
 	local Announcer = self.Train.Announcer
 	local station = tonumber(station)
-	if not Metrostroi.WorkingStations[Announcer.AnnMap] then return 0 end
-	if not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line] then return 0 end
-	if not Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][station] and station ~= 120 then return 0 end
-	return station == 120 and 12 or Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][station]
+	if not Metrostroi.WorkingStations then return 0 end
+	if not Metrostroi.WorkingStations[self.Line] then return 0 end
+	if not Metrostroi.WorkingStations[self.Line][station] and station ~= 120 then return 0 end
+	return station == 120 and 12 or Metrostroi.WorkingStations[self.Line][station]
 end
 
 function TRAIN_SYSTEM:End(station,path,next)
@@ -186,9 +186,9 @@ function TRAIN_SYSTEM:Think()
 	end
 	if not self.FirstStation or not self.LastStation or self.FirstStation == 0 or self.LastStation == 0 or self.Station == 0 then return end
 	if (self:End(self.Station,self.Path,true) or self:GetSTNum(self.LastStation) > self:GetSTNum(self.Station) and self.Path == 2 or self:GetSTNum(self.Station) < self:GetSTNum(self.FirstStation) and self.Path == 1) then return end
-	if self.Distance < 75 and self.Arrived == nil and Metrostroi.WorkingStations[self.Train.Announcer.AnnMap][self.Line][self.Station] then
+	if self.Distance < 75 and self.Arrived == nil and Metrostroi.WorkingStations[self.Line][self.Station] then
 		self.Arrived = true
-		local tbl = Metrostroi.WorkingStations[self.Train.Announcer.AnnMap][self.Line]
+		local tbl = Metrostroi.WorkingStations[self.Line]
 		self:PlayArriving(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
 	end
 	if self.Arrived and 	self.Train.Panel.SD < 0.5 and not self.BoardTime then
@@ -203,7 +203,7 @@ function TRAIN_SYSTEM:Think()
 		if self:End(self.Station,self.Path) then
 			self.Ring = 2
 		else
-			local tbl = Metrostroi.WorkingStations[self.Train.Announcer.AnnMap][self.Line]
+			local tbl = Metrostroi.WorkingStations[self.Line]
 			self:PlayDepeate(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
 		end
 		self.Arrived = false
@@ -241,7 +241,7 @@ function TRAIN_SYSTEM:Think()
 	if self.FirstStation and self.LastStation then
 		if not self:End(self.Station,self.Path) then
 			if self.Train.R_UPO.Value > 0 then
-				local tbl = Metrostroi.WorkingStations[Announcer.AnnMap][self.Line]
+				local tbl = Metrostroi.WorkingStations[self.Line]
 				self:PlayDepeate(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
 			end
 		end

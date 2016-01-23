@@ -342,19 +342,17 @@ function ENT:Initialize()
 	self.FrontDoor = false
 	self.CabinDoor = false
 	self.PassengerDoor = false
-	if not self.Map:find("metrostroi") then
-		self.A45:TriggerInput("Set",0)
-	end
+
 	self.OldTexture = 0
 	for k,v in pairs(self:GetMaterials()) do
 		if v == "models/metrostroi_train/81/int02" then
-			if self.Map == "" then
+			if Metrostroi.CurrentMap == "" then
 				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
 			else
 				if not self.Adverts or self.Adverts ~= 4 then
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p_"..self.Map:sub(4,-1)].path1)
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p_"..Metrostroi.CurrentMap:sub(4,-1)].path1)
 				else
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p_"..self.Map:sub(4,-1)].path2)
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p_"..Metrostroi.CurrentMap:sub(4,-1)].path2)
 				end
 			end
 		end

@@ -240,10 +240,7 @@ function ENT:Initialize()
 	self.FrontDoor = false
 	self.CabinDoor = false
 	self.PassengerDoor = false
-	
-	if not self.Announcer.AnnMap:find("metrostroi") then
---		self.A45:TriggerInput("Set",0)
-	end
+
 --	self.A5:TriggerInput("Set",0)
 end
 

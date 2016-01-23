@@ -287,19 +287,19 @@ function TRAIN_SYSTEM:ClientThink()
 				local LastStation = self.Train:GetNWInt("PAKSD:LastStation",-1)
 				local tbl = Metrostroi.EndStations
 				self:STR1("LINE "..Line..(State4Choosed == 1 and "_" or " ").." ")
-				if tbl[Announcer.AnnMap][Line] then
-					local Routelength = #Metrostroi.EndStations[Announcer.AnnMap][Line]
-					self:STR1("<"..tbl[Announcer.AnnMap][Line][1].."->"..tbl[Announcer.AnnMap][Line][Routelength]..">",true)
+				if tbl[Line] then
+					local Routelength = #Metrostroi.EndStations[Line]
+					self:STR1("<"..tbl[Line][1].."->"..tbl[Line][Routelength]..">",true)
 				else
 					self:STR1("<ERR->ERR>",true)
 				end
 				local st = ""
-				if tbl[Announcer.AnnMap][Line] and tbl[Announcer.AnnMap][Line][FirstStation] and Metrostroi.AnnouncerData[FirstStation] then
+				if tbl[Line] and tbl[Line][FirstStation] and Metrostroi.AnnouncerData[FirstStation] then
 					st = Metrostroi.AnnouncerData[FirstStation][1]:sub(1,10)
 				end
 				self:STR1("FIRST "..(FirstStation ~= -1 and FirstStation or "")..(State4Choosed == 2 and "_" or " ")..st:upper())
 				st = ""
-				if tbl[Announcer.AnnMap][Line] and tbl[Announcer.AnnMap][Line][LastStation] and Metrostroi.AnnouncerData[LastStation] then
+				if tbl[Line] and tbl[Line][LastStation] and Metrostroi.AnnouncerData[LastStation] then
 					st = Metrostroi.AnnouncerData[LastStation][1]:sub(1,10)
 				end
 				self:STR1("LAST  "..(LastStation ~= -1 and LastStation or "")..(State4Choosed == 3 and "_" or " ")..st:upper())
@@ -316,14 +316,14 @@ function TRAIN_SYSTEM:ClientThink()
 			local RouteNumber = self.Train:GetNWInt("PAKSD:RouteNumber",-1)
 			local tbl = Metrostroi.EndStations
 			self:STR1("LINE "..Line..(State4Choosed == 1 and "_" or " ").." ")
-			if tbl[Announcer.AnnMap][Line] then
-				local Routelength = #Metrostroi.EndStations[Announcer.AnnMap][Line]
-				self:STR1("<"..tbl[Announcer.AnnMap][Line][1].."->"..tbl[Announcer.AnnMap][Line][Routelength]..">",true)
+			if tbl[Line] then
+				local Routelength = #Metrostroi.EndStations[Line]
+				self:STR1("<"..tbl[Line][1].."->"..tbl[Line][Routelength]..">",true)
 			else
 				self:STR1("<ERR->ERR>",true)
 			end
 			local st = ""
-			if tbl[Announcer.AnnMap][Line] and tbl[Announcer.AnnMap][Line][LastStation] and Metrostroi.AnnouncerData[LastStation] then
+			if tbl[Line] and tbl[Line][LastStation] and Metrostroi.AnnouncerData[LastStation] then
 				st = Metrostroi.AnnouncerData[LastStation][1]:sub(1,10)
 			end
 			self:STR1("LAST  "..(LastStation ~= -1 and LastStation or "")..(State4Choosed == 2 and "_" or " ")..st:upper())
@@ -540,10 +540,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			self:UpdateUPO()
 		end
 		if name == "BEnter" then
-			if not Metrostroi.EndStations[Announcer.AnnMap][self.Line] or
-				not Metrostroi.EndStations[Announcer.AnnMap][self.Line][tonumber(self.FirstStation)] or 
+			if not Metrostroi.EndStations[self.Line] or
+				not Metrostroi.EndStations[self.Line][tonumber(self.FirstStation)] or 
 				not Metrostroi.AnnouncerData[tonumber(self.FirstStation)] or
-				not Metrostroi.EndStations[Announcer.AnnMap][self.Line][tonumber(self.LastStation)] or 
+				not Metrostroi.EndStations[self.Line][tonumber(self.LastStation)] or 
 				not Metrostroi.AnnouncerData[tonumber(self.LastStation)] or
 				#self.RouteNumber < 3 then
 				self:SetState(45)
@@ -555,10 +555,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		if Char then
 			if self.State4Choosed == 1 then
 				self.Line = Char
-				if Metrostroi.EndStations[Announcer.AnnMap][self.Line] then
-					local Routelength = #Metrostroi.EndStations[Announcer.AnnMap][self.Line]
-					self.FirstStation = tostring(Metrostroi.EndStations[Announcer.AnnMap][self.Line][1])
-					self.LastStation = tostring(Metrostroi.EndStations[Announcer.AnnMap][self.Line][Routelength])
+				if Metrostroi.EndStations[self.Line] then
+					local Routelength = #Metrostroi.EndStations[self.Line]
+					self.FirstStation = tostring(Metrostroi.EndStations[self.Line][1])
+					self.LastStation = tostring(Metrostroi.EndStations[self.Line][Routelength])
 				end
 			end
 			if self.State4Choosed == 2 and #self.FirstStation < 3 then
@@ -589,8 +589,8 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			self:UpdateUPO()
 		end
 		if name == "BEnter" then
-			if not Metrostroi.EndStations[Announcer.AnnMap][self.Line] or
-				not Metrostroi.EndStations[Announcer.AnnMap][self.Line][tonumber(self.LastStation)] or 
+			if not Metrostroi.EndStations[self.Line] or
+				not Metrostroi.EndStations[self.Line][tonumber(self.LastStation)] or 
 				not Metrostroi.AnnouncerData[tonumber(self.LastStation)] or
 				#self.RouteNumber < 3 then
 				self:SetState(48)
@@ -602,10 +602,10 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		if Char then
 			if self.State4Choosed == 1 then
 				self.Line = Char
-				if Metrostroi.EndStations[Announcer.AnnMap][self.Line] then
-					local Routelength = #Metrostroi.EndStations[Announcer.AnnMap][self.Line]
-					self.FirstStation = self.FirstStation ~= "" and self.FirstStation or tostring(Metrostroi.EndStations[Announcer.AnnMap][self.Line][1])
-					self.LastStation = tostring(Metrostroi.EndStations[Announcer.AnnMap][self.Line][Routelength])
+				if Metrostroi.EndStations[self.Line] then
+					local Routelength = #Metrostroi.EndStations[self.Line]
+					self.FirstStation = self.FirstStation ~= "" and self.FirstStation or tostring(Metrostroi.EndStations[self.Line][1])
+					self.LastStation = tostring(Metrostroi.EndStations[self.Line][Routelength])
 					if tonumber(self.LastStation) < tonumber(self.FirstStation) then
 						local temp = self.FirstStation
 						self.FirstStation = self.LastStation
@@ -765,11 +765,11 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			elseif self.State74 == 5 then
 				self:SetState(76)
 			elseif self.State74 == 6 then
-				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] then
+				if Metrostroi.EndStations[self.Line][self.Train.UPO.Station] then
 					self.LastStation = tostring(self.Train.UPO.Station)
 				end
 			elseif self.State74 == 7 then
-				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] then
+				if Metrostroi.EndStations[self.Line][self.Train.UPO.Station] then
 					self.FirstStation = tostring(self.Train.UPO.Station)
 				end
 			elseif self.State74 == 8 and not self.Arrived then
@@ -779,7 +779,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		end
 		if self.State74 > 6 then
 			if name == "B7" then
-				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] then
+				if Metrostroi.EndStations[self.Line][self.Train.UPO.Station] then
 					self.FirstStation = tostring(self.Train.UPO.Station)
 					if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self:SetState(7,nil,true) end
 				end
@@ -799,7 +799,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 				if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self:SetState(7,nil,true) end
 			end
 			if name == "B6" then
-				if Metrostroi.EndStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] then
+				if Metrostroi.EndStations[self.Line][self.Train.UPO.Station] then
 					self.LastStation = tostring(self.Train.UPO.Station)
 					if self.State > 6 and self.State ~= 76 and self.State ~= 77 then self:SetState(7,nil,true) end
 				end
@@ -945,9 +945,9 @@ function TRAIN_SYSTEM:SetState(state,state7,noupd)
 			self.Line = 1
 			self.RouteNumber = ""
 			self.State4Choosed = 1
-			if Metrostroi.EndStations[Announcer.AnnMap][self.Line] then
-				self.FirstStation = tostring(self.Train.UPO.Path == 2 and Metrostroi.EndStations[Announcer.AnnMap][self.Line][#Metrostroi.EndStations[Announcer.AnnMap][self.Line]] or Metrostroi.EndStations[Announcer.AnnMap][self.Line][1])
-				self.LastStation = tostring(self.Train.UPO.Path == 1 and Metrostroi.EndStations[Announcer.AnnMap][self.Line][#Metrostroi.EndStations[Announcer.AnnMap][self.Line]] or Metrostroi.EndStations[Announcer.AnnMap][self.Line][1])
+			if Metrostroi.EndStations[self.Line] then
+				self.FirstStation = tostring(self.Train.UPO.Path == 2 and Metrostroi.EndStations[self.Line][#Metrostroi.EndStations[self.Line]] or Metrostroi.EndStations[self.Line][1])
+				self.LastStation = tostring(self.Train.UPO.Path == 1 and Metrostroi.EndStations[self.Line][#Metrostroi.EndStations[self.Line]] or Metrostroi.EndStations[self.Line][1])
 			else
 				self.FirstStation = "111"
 				self.LastStation = "123"
@@ -1089,11 +1089,11 @@ function TRAIN_SYSTEM:Think(dT)
 		self.State7 = (self.Train.UPO:End(self.Train.UPO.Station,self.Train.UPO.Path,true) or self.Train.UPO:GetSTNum(self.LastStation) > self.Train.UPO:GetSTNum(self.Train.UPO.Station) and self.Train.UPO.Path == 2 or self.Train.UPO:GetSTNum(self.Train.UPO.Station) < self.Train.UPO:GetSTNum(self.FirstStation) and self.Train.UPO.Path == 1) and 0 or self.Arrived ~= nil and 1 or 2
 		if self.State7 ~= 0 then
 			if (self.RealState == 8 or self.RealState == 6 or self.RealState == 49) and not self.Transit then
-				if self.Train.UPO.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] and ARS.Speed <= 1 then
+				if self.Train.UPO.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[self.Line][self.Train.UPO.Station] and ARS.Speed <= 1 then
 					self.Arrived = true
 				end
 			end
-			if not self.Transit and 45 < self.Train.UPO.Distance and self.Train.UPO.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[Announcer.AnnMap][self.Line][self.Train.UPO.Station] then
+			if not self.Transit and 45 < self.Train.UPO.Distance and self.Train.UPO.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[self.Line][self.Train.UPO.Station] then
 				self.Arrived = true
 			end
 			if self.Transit then self.Arrived = nil end
