@@ -2117,10 +2117,10 @@ function ENT:Think()
 	if self.PreviousCompressorState ~= state then
 		self.PreviousCompressorState = state
 		if not state then
-			self:PlayOnce("compressor_end",nil,0.70)
+			self:PlayOnce("compressor_end",nil,0.80,nil,true)
 		end
 	end
-	self:SetSoundState("compressor",state and 1 or 0,1,nil,0.70)
+	self:SetSoundState("compressor",state and 1 or 0,1,nil,0.80)
 	
 	-- ARS/ringer alert
 	local state = self:GetPackedBool(39)
@@ -2153,7 +2153,7 @@ function ENT:Think()
 	--local state = true --self:GetPackedBool(39)
 	--self:SetSoundState("ring2",0.20,1)
 	
-	-- DIP sound
+	-- BPSN sound
 	self.BPSNType = self:GetNWInt("BPSNType",7)
 	if not self.OldBPSNType then self.OldBPSNType = self.BPSNType end
 	if self.BPSNType ~= self.OldBPSNType then
@@ -2207,17 +2207,17 @@ function ENT:Think()
 	self.OldBPSNType = self.BPSNType
 end
 
+ENT.ParkingBrakeMaterial = Material( "models/metrostroi_train/parking_brake.png", "vertexlitgeneric unlitgeneric mips" )
 function ENT:Draw()
 	self.BaseClass.Draw(self)
 end
-ENT.ParkingBrakeMaterial = Material( "models/metrostroi_train/parking_brake.png", "vertexlitgeneric unlitgeneric mips" )
 function ENT:DrawPost(special)
 	--local dc = render.GetLightColor(self:LocalToWorld(Vector(460.0,0.0,5.0)))
 
 	if self.InfoTableTimeout and (CurTime() < self.InfoTableTimeout) then
 		self:DrawOnPanel("InfoTableSelect",function()
 			local text = self:GetNWString("FrontText","")
-			local col = text:find("ЗЕЛ") and Color(100,200,0) or text:find("СИН") and Color(0,100,200) or text:find("МАЛ") and Color(200,100,200) or text:find("ОРА") and Color(200,200,0) or Color(255,0,0)
+			local col = text:find("ЗЕЛ") and Color(100,200,0) or text:find("СИН") and Color(0,100,200) or text:find("МАЛ") and Color(200,100,200) or text:find("ОРА") and Color(200,200,0) or text:find("БИР") and Color(48,213,200) or Color(255,0,0)
 			draw.DrawText(self:GetNWString("RouteNumber","") .. " " .. text,"MetrostroiSubway_InfoPanel",260, -100,col,TEXT_ALIGN_CENTER)
 			--[[
 			draw.Text({
@@ -2232,15 +2232,23 @@ function ENT:DrawPost(special)
 	end
 
 	self:DrawOnPanel("InfoRoute",function()
-		surface.SetDrawColor(142,132,101) --255*dc.x,250*dc.y,220*dc.z)
-		surface.DrawRect(0,100,88,70)
+		surface.SetAlphaMultiplier(1)
+		surface.SetDrawColor(255,255,255) --255*dc.x,250*dc.y,220*dc.z)
+		--surface.DrawRect(0,100,88,70)
+		local rn = self:GetNWString("RouteNumber","00")
+		surface.SetMaterial(Metrostroi.RouteTextures.m[rn[1]])
+		surface.DrawTexturedRect(0,100,44,70)
+		surface.SetMaterial(Metrostroi.RouteTextures.m[rn[2]])
+		surface.DrawTexturedRect(44,100,44,70)
+		--[[
 		draw.Text({
-			text = self:GetNWString("RouteNumber",""),
+			text = self:GetNWString("RouteNumber","00"),
 			font = "MetrostroiSubway_InfoRoute",--..self:GetNWInt("Style",1),
 			pos = { 44, 135 },
 			xalign = TEXT_ALIGN_CENTER,
 			yalign = TEXT_ALIGN_CENTER,
 			color = Color(0,0,0,255)})
+			]]
 	end)
 
 	local distance = self:GetPos():Distance(LocalPlayer():GetPos())

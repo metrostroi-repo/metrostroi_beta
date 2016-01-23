@@ -684,28 +684,31 @@ end
 Metrostroi.SignsTextures = {
 }
 Metrostroi.SignsTextures["gm_metrostroi_lite"] = {
-	[108] = {"models/metrostroi_train/signs/avtozavodskaya","Автозаводская"},
-	[111] = {"models/metrostroi_train/signs/oktyabrskyaya","Октябрьская"},
-	[114] = {"models/metrostroi_train/signs/vokzalnaya","Вокзальная"},
-	[121] = {"models/metrostroi_train/signs/minskaya","Минская"},
+	[108] = {"models/metrostroi_train/signs/b50/avtozavodskaya","Автозаводская"},
+	[111] = {"models/metrostroi_train/signs/b50/oktyabrskyaya","Октябрьская"},
+	[114] = {"models/metrostroi_train/signs/b50/vokzalnaya","Вокзальная"},
+	[121] = {"models/metrostroi_train/signs/b50/minskaya","Минская"},
 }
 Metrostroi.SignsTextures["gm_metrostroi"] = Metrostroi.SignsTextures["gm_metrostroi_lite"]
-Metrostroi.SignsTextures["gm_metrostroi"][123] = {"models/metrostroi_train/signs/mezdustroiskaya","(ЗЕЛЁНАЯ)\nМеждустройская"}
-Metrostroi.SignsTextures["gm_metrostroi"][322] = {"models/metrostroi_train/signs/avtostancya_yznaya","(СИНЯЯ)\nАвтостанция южная"}
+Metrostroi.SignsTextures["gm_metrostroi"][123] = {"models/metrostroi_train/signs/b50/mezdustroiskaya","(ЗЕЛЁНАЯ)\nМеждустройская"}
+Metrostroi.SignsTextures["gm_metrostroi"][322] = {"models/metrostroi_train/signs/b50/avtostancya_yznaya","(СИНЯЯ)\nАвтостанция южная"}
 
 Metrostroi.SignsTextures["gm_orange_lite"] = {
-	[403] = {"models/metrostroi_train/signs/park","Парк"},
-	[406] = {"models/metrostroi_train/signs/stancya_vollesa","Имени Уоллеса Брина"},
-	[408] = {"models/metrostroi_train/signs/truzenikov_gm","Труженников Garry's mod'а"},
+	[404] = {"models/metrostroi_train/signs/orange/park","Парк"},
+	[406] = {"models/metrostroi_train/signs/orange/brina","Имени Уоллеса Брина"},
+	[408] = {"models/metrostroi_train/signs/orange/truzenikov_gm","Труженников Garry's mod'а"},
 }
 Metrostroi.SignsTextures["gm_orange"] = Metrostroi.SignsTextures["gm_orange_lite"]
-Metrostroi.SignsTextures["gm_orange"][401] = {"models/metrostroi_train/signs/slavnaya_strana","Славная страна"}
-Metrostroi.SignsTextures["gm_orange"][501] = {"models/metrostroi_train/signs/aero","(МАЛИНОВАЯ)\nАэропорт"}
-Metrostroi.SignsTextures["gm_orange"][503] = {"models/metrostroi_train/signs/litium","(МАЛИНОВАЯ)\nЛитиевая"}
+Metrostroi.SignsTextures["gm_orange"][401] = {"models/metrostroi_train/signs/orange/aero","Аэропорт"}
+Metrostroi.SignsTextures["gm_orange"][501] = {"models/metrostroi_train/signs/orange/aero","Аэропорт"}
+Metrostroi.SignsTextures["gm_orange"][504] = {"models/metrostroi_train/signs/orange/metrostroiteley","(МАЛИНОВАЯ)\nМетростроителей"}
+Metrostroi.SignsTextures["gm_orange"][601] = {"models/metrostroi_train/signs/orange/brateevo","(БИРЮЗОВАЯ)\nБратеево"}
 Metrostroi.SignsTextures["special"] = {
-	{"models/metrostroi_train/signs/phoenix1","Феникс-1"},
-	{"models/metrostroi_train/signs/v_depo","В депо"},
-	{"models/metrostroi_train/signs/obkatka","Обкатка"},
+	{"models/metrostroi_train/signs/special/sinergiya1","Синергия-1"},
+	{"models/metrostroi_train/signs/special/phoenix1","Феникс-1"},
+	{"models/metrostroi_train/signs/special/depot","В депо"},
+	{"models/metrostroi_train/signs/special/testing","Обкатка"},
+	{"models/metrostroi_train/signs/special/no_entry","Посадки НЕТ"},
 }
 	--["gm_orange_lite"] = {},
 	--["gm_orange"] = {},

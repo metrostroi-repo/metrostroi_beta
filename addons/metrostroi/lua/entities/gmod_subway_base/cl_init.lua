@@ -355,6 +355,7 @@ function ENT:CanDrawThings()
 	return not IsValid(LocalPlayer():GetVehicle()) or self == LocalPlayer():GetVehicle():GetNWEntity("TrainEntity")
 end
 function ENT:Initialize()
+
 	hook.Add("PostDrawOpaqueRenderables", "metrostroi_base_draw_"..self:EntIndex(), function(isDD)
 		if not IsValid(self) or isDD then
 			return
@@ -489,12 +490,7 @@ end
 -- Default think function
 --------------------------------------------------------------------------------
 function ENT:Think()
-	self.RenderClientEnts = self:ShouldRenderClientEnts()
-	if self.RenderClientEnts then
-		self:CreateCSEnts()
-	else
-		self:RemoveCSEnts()
-	end
+	--self.RenderClientEnts = self:ShouldRenderClientEnts()
 	self.PrevTime = self.PrevTime or RealTime()
 	self.DeltaTime = (RealTime() - self.PrevTime)
 	self.PrevTime = RealTime()
@@ -511,7 +507,6 @@ function ENT:Think()
 		self.ClientEntsResetTimer = CurTime()
 		self:RemoveCSEnts()
 		self:CreateCSEnts()
-		
 		for k,v in pairs(self.PassengerEnts) do
 			local min,max = self:GetStandingArea()			
 			if IsValid(v) then
@@ -1444,6 +1439,33 @@ hook.Add( "HUDPaint", "metrostroi-draw-crosshair-tooltip", function()
 		end
 	end
 end)
+
+Metrostroi.RouteTextures = {
+	p = {
+		["0"] = Material("models/metrostroi_train/signs/route_p/0"),
+		["1"] = Material("models/metrostroi_train/signs/route_p/1"),
+		["2"] = Material("models/metrostroi_train/signs/route_p/2"),
+		["3"] = Material("models/metrostroi_train/signs/route_p/3"),
+		["4"] = Material("models/metrostroi_train/signs/route_p/4"),
+		["5"] = Material("models/metrostroi_train/signs/route_p/5"),
+		["6"] = Material("models/metrostroi_train/signs/route_p/6"),
+		["7"] = Material("models/metrostroi_train/signs/route_p/7"),
+		["8"] = Material("models/metrostroi_train/signs/route_p/8"),
+		["9"] = Material("models/metrostroi_train/signs/route_p/9"),
+	},
+	m = {
+		["0"] = Material("models/metrostroi_train/signs/route/0"),
+		["1"] = Material("models/metrostroi_train/signs/route/1"),
+		["2"] = Material("models/metrostroi_train/signs/route/2"),
+		["3"] = Material("models/metrostroi_train/signs/route/3"),
+		["4"] = Material("models/metrostroi_train/signs/route/4"),
+		["5"] = Material("models/metrostroi_train/signs/route/5"),
+		["6"] = Material("models/metrostroi_train/signs/route/6"),
+		["7"] = Material("models/metrostroi_train/signs/route/7"),
+		["8"] = Material("models/metrostroi_train/signs/route/8"),
+		["9"] = Material("models/metrostroi_train/signs/route/9"),
+	},
+}
 
 net.Receive("metrostroi_train_limit",function()
 	GAMEMODE:AddNotify( "Wagons limit!",NOTIFY_ERROR, 10 )

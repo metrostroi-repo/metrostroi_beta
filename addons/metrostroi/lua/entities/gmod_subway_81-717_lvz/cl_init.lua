@@ -2471,10 +2471,10 @@ function ENT:Think()
 	if self.PreviousCompressorState ~= state then
 		self.PreviousCompressorState = state
 		if not state then
-			self:PlayOnce("compressor_end",nil,0.70)
+			self:PlayOnce("compressor_end",nil,0.80,nil,true)
 		end
 	end
-	self:SetSoundState("compressor",state and 1 or 0,1,nil,0.70)
+	self:SetSoundState("compressor",state and 1 or 0,1,nil,0.80)
 	
 	-- ARS/ringer alert
 	local state = self:GetPackedBool(39) or self:GetPackedBool(164)
@@ -2571,7 +2571,7 @@ function ENT:DrawPost(special)
 	if self.InfoTableTimeout and (CurTime() < self.InfoTableTimeout) then
 		self:DrawOnPanel("InfoTableSelect",function()
 			local text = self:GetNWString("FrontText","")
-			local col = text:find("ЗЕЛ") and Color(100,200,0) or text:find("СИН") and Color(0,100,200) or text:find("МАЛ") and Color(200,100,200) or text:find("ОРА") and Color(200,200,0) or Color(255,0,0)
+			local col = text:find("ЗЕЛ") and Color(100,200,0) or text:find("СИН") and Color(0,100,200) or text:find("МАЛ") and Color(200,100,200) or text:find("ОРА") and Color(200,200,0) or text:find("БИР") and Color(48,213,200) or Color(255,0,0)
 			draw.DrawText(self:GetNWString("RouteNumber","") .. " " .. text,"MetrostroiSubway_InfoPanel",260, -100,col,TEXT_ALIGN_CENTER)
 			--[[
 			draw.Text({
@@ -2586,8 +2586,17 @@ function ENT:DrawPost(special)
 	end
 
 	self:DrawOnPanel("InfoRoute",function()
-		surface.SetDrawColor(0,0,0) --255*dc.x,250*dc.y,220*dc.z)
-		surface.DrawRect(-10,100,108,70)
+		surface.SetAlphaMultiplier(1)
+		surface.SetDrawColor(255,255,255) --255*dc.x,250*dc.y,220*dc.z)
+		--surface.DrawRect(0,100,88,70)
+		local rn = string.format("%003d",tonumber(self:GetNWString("RouteNumber","000")) or 0)
+		surface.SetMaterial(Metrostroi.RouteTextures.p[rn[1]])
+		surface.DrawTexturedRect(-10,100,40,70)
+		surface.SetMaterial(Metrostroi.RouteTextures.p[rn[2]])
+		surface.DrawTexturedRect(30,100,40,70)
+		surface.SetMaterial(Metrostroi.RouteTextures.p[rn[3]])
+		surface.DrawTexturedRect(70,100,40,70)
+		--[[
 		draw.Text({
 			text = self:GetNWString("RouteNumber",""),
 			font = "MetrostroiSubway_InfoRoute",--..self:GetNWInt("Style",1),
@@ -2595,6 +2604,7 @@ function ENT:DrawPost(special)
 			xalign = TEXT_ALIGN_CENTER,
 			yalign = TEXT_ALIGN_CENTER,
 			color = Color(255,255,255,255)})
+			]]
 	end)
 
 	local distance = self:GetPos():Distance(LocalPlayer():GetPos())

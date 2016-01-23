@@ -1151,10 +1151,10 @@ function ENT:Think()
 	if self.PreviousCompressorState ~= state then
 		self.PreviousCompressorState = state
 		if not state then
-			self:PlayOnce("compressor_ezh_end",nil,0.70)
+			self:PlayOnce("compressor_ezh_end",nil,0.80,nil,true)
 		end
 	end
-	self:SetSoundState("compressor_ezh",state and 1 or 0,1,nil,0.70)
+	self:SetSoundState("compressor_ezh",state and 1 or 0,1,nil,0.80)
 	
 	-- ARS/ringer alert
 	local state = self:GetPackedBool(39)
@@ -1224,6 +1224,27 @@ function ENT:DrawPost()
 		end)
 	end
 
+
+	self:DrawOnPanel("InfoRoute",function()
+		surface.SetAlphaMultiplier(1)
+		surface.SetDrawColor(255,255,255) --255*dc.x,250*dc.y,220*dc.z)
+		--surface.DrawRect(0,100,88,70)
+		local rn = self:GetNWString("RouteNumber","00")
+		surface.SetMaterial(Metrostroi.RouteTextures.m[rn[1]])
+		surface.DrawTexturedRect(-2,100,44,70)
+		surface.SetMaterial(Metrostroi.RouteTextures.m[rn[2]])
+		surface.DrawTexturedRect(46,100,44,70)
+		--[[
+		draw.Text({
+			text = self:GetNWString("RouteNumber","00"),
+			font = "MetrostroiSubway_InfoRoute",--..self:GetNWInt("Style",1),
+			pos = { 44, 135 },
+			xalign = TEXT_ALIGN_CENTER,
+			yalign = TEXT_ALIGN_CENTER,
+			color = Color(0,0,0,255)})
+			]]
+	end)//
+	--[[
 	self:DrawOnPanel("InfoRoute",function()
 		surface.SetDrawColor(142,132,101) --255*dc.x,250*dc.y,220*dc.z)
 		--surface.DrawRect(0,100,88,70)
@@ -1241,7 +1262,7 @@ function ENT:DrawPost()
 			xalign = TEXT_ALIGN_CENTER,
 			yalign = TEXT_ALIGN_CENTER,
 			color = Color(0,0,0,255)})
-	end)
+	end)]]
 	self:DrawOnPanel("ARS",function()
 		if not self:GetPackedBool(32) then return end
 	

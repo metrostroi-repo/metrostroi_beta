@@ -345,7 +345,7 @@ function TRAIN_SYSTEM:BoardAutodrive()
 	local TargetBrakeRKPosition = 0
 
 	local Command = self:GetCurrentCommand()
-	print(self.Train.Owner,Command)
+	--print(self.Train.Owner,Command)
 	local KVPos = Command
 	if ElectricBrakeActive then
 		if (RheostatBrakeRotating or RKPosition == 18 and not OnStation) and not Train:GetPackedBool(35) then

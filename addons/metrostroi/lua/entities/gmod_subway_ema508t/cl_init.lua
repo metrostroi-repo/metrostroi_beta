@@ -270,10 +270,10 @@ function ENT:Think()
 	if self.PreviousCompressorState ~= state then
 		self.PreviousCompressorState = state
 		if not state then
-			self:PlayOnce("compressor_ezh_end",nil,0.70)
+			self:PlayOnce("compressor_ezh_end",nil,0.80,nil,true)
 		end
 	end
-	self:SetSoundState("compressor_ezh",state and 1 or 0,1,nil,0.70)
+	self:SetSoundState("compressor_ezh",state and 1 or 0,1,nil,0.80)
 	
 	-- RK rotation
 	if self:GetPackedBool(112) then self.RKTimer = CurTime() end

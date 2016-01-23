@@ -552,7 +552,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		-- Default trigger
 		if (distance > 120) and (distance < 210) and (not skip_station) then self.UPPSArmed1 = true end
 		if self.UPPSArmed1 and (distance < 120) and Train.VB.Value == 1.0 then
-			Train:PlayOnce("upps","cabin",0.55,100.0)
+			Train:PlayOnce("upps","cabin",1,nil,true)
 			self.UPPSArmed1 = false
 		end
 

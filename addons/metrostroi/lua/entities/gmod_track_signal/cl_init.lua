@@ -1,6 +1,6 @@
 include("shared.lua")
 
-
+--[[
 hook.Add("PostDrawOpaqueRenderables", "metrostroi_signal_draw", function(isDD)
 	if isDD then return end
 	for _,self in pairs(ents.FindByClass("gmod_track_signal")) do
@@ -29,6 +29,7 @@ hook.Add("PostDrawOpaqueRenderables", "metrostroi_signal_draw", function(isDD)
 		end
 	end
 end)
+]]
 --------------------------------------------------------------------------------
 function ENT:Initialize()
 	self.Sig = {}
@@ -298,6 +299,11 @@ function ENT:Think()
 					self.Models[2][i]:SetAngles(self:GetAngles()+Angle(0,self.Left and 180 or 0,0))
 					self.Models[2][i]:SetPos(self:LocalToWorld(self.BasePosition + offset*Vector(1,self.Left and -1 or 1,1) - Vector(0,0,i*5.5)))
 					self.Models[2][i]:SetParent(self)
+					for k,v in pairs(self.Models[2][i]:GetMaterials()) do
+						if v == "models/metrostroi_signals/signal_001" then
+							self.Models[2][i]:SetSubMaterial(k-1,"models/metrostroi_signals/signs/"..self.Name[i+1])
+						end
+					end
 				end
 			end
 		end
