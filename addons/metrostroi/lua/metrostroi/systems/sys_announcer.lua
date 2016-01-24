@@ -70,7 +70,7 @@ Metrostroi.Announcements = {
 	[0317]={ 1.712,       "subway_announcer/03_17.mp3" },
 	[0318]={ 1.076,       "subway_announcer/03_18.mp3" },
 	[0319]={ 1.377,       "subway_announcer/03_19.mp3" },
-	[0322]={ 3.490,       "subway_announcer/03_20.mp3" },
+	[0320]={ 3.490,       "subway_announcer/03_20.mp3" },
 	[0321]={ 0.939,       "subway_announcer/03_21.mp3" },
 	[0322]={ 1.174,       "subway_announcer/03_22.mp3" },
 	[0323]={ 1.377,       "subway_announcer/03_23.mp3" },
@@ -213,26 +213,6 @@ Metrostroi.AnnouncementSequences = {
 	[1222] = { 0218, 0219, 0322 },
 	[1223] = { 0218, 0219, 0323 },
 }
---[[
-Metrostroi.AnnouncementSequenceNames = {
-	[1108] = "Avtozavodskaya",
-	[1109] = "Industrial'naya",
-	[1110] = "Moskovskaya",
-	[1111] = "Oktyabrs'kaya",
-	[1112] = "Ploschad' Myra",
-	[1113] = "Novoarmeyskaya",
-	[1114] = "Vokzalnaya",
-	[1115] = "Komsomol'skaya",
-	[1116] = "Elektrosila",
-	[1117] = "Teatral'naya Ploshad",
-	[1118] = "Park Pobedy",
-	[1119] = "Sineozernaya",
-	[1120] = "Lesnaya",
-	[1121] = "Minskaya",
-	[1122] = "Tsarskiye Vorota",
-	[1123] = "Mezhdustroyskaya",
-}
-]]
 -- Quick lookup
 for k,v in pairs(Metrostroi.Announcements) do
 	v[3] = k
@@ -308,7 +288,7 @@ function TRAIN_SYSTEM:ClientThink()
 	self.Train:SetSoundState("bpsn_ann_pnm_cab",(active and  btype and self.Train:GetPackedBool(125)) and 0.175 or 0,1)
 end
 
-function TRAIN_SYSTEM:PlayInfQueueSounds(...)
+function TRAIN_SYSTEM:MultiQuele(...)
 	for _,v in pairs({...}) do
 		local v = tonumber(v)
 		if v ~= nil then
@@ -399,7 +379,7 @@ function TRAIN_SYSTEM:Think()
 
 	-- Check if schedule announcement is playing
 	if self.ScheduleAnnouncement ~= 0 then
-		if self.Train.DriverSeat and ((self.Train.R_UNch and self.Train.R_UNch.Value < 0.5) or (self.Train.R_UPO and self.Train.R_UPO.Value < 0.5)) then
+		if self.Train.DriverSeat and ((self.Train.R_ZS and self.Train.R_ZS.Value < 0.5) or (self.Train.R_UPO and self.Train.R_UPO.Value < 0.5)) then
 			self.Fake48 = self.ScheduleAnnouncement
 		else
 			self.Train:WriteTrainWire(48,self.ScheduleAnnouncement)
@@ -411,8 +391,8 @@ function TRAIN_SYSTEM:Think()
 			self.Train:WriteTrainWire(48,0)
 		end
 	end
-	if self.Train.R_UNch and self.Train.KV then
-		if self.Train.R_UNch.Value < 0.5 and self.Train.KV.ReverserPosition == 1.0 then
+	if self.Train.R_ZS and self.Train.KV then
+		if self.Train.R_ZS.Value < 0.5 and self.Train.KV.ReverserPosition == 1.0 then
 			self.Train:WriteTrainWire(48,-1)
 		elseif self.Train:ReadTrainWire(48) == -1 then
 			self.Train:WriteTrainWire(48,0)

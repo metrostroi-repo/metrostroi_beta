@@ -7,7 +7,7 @@ include("shared.lua")
 function ENT:PlayAnnounce(arriving,Ann)
 	if not arriving then
 		if self.MustPlayAnnounces then
-			local Announce = Sound( "subway_stations_test1/"..Metrostroi.CurrentMap:Replace("_lite",""):Replace("gm_","").."_"..(math.random(6))..".mp3" )
+			local Announce = Sound( "subway_stations_test1/"..Metrostroi.PlatformMap.."_"..(math.random(6))..".mp3" )
 			sound.Play(Announce,self:LocalToWorld(Vector(0,-1200,200)),90,100,1)
 			sound.Play(Announce,self:LocalToWorld(Vector(0,1200,200)),90,100,1)
 			timer.Adjust( "metrostroi_station_announce_"..self:EntIndex(), math.random(45,150),0,function() self:PlayAnnounce() end)
@@ -92,16 +92,16 @@ function ENT:Initialize()
 	self:SetNWVector("PlatformEnd",self.PlatformEnd)
 	self:SetNWVector("StationCenter",self:GetPos())
 	
-	Metrostroi.CurrentMap = ""
+	Metrostroi.PlatformMap = ""
 	local Map = game.GetMap() or ""
 	if Map:find("gm_metrostroi") and Map:find("lite") then
-		Metrostroi.CurrentMap = "gm_metrostroi_lite"
+		Metrostroi.PlatformMap = "gm_metrostroi_lite"
 	elseif Map:find("gm_metrostroi") then
-		Metrostroi.CurrentMap = "gm_metrostroi"
+		Metrostroi.PlatformMap = "gm_metrostroi"
 	elseif Map:find("gm_mus_orange_line") and Map:find("long") then
-		Metrostroi.CurrentMap = "gm_orange"
+		Metrostroi.PlatformMap = "gm_orange"
 	elseif Map:find("gm_mus_orange_line") then
-		Metrostroi.CurrentMap = "gm_orange_lite"
+		Metrostroi.PlatformMap = "gm_orange_lite"
 	end
 	-- FIXME make this nicer
 	for i=1,32 do self:SetNWVector("TrainDoor"..i,Vector(0,0,0)) end
@@ -346,7 +346,7 @@ function ENT:Think()
 	end
 	if self.HasTrain then
 		if not self.TritonePlayed then
-			if self.HasTrain.SignsList and Metrostroi.WorkingStations[Metrostroi.CurrentMap] and Metrostroi.WorkingStations[Metrostroi.CurrentMap][self.HasTrain.SignsList] then
+			if self.HasTrain.SignsList and (self.HasTrain.SignsList[self.HasTrain.SignsIndex] == "" or self.HasTrain.SignsList[self.HasTrain.SignsIndex] and self.HasTrain.SignsList[self.HasTrain.SignsIndex][3]) then
 				self:PlayAnnounce(2)
 			else
 				self:PlayAnnounce(1)

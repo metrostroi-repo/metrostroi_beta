@@ -346,7 +346,7 @@ function ENT:Initialize()
 	self.OldTexture = 0
 	for k,v in pairs(self:GetMaterials()) do
 		if v == "models/metrostroi_train/81/int02" then
-			if Metrostroi.CurrentMap == "" then
+			if Metrostroi.CurrentMap == "" or not Metrostroi.Skins["717_schemes"]["p_"..Metrostroi.CurrentMap:sub(4,-1) ] then
 				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
 			else
 				if not self.Adverts or self.Adverts ~= 4 then
@@ -1416,9 +1416,20 @@ function ENT:OnButtonPress(button,state)
 		if self.DriverValveDisconnect.Value == 1.0 then
 			if self.Pneumatic.ValveType == 2 then
 				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
+				if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 			end
 		else
 			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+		end
+		return
+	end
+	
+	if button == "EPKToggle" and self.DriverValveDisconnect.Value == 1.0 then
+		if self.EPK.Value == 1.0 then
+			self:PlayOnce("epv_off","cabin",0.9)
+		else
+			self:PlayOnce("epv_on","cabin",0.9)
 		end
 		return
 	end
@@ -1442,15 +1453,6 @@ function ENT:OnButtonPress(button,state)
 	
 	if button == "VPAOff" then self.VPA:TriggerInput("Set",0) end
 	if button == "VPAOn" then self.VPA:TriggerInput("Set",2) end
-	-- Generic button or switch sound
-	if button == "EPKToggle" then
-		if self.EPK.Value == 1.0 then
-			self:PlayOnce("epv_off","cabin",0.9)
-		else
-			self:PlayOnce("epv_on","cabin",0.9)
-		end
-		return
-	end
 end
 
 function ENT:OnButtonRelease(button)

@@ -19,18 +19,25 @@ function TRAIN_SYSTEM:Initialize()
 		"Custom1",
 		"Custom2",
 		"Custom3",
+		"R_Program1",
+		"R_Program2",
 	}
 	self.Triggers = {}
 	self.State = 0
+	self.Style = 1
 	self.RealState = 99
 	self.RouteNumber = "00"
+	self.Depeat = false
 end
 
 function TRAIN_SYSTEM:ClientInitialize()
 	self.STR1r = {}
-	self.STR2r = {}
 	self.STR1x = 1
-	self.STR2x = 1
+	
+	self.End = false
+	self.Right = false
+	self.State = 0
+	self.Right = false
 end
 if TURBOSTROI then return end
 
@@ -105,14 +112,14 @@ function TRAIN_SYSTEM:AnnDisplay(train)
 			surface.SetAlphaMultiplier(1)
 		end
 		-- Custom announcer display
-		for i=1,20 do
+		for i=1,25 do
 			surface.SetDrawColor(Color(53,91,25))
-			surface.DrawRect(287+(i-1)*17.7+1,125+4,16,25)			
+			surface.DrawRect(235+(i-1)*18+1,125+4,16,25)			
 			--draw.DrawText(string.upper(text1[i] or ""),"MetrostroiSubway_IGLA",287+(i-1)*17.7,125+0,Color(0,0,0,210))
 		end
-		for i=1,20 do
+		for i=1,25 do
 			surface.SetDrawColor(Color(53,91,25))
-			surface.DrawRect(287+(i-1)*17.7+1,125+31+4,16,25)
+			surface.DrawRect(235+(i-1)*18+1,125+31+4,16,25)
 			--draw.DrawText(string.upper(text2[i] or ""),"MetrostroiSubway_IGLA",287+(i-1)*17.7,125+31,Color(0,0,0,210))
 		end
 		
@@ -122,18 +129,18 @@ function TRAIN_SYSTEM:AnnDisplay(train)
 			local checked = false
 			local x = 0
 			local iter = 0
-			while((x <= math.min(19+xmin,#self.STR1r[y+1]-1+xmin))) do
+			while((x <= math.min(24+xmin,#self.STR1r[y+1]-1+xmin))) do
 			--for x = 0,math.min(19,#self.STR1r[y+1]-1)-xmin do
 				local char = self.STR1r[y+1][x+1]
 				if char == "|" then
-					Metrostroi.DrawLine(295+(x-xmin)*17.7,140 + y*30-10,295+(x-xmin)*17.7,140+ y*30+10, Color(16,36,5),3)
+					Metrostroi.DrawLine(235+9+(x-xmin)*18,141 + y*30-10,235+9+(x-xmin)*18,141+ y*30+9, Color(16,36,5),3)
 				elseif char == "_" then
 					if CurTime()%0.5<=0.25 then
-						draw.DrawText(char,"MetrostroiSubway_IGLA",287+(x-xmin)*17.7,121 + y*30, Color(16,36,5))	
+						draw.DrawText(char,"MetrostroiSubway_IGLA",236+(x-xmin)*18,121 + y*30, Color(16,36,5))	
 					end
 					xmin = xmin + 1
 				else
-					draw.DrawText(char,"MetrostroiSubway_IGLA",287+(x-xmin)*17.7,125 + y*30, Color(16,36,5))
+					draw.DrawText(char,"MetrostroiSubway_IGLA",235+(x-xmin)*18,125 + y*30, Color(16,36,5))
 				end
 				x = x + 1
 			end
@@ -159,16 +166,16 @@ function TRAIN_SYSTEM:STR1(str,notchange)
 	end
 end
 function TRAIN_SYSTEM:DisplayStation(St,stay,max)
-	max = max or 20
+	max = (max or 25)-1
 	local sz = stay and #self.STR1r[self.STR1x-1] or #self.STR1r[self.STR1x]
 	local Siz = stay and #self.STR1r[self.STR1x-1] or #self.STR1r[self.STR1x]
 	local StS = Metrostroi.AnnouncerData[St][1]
 	local StT = string.Explode(" ",StS)
 	local str = ""
 	if #StT > 1 then
-		str = StT[1][1]..". "..StT[2]
-	elseif #StS > 21-sz-(20-max) then
-		str = StS:sub(1,20-sz-2-(20-max)).."..."
+		str = StT[1][1]..". "..table.concat(StT," ",2)
+	elseif #StS > 26-sz-(25-max) then
+		str = StS:sub(1,25-sz-2-(25-max)).."..."
 	else
 		str = StS
 	end
@@ -176,38 +183,50 @@ function TRAIN_SYSTEM:DisplayStation(St,stay,max)
 end
 TRAIN_SYSTEM.LoadSeq = "/-\\|"
 function TRAIN_SYSTEM:ClientThink()
-	self.LoadSeq = "/-\\|"
+
 	local State = self.Train:GetNWInt("Announcer:State",-1)
 	self:STR1(true)
 	if State == 0 then
+		self:STR1("Welcome!          ver 0.8")
 		self:STR1("loading:")
 		self:STR1(self.LoadSeq[math.floor(CurTime()%0.5*8)+1],true)
 		
-		self:STR1("ver 0.8")
+		--self:STR1("ver 0.8")
 	end
 	
 	if State == 1 then
-		self:STR1("ann initialized")
+		self:STR1("Welcome")
+		if self.Train:GetNWBool("BPSNBuzzType",false) then
+			self:STR1("    pnm    ",true)
+		else
+			self:STR1("    riu    ",true)
+		end
+		self:STR1("ver 0.8",true)
+
 		self:STR1("press menu to start")
 	end
 	if State == 2 then
 		local RouteNumber = self.Train:GetNWString("Announcer:RouteNumber","00")
 		local Pos = self.Train:GetNWInt("Announcer:State2Pos",1)
-		self:STR1("enter route number")
+		self:STR1("enter route number: ")
 		if Pos == 1 then
-			self:STR1("_") 
+			self:STR1("_",true) 
 		end
-		self:STR1(RouteNumber[1],Pos == 1)
+		self:STR1(RouteNumber[1],true)
 		if Pos == 2 then
 			self:STR1("_",true)
 		end
 		self:STR1(RouteNumber[2],true)
 		if Pos == 3 then
 			if CurTime()%3 > 1.5 then
-				self:STR1(" \"menu\" - accept",true)
+				self:STR1("accept: menu")
 			else
-				self:STR1("    \"-\" - cancel",true)
+				self:STR1("cancel: +/-")
 			end
+		else
+			self:STR1("confirm ")
+			self:STR1(Pos,true)
+			self:STR1(" digit: \"menu\"",true)
 		end
 	end
 
@@ -268,7 +287,7 @@ function TRAIN_SYSTEM:ClientThink()
 		local StF =Metrostroi.EndStations[Line][StStF]
 		local StL =Metrostroi.EndStations[Line][StStL]
 		local Style = self.Train:GetNWInt("Announcer:Style",1)
-		self:STR1("Check set.")
+		self:STR1("Check settings")
 		local tim = CurTime()%6
 		if tim < 1.5 then
 			self:STR1("Line:")
@@ -284,25 +303,135 @@ function TRAIN_SYSTEM:ClientThink()
 			self:STR1(Metrostroi.PlayingStyles[Style],true)
 		end
 	end
+	if State < 8 then
+		self.Right = false
+		self.End = false
+	end
+	if State == 8 then
+		local Depeat = self.Train:GetNWBool("Announcer:Depeat",false)
+	
+		local RouteNumber = self.Train:GetNWString("Announcer:RouteNumber","00")
+
+		local Line = self.Train:GetNWInt("Announcer:Line",0)
+		local StF = self.Train:GetNWInt("Announcer:FirstStationW",1)
+		local StL = self.Train:GetNWInt("Announcer:LastStationW",1)
+		local StC = self.Train:GetNWInt("Announcer:CurrentStation",2)
+		
+		local add = StL > StF and 1 or -1
+		local St =Metrostroi.WorkingStations[Line][StC]
+		local StN =Metrostroi.WorkingStations[Line][StC+add]
+
+		if Depeat then self:STR1("Dep.  ") else self:STR1("Arr.  ") end
+		if self.Train:GetNWBool("Announcer:Playing1",false) then
+			self:STR1("<<<Announcing>>>",true)
+		else
+			self:DisplayStation(St,true,23)
+		end
+		self:STR1(string.rep(" ",24-#self.STR1r[self.STR1x-1]),true)
+		self.Right = Metrostroi.AnnouncerData[St][2] 
+		if self.Right then self:STR1("R",true) else self:STR1("L",true) end
+
+		if add > 0 then
+			self:STR1("I  ")
+		else
+			self:STR1("II ")
+		end
+		self:STR1(string.format("%02d ",RouteNumber),true)
+		
+		if add > 0 and StC >= StL or add < 0 and StC <= StL then
+			self:STR1("<<<LAST STATION>>>",true)
+			self.End = true
+		elseif self.Train:GetNWBool("Announcer:Playing1",false) then
+			self:DisplayStation(St,true,23)
+		else
+			self:DisplayStation(StN,true,23)
+			self.End = false
+		end
+		self:STR1(string.rep(" ",24-#self.STR1r[self.STR1x-1]),true)
+		if add > 0 and StC < StL or add < 0 and StC > StL then
+			if self.Train:GetNWBool("Announcer:Playing1",false) then
+				if self.Right then self:STR1("R",true) else self:STR1("L",true) end
+			else
+				if Metrostroi.AnnouncerData[StN][2] then self:STR1("R",true) else self:STR1("L",true) end
+			end
+		end
+	end
+
+	if State == 9 then
+		local Choosed = self.Train:GetNWInt("Announcer:Choosed",0)
+		if Choosed == 0 then
+			self:STR1(">Back")
+			self:STR1(" Swap paths")
+		elseif  Choosed == 1 then
+			self:STR1(">Swap paths")
+			self:STR1(" Reset")
+		else
+			self:STR1(" Swap paths")
+			self:STR1(">Reset")
+		end
+	end
 end
 
 
-Metrostroi.PlayingStyles = {"Moscow","St. Petersburg","Kiev"}
+Metrostroi.PlayingStyles = {"Moscow","Kiev"}
+
+function TRAIN_SYSTEM:ReloadSigns()
+	if not self.Line or not Metrostroi.EndStations[self.Line] then return end
+	local StL = Metrostroi.EndStations[self.Line][self.LastStation]
+	if not StL then return end
+	self.Train:PrepareSigns()
+	
+
+	if self.Train.SignsList[StL] then
+		self.Train.SignsIndex = self.Train.SignsList[StL] or 1
+		if self.Train.SignsList[self.Train.SignsIndex] then self.Train:SetNWString("FrontText",self.Train.SignsList[self.Train.SignsIndex][2]) end
+	end
+
+	local StF= Metrostroi.EndStations[self.Line][self.FirstStation]
+	if #self.Train.WagonList <= 1 or not StF then return end
+	local LastTrain = self.Train.WagonList[#self.Train.WagonList]
+	LastTrain:PrepareSigns()
+	if LastTrain.SignsList[StF] then
+		LastTrain.SignsIndex = self.Train.SignsList[StF] or 1
+		if self.Train.SignsList[self.Train.SignsIndex] then LastTrain:SetNWString("FrontText",self.Train.SignsList[self.Train.SignsIndex][2]) end
+	end
+end
 
 function TRAIN_SYSTEM:UpdateAnnouncer()
 	for k,v in pairs(self.Train.WagonList) do
 		if v.ASNP then
 			if v ~= self.Train then
 				if self.Line then v.ASNP.Line = self.Line end
-				if self.FirstStation then v.ASNP.LastStation = self.FirstStation end
-				if self.LastStation then v.ASNP.FirstStation = self.LastStation  end
+				if self.FirstStation then
+					v.ASNP.LastStation = self.FirstStation
+					v.ASNP.LastStationW = self.FirstStationW
+				end
+				if self.LastStation then
+					v.ASNP.CurrentStation = self.LastStationW
+					v.ASNP.FirstStation = self.LastStation
+					v.ASNP.FirstStationW= self.LastStationW
+					if Metrostroi.AnnouncerData[Metrostroi.EndStations[self.Line][self.LastStation]][9] then
+							v.ASNP.LastStation = self.LastStation
+							v.ASNP.LastStationW = self.LastStationW
+							v.ASNP.CurrentStation = self.FirstStationW
+							v.ASNP.FirstStation = self.FirstStation
+							v.ASNP.FirstStationW= self.FirstStationW
+					end
+				end
+				
+				v.ASNP.State = self.State
+				v.ASNP.Style = self.Style
+				v.ASNP.Depeat = true
+				v.ASNP.RouteNumber = self.RouteNumber
 			end
 		end
 		v:OnButtonPress("RouteNumberUpdate",self.RouteNumber)
 	end
+	self:ReloadSigns()
 end
 
 function TRAIN_SYSTEM:Trigger(name,nosnd)
+	if self.Train.KV.ReverserPosition == 0 and self.Train.KRU.Position == 0 then return end
 	if self.State == 1 and name == "Custom3" then self:SetState(2) return end
 
 	if self.State == 2 then
@@ -318,7 +447,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			self.RouteNumber = string.SetChar(self.RouteNumber,self.State2Pos,num)
 			self:UpdateAnnouncer()
 		end
-		if name == "Custom2" and self.State2Pos == 3 then 
+		if (name == "Custom1" or name == "Custom2") and self.State2Pos == 3 then 
 			self.State2Pos = 1
 		end
 		if name == "Custom3" then
@@ -378,7 +507,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			if self.LastStation == self.FirstStation then print(1) self:Trigger("Custom2") return end
 			self:UpdateAnnouncer()
 		end
-		if name == "Custom3" then
+		if name == "Custom3" and self.FirstStation ~= self.LastStation then
 			self:SetState(6)
 			return
 		end
@@ -387,7 +516,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 	if self.State == 6 then
 		if name == "Custom1" then 
 			self.Style = self.Style - 1
-			if self.LastStation < 1 then self.LastStation = #Metrostroi.PlayingStyles end
+			if self.Style < 1 then self.Style = #Metrostroi.PlayingStyles end
 			self:UpdateAnnouncer()
 		end
 		if name == "Custom2" then 
@@ -406,12 +535,194 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			self:SetState(2)
 			return
 		end
-		if name == "Custom3" then
+		if name == "Custom3" and (self.Train.KV.ReverserPosition > 0 or self.Train.KRU.Position > 0) then
 			self:SetState(8)
+			self.Train.Announcer:MultiQuele(0006,0001,0005)
+
+			self.Train.Announcer:MultiQuele(0201,0211,Metrostroi.EndStations[self.Line][self.FirstStation],Metrostroi.EndStations[self.Line][self.LastStation])
+
+			self.Train.Announcer:MultiQuele(0006)
+			return
+		end
+	end
+	if self.State == 8 then
+		if name == "Custom1" then
+			if not self.Depeat then
+				if self.LastStation < self.FirstStation then
+					self.CurrentStation = math.min(self.FirstStationW,self.CurrentStation + 1)
+				else
+					self.CurrentStation = math.max(self.FirstStationW,self.CurrentStation - 1)
+				end
+			end
+
+			if self.LastStation < self.FirstStation and self.CurrentStation >= self.FirstStationW or self.LastStation > self.FirstStation and self.CurrentStation <= self.FirstStationW then
+				if Metrostroi.AnnouncerData[Metrostroi.WorkingStations[self.Line][self.CurrentStation]][9] then
+					self.CurrentStation = self.FirstStationW
+					local tem = self.FirstStation
+					self.FirstStation = self.LastStation
+					self.LastStation = tem
+					self.Depeat = not self.Depeat
+				else
+					self.Depeat = true
+				end
+			else
+				self.Depeat = not self.Depeat
+			end
+		end
+		if name == "Custom2" then 
+			if self.Depeat then
+				if self.LastStation > self.FirstStation then
+					self.CurrentStation = math.min(self.LastStationW,self.CurrentStation + 1)
+				else
+					self.CurrentStation = math.max(self.LastStationW,self.CurrentStation - 1)
+				end
+			end
+
+			if self.LastStation < self.FirstStation and self.CurrentStation <= self.LastStationW or self.LastStation > self.FirstStation and self.CurrentStation >= self.LastStationW then
+				if Metrostroi.AnnouncerData[Metrostroi.WorkingStations[self.Line][self.CurrentStation]][9] then
+					self.CurrentStation = self.LastStationW
+					local tem = self.FirstStation
+					self.FirstStation = self.LastStation
+					self.LastStation = tem
+					self.Depeat = not self.Depeat
+				else
+					self.Depeat = false
+				end
+			else
+				self.Depeat = not self.Depeat
+			end
+		end
+		if name == "Custom3" then
+			self:SetState(9)
+			return
+		end
+	
+		if name == "R_Program1" and #self.Train.Announcer.Schedule == 0 and (self.Train.CustomC.Value < 0.5 or
+			self.CurrentStation == math.Clamp(self.CurrentStation,path and self.LastStationW or self.FirstStationW,path and self.FirstStationW or self.LastStationW) and self.Depeat == true) then
+			self:PlayAnnounce1()
+			if self.Depeat and self.Train.CustomC.Value < 0.5 then
+				if self.LastStation > self.FirstStation then
+					self.CurrentStation = math.min(self.LastStationW,self.CurrentStation + 1)
+				else
+					self.CurrentStation = math.max(self.LastStationW,self.CurrentStation - 1)
+				end
+			end
+
+			if (self.LastStation < self.FirstStation and self.CurrentStation <= self.LastStationW or self.LastStation > self.FirstStation and self.CurrentStation >= self.LastStationW) and not self.Depeat then
+				self.Depeat = false
+				if not Metrostroi.AnnouncerData[Metrostroi.WorkingStations[self.Line][self.CurrentStation]][9] then
+					self.CurrentStation = self.LastStationW
+					local tem = self.FirstStation
+					self.FirstStation = self.LastStation
+					self.LastStation = tem
+					self.Depeat = not self.Depeat
+				end
+			elseif  self.Train.CustomC.Value < 0.5 or self.Depeat == true then
+				self.Depeat = not self.Depeat
+			end
+		end
+	end
+	
+	if self.State == 9 then
+		if name == "Custom1" then
+			self.Choosed = math.max(0,self.Choosed-1)
+		end
+		if name == "Custom2" then
+			self.Choosed = math.min(2,self.Choosed+1)
+		end
+		if name == "Custom3" then
+			if self.Choosed == 0 then
+				self.State = 8
+			elseif self.Choosed == 1 then
+				local tmp = self.FirstStation
+				self.FirstStation = self.LastStation
+				self.LastStation = tmp
+				if self.FirstStation and self.Line and self.FirstStationW ~= self.FirstStation then
+					self.FirstStationW = Metrostroi.WorkingStations[self.Line][Metrostroi.EndStations[self.Line][self.FirstStation]]
+				end
+				if self.LastStation and self.Line and self.LastStationW ~= self.LastStation then
+					self.LastStationW = Metrostroi.WorkingStations[self.Line][Metrostroi.EndStations[self.Line][self.LastStation]]
+				end
+				if Metrostroi.AnnouncerData[Metrostroi.EndStations[self.Line][self.FirstStation]][9] then
+					local tem = self.FirstStation
+					self.FirstStation = self.LastStation
+					self.LastStation = tem
+				end
+				self:SetState(7)
+			else
+				self:SetState(7)
+			end
 			return
 		end
 	end
 end
+
+function TRAIN_SYSTEM:PlayAnnounce1(val)
+	local add = self.LastStation > self.FirstStation and 1 or -1
+	local curr = Metrostroi.WorkingStations[self.Line][self.CurrentStation]
+	local currt = Metrostroi.AnnouncerData[curr]
+
+	local next = Metrostroi.WorkingStations[self.Line][self.CurrentStation + add]
+	local nextt = Metrostroi.AnnouncerData[next]
+	--local uvpass = false
+	self.Train.Announcer:MultiQuele(0006,0001,0005) -- Щелчки и начало
+	if self.Depeat then -- Отправление
+			if Metrostroi.AnnouncerData[curr +add] and not Metrostroi.AnnouncerData[curr +add][1] then self.Train.Announcer:MultiQuele(0230,curr +add,0001)  end
+
+			self.Train.Announcer:MultiQuele(0218,0219,next) -- ОДЗ СС
+			if nextt[2] then self.Train.Announcer:MultiQuele(self.Style == 2 and 0215 or 0231) end -- Платформа справа(или киевский вариант)
+			--[=[
+			if nextt[7] and nextt[7] ~= 0 then
+				if Metrostroi.AnnouncerData[nextt[7][1]] then
+					self.Train.Announcer:MultiQuele(0202, 0203,nextt[7][1])
+				else
+					self.Train.Announcer:MultiQuele(0202, nextt[7][1])
+				end
+			end -- Переход
+			]=]
+			if nextt[5] and self.Style == 3 then self.Train.Announcer:MultiQuele(0213) end -- Прислоняться
+			if nextt[3] then
+				--uvpass = true
+				if self.Style == 1 then	self.Train.Announcer:MultiQuele(0230) end
+				self.Train.Announcer:MultiQuele(self.Style == 2 and 0214 or 0232) -- Вежливость
+			end
+			--if nextt[8] == (add > 0 and 1 or 2) then self.Train.Announcer:MultiQuele(0002,self.Style == 2 and 0210 or 0223,Metrostroi.EndStations[self.Line][self.LastStation]) end -- до станции
+	else
+			self.Train.Announcer:MultiQuele(0220,curr) -- Станция
+			if currt[2] then self.Train.Announcer:MultiQuele(self.Style == 2 and 0215 or 0231) end -- Платформа справа(или киевский вариант)
+			if currt[7] and currt[7] ~= 0 then
+				if Metrostroi.AnnouncerData[currt[7][1]] then
+					self.Train.Announcer:MultiQuele(0202, 0203,currt[7][1])
+				else
+					self.Train.Announcer:MultiQuele(0202, currt[7][1])
+				end
+			end -- Переход
+
+			if self.LastStation < self.FirstStation and self.CurrentStation <= self.LastStationW or self.LastStation > self.FirstStation and self.CurrentStation >= self.LastStationW then
+				if not currt[9] then
+					if self.Style == 1 then
+						self.Train.Announcer:MultiQuele(0224,0002,0230,0226) -- Конечная
+					else
+						self.Train.Announcer:MultiQuele(0212) -- Конечная
+					end
+					self.Train.Announcer:MultiQuele(0006) -- Конечный щелчок
+					return
+				end
+			end
+			if currt[4] then
+				--uvpass = true
+				if self.Style == 1 then	self.Train.Announcer:MultiQuele(0230) end
+				self.Train.Announcer:MultiQuele(0226+(currt[4] or 0)) -- Вещи
+			end
+			if add > 0 and self.LastStationW < #Metrostroi.WorkingStations[self.Line] or add < 0 and self.LastStationW > 1 then
+				self.Train.Announcer:MultiQuele(0002,self.Style == 2 and 0210 or 0223,Metrostroi.EndStations[self.Line][self.LastStation]) -- Следует до станции
+			end
+			if currt[8] == (add > 0 and 1 or 2) then self.Train.Announcer:MultiQuele(0002,self.Style == 2 and 0210 or 0223,Metrostroi.EndStations[self.Line][self.LastStation]) end -- до станции
+	end
+	self.Train.Announcer:MultiQuele(0006) -- Конечный щелчок
+end
+
+
 
 function TRAIN_SYSTEM:GetTimer(val)
 	return self.TimerMod and (CurTime() - self.Timer) > val
@@ -443,7 +754,7 @@ function TRAIN_SYSTEM:SetState(state,state7,noupd)
 		return
 	end
 	if state == 0 then
-		self.LoadTimer = math.random(1,3)
+		self.LoadTimer = math.random(2,4)
 	end
 	if state == 2 then
 		self.State2Pos = 1
@@ -453,12 +764,47 @@ function TRAIN_SYSTEM:SetState(state,state7,noupd)
 	end
 	if state == 4 then
 		self.FirstStation = self.FirstStation or 1
+		if self.FirstStation > #Metrostroi.EndStations[self.Line] then self.FirstStation = 1 end
+		self:UpdateAnnouncer()
 	end
 	if state == 5 then
 		self.LastStation = self.LastStation or self.LastStation ~= self.FirstStation and #Metrostroi.EndStations[self.Line] or 1
+		if self.LastStation > #Metrostroi.EndStations[self.Line] then self.LastStation = 1 end
+		self:UpdateAnnouncer()
 	end
 	if state == 6 then
-		self.Style = 1
+		self.Style = self.Style or 1
+	end
+	if state == 8 and (self.Train.KV.ReverserPosition > 0 or self.Train.KRU.Position > 0) then
+		if self.Train:ReadCell(49170) == 2  and false and self.LastStation > self.FirstStation then
+			local tem = self.FirstStation
+			self.FirstStation = self.LastStation
+			self.LastStation = tem
+		end
+		if self.Train:ReadCell(49170) == 1  and false and self.LastStation < self.FirstStation then
+			local tem = self.FirstStation
+			self.FirstStation = self.LastStation
+			self.LastStation = tem
+		end
+
+		if self.FirstStation and self.Line and self.FirstStationW ~= self.FirstStation then
+			self.FirstStationW = Metrostroi.WorkingStations[self.Line][Metrostroi.EndStations[self.Line][self.FirstStation]]
+		end
+		if self.LastStation and self.Line and self.LastStationW ~= self.LastStation then
+			self.LastStationW = Metrostroi.WorkingStations[self.Line][Metrostroi.EndStations[self.Line][self.LastStation]]
+		end
+		local curr = self.FirstStationW
+		local path = self.LastStation < self.FirstStation
+		local st = self.Train:ReadCell(49169) > 0 and Metrostroi.WorkingStations[self.Line][self.Train:ReadCell(49169)] or 0
+		if st > 0 then
+			curr = math.Clamp(st,path and self.LastStationW or self.FirstStationW,path and self.FirstStationW or self.LastStationW)
+		end
+		self:UpdateAnnouncer()
+		self.CurrentStation = curr
+		self.Depeat = true
+	end
+	if state == 9 then
+		self.Choosed = 0
 	end
 end
 
@@ -501,15 +847,46 @@ function TRAIN_SYSTEM:Think()
 			self:SetState(1)
 		end
 	end
+	if self.State == 8 and (self.Train.KV.ReverserPosition > 0 or self.Train.KRU.Position > 0) then
+		if self.Train.CustomC.Value > 0.5 then
+			local Distance = math.min(3072,self.Train:ReadCell(49165))
+			local st = self.Train:ReadCell(49169) > 0 and Metrostroi.WorkingStations[self.Line][self.Train:ReadCell(49169)] or 0
+			if Distance < 25 and self.AutoStation ~= st and self.Train:ReadCell(49169) > 0 and st == math.Clamp(st,path and self.LastStationW or self.FirstStationW,path and self.FirstStationW or self.LastStationW) then
+				
+				self.CurrentStation = math.Clamp(st,path and self.LastStationW or self.FirstStationW,path and self.FirstStationW or self.LastStationW)
+				self.Depeat = false
+				self:PlayAnnounce1()
+				self.Depeat = true
+				self.AutoStation = self.CurrentStation
+			end
+		end
+	end
 	self.Train:SetNWInt("Announcer:State",self.State)
-		self.Train:SetNWInt("Announcer:Line",self.Line)
-		self.Train:SetNWInt("Announcer:FirstStation",self.FirstStation)
-		self.Train:SetNWInt("Announcer:LastStation",self.LastStation)
+	self.Train:SetNWInt("Announcer:Line",self.Line)
+	self.Train:SetNWInt("Announcer:FirstStation",self.FirstStation)
+	self.Train:SetNWInt("Announcer:LastStation",self.LastStation)
+	self.Train:SetNWString("Announcer:RouteNumber",self.RouteNumber)
 	if self.State == 2 then
-		self.Train:SetNWString("Announcer:RouteNumber",self.RouteNumber)
 		self.Train:SetNWInt("Announcer:State2Pos",self.State2Pos)
 	end
 	if self.State == 6 then
 		self.Train:SetNWString("Announcer:Style",self.Style)
+	end
+	if self.State == 8 then
+		self.Train:SetNWInt("Announcer:FirstStationW",self.FirstStationW)
+		self.Train:SetNWInt("Announcer:LastStationW",self.LastStationW)
+		self.Train:SetNWString("Announcer:CurrentStation",self.CurrentStation)
+		self.Train:SetNWBool("Announcer:Depeat",self.Depeat)
+	end
+	if self.State == 9 then
+		self.Train:SetNWInt("Announcer:Choosed",self.Choosed)
+	end
+	self.Train:SetNWBool("Announcer:Playing", self.Train.Announcer.ScheduleAnnouncement > 2)
+	self.Train:SetNWBool("Announcer:Playing1", #self.Train.Announcer.Schedule > 0)
+	if self.FirstStation and self.Line and self.FirstStationW ~= self.FirstStation then
+		self.FirstStationW = Metrostroi.WorkingStations[self.Line][Metrostroi.EndStations[self.Line][self.FirstStation]]
+	end
+	if self.LastStation and self.Line and self.LastStationW ~= self.LastStation then
+		self.LastStationW = Metrostroi.WorkingStations[self.Line][Metrostroi.EndStations[self.Line][self.LastStation]]
 	end
 end

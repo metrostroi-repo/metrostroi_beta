@@ -577,8 +577,8 @@ function TRAIN_SYSTEM:Think(dT)
 			self.BrakeLinePressure = math.max(0.0,self.BrakeLinePressure - 3.0)
 		end
 	end
-	if self.EPKPrevious ~= Train.EPK.Value then
-		self.EPKPrevious = Train.EPK.Value
+	if self.EPKPrevious ~= (Train.EPK.Value and Train.DriverValveDisconnect.Value == 1) then
+		self.EPKPrevious = (Train.EPK.Value and Train.DriverValveDisconnect.Value == 1)
 		if Train.EPK.Value == 1 then
 			if self.ValveType == 1 then
 				self.ReservoirPressure = math.max(0.0,self.ReservoirPressure - 1)

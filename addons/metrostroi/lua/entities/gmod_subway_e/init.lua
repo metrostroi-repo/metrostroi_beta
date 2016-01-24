@@ -854,12 +854,19 @@ function ENT:OnButtonPress(button)
 	end
 	
 	if button == "DriverValveDisconnectToggle" then
-		if self.DriverValveDisconnect.Value == 0.0 then
+		if self.DriverValveDisconnect.Value == 1.0 then
+			if self.Pneumatic.ValveType == 2 then
+				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
+				if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+			end
+		else
 			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
 		end
 		return
 	end
-	if button == "EPKToggle" then
+	
+	if button == "EPKToggle" and self.DriverValveDisconnect.Value == 1.0 then
 		if self.EPK.Value == 1.0 then
 			self:PlayOnce("epv_off","cabin",0.9)
 		else

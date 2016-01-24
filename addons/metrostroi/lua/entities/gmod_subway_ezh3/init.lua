@@ -399,7 +399,7 @@ function ENT:Think()
 	self:SetLightPower(38,self.CustomG.Value == 1.0)
 	self:SetPackedBool(125,self.R_G.Value == 1.0)
 	self:SetPackedBool(126,self.R_Radio.Value == 1.0)
-	self:SetPackedBool(127,self.R_UNch.Value == 1.0)
+	self:SetPackedBool(127,self.R_ZS.Value == 1.0)
 	self:SetPackedBool(128,self.R_Program1.Value == 1.0)
 	self:SetPackedBool(129,self.R_Program2.Value == 1.0)
 	self:SetPackedBool(130,self.RC1.Value == 1.0)
@@ -848,13 +848,16 @@ function ENT:OnButtonPress(button)
 		if self.DriverValveDisconnect.Value == 1.0 then
 			if self.Pneumatic.ValveType == 2 then
 				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
+				if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 			end
 		else
 			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
 		end
 		return
 	end
-	if button == "EPKToggle" then
+	
+	if button == "EPKToggle" and self.DriverValveDisconnect.Value == 1.0 then
 		if self.EPK.Value == 1.0 then
 			self:PlayOnce("epv_off","cabin",0.9)
 		else

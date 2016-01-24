@@ -200,7 +200,7 @@ function ENT:Initialize()
 	self.OldTexture = 0
 	for k,v in pairs(self:GetMaterials()) do
 		if v == "models/metrostroi_train/81/int02" then
-			if Metrostroi.CurrentMap == "" then
+			if Metrostroi.CurrentMap == "" or not Metrostroi.Skins["717_schemes"]["p_"..Metrostroi.CurrentMap:sub(4,-1) ] then
 				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
 			else
 				if not self.Adverts or self.Adverts ~= 4 then

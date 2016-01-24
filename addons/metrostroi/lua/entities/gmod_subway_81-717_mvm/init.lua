@@ -326,11 +326,11 @@ function ENT:Initialize()
 
 	for k,v in pairs(self:GetMaterials()) do
 		if v == "models/metrostroi_train/81/int02" then
-			if Metrostroi.CurrentMap == "" then
+			if Metrostroi.CurrentMap == "" or not Metrostroi.Skins["717_schemes"]["m_"..Metrostroi.CurrentMap:sub(4,-1) ] then
 				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
 			else
 				if not self.Adverts or self.Adverts ~= 4 then
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..Metrostroi.CurrentMap:sub(4,-1)].path1)
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..Metrostroi.CurrentMap:sub(4,-1) ].path1)
 				else
 					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..Metrostroi.CurrentMap:sub(4,-1)].path2)
 				end
@@ -728,7 +728,7 @@ function ENT:Think()
 	self:SetPackedBool(124,self.CustomC.Value == 1.0)
 	self:SetPackedBool(125,self.R_G.Value == 1.0)
 	self:SetPackedBool(126,self.R_Radio.Value == 1.0)
-	self:SetPackedBool(127,self.R_UNch.Value == 1.0)
+	self:SetPackedBool(127,self.R_ZS.Value == 1.0)
 	self:SetPackedBool(128,self.R_Program1.Value == 1.0)
 	self:SetPackedBool(129,self.R_Program2.Value == 1.0)
 	self:SetPackedBool(130,self.RC1.Value == 1.0)
@@ -1396,14 +1396,16 @@ function ENT:OnButtonPress(button,state)
 		if self.DriverValveDisconnect.Value == 1.0 then
 			if self.Pneumatic.ValveType == 2 then
 				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
+				if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 			end
 		else
 			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
 		end
 		return
 	end
 	
-	if button == "EPKToggle" then
+	if button == "EPKToggle" and self.DriverValveDisconnect.Value == 1.0 then
 		if self.EPK.Value == 1.0 then
 			self:PlayOnce("epv_off","cabin",0.9)
 		else
