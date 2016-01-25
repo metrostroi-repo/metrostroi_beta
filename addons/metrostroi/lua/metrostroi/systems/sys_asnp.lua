@@ -186,6 +186,11 @@ function TRAIN_SYSTEM:ClientThink()
 
 	local State = self.Train:GetNWInt("Announcer:State",-1)
 	self:STR1(true)
+	
+	if State == -2 then
+		self:STR1("ASNP Error")
+		self:STR1("Map not supported")
+	end
 	if State == 0 then
 		self:STR1("Welcome!          ver 0.8")
 		self:STR1("loading:")
@@ -204,6 +209,11 @@ function TRAIN_SYSTEM:ClientThink()
 		self:STR1("ver 0.8",true)
 
 		self:STR1("press menu to start")
+	end
+	if State > 1 and (not Metrostroi.WorkingStations or not Metrostroi.EndStations) then
+		self:STR1("Client error")
+		self:STR1("WorkingStations nil")
+		return
 	end
 	if State == 2 then
 		local RouteNumber = self.Train:GetNWString("Announcer:RouteNumber","00")
@@ -229,11 +239,21 @@ function TRAIN_SYSTEM:ClientThink()
 			self:STR1(" digit: \"menu\"",true)
 		end
 	end
-
+	if State > 2 and not Metrostroi.EndStations[self.Train:GetNWInt("Announcer:Line",1)] then
+		self:STR1("Client error")
+		self:STR1("EndStations")
+		return
+	end
+	if State > 2 and not Metrostroi.WorkingStations[self.Train:GetNWInt("Announcer:Line",1)] then
+		self:STR1("Client error")
+		self:STR1("WorkingStations")
+		return
+	end
+		
 	if State == 3 then
-		local Line = self.Train:GetNWInt("Announcer:Line",0)
+		local Line = self.Train:GetNWInt("Announcer:Line",1)
 		local St = Metrostroi.EndStations[Line][1]
-		local En =Metrostroi.EndStations[Line][#Metrostroi.EndStations[Line]]
+		local En = Metrostroi.EndStations[Line][#Metrostroi.EndStations[Line]]
 		self:STR1("choose route")
 		self:STR1("_")
 		self:STR1(Line, true)
@@ -253,7 +273,7 @@ function TRAIN_SYSTEM:ClientThink()
 	end
 
 	if State == 4 then
-		local Line = self.Train:GetNWInt("Announcer:Line",0)
+		local Line = self.Train:GetNWInt("Announcer:Line",1)
 		local StSt = self.Train:GetNWInt("Announcer:FirstStation",1)
 		local St =Metrostroi.EndStations[Line][StSt]
 		self:STR1("Choose start station")
@@ -264,7 +284,7 @@ function TRAIN_SYSTEM:ClientThink()
 	end
 
 	if State == 5 then
-		local Line = self.Train:GetNWInt("Announcer:Line",0)
+		local Line = self.Train:GetNWInt("Announcer:Line",1)
 		local StSt = self.Train:GetNWInt("Announcer:LastStation",1)
 		local St =Metrostroi.EndStations[Line][StSt]
 		self:STR1("Choose end station")
@@ -281,7 +301,7 @@ function TRAIN_SYSTEM:ClientThink()
 	end
 
 	if State == 7 then
-		local Line = self.Train:GetNWInt("Announcer:Line",0)
+		local Line = self.Train:GetNWInt("Announcer:Line",1)
 		local StStF = self.Train:GetNWInt("Announcer:FirstStation",1)
 		local StStL = self.Train:GetNWInt("Announcer:LastStation",1)
 		local StF =Metrostroi.EndStations[Line][StStF]
@@ -312,47 +332,46 @@ function TRAIN_SYSTEM:ClientThink()
 	
 		local RouteNumber = self.Train:GetNWString("Announcer:RouteNumber","00")
 
-		local Line = self.Train:GetNWInt("Announcer:Line",0)
+		local Line = self.Train:GetNWInt("Announcer:Line",1)
 		local StF = self.Train:GetNWInt("Announcer:FirstStationW",1)
-		local StL = self.Train:GetNWInt("Announcer:LastStationW",1)
+		local Stl = self.Train:GetNWInt("Announcer:LastStationW",1)
 		local StC = self.Train:GetNWInt("Announcer:CurrentStation",2)
 		
-		local add = StL > StF and 1 or -1
+		local add = Stl > StF and 1 or -1
 		local St =Metrostroi.WorkingStations[Line][StC]
-		local StN =Metrostroi.WorkingStations[Line][StC+add]
+		--local StN =Metrostroi.WorkingStations[Line][StC+add]
+		local StL =Metrostroi.WorkingStations[Line][Stl]
 
 		if Depeat then self:STR1("Dep.  ") else self:STR1("Arr.  ") end
-		if self.Train:GetNWBool("Announcer:Playing1",false) then
-			self:STR1("<<<Announcing>>>",true)
-		else
-			self:DisplayStation(St,true,23)
-		end
+		self:DisplayStation(St,true,23)
 		self:STR1(string.rep(" ",24-#self.STR1r[self.STR1x-1]),true)
 		self.Right = Metrostroi.AnnouncerData[St][2] 
 		if self.Right then self:STR1("R",true) else self:STR1("L",true) end
 
-		if add > 0 then
-			self:STR1("I  ")
-		else
-			self:STR1("II ")
+		if not self.Train:GetNWBool("Announcer:Playing1",false) then
+			if add > 0 then
+				self:STR1("I  ")
+			else
+				self:STR1("II ")
+			end
+			self:STR1(string.format("%02d ",RouteNumber),true)
 		end
-		self:STR1(string.format("%02d ",RouteNumber),true)
-		
-		if add > 0 and StC >= StL or add < 0 and StC <= StL then
+		if self.Train:GetNWBool("Announcer:Playing1",false) then
+			self:STR1("<<<   Goes Announce   >>>")
+			--self:DisplayStation(St,true,23)
+		elseif add > 0 and StC >= StL or add < 0 and StC <= StL then
 			self:STR1("<<<LAST STATION>>>",true)
 			self.End = true
-		elseif self.Train:GetNWBool("Announcer:Playing1",false) then
-			self:DisplayStation(St,true,23)
 		else
-			self:DisplayStation(StN,true,23)
+			self:DisplayStation(StL,true,23)
 			self.End = false
 		end
 		self:STR1(string.rep(" ",24-#self.STR1r[self.STR1x-1]),true)
 		if add > 0 and StC < StL or add < 0 and StC > StL then
-			if self.Train:GetNWBool("Announcer:Playing1",false) then
-				if self.Right then self:STR1("R",true) else self:STR1("L",true) end
-			else
-				if Metrostroi.AnnouncerData[StN][2] then self:STR1("R",true) else self:STR1("L",true) end
+			if not self.Train:GetNWBool("Announcer:Playing1",false) then
+				--if self.Right then self:STR1("R",true) else self:STR1("L",true) end
+			--else
+				if Metrostroi.AnnouncerData[StL][2] then self:STR1("R",true) else self:STR1("L",true) end
 			end
 		end
 	end
@@ -610,12 +629,14 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 
 			if (self.LastStation < self.FirstStation and self.CurrentStation <= self.LastStationW or self.LastStation > self.FirstStation and self.CurrentStation >= self.LastStationW) and not self.Depeat then
 				self.Depeat = false
-				if not Metrostroi.AnnouncerData[Metrostroi.WorkingStations[self.Line][self.CurrentStation]][9] then
+				if Metrostroi.AnnouncerData[Metrostroi.WorkingStations[self.Line][self.CurrentStation]][9] then
 					self.CurrentStation = self.LastStationW
 					local tem = self.FirstStation
 					self.FirstStation = self.LastStation
 					self.LastStation = tem
 					self.Depeat = not self.Depeat
+				else
+					self.CurrentStation = self.FirstStationW
 				end
 			elseif  self.Train.CustomC.Value < 0.5 or self.Depeat == true then
 				self.Depeat = not self.Depeat
@@ -838,6 +859,11 @@ function TRAIN_SYSTEM:Think()
 	end
 	if self.Train.R_Radio.Value < 0.5 and self.State ~= -1 then
 		self:SetState(-1)
+		return
+	end
+	if not Metrostroi.AnnouncerData and self.State ~= -2 then
+		if self.State ~= -2 then self:SetState(-2) end
+		return
 	end
 	
 	if self.State == 0 then

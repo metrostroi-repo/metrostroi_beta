@@ -385,10 +385,10 @@ function ENT:Think()
 		end
 	end
 	if self.YAR_13A.Slope and self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
-		self.YAR_13A:TriggerInput("Slope",true)
+		self.YAR_13A:TriggerInput("Slope",1)
 	end
 	if self.YAR_13A.Slope and self.YAR_13A.Slope > 0 and self:GetAngles().pitch*self.SpeedSign > -1 then
-		self.YAR_13A:TriggerInput("Slope",false)
+		self.YAR_13A:TriggerInput("Slope",0)
 	end	if self.Lights[11] and self.LampType and self.LampType == 1 and self.Lights[11][4] ~= Color(255,175,75) then
 		for i = 11,13 do
 			self:SetLightPower(i,false)
@@ -622,7 +622,7 @@ function ENT:Think()
 	
 	local lightsActive1 = (self.Battery.Voltage > 55.0 and self.Battery.Voltage < 85.0) and
 		((self:ReadTrainWire(33) > 0) or (self:ReadTrainWire(34) > 0))
-	local lightsActive2 = (self.PowerSupply.LightsActive > 55.0) and
+	local lightsActive2 = (self.PowerSupply.LightsActive > 0.0) and
 		(self:ReadTrainWire(33) > 0)
 	local mul = 0
 	local LampCount  = (self.LampType == 1 and 23 or 12)

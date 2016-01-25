@@ -20,7 +20,6 @@ ENT.SubwayTrain = {
 	}
 }
 function ENT:Initialize()
-
 	-- Set model and initialize
 	self:SetModel("models/metrostroi_train/e/e.mdl")
 	self.BaseClass.Initialize(self)
@@ -248,10 +247,10 @@ end
 --------------------------------------------------------------------------------
 function ENT:Think()
 	if self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
-		self.YAR_13A:TriggerInput("Slope",true)
+		self.YAR_13A:TriggerInput("Slope",1)
 	end
 	if self.YAR_13A.Slope > 0 and self:GetAngles().pitch*self.SpeedSign > -1 then
-		self.YAR_13A:TriggerInput("Slope",false)
+		self.YAR_13A:TriggerInput("Slope",0)
 	end
 	if self.ARSType then self.ARSType = nil end
 	self.TextureTime = self.TextureTime or CurTime()

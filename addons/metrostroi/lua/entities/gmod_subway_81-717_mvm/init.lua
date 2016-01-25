@@ -356,10 +356,10 @@ function ENT:Think()
 		end
 	end
 	if self.YAR_13A.Slope and self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
-		self.YAR_13A:TriggerInput("Slope",true)
+		self.YAR_13A:TriggerInput("Slope",1)
 	end
 	if self.YAR_13A.Slope and self.YAR_13A.Slope > 0 and self:GetAngles().pitch*self.SpeedSign > -1 then
-		self.YAR_13A:TriggerInput("Slope",false)
+		self.YAR_13A:TriggerInput("Slope",0)
 	end
 	if self.Lights[11] and self.LampType and self.LampType == 1 and self.Lights[11][4] ~= Color(255,175,75) then
 		for i = 11,13 do

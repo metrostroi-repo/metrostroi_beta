@@ -53,101 +53,101 @@ end
 
 function TRAIN_SYSTEM:PlayArriving(station,next,path)
 	local Announcer = self.Train.Announcer
-    Announcer:PlayInfQueueSounds(0005,0003)
+    Announcer:MultiQuele(0005,0003)
 	if self:End(station,path) then
-		Announcer:PlayInfQueueSounds(0230,0222,0002,0221,station)
+		Announcer:MultiQuele(0230,0222,0002,0221,station)
 		if Metrostroi.AnnouncerData[station][2] then
-			Announcer:PlayInfQueueSounds(0215)
+			Announcer:MultiQuele(0215)
 		end
-		--Announcer:PlayInfQueueSounds(0006)
+		--Announcer:MultiQuele(0006)
 		self.AnnState = 7
-		Announcer:PlayInfQueueSounds(0006)
+		Announcer:MultiQuele(0006)
 		return
 	end
 
-	Announcer:PlayInfQueueSounds(Metrostroi.AnnouncerData[station][6] and 0220 or nil,station)
+	Announcer:MultiQuele(Metrostroi.AnnouncerData[station][6] and 0220 or nil,station)
 	if Metrostroi.AnnouncerData[station][2] then
-		Announcer:PlayInfQueueSounds(0215)
+		Announcer:MultiQuele(0215)
 	end
 	if type(Metrostroi.AnnouncerData[station][7]) == "table" then
-		Announcer:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[station][7][2]] and 0203 or nil,Metrostroi.AnnouncerData[station][7][2])
+		Announcer:MultiQuele(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[station][7][2]] and 0203 or nil,Metrostroi.AnnouncerData[station][7][2])
 	elseif Metrostroi.AnnouncerData[station][7] > 0 then
-		Announcer:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[station][7]] and 0203 or nil,Metrostroi.AnnouncerData[station][7])
+		Announcer:MultiQuele(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[station][7]] and 0203 or nil,Metrostroi.AnnouncerData[station][7])
 	end
 
 	if Metrostroi.AnnouncerData[station][8] and path == Metrostroi.AnnouncerData[station][8] then
-		Announcer:PlayInfQueueSounds(0230,0233,0210,path == 1 and self.LastStation or self.FirstStation)
+		Announcer:MultiQuele(0230,0233,0210,path == 1 and self.LastStation or self.FirstStation)
 	end
 
 	if nextNonWorkingStation then
-		Announcer:PlayInfQueueSounds(0230,nextNonWorkingStation)
+		Announcer:MultiQuele(0230,nextNonWorkingStation)
 	end
-	Announcer:PlayInfQueueSounds(0002,0219,next)
+	Announcer:MultiQuele(0002,0219,next)
 	if Metrostroi.AnnouncerData[next][2] then
-		Announcer:PlayInfQueueSounds(0215)
+		Announcer:MultiQuele(0215)
 	end
 
 	if type(Metrostroi.AnnouncerData[next][7]) == "table" then
-		Announcer:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7][2]] and 0203 or nil,Metrostroi.AnnouncerData[next][7][2])
+		Announcer:MultiQuele(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7][2]] and 0203 or nil,Metrostroi.AnnouncerData[next][7][2])
 	elseif Metrostroi.AnnouncerData[next][7] > 0 then
-		Announcer:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7]] and 0203 or nil,Metrostroi.AnnouncerData[next][7])
+		Announcer:MultiQuele(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7]] and 0203 or nil,Metrostroi.AnnouncerData[next][7])
 	end
 
 	if Metrostroi.AnnouncerData[next][8] and path == Metrostroi.AnnouncerData[next][8] then
-		Announcer:PlayInfQueueSounds(0230,0233,0210,path == 1 and self.LastStation or self.FirstStation)
+		Announcer:MultiQuele(0230,0233,0210,path == 1 and self.LastStation or self.FirstStation)
 	end
-    Announcer:PlayInfQueueSounds(0006)
+    Announcer:MultiQuele(0006)
 end
 
 function TRAIN_SYSTEM:PlayDepeate(station,next,path)
 	local Announcer = self.Train.Announcer
-    Announcer:PlayInfQueueSounds(0005,0003)
+    Announcer:MultiQuele(0005,0003)
 	if self:NotLast(path) then
-		Announcer:PlayInfQueueSounds(0210,path == 1 and self.LastStation or self.FirstStation,0002)
+		Announcer:MultiQuele(0210,path == 1 and self.LastStation or self.FirstStation,0002)
 	elseif Metrostroi.AnnouncerData[station][8] and path == Metrostroi.AnnouncerData[station][8] then
-		Announcer:PlayInfQueueSounds(0230,0233,0210,path == 1 and self.LastStation or self.FirstStation,0002)
+		Announcer:MultiQuele(0230,0233,0210,path == 1 and self.LastStation or self.FirstStation,0002)
 	end
-	Announcer:PlayInfQueueSounds(0218)
+	Announcer:MultiQuele(0218)
 
 	if self.NextNonWorkingStation then
-		Announcer:PlayInfQueueSounds(0230,self.NextNonWorkingStation)
+		Announcer:MultiQuele(0230,self.NextNonWorkingStation)
 	end
-	Announcer:PlayInfQueueSounds(0219,next)
+	Announcer:MultiQuele(0219,next)
 	if Metrostroi.AnnouncerData[next][2] then
-		Announcer:PlayInfQueueSounds(0215)
+		Announcer:MultiQuele(0215)
 	end
 
 	if type(Metrostroi.AnnouncerData[next][7]) == "table" then
-		Announcer:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7][2]] and 0203 or nil,Metrostroi.AnnouncerData[next][7][2])
+		Announcer:MultiQuele(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7][2]] and 0203 or nil,Metrostroi.AnnouncerData[next][7][2])
 	elseif Metrostroi.AnnouncerData[next][7] > 0 then
-		Announcer:PlayInfQueueSounds(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7]] and 0203 or nil,Metrostroi.AnnouncerData[next][7])
+		Announcer:MultiQuele(0202,Metrostroi.AnnouncerData[Metrostroi.AnnouncerData[next][7]] and 0203 or nil,Metrostroi.AnnouncerData[next][7])
 	end
 
 	if Metrostroi.AnnouncerData[next][8] and path == Metrostroi.AnnouncerData[next][8] then
-		Announcer:PlayInfQueueSounds(0230,0233,0210,path == 1 and self.LastStation or self.FirstStation)
+		Announcer:MultiQuele(0230,0233,0210,path == 1 and self.LastStation or self.FirstStation)
 	end
-    Announcer:PlayInfQueueSounds(0006)
+    Announcer:MultiQuele(0006)
 end
 function TRAIN_SYSTEM:II(ann)
 	if self.Train.R_UPO.Value < 0.5 then return end
 	local Announcer = self.Train.Announcer
-    Announcer:PlayInfQueueSounds(0005,0003)
+    Announcer:MultiQuele(0005,0003)
 	if ann == 1 then
-		Announcer:PlayInfQueueSounds(math.random() > 0.5 and 0207 or 0206)
+		Announcer:MultiQuele(math.random() > 0.5 and 0207 or 0206)
 	elseif ann == 2 then
-		Announcer:PlayInfQueueSounds(math.random() > 0.5 and 0209 or 0208)
+		Announcer:MultiQuele(math.random() > 0.5 and 0209 or 0208)
 	elseif ann == 3 then
-		Announcer:PlayInfQueueSounds(math.random() > 0.5 and 0204 or 0205)
+		Announcer:MultiQuele(math.random() > 0.5 and 0204 or 0205)
 	else
 		if not self.IIalr then
-			Announcer:PlayInfQueueSounds(self.Type == 1 and 0229 or 0217)
+			Announcer:MultiQuele(self.Type == 1 and 0229 or 0217)
 			self.IIalr = true
 		else
-			Announcer:PlayInfQueueSounds(0228)
+			Announcer:MultiQuele(0228)
 			self.IIalr = false
 		end
 	end
-    Announcer:PlayInfQueueSounds(0006)
+    Announcer:MultiQuele(0006)
 end
 
 function TRAIN_SYSTEM:ReloadSigns()

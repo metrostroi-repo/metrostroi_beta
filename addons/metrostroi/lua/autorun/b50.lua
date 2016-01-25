@@ -2,6 +2,7 @@
 local MapName = "b50"
 
 hook.Add("Think","LoadMap_"..MapName,function()
+	if not Metrostroi.AnnouncerData then Metrostroi.AnnouncerData = {} end
 	if not Metrostroi then return end
 	local Map = game.GetMap() or ""
 

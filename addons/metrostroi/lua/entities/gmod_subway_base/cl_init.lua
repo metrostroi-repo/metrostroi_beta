@@ -1173,7 +1173,7 @@ local function findAimButton(ply,press)
 		local trace = util.TraceLine({
 			start = LocalPlayer():EyePos(),
 			endpos = LocalPlayer():EyePos() + LocalPlayer():EyeAngles():Forward() * 100,
-			filter = function( ent ) if ent:GetClass():find("subway") then return true end end
+			filter = function( ent ) if ent:GetClass():find("subway") or ent:GetClass():find("button") then return true end end
 		})
 		train = trace.Entity
 		
@@ -1213,6 +1213,8 @@ local function findAimButton(ply,press)
 		else 
 			return false
 		end
+	elseif train.IsTouchable then
+		return train
 	end
 end
 
@@ -1372,7 +1374,7 @@ local function handleKeyEvent(ply,key,pressed)
 	if key == 524288 and not pressed then train:ClearButtons() end
 	if pressed then
 		local button,x,y,system = findAimButton(ply,true)
-		if button and !button.state then
+		if button and !button.state and not button.IsTouchable then
 			button.state = true
 			sendButtonMessage(button,outside)
 			lastButton = button
@@ -1384,6 +1386,9 @@ local function handleKeyEvent(ply,key,pressed)
 					train:OnButtonPressed(button.ID)
 				end
 			end
+		elseif button and button.IsTouchable then
+			button:Pressed(true)
+			lastButton = button
 		elseif x and y then
 			sendPanelTouch(system,x,y,outside,true)
 			lastTouch = {system,x,y}
@@ -1395,7 +1400,7 @@ local function handleKeyEvent(ply,key,pressed)
 				lastButton.state = false
 				sendButtonMessage(lastButton,outside)
 			end
-
+			if lastButton.IsTouchable then lastButton:Pressed(false) end
 			if train.OnButtonReleased and button then
 				if button.ID:find(":") then
 					train:OnButtonReleased(string.Explode(":",button.ID)[2])

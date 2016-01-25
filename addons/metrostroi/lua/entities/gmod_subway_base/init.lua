@@ -669,7 +669,32 @@ function ENT:WriteCell(Address, value)
 end
 
 
-
+function ENT:SpawnButton(model,pos,ang,min,max,soundtbl)
+	local ent = ents.Create("gmod_train_button")
+	ent:SetPos(self:LocalToWorld(pos))
+	ent:SetAngles(self:LocalToWorldAngles(ang ))
+	ent:SetParent(self)
+	ent.Owner = ply
+	ent.Model = model
+	ent.Sounds = soundtbl
+	ent:Spawn()
+	ent:Activate()
+	return ent
+end
+function ENT:SpawnSwitch(model,pos,ang,min,max,soundtbl)
+	local ent = ents.Create("gmod_train_switch")
+	ent:SetPos(self:LocalToWorld(pos))
+	ent:SetAngles(self:LocalToWorldAngles(ang ))
+	ent:SetParent(self)
+	ent.Owner = ply
+	ent.Model = model
+	ent.Min = min
+	ent.Max = max
+	ent.Sounds = soundtbl
+	ent:Spawn()
+	ent:Activate()
+	return ent
+end
 Metrostroi.SignsTextures = {
 }
 Metrostroi.SignsTextures["gm_metrostroi_lite"] = {
@@ -689,15 +714,17 @@ Metrostroi.SignsTextures["gm_orange_lite"] = {
 }
 Metrostroi.SignsTextures["gm_orange"] = Metrostroi.SignsTextures["gm_orange_lite"]
 Metrostroi.SignsTextures["gm_orange"][401] = {"models/metrostroi_train/signs/orange/aero","Аэропорт"}
-Metrostroi.SignsTextures["gm_orange"][501] = {"models/metrostroi_train/signs/orange/aero","Аэропорт"}
-Metrostroi.SignsTextures["gm_orange"][504] = {"models/metrostroi_train/signs/orange/metrostroiteley","(МАЛИНОВАЯ)\nМетростроителей"}
 Metrostroi.SignsTextures["gm_orange"][601] = {"models/metrostroi_train/signs/orange/brateevo","(БИРЮЗОВАЯ)\nБратеево"}
+Metrostroi.SignsTextures["gm_orange_crimson"] = {}
+Metrostroi.SignsTextures["gm_orange_crimson"][501] = {"models/metrostroi_train/signs/orange/aero","Аэропорт"}
+Metrostroi.SignsTextures["gm_orange_crimson"][504] = {"models/metrostroi_train/signs/orange/metrostroiteley","(МАЛИНОВАЯ)\nМетростроителей"}
 Metrostroi.SignsTextures["special"] = {
-	{"models/metrostroi_train/signs/special/sinergiya1","Синергия-1"},
-	{"models/metrostroi_train/signs/special/phoenix1","Феникс-1"},
-	{"models/metrostroi_train/signs/special/depot","В депо"},
-	{"models/metrostroi_train/signs/special/testing","Обкатка"},
-	{"models/metrostroi_train/signs/special/no_entry","Посадки НЕТ"},
+	{"models/metrostroi_train/signs/special/sinergiya1","Синергия-1",true},
+	{"models/metrostroi_train/signs/special/phoenix1","Феникс-1",true},
+	{"models/metrostroi_train/signs/special/depot","В депо",true},
+	{"models/metrostroi_train/signs/special/testing","Обкатка",true},
+	{"models/metrostroi_train/signs/special/no_entry","Посадки НЕТ",true},
+	{"models/metrostroi_train/signs/special/cargo","Грузовой",true},
 }
 	--["gm_orange_lite"] = {},
 	--["gm_orange"] = {},
@@ -708,6 +735,7 @@ function ENT:PrepareSigns()
 	if not self.SignsList then
 		self.SignsList = { "" }
 		for k,v in SortedPairs(Metrostroi.SignsTextures[Metrostroi.CurrentMap] or {}) do
+			--v.st = k
 			local x = table.insert(self.SignsList,v)
 			self.SignsList[k] = x
 		end
