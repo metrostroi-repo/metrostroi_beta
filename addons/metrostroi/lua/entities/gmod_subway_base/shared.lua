@@ -98,18 +98,12 @@ function ENT:InitializeSounds()
 	self.SoundNames["kurlik"]		= "subway_trains/new/kurlik.wav"
 	self.SoundNames["switch4"]		= "subway_trains/switch_4.wav"
 	self.SoundNames["switch5"]		= "subway_trains/switch_8.wav"
-	self.SoundNames["switch6"]		= "subway_trains/switch_9.wav"
-	self.SoundNames["switch6_off"]	= "subway_trains/switch_10.wav"
-	self.SoundNames["vu22_on"]	= {
-		"subway_trains/new/vud_down_1.wav",
-		"subway_trains/new/vud_down_2.wav",
-		"subway_trains/new/vud_down_3.wav"
-	}
-	self.SoundNames["vu22_off"]	= {
-		"subway_trains/new/vud_up_1.wav",
-		"subway_trains/new/vud_up_2.wav",
-		"subway_trains/new/vud_up_3.wav"
-	}
+	self.SoundNames["switch6"]		= "subway_trains/pb_on.wav"
+	self.SoundNames["switch6_off"]	= "subway_trains/pb_off.wav"
+	self.SoundNames["vu22_on"]	= "subway_trains/vu22_down.wav"
+	self.SoundNames["vu22_off"]	= "subway_trains/vu22_up.wav"
+	self.SoundNames["vu22b_off"]	= "subway_trains/vu22_3_off.wav"
+	self.SoundNames["vu22b_on"]	= "subway_trains/vu22_3_on.wav"
 	self.SoundNames["button_press"]		= {
 		"subway_trains/but_on1.wav",
 		"subway_trains/but_on2.wav",
@@ -134,10 +128,15 @@ function ENT:InitializeSounds()
 	self.SoundNames["epv_on"]			= "subway_trains/epv_on.wav"
 	self.SoundNames["epv_off"]			= "subway_trains/epv_off.wav"
 	
+	self.SoundNames["epv_start"]			= "subway_trains/epv_start.wav"
+	
+	self.SoundNames["kr_open"]			= "subway_trains/kr_open.wav"
+	self.SoundNames["kr_close"]			= "subway_trains/kr_close.wav"
+	
 	self.SoundNames["kru_in"]			= "subway_trains/new/kru_in.wav"
 	self.SoundNames["kru_out"]			= "subway_trains/new/kru_out.wav"
-	self.SoundNames["revers_in"]			= "subway_trains/new/revers_in.wav"
-	self.SoundNames["revers_out"]			= "subway_trains/new/revers_out.wav"
+	self.SoundNames["revers_in"]			= "subway_trains/revers_in.wav"
+	self.SoundNames["revers_out"]			= "subway_trains/new/revers_out.wav" --FIXME
 
 	self.SoundNames["av_on"]			= "subway_trains/av_on.wav"
 	self.SoundNames["av_off"]			= "subway_trains/av_off.wav"
@@ -149,11 +148,6 @@ function ENT:InitializeSounds()
 	self.SoundNames["bpsn5"] 		= "subway_trains/bpsn_6.wav"
 	self.SoundNames["bpsn6"] 		= "subway_trains/bpsn_7.wav"
 
-	self.SoundNames["bpsn2_off"] 		= "subway_trains/bpsn3_off.wav"
-	self.SoundNames["bpsn3_off"] 		= "subway_trains/bpsn4_off.wav"
-	self.SoundNames["bpsn4_off"] 		= "subway_trains/bpsn5_off.wav"
-	self.SoundNames["bpsn5_off"] 		= "subway_trains/bpsn6_off.wav"
-	self.SoundNames["bpsn6_off"] 		= "subway_trains/bpsn7_off.wav"
 	self.SoundNames["bpsn_ann_pnm"] 	= "subway_announcer_pnm/00_07.wav"
 	self.SoundNames["bpsn_ann_pnm_cab"] 	= "subway_announcer_pnm/00_07.wav"
 	self.SoundPositions["bpsn_ann_pnm_cab"]	= "cabin"
@@ -162,13 +156,13 @@ function ENT:InitializeSounds()
 	self.SoundPositions["bpsn_ann_cab"]	= "cabin"
 	
 	self.SoundNames["release1"]		= "subway_trains/new/release_1.wav"
-	self.SoundNames["release2"]		= "subway_trains/release_2.wav"
-	self.SoundNames["release3"]		= "subway_trains/release_3.wav"
+	self.SoundNames["release2"]		= "subway_trains/brake_02.wav"
+	self.SoundNames["release3"]		= "subway_trains/brake_03.wav"
 	self.SoundPositions["release2"] = "cabin"
 	self.SoundPositions["release3"] = "cabin"
 	
-	self.SoundNames["release2_w"]	= "subway_trains/release_2.wav"
-	self.SoundNames["release3_w"]	= "subway_trains/release_3.wav"
+	self.SoundNames["release2_w"]	= "subway_trains/brake_02.wav"
+	self.SoundNames["release3_w"]	= "subway_trains/brake_03.wav"
 	
 	self.SoundNames["horn2"] 		= "subway_trains/horn_3a.wav"
 	self.SoundNames["horn2_end"] 	= "subway_trains/horn_4a.wav"
@@ -211,8 +205,8 @@ function ENT:InitializeSounds()
 	self.SoundNames["rk_spin"]		= "subway_trains/rk_1.wav"
 	self.SoundNames["rk_stop"]		= "subway_trains/rk_2.wav"
 
-	self.SoundNames["inf_on"]		= "subway_trains/new/inf_on.wav"
-	self.SoundNames["inf_off"]		= "subway_trains/new/inf_off.wav"
+	self.SoundNames["inf_on"]		= "subway_trains/program_on.wav"
+	self.SoundNames["inf_off"]		= "subway_trains/program_0.wav"
 	
 	self.SoundNames["br_334"]		= {
 		"subway_trains/new/334_1.wav",
@@ -222,7 +216,11 @@ function ENT:InitializeSounds()
 	}
 	
 	self.SoundNames["br_013"]		= {
-		"subway_trains/switch_1.wav",
+		--"subway_trains/switch_1.wav",
+		"subway_trains/013_1.wav",
+		"subway_trains/013_2.wav",
+		"subway_trains/013_3.wav",
+		"subway_trains/013_4.wav",
 	}
 
 	self.SoundNames["pneumo_switch"] = {
@@ -258,9 +256,10 @@ function ENT:InitializeSounds()
 		"subway_trains/new/lsd_7.wav",
 	}
 	self.SoundNames["rvt_close"] = {
-		"subway_trains/new/brake_on1.wav",
-		"subway_trains/new/brake_on2.wav",
-		"subway_trains/new/brake_on3.wav",
+		"subway_trains/brake_on.wav",
+		--"subway_trains/new/brake_on1.wav",
+		--"subway_trains/new/brake_on2.wav",
+		--"subway_trains/new/brake_on3.wav",
 	}
 	self.SoundNames["r1_5_close"] = {
 		"subway_trains/new/drive_on1.wav",
@@ -305,14 +304,17 @@ function ENT:InitializeSounds()
 		"subway_trains/new/plomb2.wav",
 	}
 	
+	self.SoundNames["door_open_tor"] = "subway_trains/door_t_open.wav"
+	self.SoundNames["door_close_tor"] = "subway_trains/door_t_close.wav"
+
 	self.SoundNames["compressor"]		= "subway_trains/compressor_717.wav"
 	self.SoundNames["compressor_end"] 	= "subway_trains/compressor_717_off.wav"
 	self.SoundNames["compressor_ezh"]		= "subway_trains/compressor_ezh.wav"
 	self.SoundNames["compressor_ezh_end"] 	= "subway_trains/compressor_ezh_off.wav"
 
-	self.SoundNames["revers_f"]		= "subway_trains/new/revers_f.wav"
-	self.SoundNames["revers_0"]		= "subway_trains/new/revers_0.wav"
-	self.SoundNames["revers_b"]		= "subway_trains/new/revers_b.wav"
+	self.SoundNames["revers_f"]		= "subway_trains/revers_f.wav"
+	self.SoundNames["revers_0"]		= "subway_trains/revers_0.wav"
+	self.SoundNames["revers_b"]		= "subway_trains/revers_f.wav"
 
 	self.SoundNames["kru_0_1"]		= "subway_trains/new/kru_0_1.wav"
 	self.SoundNames["kru_1_2"]		= "subway_trains/new/kru_1_2.wav"

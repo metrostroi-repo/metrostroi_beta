@@ -1111,12 +1111,15 @@ function ENT:OnButtonPress(button,state)
 	end
 	if button:find("RearDoor") then
 		self.RearDoor = not self.RearDoor
+		if self.PassengerDoor then self:PlayOnce("door_open_tor") else self:PlayOnce("door_close_tor") end
 	end
 	if button:find("PassengerDoor") then
 		self.PassengerDoor = not self.PassengerDoor
+		if self.PassengerDoor then self:PlayOnce("door_open_tor","cabin") else self:PlayOnce("door_close_tor","cabin") end
 	end
 	if button == "CabinDoor" then
 		self.CabinDoor = not self.CabinDoor
+		if self.PassengerDoor then self:PlayOnce("door_open_tor","cabin") else self:PlayOnce("door_close_tor","cabin") end
 	end
 	if button == "UAVAToggle" then
 		local drv = self:GetDriverName()

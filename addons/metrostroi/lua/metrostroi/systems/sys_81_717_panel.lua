@@ -5,7 +5,7 @@ Metrostroi.DefineSystem("81_717_Panel")
 
 function TRAIN_SYSTEM:Initialize()
 	-- Выключатель батареи (ВБ)
-	self.Train:LoadSystem("VB","Relay","VB-11")
+	self.Train:LoadSystem("VB","Relay","Switch",{rc=true})
 
 	-- Buttons on the panel
 	self.Train:LoadSystem("DIPon","Relay","Switch", {button = true})
@@ -93,10 +93,10 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("A75","Relay","VA21-29",{ normally_closed = false})
 	self.Train:LoadSystem("A80","Relay","VA21-29")
 	self.Train:LoadSystem("VU","Relay","VA21-29")
-	self.Train:LoadSystem("KDLK","Relay","Switch", { normally_closed = true })
-	self.Train:LoadSystem("KDLRK","Relay","Switch", { normally_closed = true })
-	self.Train:LoadSystem("KDPK","Relay","Switch", { normally_closed = true })
-	self.Train:LoadSystem("KAHK","Relay","Switch", { normally_closed = true })
+	self.Train:LoadSystem("KDLK","Relay","Switch", { krishka = true,normally_closed = true })
+	self.Train:LoadSystem("KDLRK","Relay","Switch", { krishka = true,normally_closed = true })
+	self.Train:LoadSystem("KDPK","Relay","Switch", { krishka = true,normally_closed = true })
+	self.Train:LoadSystem("KAHK","Relay","Switch", { krishka = true,normally_closed = true })
 	
 	-- 81-717 special
 	self.Train:LoadSystem("BPSNon","Relay","Switch", { switch = true })

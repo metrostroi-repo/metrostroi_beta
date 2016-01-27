@@ -579,15 +579,19 @@ function ENT:OnButtonPress(button)
 	end
 	if button:find("FrontDoor") then
 		self.FrontDoor = not self.FrontDoor
+		if self.PassengerDoor then self:PlayOnce("door_open_tor","cabin") else self:PlayOnce("door_close_tor","cabin") end
 	end
 	if button:find("RearDoor") then
 		self.RearDoor = not self.RearDoor
+		if self.RearDoor then self:PlayOnce("door_open_tor") else self:PlayOnce("door_close_tor") end
 	end
 	if button:find("PassengerDoor") then
 		self.PassengerDoor = not self.PassengerDoor
+		if self.PassengerDoor then self:PlayOnce("door_open_tor","cabin") else self:PlayOnce("door_close_tor","cabin") end
 	end
 	if button:find("CabinDoor") then
 		self.CabinDoor = not self.CabinDoor
+		if self.PassengerDoor then self:PlayOnce("door_open_tor","cabin") else self:PlayOnce("door_close_tor","cabin") end
 	end
 	if button == "VAHToggle" then
 		local drv = self:GetDriverName()
