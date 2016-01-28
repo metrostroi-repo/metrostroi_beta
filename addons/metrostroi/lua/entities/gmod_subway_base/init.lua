@@ -714,6 +714,8 @@ Metrostroi.SignsTextures["gm_orange_lite"] = {
 }
 Metrostroi.SignsTextures["gm_orange"] = Metrostroi.SignsTextures["gm_orange_lite"]
 Metrostroi.SignsTextures["gm_orange"][401] = {"models/metrostroi_train/signs/orange/aero","Аэропорт"}
+Metrostroi.SignsTextures["gm_orange"][501] = Metrostroi.SignsTextures["gm_orange"][401]
+Metrostroi.SignsTextures["gm_orange"][504] = {"models/metrostroi_train/signs/orange/metrostroiteley","(МАЛИНОВАЯ)\nМетростроителей"}
 Metrostroi.SignsTextures["gm_orange"][601] = {"models/metrostroi_train/signs/orange/brateevo","(БИРЮЗОВАЯ)\nБратеево"}
 Metrostroi.SignsTextures["gm_orange_crimson"] = {}
 Metrostroi.SignsTextures["gm_orange_crimson"][501] = {"models/metrostroi_train/signs/orange/aero","Аэропорт"}

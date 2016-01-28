@@ -623,23 +623,22 @@ function ENT:Think()
 	end
 
 	local state = self:GetPackedBool(52)
-	self.PreviousBPSNState = self.PreviousBPSNState or false
-	if self.PreviousBPSNState ~= state then
-		if state then	
-			if self.BPSNType ~= 7 then
-				self:SetSoundState("bpsn"..self.BPSNType,2,1.0,nil,0.9)
-			else
-				self:SetSoundState("bpsn2",0.2,1.0)
-				self:SetSoundState("bpsn3",0.4,1)
-				self:SetSoundState("bpsn6",1,1)
-			end
-			self.BPSNOff = nil
+	--self.PreviousBPSNState = self.PreviousBPSNState or false
+	--
+	if state then	
+		if self.BPSNType ~= 7 then
+			self:SetSoundState("bpsn"..self.BPSNType,2,1.0,nil,0.9)
 		else
-			if self.BPSNOff == nil then self.BPSNOff = CurTime() + 2 end
+			self:SetSoundState("bpsn2",0.2,1.0)
+			self:SetSoundState("bpsn3",0.4,1)
+			self:SetSoundState("bpsn6",1,1)
 		end
-		
-		self.PreviousBPSNState = state
+		if self.PreviousBPSNState ~= state then self.BPSNOff = nil end
+	else
+		if self.BPSNOff == nil then self.BPSNOff = CurTime() + 2 end
 	end
+	self.PreviousBPSNState = state
+	--end
 	if self.BPSNOff and self.BPSNOff - CurTime() < 0 then self.BPSNOff = false end
 	--if self.BPSNOff then print(1-math.cos((self.BPSNOff - CurTime()) / 2 * math.pi/2),(self.BPSNOff - CurTime()) / 2) end
 	if self.BPSNOff then
@@ -658,7 +657,6 @@ function ENT:Think()
 			self:SetSoundState("bpsn3",0,1)
 			self:SetSoundState("bpsn6",0,1)
 		end
-		self.BPSNOff = nil
 	end
 	self.OldBPSNType = self.BPSNType
 end

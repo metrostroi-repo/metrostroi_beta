@@ -322,10 +322,10 @@ function ENT:OnButtonPress(button)
 	end
 	if button == "FrontDoor" then
 		self.FrontDoor = not self.FrontDoor
-		if self.PassengerDoor then self:PlayOnce("door_open_tor") else self:PlayOnce("door_close_tor") end
+		if self.FrontDoor then self:PlayOnce("door_open_tor") else self:PlayOnce("door_close_tor") end
 	end
 	if button == "RearDoor" then
 		self.RearDoor = not self.RearDoor
-		if self.PassengerDoor then self:PlayOnce("door_open_tor") else self:PlayOnce("door_close_tor") end
+		if self.RearDoor then self:PlayOnce("door_open_tor") else self:PlayOnce("door_close_tor") end
 	end
 end
