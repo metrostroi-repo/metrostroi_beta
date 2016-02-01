@@ -49,6 +49,7 @@ function TRAIN_SYSTEM:Think()
 	local Train = self.Train
 	self.Train:WriteTrainWire(35,self.Train.RZP.Value)
 	self.Train:WriteTrainWire(36,self.Train.ConverterProtection.Value)
+	self.Train.RPU:TriggerInput("Set",self.Train:ReadTrainWire(36))
 	if self.Train.RZP.Value > 0.5 and self.Train:ReadTrainWire(36) > 0 then
 		self.Train.RZP:TriggerInput("Open",self.Train.A27.Value)
 	end
