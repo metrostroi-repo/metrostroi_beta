@@ -75,16 +75,8 @@ function ENT:InitializeSounds()
 	-----
 	--E
 	-----
-	self.SoundNames["auto_on"]			= {
-		"subway_trains/new/lsd_5.wav",
-		"subway_trains/new/lsd_6.wav",
-		"subway_trains/new/lsd_4.wav",
-	}
-	self.SoundNames["auto_off"]			= {
-		"subway_trains/new/lsd_1.wav",
-		"subway_trains/new/lsd_3.wav",
-		"subway_trains/new/lsd_6.wav",
-	}
+	self.SoundNames["auto_on"] =  "subway_trains/vu_on.wav"
+	self.SoundNames["auto_off"] = "subway_trains/vu_off.wav"
 	self.SoundNames["mainauto_on"]		= {
 		"subway_trains/kv1_4.wav",
 		"subway_trains/kv1_5.wav",

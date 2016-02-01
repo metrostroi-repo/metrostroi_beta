@@ -672,6 +672,16 @@ local DrawTextMachineSmall = function(txt, x, y)
 	draw.SimpleText(txt, "Schedule_Machine_Small", x, y, Color(0,0,0), 0, 0)
 end
 
+local function FineStationName(st)
+	local StT = string.Explode(" ",st)
+	local str = ""
+	if #StT > 1 then
+		str = StT[1][1]..". "..table.concat(StT," ",2)
+	else
+		str = st
+	end
+	return str
+end
 -- Placeholder code, to be removed when schedule system is in place
 local Schedule = {
 	stations = {
@@ -769,7 +779,20 @@ function ENT:DrawSchedule(panel)
 	for i,v in pairs(t.stations) do
 		local y = ((rowtall+1)*3+2) + (i-1)*(rowtall+1) -- Uhh..
 		
-		DrawTextMachineSmall(v[1], 3, y + 6) -- Stationname
+		local st = FineStationName(v[1])
+		surface.SetFont( "Schedule_Machine_Small" )
+		local width = select(1, surface.GetTextSize(st))
+
+		local szf = math.ceil(width/80)-1
+		if szf > 0 then
+			local szf = math.ceil(#st/8)-1
+
+			for i = 0,szf do
+				DrawTextMachineSmall(st:Replace("'",""):sub(i*8+1,8 + i*8)..(szf ~= i and "-" or ""), 3, y + 6 -6 + 12/szf*i) -- Stationname
+			end
+		else
+			DrawTextMachineSmall(st, 3, y + 6) -- Stationname
+		end
 		
 		local hours = HoursFromStamp(v[2])
 		local minutes = MinutesFromStamp(v[2])

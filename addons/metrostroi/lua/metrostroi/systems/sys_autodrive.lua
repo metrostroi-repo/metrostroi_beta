@@ -146,7 +146,7 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 					Train:WriteCell(32,0)
 					Train:WriteCell(31,0)
 				end)
-				Train.PAKSD_DOOR:TriggerInput("Set",1)
+				Train.ADoorDisable:TriggerInput("Set",1)
 			end
 		end
 		self.AutodriveReset = true
@@ -379,7 +379,7 @@ end
 function TRAIN_SYSTEM:Think()
 	if self.Train.VZP then
 		if self.Train.BCCD.Value > 0 then
-			self.Train.PAKSD_DOOR:TriggerInput("Set",0)
+			self.Train.ADoorDisable:TriggerInput("Set",0)
 		end
 		--[[if Train:CPPIGetOwner() and Train:CPPIGetOwner():GetName() ~= "glebqip(RUS)" and (self.AutodriveEnabled or not self.AutodriveReset) then
 			self.AutodriveReset = true

@@ -75,8 +75,9 @@ function ENT:InitializeSystems()
 	
 	self:LoadSystem("Radiostation","Motorola")
 	
-	self:LoadSystem("PAKSD_DOOR","Relay","Switch")
-	self:LoadSystem("PAKSD_VUD","Relay","Switch")
+	self:LoadSystem("ADoorDisable","Relay")
+	self:LoadSystem("ASNP31","Relay","Switch")
+	self:LoadSystem("ASNP32","Relay","Switch")
 	self:LoadSystem("Horn")
 	self:LoadSystem("Announcer")
 end

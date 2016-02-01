@@ -233,22 +233,24 @@ end)
 --------------------------------------------------------------------------------
 -- Simple hack to get a driving schedule
 --------------------------------------------------------------------------------
-concommand.Add("metrostroi_get_schedule", function(ply, _, args)
+concommand.Add("metrostroi_schedule", function(ply, _, args)
 	if not IsValid(ply) then return end
 	local train = ply:GetTrain()
 
 	local pos = Metrostroi.TrainPositions[train]
 	if pos and pos[1] then
-		local id = tonumber(args[1]) or pos[1].path.id
+		local line = tonumber(args[1])
+		local path = tonumber(args[2])
+		local starts = tonumber(args[3])
+		local ends = tonumber(args[4])
 
-		print("Generating schedule for user")
-		train.Schedule = Metrostroi.GenerateSchedule("Line1_Platform"..id)
+		train.Schedule = Metrostroi.GenerateSchedule("Line"..line.."_Platform"..path,starts,ends)
 		if train.Schedule then
 			train:SetNWInt("_schedule_id",train.Schedule.ScheduleID)
 			train:SetNWInt("_schedule_duration",train.Schedule.Duration)
 			train:SetNWInt("_schedule_interval",train.Schedule.Interval)
 			train:SetNWInt("_schedule_N",#train.Schedule)
-			train:SetNWInt("_schedule_path",id)
+			train:SetNWInt("_schedule_path",path)
 			for k,v in ipairs(train.Schedule) do
 				train:SetNWInt("_schedule_"..k.."_1",v[1])
 				train:SetNWInt("_schedule_"..k.."_2",v[2])

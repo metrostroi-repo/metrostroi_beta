@@ -28,6 +28,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.RealState = 99
 	self.RouteNumber = "00"
 	self.Depeat = false
+	self.Train:LoadSystem("ASNPOn","Relay","Switch",{ normally_closed = true, switch = true })
 end
 
 function TRAIN_SYSTEM:ClientInitialize()
@@ -359,7 +360,7 @@ function TRAIN_SYSTEM:ClientThink()
 		if self.Train:GetNWBool("Announcer:Playing1",false) then
 			self:STR1("<<<   Goes Announce   >>>")
 			--self:DisplayStation(St,true,23)
-		elseif add > 0 and StC >= StL or add < 0 and StC <= StL then
+		elseif add > 0 and StC >= Stl or add < 0 and StC <= Stl then
 			self:STR1("<<<LAST STATION>>>",true)
 			self.End = true
 		else
@@ -824,6 +825,10 @@ function TRAIN_SYSTEM:SetState(state,state7,noupd)
 		self.CurrentStation = curr
 		self.Depeat = true
 	end
+	if state < 8 then
+		self.Train.ASNP31:TriggerInput("Set",0)
+		self.Train.ASNP32:TriggerInput("Set",0)
+	end
 	if state == 9 then
 		self.Choosed = 0
 	end
@@ -871,6 +876,30 @@ function TRAIN_SYSTEM:Think()
 		if self:GetTimer(self.LoadTimer) then
 			self.LoadTimer = nil
 			self:SetState(1)
+		end
+	end
+	if self.State >= 8 then
+		local Distance = math.min(3072,self.Train:ReadCell(49165))
+		--local st = self.Train:ReadCell(49169) > 0 and Metrostroi.AnnouncerData[self.Train:ReadCell(49169)] or false
+		local st = Metrostroi.WorkingStations[self.Line] and Metrostroi.WorkingStations[self.Line][self.CurrentStation] and
+						Metrostroi.AnnouncerData[Metrostroi.WorkingStations[self.Line][self.CurrentStation]]
+		local right = st and Metrostroi.AnnouncerData[Metrostroi.WorkingStations[self.Line][self.CurrentStation]][2]
+		local lock = not st or Distance > 20 or self.Train.ALS_ARS.Speed > 1
+		if self.Train.ASNPOn.Value > 0.5 then
+			if right then
+				if self.Train.ASNP31.Value == 0 then self.Train.ASNP31:TriggerInput("Set",1) end
+
+				if not lock and 	self.Train.ASNP32.Value == 1 then self.Train.ASNP32:TriggerInput("Set",0) end
+				if lock and 			self.Train.ASNP32.Value == 0 then self.Train.ASNP32:TriggerInput("Set",1) end
+			else
+				if not lock and	self.Train.ASNP31.Value == 1 and not lock then self.Train.ASNP31:TriggerInput("Set",0) end
+				if lock and 			self.Train.ASNP31.Value == 0 then self.Train.ASNP31:TriggerInput("Set",1) end
+
+				if self.Train.ASNP32.Value == 0 then self.Train.ASNP32:TriggerInput("Set",1) end
+			end
+		else
+			if self.Train.ASNP32.Value == 1 then self.Train.ASNP32:TriggerInput("Set",0) end
+			if self.Train.ASNP31.Value == 1 then self.Train.ASNP31:TriggerInput("Set",0) end
 		end
 	end
 	if self.State == 8 and (self.Train.KV.ReverserPosition > 0 or self.Train.KRU.Position > 0) then

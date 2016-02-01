@@ -346,7 +346,7 @@ function ENT:Initialize()
 	self.OldTexture = 0
 	for k,v in pairs(self:GetMaterials()) do
 		if v == "models/metrostroi_train/81/int02" then
-			if Metrostroi.CurrentMap == "" or not Metrostroi.Skins["717_schemes"]["p_"..Metrostroi.CurrentMap:sub(4,-1) ] then
+			if not Metrostroi.CurrentMap or Metrostroi.CurrentMap == "" or not Metrostroi.Skins["717_schemes"]["p_"..Metrostroi.CurrentMap:sub(4,-1) ] then
 				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
 			else
 				if not self.Adverts or self.Adverts ~= 4 then
@@ -376,7 +376,8 @@ end
 function ENT:Think()
 	self.ExtraSeat1:SetPos(Vector(420,-40,-28+1))
 	--self.ExtraSeat3:SetPos(Vector(402,50,-43))
-	if self.PAKSD_VUD.Value == 0 then self.PAKSD_VUD:TriggerInput("Set",1) end
+	if self.VUD1.Value > 0 and self.ASNP31.Value == 0 then self.ASNP31:TriggerInput("Set",1) self.ASNP32:TriggerInput("Set",1) end
+	if self.VUD1.Value == 0 and self.ASNP31.Value > 0 then self.ASNP31:TriggerInput("Set",0) self.ASNP32:TriggerInput("Set",0) end
 	if self.Plombs and self.Plombs.Init then
 		self.Plombs.Init = nil
 		for k,v in pairs(self.Plombs) do

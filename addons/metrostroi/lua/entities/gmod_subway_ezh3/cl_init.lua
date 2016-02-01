@@ -363,10 +363,10 @@ local col1w = 80 -- 1st Column width
 local col2w = 32 -- The other column widths
 local rowtall = 30 -- Row height, includes -only- the usable space and not any lines
 
-local rowamount = 16 -- How many rows to show (total)
+local rowamount = 20 -- How many rows to show (total)
 ENT.ButtonMap["Schedule"] = {
-	pos = Vector(442.1,-60.7,26),
-	ang = Angle(0,-110,90),
+	pos = Vector(452.9,-19.7,41),
+	ang = Angle(0,-70,90),
 	width = (col1w + 2 + (1 + col2w) * 3),
 	height = (rowtall+1)*rowamount+1,
 	scale = 0.0625/2,

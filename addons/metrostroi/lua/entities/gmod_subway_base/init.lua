@@ -682,7 +682,7 @@ function ENT:SpawnButton(model,pos,ang,min,max,soundtbl)
 	return ent
 end
 function ENT:SpawnSwitch(model,pos,ang,min,max,soundtbl)
-	local ent = ents.Create("gmod_train_switch")
+	local ent = ents.Create("gmod_train_swtich")
 	ent:SetPos(self:LocalToWorld(pos))
 	ent:SetAngles(self:LocalToWorldAngles(ang ))
 	ent:SetParent(self)
