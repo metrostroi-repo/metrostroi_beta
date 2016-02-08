@@ -152,6 +152,8 @@ function ENT:InitializeSounds()
 	self.SoundNames["release3"]		= "subway_trains/brake_03.wav"
 	self.SoundPositions["release2"] = "cabin"
 	self.SoundPositions["release3"] = "cabin"
+	self.SoundNames["cran1"]		= "subway_trains/pneumo_idle.wav"
+	self.SoundPositions["cran1"] = "cabin"
 	
 	self.SoundNames["release2_w"]	= "subway_trains/brake_02.wav"
 	self.SoundNames["release3_w"]	= "subway_trains/brake_03.wav"

@@ -305,7 +305,6 @@ function TRAIN_SYSTEM:Think(dT)
 		-- 334: 1 Fill reservoir from train line, fill brake line from train line
 		if (self.DriverValvePosition == 1) and (Train.DriverValveDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"ReservoirPressure", self.TrainLinePressure, 1.50)
-			
 			self.BrakeLinePressure = self.ReservoirPressure
 			self.BrakeLinePressure_dPdT = self.ReservoirPressure_dPdT
 			trainLineConsumption_dPdT = trainLineConsumption_dPdT + math.max(0,self.BrakeLinePressure_dPdT)
@@ -386,7 +385,6 @@ function TRAIN_SYSTEM:Think(dT)
 			trainLineConsumption_dPdT = trainLineConsumption_dPdT + math.max(0,self.BrakeLinePressure_dPdT)
 		end
 	end
-
 	----------------------------------------------------------------------------
 	-- Fill brake cylinders
 	if Train.AirDistributorDisconnect.Value == 0 then

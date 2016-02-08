@@ -239,7 +239,7 @@ function ENT:Think()
 	self:SetPackedRatio(8, math.abs(self.Electric.I24)/1000.0)	
 	--self:SetPackedRatio(9, self.Pneumatic.BrakeLinePressure_dPdT or 0)
 	if self.Pneumatic.TrainLineOpen then
-		self:SetPackedRatio(9, (self.Pneumatic.TrainLinePressure_dPdT or 0)*6)
+		self:SetPackedRatio(9, (-self.Pneumatic.TrainLinePressure_dPdT or 0)*6)
 	else
 		self:SetPackedRatio(9, self.Pneumatic.BrakeLinePressure_dPdT or 0)
 	end

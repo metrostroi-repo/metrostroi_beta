@@ -455,7 +455,7 @@ function TRAIN_SYSTEM:ClientThink()
 					local bt = tostring(self.Train:GetNWInt("PAKSD:BoardTime",0))
 					local date = os.date("!*t",os_time)
 					local tm = Format("%02d:%02d:%02d",date.hour,date.min,date.sec)
-					self:STR1(Metrostroi.AnnouncerData[station] and Metrostroi.AnnouncerData[station][1]:upper() or "UNK")
+					self:STR1((Metrostroi.AnnouncerData[station] and Metrostroi.AnnouncerData[station][1]) and Metrostroi.AnnouncerData[station][1]:upper() or "UNK")
 					self:STR1("TO "..Metrostroi.AnnouncerData[self.Train:GetNWInt("PAKSD:LastStation",108)][1]:upper())
 					self:STR1("ST "..bt..string.rep(" ",20-8-3-#bt)..tm)
 					if self.VRDTimer and CurTime() - self.VRDTimer < 0 then

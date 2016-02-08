@@ -546,7 +546,7 @@ ENT.ButtonMap["Schedule"] = {
 	}
 }
 ENT.ButtonMap["IGLA"] = {
-	pos = Vector(460.9,-27.0,37.0),
+	pos = Vector(460.8,-27.0,37.0),
 	ang = Angle(0,-125,90),
 	width = 440,
 	height = 190,
@@ -1817,9 +1817,9 @@ function ENT:Think()
 	self:Animate("VMK",				self:GetPackedBool(9) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VAH",				self:GetPackedBool(10) and 1 or 0, 	0,1, 16, false)
 	local VAD = self:Animate("VAD",				self:GetPackedBool(11) and 1 or 0, 	0,1, 16, false)
-	local A = self:Animate("VUD1",			1-(self:GetPackedBool(12) and 1 or 0), 	0,1, 16, false)
-	self:Animate("VUD2",			self:GetPackedBool(13) and 1 or 0, 	0,1, 16, false)
-	self:Animate("VDL",				self:GetPackedBool(14) and 1 or 0, 	0,1, 16, false)
+	self:Animate("VUD1",			1-(self:GetPackedBool(12) and 1 or 0), 	0,1, 8, false)
+	self:Animate("VUD2",			self:GetPackedBool(13) and 1 or 0, 	0,1, 8, false)
+	self:Animate("VDL",				self:GetPackedBool(14) and 1 or 0, 	0,1, 8, false)
 	self:Animate("VZ1",				self:GetPackedBool("VZ1") and 1 or 0, 	0,1, 16, false)
 	self:Animate("KDLR",				self:GetPackedBool("KDLR") and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDLR_light","KDLR")
 	self:Animate("KDL",				self:GetPackedBool(15) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDL_light","KDL")
@@ -2109,10 +2109,12 @@ function ENT:Think()
 	self.BrakeLineRamp2 = self.BrakeLineRamp2 or 0
 	if (brakeLinedPdT < 0.001)
 	then self.BrakeLineRamp2 = self.BrakeLineRamp2 + 4.0*(0-self.BrakeLineRamp2)*dT
-	else self.BrakeLineRamp2 = self.BrakeLineRamp2 + 4.0*(0.04*brakeLinedPdT-self.BrakeLineRamp2)*dT
+	else self.BrakeLineRamp2 = self.BrakeLineRamp2 + 8.0*(0.1*brakeLinedPdT-self.BrakeLineRamp2)*dT
 	end
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
-	self:SetSoundState("release3",math.Clamp(self.BrakeLineRamp2,0,1),1.0)
+	self:SetSoundState("release3",self.BrakeLineRamp2,1.0)
+
+	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/6*(self:GetPackedBool(6) and 1 or 0)),1.0)
 
 	-- Compressor
 	local state = self:GetPackedBool(20)

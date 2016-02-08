@@ -583,6 +583,8 @@ function ENT:Think()
 	end
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
 	self:SetSoundState("release3_w",math.Clamp(self.BrakeLineRamp2,0,1),1.0)
+	
+	self:SetSoundState("cran1_w",math.min(1,self:GetPackedRatio(4)/6*(self:GetPackedBool(6) and 1 or 0)),1.0)
 
 	-- Compressor
 	local state = self:GetPackedBool(20)
