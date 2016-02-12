@@ -18,7 +18,7 @@ ENT.ButtonMap["Main"] = {
 		{ID = "DIPonSet",		x=22,  y=19, radius=20, tooltip="Включение ДИП и освещения\nTurn DIP and interior lights on"},
 		{ID = "DIPoffSet",		x=66,  y=19, radius=20, tooltip="Выключение ДИП и освещения\nTurn DIP and interior lights off"},
 		{ID = "VozvratRPSet",	x=192, y=78, radius=20, tooltip="Возврат реле перегрузки\nReset overload relay"},
-		{ID = "VMKToggle",		x=22,  y=85, radius=20, tooltip="Включение мотор-компрессора\nTurn motor-compressor on"},
+		{ID = "VMKToggle",		x=22,  y=73, radius=20, tooltip="Включение мотор-компрессора\nTurn motor-compressor on"},
 		
 		{ID = "RezMKSet",		x=66,  y=80, radius=20, tooltip="Резервное включение мотор-компрессора\nEmergency motor-compressor startup"},
 		{ID = "VAHToggle",		x=187, y=19, radius=20, tooltip="ВАХ: Включение аварийного хода (неисправность реле педали безопасности)\nVAH: Emergency driving mode (failure of RPB relay)"},
@@ -29,7 +29,7 @@ ENT.ButtonMap["Main"] = {
 		
 		{ID = "OtklAVUToggle",	x=349, y=19, radius=20, tooltip="Отключение автоматического выключения управления (неисправность реле АВУ)\nTurn off automatic control disable relay (failure of AVU relay)"},
 		{ID = "KRZDSet",		x=393, y=19, radius=20, tooltip="КРЗД: Кнопка резервного закрытия дверей\nKRZD: Emergency door closing"},
-		{ID = "VUD1Toggle",		x=393, y=80, radius=20, tooltip="ВУД1: Выключатель управления дверьми\nVUD1: Door control toggle (close doors)"},
+		{ID = "VUD1Toggle",		x=393, y=73, radius=20, tooltip="ВУД1: Выключатель управления дверьми\nVUD1: Door control toggle (close doors)"},
 		
 		{ID = "DoorSelectToggle",x=321, y=75, radius=20, tooltip="Выбор стороны открытия дверей\nSelect side on which doors will open"},
 		{ID = "KDLSet",			x=291, y=122, radius=20, tooltip="КДЛ: Кнопка левых дверей\nKDL: Left doors open"},
@@ -60,7 +60,7 @@ ENT.ButtonMap["Front"] = {
 	
 	buttons = {
 		{ID = "VUSToggle",x=400, y=75, radius=15, tooltip="ВУС: Выключатель усиленого света ходовых фар\nVUS: Head lights bright/dim"},
-		--{ID = "CabinLightsToggle",		x=387, y=28, radius=15, tooltip=""},
+		{ID = "L_3Toggle",x=388, y=28, radius=15, tooltip="Освещение пульта\nPanel lighting"},
 		{x=25, y=30, w=57, h=40, tooltip="Напряжение цепей управления\nControl circuits voltage"},
 	}
 }
@@ -611,169 +611,217 @@ ENT.ClientProps["volt2"] = {
 
 --------------------------------------------------------------------------------
 ENT.ClientProps["headlights"] = {
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 	pos = Vector(443.1,-60.0,0.5),
 	ang = Angle(-74,0,0)
 }
-ENT.ClientProps["panellights"] = {
-	model = "models/metrostroi/81-717/switch04.mdl",
-	pos = Vector(444.1,-59.3,3.3),
-	ang = Angle(-74,0,0)
-}
+Metrostroi.ClientPropForButton("L_3",{
+	panel = "Front",
+	button = "L_3Toggle",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
+})
 --------------------------------------------------------------------------------
 Metrostroi.ClientPropForButton("R_VPR",{
 	panel = "Main",
 	button = "R_VPRToggle",
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 })
 Metrostroi.ClientPropForButton("R_ZS",{
 	panel = "Main",
 	button = "R_ZSToggle",
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 })
 Metrostroi.ClientPropForButton("R_G",{
 	panel = "Main",
 	button = "R_GToggle",
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 })
 Metrostroi.ClientPropForButton("R_Radio",{
 	panel = "Main",
 	button = "R_RadioToggle",
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 })
 Metrostroi.ClientPropForButton("DIPon",{
 	panel = "Main",
 	button = "DIPonSet",	
-	model = "models/metrostroi/81-717/button07.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 0,
+	z = -4.5,
 })
 Metrostroi.ClientPropForButton("DIPoff",{
 	panel = "Main",
 	button = "DIPoffSet",	
-	model = "models/metrostroi/81-717/button10.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 1,
+	z = -4.5,
 })
 Metrostroi.ClientPropForButton("VozvratRP",{
 	panel = "Main",
 	button = "VozvratRPSet",	
-	model = "models/metrostroi/81-717/button07.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 0,
+	z = -4.5,
 })
 Metrostroi.ClientPropForButton("VMK",{
 	panel = "Main",
 	button = "VMKToggle",	
-	model = "models/metrostroi/81-717/switch01.mdl",
-	z = -9.8,
+	model = "models/metrostroi_train/81/vud.mdl",
+	ang = 0,
+	z = -15,
 })
 Metrostroi.ClientPropForButton("RezMK",{
 	panel = "Main",
 	button = "RezMKSet",	
-	model = "models/metrostroi/81-717/button07.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 0,
+	z = -4.5,
 })
 Metrostroi.ClientPropForButton("VAH",{
 	panel = "Main",
 	button = "VAHToggle",	
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 })
 Metrostroi.ClientPropForButton("VAD",{
 	panel = "Main",
 	button = "VADToggle",	
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 })
 Metrostroi.ClientPropForButton("ALS",{
 	panel = "Main",
 	button = "ALSToggle",	
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 })
 Metrostroi.ClientPropForButton("ARS",{
 	panel = "Main",
 	button = "ARSToggle",	
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 })
 Metrostroi.ClientPropForButton("OtklAVU",{
 	panel = "Main",
 	button = "OtklAVUToggle",	
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 })
 Metrostroi.ClientPropForButton("KRZD",{
 	panel = "Main",
 	button = "KRZDSet",	
-	model = "models/metrostroi/81-717/button07.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 0,
+	z = -4.5,
 })
 Metrostroi.ClientPropForButton("VUD1",{
 	panel = "Main",
 	button = "VUD1Toggle",	
-	model = "models/metrostroi/81-717/switch01.mdl",
-	z = -9.8,
+	model = "models/metrostroi_train/81/vud.mdl",
+	ang = 0,
+	z = -3,
+	z = -15,
 })
 Metrostroi.ClientPropForButton("DoorSelect",{
 	panel = "Main",
 	button = "DoorSelectToggle",	
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
 	ang = 0
 })
 Metrostroi.ClientPropForButton("KDL",{
 	panel = "Main",
 	button = "KDLSet",	
-	model = "models/metrostroi/81-717/button08.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 3,
+	z = -4.5,
 })
 Metrostroi.ClientPropForButton("KDP",{
 	panel = "Main",
 	button = "KDPSet",	
-	model = "models/metrostroi/81-717/button08.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 3,
+	z = -4.5,
 })
 Metrostroi.ClientPropForButton("KVT",{
 	panel = "Main",
 	button = "KVTSet",	
-	model = "models/metrostroi/81-717/button07.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 0,
+	z=-4.5,
 })
 Metrostroi.ClientPropForButton("KSN",{
 	panel = "Main",
 	button = "KSNSet",	
-	model = "models/metrostroi/81-717/button10.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 1,
+	z = -4.5,
 })
 Metrostroi.ClientPropForButton("KRP",{
 	panel = "Main",
 	button = "KRPSet",	
-	model = "models/metrostroi/81-717/button07.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 0,
+	z = -4.5,
 })
 Metrostroi.ClientPropForButton("Program1",{
 	panel = "Main",
 	button = "R_Program1Set",	
-	model = "models/metrostroi/81-717/button08.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 0,
+	z = -4.5,
 })
 Metrostroi.ClientPropForButton("Program2",{
 	panel = "Main",
 	button = "R_Program2Set",	
-	model = "models/metrostroi/81-717/button08.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 0,
+	z = -4.5,
 })
 
 Metrostroi.ClientPropForButton("SelectMain",{
 	panel = "DURA",
 	button = "DURASelectMain",	
-	model = "models/metrostroi/81-717/button07.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 0,
+	z = -4.5,
 })
 Metrostroi.ClientPropForButton("SelectAlternate",{
 	panel = "DURA",
 	button = "DURASelectAlternate",	
-	model = "models/metrostroi/81-717/button07.mdl",
+	model = "models/metrostroi_train/81/button.mdl",
+	skin = 0,
+	z = -4.5,
 })
 Metrostroi.ClientPropForButton("SelectChannel",{
 	panel = "DURA",
 	button = "DURAToggleChannel",	
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 })
 Metrostroi.ClientPropForButton("DURAPower",{
 	panel = "DURA",
 	button = "DURAPowerToggle",
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 })
 Metrostroi.ClientPropForButton("VUD2",{
 	panel = "HelperPanel",
 	button = "VUD2Toggle",	
-	model = "models/metrostroi/81-717/switch01.mdl",
+	model = "models/metrostroi_train/81/vud.mdl",
+	ang = 0,
+	z = -3,
 })
 Metrostroi.ClientPropForButton("VDL",{
 	panel = "HelperPanel",
 	button = "VDLSet",	
-	model = "models/metrostroi/81-717/switch01.mdl",
+	model = "models/metrostroi_train/81/vud.mdl",
+	ang = 0,
+	z = -3,
 })
 Metrostroi.ClientPropForButton("Custom1",{
 	panel = "Announcer",
@@ -793,7 +841,8 @@ Metrostroi.ClientPropForButton("Custom3",{
 Metrostroi.ClientPropForButton("CustomC",{
 	panel = "Announcer",
 	button = "CustomCToggle",
-	model = "models/metrostroi/81-717/switch04.mdl",
+	model = "models/metrostroi_train/81/tumbler4.mdl",
+	ang = 90,
 })
 
 Metrostroi.ClientPropForButton("CustomD",{
@@ -857,19 +906,19 @@ for x=0,11 do
 	end
 end
 ENT.ClientProps["bat1"] = {
-	model = "models/metrostroi/81-717/switch01.mdl",
+	model = "models/metrostroi_train/81/vud.mdl",
 	pos = Vector(393.6,26.0+4.6*0,24.9),
-	ang = Angle(90,0,0)
+	ang = Angle(0,90,90)
 }
 ENT.ClientProps["bat2"] = {
-	model = "models/metrostroi/81-717/switch01.mdl",
+	model = "models/metrostroi_train/81/vud.mdl",
 	pos = Vector(393.6,26.0+4.6*1,24.9),
-	ang = Angle(90,0,0)
+	ang = Angle(0,90,90)
 }
 ENT.ClientProps["bat3"] = {
-	model = "models/metrostroi/81-717/switch01.mdl",
+	model = "models/metrostroi_train/81/vud.mdl",
 	pos = Vector(393.6,26.0+4.6*2,24.9),
-	ang = Angle(90,0,0)
+	ang = Angle(0,90,90)
 }
 --------------------------------------------------------------------------------
 ENT.ClientProps["book"] = {
@@ -1024,6 +1073,7 @@ function ENT:Think()
 	self:Animate("volt2",			0, 									0.38, 0.63)
 	
 	self:Animate("headlights",		self:GetPackedBool(1) and 1 or 0, 	0,1, 8, false)
+	self:Animate("L_3",		self:GetPackedBool("L_3") and 1 or 0, 	0,1, 8, false)
 	self:Animate("VozvratRP",		self:GetPackedBool(2) and 1 or 0, 	0,1, 16, false)
 	self:Animate("DIPon",			self:GetPackedBool(3) and 1 or 0, 	0,1, 16, false)
 	self:Animate("DIPoff",			self:GetPackedBool(4) and 1 or 0, 	0,1, 16, false)	
@@ -1356,7 +1406,7 @@ function ENT:DrawPost()
 		b = self:Animate("light_PECH",self:GetPackedBool(37) and 1 or 0,0,1,5,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
-			surface.SetDrawColor(255,50,0)
+			surface.SetDrawColor(255,127,0)
 			surface.DrawRect(260*10,73*10,16*10,8*10)
 			draw.DrawText("ПЕЧЬ","MetrostroiSubway_SmallText",260*10,73*10-5,Color(0,0,0,255))
 		end
@@ -1397,7 +1447,7 @@ function ENT:DrawPost()
 		b = self:Animate("light_40",self:GetPackedBool(43) and 1 or 0,0,1,5,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
-			surface.SetDrawColor(255,50,0)
+			surface.SetDrawColor(255,127,0)
 			surface.DrawRect(176*10,53*10,16*10,8*10)
 			draw.DrawText("40","MetrostroiSubway_LargeText",176*10+30,53*10-10,Color(0,0,0,255))
 		end

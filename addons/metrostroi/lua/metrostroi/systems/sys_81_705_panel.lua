@@ -42,6 +42,8 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("Radio13","Relay","Switch", {button = true})
 	self.Train:LoadSystem("ARS13","Relay","Switch", {button = true})
 	
+	self.Train:LoadSystem("L_3","Relay","Switch", {switch = true})
+	
 	-- Педаль бдительности (ПБ)
 	self.Train:LoadSystem("PB","Relay","Switch", {pb = true})
 	

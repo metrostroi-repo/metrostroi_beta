@@ -296,7 +296,6 @@ function ENT:Think()
 		end
 	end
 	self.RetVal = self.BaseClass.Think(self)
-
 	-- Check if wrench was pulled out
 	if self.DriversWrenchPresent then
 		self.KV:TriggerInput("Enabled",self:IsWrenchPresent() and 1 or 0)
@@ -348,6 +347,7 @@ function ENT:Think()
 	-- Switch and button states
 	self:SetPackedBool(0,self:IsWrenchPresent())
 	self:SetPackedBool(1,self.VUS.Value == 1.0)
+	self:SetPackedBool("L_3",self.L_3.Value == 1.0)
 	self:SetPackedBool(2,self.VozvratRP.Value == 1.0)
 	self:SetPackedBool(3,self.DIPon.Value == 1.0)
 	self:SetPackedBool(4,self.DIPoff.Value == 1.0)

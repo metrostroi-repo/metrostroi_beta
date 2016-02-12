@@ -2698,7 +2698,45 @@ function ENT:DrawPost(special)
 		end
 		surface.SetAlphaMultiplier(1)
 	end)
-	self:DrawOnPanel("AnnouncerDisplay",function(...) self.ASNP:AnnDisplay(self,false) end)
+	self:DrawOnPanel("AnnouncerDisplay",function(...)if not self:GetPackedBool(32) then return end
+		if self:GetPackedBool(24) then
+			local function GetColor(id, text)
+				if text then
+					return self:GetPackedBool(id) and Color(255,0,0) or Color(0,0,0)
+				else
+					return not self:GetPackedBool(id) and Color(255,255,255) or Color(0,0,0)
+				end
+			end
+			surface.SetAlphaMultiplier(0.4)
+			surface.SetDrawColor(255,255,255)
+			surface.DrawRect(58,617,230,22) -- 120
+			surface.SetAlphaMultiplier(1.0)
+			draw.DrawText("DURA V 1.0","MetrostroiSubway_IGLA",60,613 + 22*0, Color(0,0,0,255))
+
+			surface.SetAlphaMultiplier(0.4)
+			surface.SetDrawColor(GetColor(31)) surface.SetAlphaMultiplier(0.4)
+			surface.DrawRect(58,617 + 22 * 1,230,22)
+			surface.SetAlphaMultiplier(1.0)
+			draw.DrawText("Channel:" .. (self:GetPackedBool(31) and "2" or "1"),"MetrostroiSubway_IGLA",60,613 + 22*1,GetColor(31, true))
+ 
+			surface.SetAlphaMultiplier(0.4)
+			surface.SetDrawColor(GetColor(153)) surface.SetAlphaMultiplier(0.4)
+			surface.DrawRect(58,617 + 22 * 2,230,22)
+			surface.SetAlphaMultiplier(1.0)
+			draw.DrawText("Channel1:" .. (self:GetPackedBool(153) and "Alt" or "Main"),"MetrostroiSubway_IGLA",60,613 + 22*2,GetColor(153, true))
+ 
+			surface.SetAlphaMultiplier(0.4)
+			surface.SetDrawColor(GetColor(154))
+			surface.DrawRect(58,617 + 22 * 3,230,22)
+			surface.SetAlphaMultiplier(1.0)
+			draw.DrawText("Channel2:" .. (self:GetPackedBool(154) and "Alt" or "Main"),"MetrostroiSubway_IGLA",60,613 + 22*3,GetColor(154, true))
+			surface.SetAlphaMultiplier(0.4)
+			surface.SetDrawColor(255,255,255)
+			surface.DrawRect(58,617 + 22 * 4,230, 120 - 88) -- 120
+			surface.SetAlphaMultiplier(1)
+		end
+		self.ASNP:AnnDisplay(self,false)
+	end)
 	
 	self:DrawOnPanel("FrontPneumatic",function()
 		draw.DrawText(self:GetNWBool("FbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))

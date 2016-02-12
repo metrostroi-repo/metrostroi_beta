@@ -99,14 +99,14 @@ function TRAIN_SYSTEM:AnnDisplay(train,ezh3)
 			--for x = 0,math.min(19,#self.STR1r[y+1]-1)-xmin do
 				local char = self.STR1r[y+1][x+1]
 				if char == "|" then
-					Metrostroi.DrawLine(235+9+(x-xmin)*18 - (ezh3 and 5 or 0),141 + y*30-10,235+9+(x-xmin)*18,141+ y*30+9, Color(16,36,5),3)
+					Metrostroi.DrawLine(235+9+(x-xmin)*18 - (ezh3 and 5 or 0),141 + y*30-10,235+9+(x-xmin)*18,141+ y*30+9, Color(16,26,5),3)
 				elseif char == "_" then
 					if CurTime()%0.5<=0.25 then
-						draw.DrawText(char,"MetrostroiSubway_IGLA",236+(x-xmin)*18 - (ezh3 and 5 or 0),121 + y*30, Color(16,36,5))	
+						draw.DrawText(char,"MetrostroiSubway_IGLA",236+(x-xmin)*18 - (ezh3 and 5 or 0),121 + y*30, Color(16,26,5))	
 					end
 					xmin = xmin + 1
 				else
-					draw.DrawText(char,"MetrostroiSubway_IGLA",235+(x-xmin)*18 - (ezh3 and 5 or 0),125 + y*30, Color(16,36,5))
+					draw.DrawText(char,"MetrostroiSubway_IGLA",235+(x-xmin)*18 - (ezh3 and 5 or 0),125 + y*30, Color(16,26,5))
 				end
 				x = x + 1
 			end
