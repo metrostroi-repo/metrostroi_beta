@@ -25,8 +25,8 @@ if CreateConVar then
 end
 
 function TRAIN_SYSTEM:Initialize()
-	self.Train:LoadSystem("RC2","Relay","Switch", {rc = true,normally_closed = true })
-	self.Train:LoadSystem("VAU","Relay","Switch",{ rc = true,normally_closed = true })	
+	self.Train:LoadSystem("RC2","Relay","Switch", {paketnik = true,normally_closed = true })
+	self.Train:LoadSystem("VAU","Relay","Switch",{ paketnik = true,normally_closed = true })	
 	-- ALS state
 	self.Signal80 = false
 	self.Signal70 = false

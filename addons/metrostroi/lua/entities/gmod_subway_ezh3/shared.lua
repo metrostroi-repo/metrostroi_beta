@@ -34,6 +34,16 @@ function ENT:InitializeSounds()
 	self.SoundNames["r1_5_open"] = "subway_trains/razbor_hod.wav"
 	self.SoundNames["rk_spin"]		= "subway_trains/rk_3.wav"
 	self.SoundNames["rk_stop"]		= "subway_trains/rk_4.wav"
+	self.SoundNames["switch_off"] = {"subway_trains/tumbler_1_off.wav","subway_trains/tumbler_2_off.wav","subway_trains/tumbler_3_off.wav"}
+	self.SoundNames["switch_on"] = {"subway_trains/tumbler_1_on.wav","subway_trains/tumbler_2_on.wav","subway_trains/tumbler_3_on.wav"}
+	self.SoundNames["av_on"]			=  {
+		"subway_trains/va21_2_1_on.wav",
+		"subway_trains/va21_2_2_on.wav",
+	}
+	self.SoundNames["av_off"]			=  {
+		"subway_trains/va21_2_1_off.wav",
+		"subway_trains/va21_2_2_off.wav",
+	}
 end
 
 function ENT:InitializeSystems()	
@@ -85,6 +95,7 @@ function ENT:InitializeSystems()
 	self:LoadSystem("ALS_ARS")
 	self:LoadSystem("Horn")
 	self:LoadSystem("Announcer")
+	self:LoadSystem("ASNP")
 
 	self:LoadSystem("ASNP31","Relay","Switch")
 	self:LoadSystem("ASNP32","Relay","Switch")

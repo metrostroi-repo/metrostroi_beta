@@ -473,6 +473,7 @@ function ENT:Think()
 	self:SetPackedBool(64+7  ,self.AV8B.Value > 0.5)
 	self:SetPackedBool(64+36,self.VU2.Value > 0.5)
 	self:SetPackedBool(64+13,self.VU3.Value > 0.5)
+	self:SetPackedBool("VPR",self.RST.Value == 1.0 and self.Panel["V1"])
 	-- Feed packed floats
 	self:SetPackedRatio(0, 1-self.Pneumatic.DriverValvePosition/7)
 	self:SetPackedRatio(1, (self.KV.ControllerPosition+3)/7)

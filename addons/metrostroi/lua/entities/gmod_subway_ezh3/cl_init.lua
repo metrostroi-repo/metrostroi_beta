@@ -42,10 +42,10 @@ ENT.ButtonMap["Main"] = {
 		{ID = "R_Program1Set",	x=112, y=127, radius=20, tooltip="Программа 1\nProgram 1"},
 		{ID = "R_Program2Set",	x=149, y=127, radius=20, tooltip="Программа 2\nProgram 2"},
 
-		{ID = "R_UNchToggle",	x=112, y=30, radius=20, tooltip="УНЧ: Усилитель низких частот\nUNCh: Low frequency amplifier"},
+		{ID = "R_GToggle",	x=112, y=30, radius=20, tooltip="УНЧ: Усилитель низких частот\nUNCh: Low frequency amplifier (Sound in cabin enable)"},
 		{ID = "R_ZSToggle",		x=149, y=30, radius=20, tooltip="ЗС: Звук в салоне\nZS: Sound in wagons enable"},
 		{ID = "R_RadioToggle",	x=112, y=80, radius=20, tooltip="Радиоинформатор (встроеный)\nRadioinformator: Announcer (built-in)"},
-		{ID = "R_GToggle",		x=149, y=80, radius=20, tooltip="Громкоговоритель\nLoudspeaker: Sound in cabin enable"},
+		{ID = "R_VPRToggle",		x=149, y=80, radius=20, tooltip="ВПР: Включение поездной радиосвязи\nVPR: Radiostation enable "},
 		
 	}
 }
@@ -621,9 +621,9 @@ ENT.ClientProps["panellights"] = {
 	ang = Angle(-74,0,0)
 }
 --------------------------------------------------------------------------------
-Metrostroi.ClientPropForButton("R_UNch",{
+Metrostroi.ClientPropForButton("R_VPR",{
 	panel = "Main",
-	button = "R_UNchToggle",
+	button = "R_VPRToggle",
 	model = "models/metrostroi/81-717/switch04.mdl",
 })
 Metrostroi.ClientPropForButton("R_ZS",{
@@ -1065,6 +1065,7 @@ function ENT:Think()
 	self:Animate("R_G",				self:GetPackedBool(125) and 1 or 0, 0,1, 16, false)
 	self:Animate("R_Radio",			self:GetPackedBool(126) and 1 or 0, 0,1, 16, false)
 	self:Animate("R_ZS",			self:GetPackedBool(127) and 1 or 0, 0,1, 16, false)
+	self:Animate("R_VPR",			self:GetPackedBool("R_VPR") and 1 or 0, 0,1, 16, false)
 	self:Animate("Program1",		self:GetPackedBool(128) and 1 or 0, 0,1, 16, false)
 	self:Animate("Program2",		self:GetPackedBool(129) and 1 or 0, 0,1, 16, false)
 	self:Animate("rc1",				self:GetPackedBool(130) and 0.87 or 1, 	0,1, 1, false)
@@ -1147,7 +1148,7 @@ function ENT:Think()
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
 	self:SetSoundState("release3",math.Clamp(self.BrakeLineRamp2,0,1),1.0)
 	
-	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/6*(self:GetPackedBool(6) and 1 or 0)),1.0)
+	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),1.0)
 
 	-- Compressor
 	local state = self:GetPackedBool(20)
@@ -1170,6 +1171,18 @@ function ENT:Think()
 		else
 			self:SetSoundState("ring",0,0)
 			self:PlayOnce("ring_end","cabin",0.45)		
+		end
+	end
+	
+	local state = self:GetPackedBool("VPR")
+	self.PreviousVPRState = self.PreviousVPRState or false
+	if self.PreviousVPRState ~= state then
+		self.PreviousVPRState = state
+		if state then
+			self:SetSoundState("vpr",1,1)
+		else
+			self:SetSoundState("vpr",0,0)
+			self:PlayOnce("vpr_end","cabin",1)		
 		end
 	end
 	
@@ -1332,6 +1345,14 @@ function ENT:DrawPost()
 			draw.DrawText("НР1","MetrostroiSubway_LargeText",196*10,73*10-20,Color(0,0,0,255))
 		end
 		
+		b = self:Animate("light_VPR",self:GetPackedBool("VPR") and 1 or 0,0,1,5,false)
+		if b > 0.0 then
+			surface.SetAlphaMultiplier(b)
+			surface.SetDrawColor(0,255,50)
+			surface.DrawRect(228*10,73*10,16*10,8*10)
+			draw.DrawText("ВПР","MetrostroiSubway_LargeText",228*10,73*10-20,Color(0,0,0,255))
+		end
+		
 		b = self:Animate("light_PECH",self:GetPackedBool(37) and 1 or 0,0,1,5,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
@@ -1475,33 +1496,12 @@ function ENT:DrawPost()
 		end
 	end)
 	
-	self:DrawOnPanel("AnnouncerDisplay",function()
+	self:DrawOnPanel("AnnouncerDisplay",function(...)
 		local plus = (not self:GetPackedBool(32) and 1 or 0)
-		surface.SetDrawColor(50 - plus*40,255 - plus*220,40 - plus*40)
-		surface.DrawRect(260,80,390,150)
+		surface.SetDrawColor(83,140,82)
+		surface.DrawRect(230,80,450,150)
 		if not self:GetPackedBool(32) then return end
-		
-		-- Custom announcer display
-		local C1 = Color(0,0,0,210)
-		local C2 = Color(50,200,50,255)
-		local flash = false
-		text1 = self:GetNWString("CustomStr0")
-		text2 = self:GetNWString("CustomStr1")
-		
-		-- Draw text
-		if flash and ((RealTime() % 1.0) > 0.5) then
-			C2,C1 = C1,C2
-		end
-		for i=1,20 do
-			surface.SetDrawColor(C2)
-			surface.DrawRect(280+(i-1)*17.7+1,124+4,16,20)			
-			draw.DrawText(string.upper(text1[i] or ""),"MetrostroiSubway_IGLA",280+(i-1)*17.7,124+0,C1)
-		end
-		for i=1,20 do
-			surface.SetDrawColor(C2)
-			surface.DrawRect(280+(i-1)*17.7+1,124+31+4,16,20)
-			draw.DrawText(string.upper(text2[i] or ""),"MetrostroiSubway_IGLA",280+(i-1)*17.7,124+31,C1)
-		end
+		self.ASNP:AnnDisplay(self,true)
 	end)
 	
 	self:DrawOnPanel("DURADisplay",function()

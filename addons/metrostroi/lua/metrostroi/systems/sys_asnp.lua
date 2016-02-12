@@ -53,77 +53,42 @@ end
 function TRAIN_SYSTEM:TriggerInput(name,value)
 end
 Metrostroi.AnnButtons = {"-","+","Меню"}
-function TRAIN_SYSTEM:AnnDisplay(train)
+function TRAIN_SYSTEM:AnnDisplay(train,ezh3)
 		-- Draw button labels
-		for x=0,2 do
-				draw.Text({
-					text = string.Trim(Metrostroi.AnnButtons[x+1]),
-					font = "MetrostroiSubway_VerySmallText3",
-					pos = { 310+x*135,350+0*150},
-					xalign = TEXT_ALIGN_CENTER,yalign = TEXT_ALIGN_CENTER,color = Color(0,0,0,255)})
+		if not ezh3 then
+			for x=0,2 do
+					draw.Text({
+						text = string.Trim(Metrostroi.AnnButtons[x+1]),
+						font = "MetrostroiSubway_VerySmallText3",
+						pos = { 310+x*135,350+0*150},
+						xalign = TEXT_ALIGN_CENTER,yalign = TEXT_ALIGN_CENTER,color = Color(0,0,0,255)})
+			end
+			draw.Text({
+				text = "Manual",
+				font = "MetrostroiSubway_VerySmallText3",
+				pos = { 735,200},
+				xalign = TEXT_ALIGN_CENTER,yalign = TEXT_ALIGN_CENTER,color = Color(0,0,0,255)})
+			draw.Text({
+				text = "Auto",
+				font = "MetrostroiSubway_VerySmallText3",
+				pos = { 735,100},
+				xalign = TEXT_ALIGN_CENTER,yalign = TEXT_ALIGN_CENTER,color = Color(0,0,0,255)})
 		end
-		draw.Text({
-			text = "Manual",
-			font = "MetrostroiSubway_VerySmallText3",
-			pos = { 735,200},
-			xalign = TEXT_ALIGN_CENTER,yalign = TEXT_ALIGN_CENTER,color = Color(0,0,0,255)})
-		draw.Text({
-			text = "Auto",
-			font = "MetrostroiSubway_VerySmallText3",
-			pos = { 735,100},
-			xalign = TEXT_ALIGN_CENTER,yalign = TEXT_ALIGN_CENTER,color = Color(0,0,0,255)})
-			
-		--draw.DrawText("SELFDESTRUCT","MetrostroiSubway_VerySmallText3",300,480,Color(0,0,0,255))		
 		
 		if not train:GetPackedBool(32) then return end
-		if train:GetPackedBool(24) then
-			local function GetColor(id, text)
-				if text then
-					return train:GetPackedBool(id) and Color(255,0,0) or Color(0,0,0)
-				else
-					return not train:GetPackedBool(id) and Color(255,255,255) or Color(0,0,0)
-				end
+		if false then
+			for i=1,25 do
+				surface.SetDrawColor(Color(53,91,25))
+				surface.DrawRect(235+(i-1)*18+1 - (ezh3 and 5 or 0),125+4,16,25)			
+				--draw.DrawText(string.upper(text1[i] or ""),"MetrostroiSubway_IGLA",287+(i-1)*17.7,125+0,Color(0,0,0,210))
 			end
-			surface.SetAlphaMultiplier(0.4)
-			surface.SetDrawColor(255,255,255)
-			surface.DrawRect(58,617,230,22) -- 120
-			surface.SetAlphaMultiplier(1.0)
-			draw.DrawText("DURA V 1.0","MetrostroiSubway_IGLA",60,613 + 22*0, Color(0,0,0,255))
-
-			surface.SetAlphaMultiplier(0.4)
-			surface.SetDrawColor(GetColor(31)) surface.SetAlphaMultiplier(0.4)
-			surface.DrawRect(58,617 + 22 * 1,230,22)
-			surface.SetAlphaMultiplier(1.0)
-			draw.DrawText("Channel:" .. (train:GetPackedBool(31) and "2" or "1"),"MetrostroiSubway_IGLA",60,613 + 22*1,GetColor(31, true))
-
-			surface.SetAlphaMultiplier(0.4)
-			surface.SetDrawColor(GetColor(153)) surface.SetAlphaMultiplier(0.4)
-			surface.DrawRect(58,617 + 22 * 2,230,22)
-			surface.SetAlphaMultiplier(1.0)
-			draw.DrawText("Channel1:" .. (train:GetPackedBool(153) and "Alt" or "Main"),"MetrostroiSubway_IGLA",60,613 + 22*2,GetColor(153, true))
-
-			surface.SetAlphaMultiplier(0.4)
-			surface.SetDrawColor(GetColor(154))
-			surface.DrawRect(58,617 + 22 * 3,230,22)
-			surface.SetAlphaMultiplier(1.0)
-			draw.DrawText("Channel2:" .. (train:GetPackedBool(154) and "Alt" or "Main"),"MetrostroiSubway_IGLA",60,613 + 22*3,GetColor(154, true))
-			surface.SetAlphaMultiplier(0.4)
-			surface.SetDrawColor(255,255,255)
-			surface.DrawRect(58,617 + 22 * 4,230, 120 - 88) -- 120
-			surface.SetAlphaMultiplier(1)
+			for i=1,25 do
+				surface.SetDrawColor(Color(53,91,25))
+				surface.DrawRect(235+(i-1)*18+1 - (ezh3 and 5 or 0),125+31+4,16,25)
+				--draw.DrawText(string.upper(text2[i] or ""),"MetrostroiSubway_IGLA",287+(i-1)*17.7,125+31,Color(0,0,0,210))
+			end
 		end
-		-- Custom announcer display
-		for i=1,25 do
-			surface.SetDrawColor(Color(53,91,25))
-			surface.DrawRect(235+(i-1)*18+1,125+4,16,25)			
-			--draw.DrawText(string.upper(text1[i] or ""),"MetrostroiSubway_IGLA",287+(i-1)*17.7,125+0,Color(0,0,0,210))
-		end
-		for i=1,25 do
-			surface.SetDrawColor(Color(53,91,25))
-			surface.DrawRect(235+(i-1)*18+1,125+31+4,16,25)
-			--draw.DrawText(string.upper(text2[i] or ""),"MetrostroiSubway_IGLA",287+(i-1)*17.7,125+31,Color(0,0,0,210))
-		end
-		
+	
 		for y = 0,#self.STR1r-1 do
 			local xmin = 0
 			local blink = false
@@ -134,14 +99,14 @@ function TRAIN_SYSTEM:AnnDisplay(train)
 			--for x = 0,math.min(19,#self.STR1r[y+1]-1)-xmin do
 				local char = self.STR1r[y+1][x+1]
 				if char == "|" then
-					Metrostroi.DrawLine(235+9+(x-xmin)*18,141 + y*30-10,235+9+(x-xmin)*18,141+ y*30+9, Color(16,36,5),3)
+					Metrostroi.DrawLine(235+9+(x-xmin)*18 - (ezh3 and 5 or 0),141 + y*30-10,235+9+(x-xmin)*18,141+ y*30+9, Color(16,36,5),3)
 				elseif char == "_" then
 					if CurTime()%0.5<=0.25 then
-						draw.DrawText(char,"MetrostroiSubway_IGLA",236+(x-xmin)*18,121 + y*30, Color(16,36,5))	
+						draw.DrawText(char,"MetrostroiSubway_IGLA",236+(x-xmin)*18 - (ezh3 and 5 or 0),121 + y*30, Color(16,36,5))	
 					end
 					xmin = xmin + 1
 				else
-					draw.DrawText(char,"MetrostroiSubway_IGLA",235+(x-xmin)*18,125 + y*30, Color(16,36,5))
+					draw.DrawText(char,"MetrostroiSubway_IGLA",235+(x-xmin)*18 - (ezh3 and 5 or 0),125 + y*30, Color(16,36,5))
 				end
 				x = x + 1
 			end

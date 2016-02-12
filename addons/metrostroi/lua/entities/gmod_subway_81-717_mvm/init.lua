@@ -25,6 +25,7 @@ function ENT:Initialize()
 		VAH = true,
 		VAD = true,
 		OtklAVU = true,
+		TormAT = true,
 		KAH = true,
 		KAHK = true,
 		RC1 = true,
@@ -698,6 +699,7 @@ function ENT:Think()
 	self:SetPackedBool(17,self.KRZD.Value == 1.0)
 	self:SetPackedBool(18,self.KSN.Value == 1.0)
 	self:SetPackedBool(19,self.OtklAVU.Value == 1.0)
+	self:SetPackedBool("TormAT",self.TormAT.Value == 1.0)
 	self:SetPackedBool(20,self.Pneumatic.Compressor == 1.0)
 	self:SetPackedBool(21,self.Pneumatic.LeftDoorState[1] > 0.5)
 	self:SetPackedBool(22,self.Pneumatic.ValveType == 2)
@@ -729,6 +731,8 @@ function ENT:Think()
 	self:SetPackedBool(125,self.R_G.Value == 1.0)
 	self:SetPackedBool(126,self.R_Radio.Value == 1.0)
 	self:SetPackedBool(127,self.R_ZS.Value == 1.0)
+	self:SetPackedBool("R_VPR",self.R_VPR.Value == 1.0)
+	self:SetPackedBool("VPR",self.R_VPR.Value == 1.0 and self.A29.Value == 1.0 and self.Panel["V1"])
 	self:SetPackedBool(128,self.R_Program1.Value == 1.0)
 	self:SetPackedBool(129,self.R_Program2.Value == 1.0)
 	self:SetPackedBool(130,self.RC1.Value == 1.0)

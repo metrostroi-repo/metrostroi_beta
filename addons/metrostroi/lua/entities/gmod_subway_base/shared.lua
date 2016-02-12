@@ -66,6 +66,15 @@ function ENT:InitializeSounds()
 		"subway_trains/new/switch_4.wav",
 		"subway_trains/new/switch_5.wav",
 	}
+	self.SoundNames["switch_off"]	= {
+		"subway_trains/new/switch_1.wav",
+		"subway_trains/new/switch_3.wav",
+		"subway_trains/new/switch_5.wav",
+	}
+	self.SoundNames["switch_on"]	= {
+		"subway_trains/new/switch_2.wav",
+		"subway_trains/new/switch_4.wav",
+	}
 	self.SoundNames["switch3"]	= {
 		"subway_trains/switch_5.wav",
 		"subway_trains/switch_6.wav",
@@ -128,10 +137,25 @@ function ENT:InitializeSounds()
 	self.SoundNames["kru_in"]			= "subway_trains/new/kru_in.wav"
 	self.SoundNames["kru_out"]			= "subway_trains/new/kru_out.wav"
 	self.SoundNames["revers_in"]			= "subway_trains/revers_in.wav"
-	self.SoundNames["revers_out"]			= "subway_trains/new/revers_out.wav" --FIXME
+	self.SoundNames["revers_out"]			= "subway_trains/revers_out.wav" --FIXME
 
-	self.SoundNames["av_on"]			= "subway_trains/av_on.wav"
-	self.SoundNames["av_off"]			= "subway_trains/av_off.wav"
+	--self.SoundNames["av_on"]			= "subway_trains/av_on.wav"
+	--self.SoundNames["av_off"]			= "subway_trains/av_off.wav"
+	self.SoundNames["av_on"]			=  {
+		"subway_trains/va21_1_on.wav",
+		"subway_trains/va21_2_on.wav",
+		"subway_trains/va21_3_on.wav",
+		"subway_trains/va21_4_on.wav",
+	}
+	self.SoundNames["av_off"]			=  {
+		"subway_trains/va21_1_off.wav",
+		"subway_trains/va21_2_off.wav",
+		"subway_trains/va21_3_off.wav",
+		"subway_trains/va21_4_off.wav",
+	}
+	
+	self.SoundNames["pak_on"]			= "subway_trains/pak_on.wav"
+	self.SoundNames["pak_off"]			= "subway_trains/pak_off.wav"
 
 	self.SoundNames["bpsn1"] 		= "subway_trains/bpsn_1.wav"
 	self.SoundNames["bpsn2"] 		= "subway_trains/bpsn_3.wav"
@@ -201,6 +225,11 @@ function ENT:InitializeSounds()
 
 	self.SoundNames["inf_on"]		= "subway_trains/program_on.wav"
 	self.SoundNames["inf_off"]		= "subway_trains/program_0.wav"
+	
+	self.SoundNames["vpr"]		= "subway_trains/vpr.wav"
+	self.SoundNames["vpr_end"]	= "subway_trains/vpr_off.wav"
+	self.SoundPositions["vpr"] 	= "cabin"
+	self.SoundPositions["vpr_end"]= "cabin"
 	
 	self.SoundNames["br_334"]		= {
 		"subway_trains/new/334_1.wav",

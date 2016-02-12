@@ -35,6 +35,7 @@ function ENT:ReinitializeSounds()
 	self.SoundNames["brake3a"]		= "subway_trains/brake_3.wav"
 	self.SoundNames["flange1"]		= "subway_trains/flange_9.wav"
 	self.SoundNames["flange2"]		= "subway_trains/flange_10.wav"
+	self.SoundNames["brake_loop"]		= "subway_trains/torm_loop.wav"
 	
 	-- Remove old sounds
 	if self.Sounds then
@@ -288,15 +289,17 @@ function ENT:Think()
 	-- Brake squeal sound
 	local squealSound = self:GetNWInt("SquealSound",0)
 	local brakeSqueal = math.max(0.0,math.min(1.2,self:GetBrakeSqueal()))
-	local brakeRamp = math.min(1.0,math.max(0.0,speed/2.0))
-	if speed > 2 then
-		brakeRamp = 1 - math.min(1.0,math.max(0.0,(speed-3)/10.0))
-	end
+	--local brakeRamp = math.min(1.0,math.max(0.0,speed/2.0))
+	local brakeRamp = math.min(1.0,math.max(0.0,speed/8.0))
+	--if speed > 2 then
+		--brakeRamp = 1 - math.min(1.0,math.max(0.0,(speed-3)/10.0))
+	--end
 	if squealSound == 0 then squealSound = 1 end
 	if squealSound == 3 then squealSound = 2 end
 	if brakeSqueal > 0.0 then
-		self:SetSoundState("brake3",brakeSqueal*1.0*brakeRamp,1)
-		self:SetSoundState("brake3a",brakeSqueal*1.0*brakeRamp,1)
+		self:SetSoundState("brake_loop",brakeSqueal*(0.1+0.1*brakeRamp),1+0.06*(1.0-brakeRamp))--*1.0*brakeRamp,1)
+		--self:SetSoundState("brake3",brakeSqueal,0)--*1.0*brakeRamp,1)
+		--self:SetSoundState("brake3a",brakeSqueal,0)--*1.0*brakeRamp,1)
 		--self:SetSoundState("brake3",brakeSqueal*(0.10+0.90*brakeRamp)*fadeRamp,1+0.06*(1.0-brakeRamp))
 		--[[
 		if squealSound == 0 then
@@ -314,11 +317,7 @@ function ENT:Think()
 		end
 		]]
 	else
-		self:SetSoundState("brake1",0,0)
-		self:SetSoundState("brake2",0,0)
-		self:SetSoundState("brake3",0,0)
-		self:SetSoundState("brake3a",0,0)
-		self:SetSoundState("brake4",0,0)
+		self:SetSoundState("brake_loop",0,1)
 	end
 	
 	-- Timing

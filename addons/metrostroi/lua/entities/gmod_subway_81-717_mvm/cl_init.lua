@@ -35,6 +35,7 @@ ENT.ButtonMap["Main"] = {
 		{ID = "KDLRKToggle",			x=133, y=190, w=40,h=20, tooltip="Крышечка"},
 		{ID = "DoorSelectToggle",x=105, y=183, radius=20, tooltip="Выбор стороны открытия дверей\nSelect side on which doors will open"},
 		{ID = "KRZDSet",		x=153, y=83, radius=20, tooltip="КРЗД: Кнопка резервного закрытия дверей\nKRZD: Emergency door closing"},
+		{ID = "R_VPRToggle",		x=105, y=83, radius=20, tooltip="ВПР: Включение поездной радиосвязи\nVPR: Radiostation enable "},
 		{ID = "VozvratRPSet",	x=105, y=132, radius=20, tooltip="Возврат реле перегрузки\nReset overload relay"},
 		
 		{ID = "GreenRPLight",	x=153, y=135, radius=20, tooltip="РП: Зелёная лампа реле перегрузки\nRP: Green overload relay light (overload relay open on current train)"},
@@ -51,8 +52,8 @@ ENT.ButtonMap["Main"] = {
 		
 		{ID = "OtklAVUToggle",	x=283, y=183, radius=20, tooltip="Отключение автоматического выключения управления (неисправность АВУ)\nTurn off automatic control disable relay (failure of AVU)"},
 		{ID = "OtklAVUPl",x=283, y=210, radius=20, tooltip="Пломба крышки ОтклАВУ\nOtklAVU plomb"},
-		{ID = "PS2",			x=238, y=183, radius=20, tooltip="(placeholder) Emergency brake toggle"},
-		{ID = "PS2Pl",x=238, y=210, radius=20, tooltip="(placeholder) Пломба крышки Торможение АТ\nEmergency brake toggle plomb"},
+		{ID = "TormATToggle",			x=238, y=183, radius=20, tooltip="(placeholder) Emergency brake toggle"},
+		{ID = "TormATPl",x=238, y=210, radius=20, tooltip="(placeholder) Пломба крышки Торможение АТ\nEmergency brake toggle plomb"},
 		{ID = "L_1Toggle",		x=321, y=183, radius=20, tooltip="Освещение салона\nWagon lighting"},
 		{ID = "L_2Toggle",		x=357, y=183, radius=20, tooltip="Освещение кабины\nCabin lighting"},
 		{ID = "L_3Toggle",		x=399, y=183, radius=20, tooltip="Освещение пульта\nPanel lighting"},
@@ -973,6 +974,12 @@ Metrostroi.ClientPropForButton("R_G",{
 	model = "models/metrostroi_train/81/tumbler4.mdl",
 	ang = 90
 })
+Metrostroi.ClientPropForButton("R_VPR",{
+	panel = "Main",
+	button = "R_VPRToggle",
+	model = "models/metrostroi_train/81/tumbler2.mdl",
+	ang = 90
+})
 Metrostroi.ClientPropForButton("R_Radio",{
 	panel = "Main",
 	button = "R_RadioToggle",
@@ -1323,15 +1330,15 @@ Metrostroi.ClientPropForButton("L_4",{
 	model = "models/metrostroi_train/81/tumbler1.mdl",
 	ang = 90
 })
-Metrostroi.ClientPropForButton("PS2",{
+Metrostroi.ClientPropForButton("TormAT",{
 	panel = "Main",
-	button = "PS2",
+	button = "TormATToggle",
 	model = "models/metrostroi_train/81/tumbler1.mdl",
 	ang = 90
 })
-Metrostroi.ClientPropForButton("PS2Pl",{
+Metrostroi.ClientPropForButton("TormATPl",{
 	panel = "Main",
-	button = "PS2Pl",
+	button = "TormATPl",
 	model = "models/metrostroi_train/81/plomb.mdl",
 	z = -5,
 })
@@ -1836,6 +1843,7 @@ function ENT:Think()
 
 	self:SetCSBodygroup("UOSPl",1,self:GetPackedBool("UOSPl") and 0 or 1)
 	self:SetCSBodygroup("OtklAVUPl",1,self:GetPackedBool("OtklAVUPl") and 0 or 1)
+	self:SetCSBodygroup("TormATPl",1,self:GetPackedBool("TormATPl") and 0 or 1)
 	self:SetCSBodygroup("RC1Pl",1,self:GetPackedBool("RC1Pl") and 0 or 1)
 	self:SetCSBodygroup("KAHPl",1,self:GetPackedBool("KAHPl") and 0 or 1)
 	self:SetCSBodygroup("VAHPl",1,self:GetPackedBool("VAHPl") and 0 or 1)
@@ -1845,6 +1853,7 @@ function ENT:Think()
 	self:SetCSBodygroup("UOSPl_2",1,self:GetPackedBool("UOSPl") and 0 or 1)
 	
 	self:HideButton("UOS",self:GetPackedBool("UOSPl"))
+	self:HideButton("TormAT",self:GetPackedBool("TormATPl"))
 	self:HideButton("VAH",self:GetPackedBool("VAHPl"))
 	self:HideButton("VAD",self:GetPackedBool("VADPl"))
 	self:HideButton("OtklAVU",self:GetPackedBool("OtklAVUPl"))
@@ -1857,6 +1866,7 @@ function ENT:Think()
 	self:HideButton("2:A5Toggle",self:GetPackedBool("A5Pl"))
 		
 	self:HideButton("UOSPl",not self:GetPackedBool("UOSPl"))
+	self:HideButton("TormATPl",not self:GetPackedBool("TormATPl"))
 	self:HideButton("VAHPl",not self:GetPackedBool("VAHPl"))
 	self:HideButton("VADPl",not self:GetPackedBool("VADPl"))
 	self:HideButton("OtklAVUPl",not self:GetPackedBool("OtklAVUPl"))
@@ -1876,6 +1886,7 @@ function ENT:Think()
 	self:Animate("KRZD",			self:GetPackedBool(17) and 1 or 0, 	0,1, 16, false)
 	self:Animate("KSN",				self:GetPackedBool(18) and 1 or 0, 	0,1, 16, false)
 	self:Animate("OtklAVU",			self:GetPackedBool(19) and 1 or 0, 	0,1, 16, false)
+	self:Animate("TormAT",			self:GetPackedBool("TormAT") and 1 or 0, 	0,1, 16, false)
 	self:Animate("DURAPower",		self:GetPackedBool(24) and 1 or 0, 	0,1, 16, false)
 	self:Animate("SelectMain",		self:GetPackedBool(29) and 1 or 0, 	0,1, 16, false)
 	self:Animate("SelectAlternate",	self:GetPackedBool(30) and 1 or 0, 	0,1, 16, false)
@@ -1907,6 +1918,7 @@ function ENT:Think()
 	self:Animate("R_G",				self:GetPackedBool(125) and 1 or 0, 0,1, 16, false)
 	self:Animate("R_Radio",			self:GetPackedBool(126) and 1 or 0, 0,1, 16, false)
 	self:Animate("R_ZS",			self:GetPackedBool(127) and 1 or 0, 0,1, 16, false)
+	self:Animate("R_VPR",		self:GetPackedBool("VPR") and 1 or 0, 0,1, 16, false)
 	self:Animate("R_Program",		self:GetPackedBool(128) and 0 or (self:GetPackedBool(129) and 1 or 0.5), 0,1, 16, false)
 	self:Animate("Program1",		self:GetPackedBool(128) and 1 or 0, 0,1, 16, false)
 	self:Animate("Program2",		self:GetPackedBool(129) and 1 or 0, 0,1, 16, false)
@@ -2114,7 +2126,7 @@ function ENT:Think()
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
 	self:SetSoundState("release3",self.BrakeLineRamp2,1.0)
 
-	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/6*(self:GetPackedBool(6) and 1 or 0)),1.0)
+	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),1.0)
 
 	-- Compressor
 	local state = self:GetPackedBool(20)
@@ -2137,6 +2149,18 @@ function ENT:Think()
 		else
 			self:SetSoundState("ring2",0,0)
 			self:PlayOnce("ring2_end","cabin",0.45)
+		end
+	end
+	
+	local state = self:GetPackedBool("VPR")
+	self.PreviousVPRState = self.PreviousVPRState or false
+	if self.PreviousVPRState ~= state then
+		self.PreviousVPRState = state
+		if state then
+			self:SetSoundState("vpr",1,1)
+		else
+			self:SetSoundState("vpr",0,0)
+			self:PlayOnce("vpr_end","cabin",1)		
 		end
 	end
 	
@@ -2674,7 +2698,7 @@ function ENT:DrawPost(special)
 		end
 		surface.SetAlphaMultiplier(1)
 	end)
-	self:DrawOnPanel("AnnouncerDisplay",function(...) self.ASNP:AnnDisplay(self,...) end)
+	self:DrawOnPanel("AnnouncerDisplay",function(...) self.ASNP:AnnDisplay(self,false) end)
 	
 	self:DrawOnPanel("FrontPneumatic",function()
 		draw.DrawText(self:GetNWBool("FbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))

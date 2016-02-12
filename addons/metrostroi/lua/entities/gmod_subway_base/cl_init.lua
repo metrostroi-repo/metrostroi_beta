@@ -925,19 +925,19 @@ function ENT:ShowHide(clientProp, value, over)
 	--if IsValid(self.ClientEnts[clientProp]) then
 		if value == true and (self.Hidden[clientProp] or over) then
 			if not IsValid(self.ClientEnts[clientProp]) then
-				self.Hidden[clientProp] = false
 				self:SpawnCSEnt(clientProp)
 				self.UpdateRender = true
 			end
+			self.Hidden[clientProp] = false
 			--self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_NORMAL)
 			--self.ClientEnts[clientProp]:SetColor(Color(255,255,255,255))
 			--self.Hidden[clientProp] = false
 		elseif value ~= true and (not self.Hidden[clientProp] or over) then
 			if IsValid(self.ClientEnts[clientProp]) then
-				self.Hidden[clientProp] = true
 				self.ClientEnts[clientProp]:Remove()
 				self.UpdateRender = true
 			end
+			self.Hidden[clientProp] = true
 			--self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_NONE)
 			--self.ClientEnts[clientProp]:SetColor(Color(0,0,0,0))
 			--self.Hidden[clientProp] = true
@@ -1477,30 +1477,33 @@ end)
 
 Metrostroi.RouteTextures = {
 	p = {
-		["0"] = Material("models/metrostroi_train/signs/route_p/0"),
-		["1"] = Material("models/metrostroi_train/signs/route_p/1"),
-		["2"] = Material("models/metrostroi_train/signs/route_p/2"),
-		["3"] = Material("models/metrostroi_train/signs/route_p/3"),
-		["4"] = Material("models/metrostroi_train/signs/route_p/4"),
-		["5"] = Material("models/metrostroi_train/signs/route_p/5"),
-		["6"] = Material("models/metrostroi_train/signs/route_p/6"),
-		["7"] = Material("models/metrostroi_train/signs/route_p/7"),
-		["8"] = Material("models/metrostroi_train/signs/route_p/8"),
-		["9"] = Material("models/metrostroi_train/signs/route_p/9"),
+		["0"] = CreateMaterial("models/metrostroi_train/signs/route_p/0","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route_p/0"}),
+		["1"] = CreateMaterial("models/metrostroi_train/signs/route_p/1","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route_p/1"}),
+		["2"] = CreateMaterial("models/metrostroi_train/signs/route_p/2","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route_p/2"}),
+		["3"] = CreateMaterial("models/metrostroi_train/signs/route_p/3","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route_p/3"}),
+		["4"] = CreateMaterial("models/metrostroi_train/signs/route_p/4","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route_p/4"}),
+		["5"] = CreateMaterial("models/metrostroi_train/signs/route_p/5","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route_p/5"}),
+		["6"] = CreateMaterial("models/metrostroi_train/signs/route_p/6","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route_p/6"}),
+		["7"] = CreateMaterial("models/metrostroi_train/signs/route_p/7","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route_p/7"}),
+		["8"] = CreateMaterial("models/metrostroi_train/signs/route_p/8","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route_p/8"}),
+		["9"] = CreateMaterial("models/metrostroi_train/signs/route_p/9","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route_p/9"}),
 	},
 	m = {
-		["0"] = Material("models/metrostroi_train/signs/route/0"),
-		["1"] = Material("models/metrostroi_train/signs/route/1"),
-		["2"] = Material("models/metrostroi_train/signs/route/2"),
-		["3"] = Material("models/metrostroi_train/signs/route/3"),
-		["4"] = Material("models/metrostroi_train/signs/route/4"),
-		["5"] = Material("models/metrostroi_train/signs/route/5"),
-		["6"] = Material("models/metrostroi_train/signs/route/6"),
-		["7"] = Material("models/metrostroi_train/signs/route/7"),
-		["8"] = Material("models/metrostroi_train/signs/route/8"),
-		["9"] = Material("models/metrostroi_train/signs/route/9"),
+		["0"] = CreateMaterial("models/metrostroi_train/signs/route/0","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route/0"}),
+		["1"] = CreateMaterial("models/metrostroi_train/signs/route/1","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route/1"}),
+		["2"] = CreateMaterial("models/metrostroi_train/signs/route/2","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route/2"}),
+		["3"] = CreateMaterial("models/metrostroi_train/signs/route/3","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route/3"}),
+		["4"] = CreateMaterial("models/metrostroi_train/signs/route/4","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route/4"}),
+		["5"] = CreateMaterial("models/metrostroi_train/signs/route/5","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route/5"}),
+		["6"] = CreateMaterial("models/metrostroi_train/signs/route/6","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route/6"}),
+		["7"] = CreateMaterial("models/metrostroi_train/signs/route/7","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route/7"}),
+		["8"] = CreateMaterial("models/metrostroi_train/signs/route/8","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route/8"}),
+		["9"] = CreateMaterial("models/metrostroi_train/signs/route/9","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route/9"}),
 	},
 }
+for _,v in pairs(Metrostroi.RouteTextures) do
+	for _,elem in pairs(v) do elem:SetShader("UnlitGeneric") end
+end
 
 net.Receive("metrostroi_train_limit",function()
 	GAMEMODE:AddNotify( "Wagons limit!",NOTIFY_ERROR, 10 )

@@ -25,8 +25,8 @@ if CreateConVar then
 end
 
 function TRAIN_SYSTEM:Initialize()
-	self.Train:LoadSystem("UOS","Relay","Switch", {rc = true})
-	self.Train:LoadSystem("BPS","Relay","Switch",{ rc = true,normally_closed = true })
+	self.Train:LoadSystem("UOS","Relay","Switch", {paketnik = true})
+	self.Train:LoadSystem("BPS","Relay","Switch",{ paketnik = true,normally_closed = true })
 	-- ALS state
 	self.Signal80 = false
 	self.Signal70 = false
@@ -595,7 +595,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 			self["8"] = (self.Speed + 0.5 > 35) and 1 or KRUEnabled and (1-Train.RPB.Value) or 0
 		end
 	else
-		if (not EPKActivated) then
+		if (not EPKActivated and (not self.Train.TormAT or self.Train.TormAT.Value == 0.0)) then
 			self["33D"] = 0
 			self["33Zh"] = 0
 		end
@@ -824,12 +824,17 @@ function TRAIN_SYSTEM:Think(dT)
 	end
 
 	if EPKActivated then
+		if self.BeOffARS and EnableARS then
+			Train.Pneumatic.EmergencyValveEPK = false
+		end
 		if (self.EPKOffARS or self.EPKTimer3) and not Train.Pneumatic.EmergencyValveEPK then
 			Train.Pneumatic.EmergencyValveEPK = true
 			if self.EPKOffARS then
 				RunConsoleCommand("say","EPV braking (Was the emergency brake)",Train:GetDriverName())
+				self.BeOffARS = nil
 			else
 				RunConsoleCommand("say","EPV braking (3 sec has not passed)",Train:GetDriverName())
+				self.BeOffARS = nil
 			end
 		end
 		self.EPKTimer3 = nil
@@ -839,14 +844,11 @@ function TRAIN_SYSTEM:Think(dT)
 			Train.Pneumatic.EmergencyValveEPK = true
 			if not EnableARS then
 				RunConsoleCommand("say","EPV braking (ARS disabled)",Train:GetDriverName())
+				self.BeOffARS = true
 			else
 				RunConsoleCommand("say","EPV braking (LKT not light-up on ARS stopping)",Train:GetDriverName())
+				self.BeOffARS = nil
 			end
-		end
-		if self.EPKTimer4 and self.EPKTimer4 < CurTime() and not Train.Pneumatic.EmergencyValveEPK then
-			Train.Pneumatic.EmergencyValveEPK = true
-			RunConsoleCommand("say","EPV braking (Braking 5 second)",Train:GetDriverName())
-			self.EPKTimer4 = nil
 		end
 	else
 		--[[if EnableARS and self.EPKOffARS == nil then

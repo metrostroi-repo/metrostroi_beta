@@ -21,14 +21,29 @@ end
 
 function ENT:InitializeSounds()
 	self.BaseClass.InitializeSounds(self)
+	self.SoundNames["relay_close2"] = nil
+	self.SoundNames["relay_close3"] = nil
+	self.SoundNames["relay_close4"] = {"subway_trains/new/relay_7.wav","subway_trains/new/lsd_4.wav"}
 	self.SoundNames["pneumo_switch"] = {
 		"subway_trains/pneumo_8.wav",
 		"subway_trains/pneumo_9.wav",
 	}
 	self.SoundNames["rvt_close"] = "subway_trains/sbor.wav"
 	self.SoundNames["r1_5_close"] = "subway_trains/sbor_hod.wav"
-	self.SoundNames["rvt_open"] = "subway_trains/razbor_t.wav"
+	self.SoundNames["rvt_open"] = "subway_trains/rasbor_t.wav"
 	self.SoundNames["r1_5_open"] = "subway_trains/razbor_hod.wav"
+	self.SoundNames["rk_spin"]		= "subway_trains/rk_3.wav"
+	self.SoundNames["rk_stop"]		= "subway_trains/rk_4.wav"
+	self.SoundNames["switch_off"] = {"subway_trains/tumbler_1_off.wav","subway_trains/tumbler_2_off.wav","subway_trains/tumbler_3_off.wav"}
+	self.SoundNames["switch_on"] = {"subway_trains/tumbler_1_on.wav","subway_trains/tumbler_2_on.wav","subway_trains/tumbler_3_on.wav"}
+	self.SoundNames["av_on"]			=  {
+		"subway_trains/va21_2_1_on.wav",
+		"subway_trains/va21_2_2_on.wav",
+	}
+	self.SoundNames["av_off"]			=  {
+		"subway_trains/va21_2_1_off.wav",
+		"subway_trains/va21_2_2_off.wav",
+	}
 end
 
 function ENT:InitializeSystems()

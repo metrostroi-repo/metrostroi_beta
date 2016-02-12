@@ -2466,7 +2466,7 @@ function ENT:Think()
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
 	self:SetSoundState("release3",math.Clamp(self.BrakeLineRamp2,0,1),1.0)
 	
-	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/6*(self:GetPackedBool(6) and 1 or 0)),1.0)
+	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),1.0)
 
 	-- Compressor
 	local state = self:GetPackedBool(20)
@@ -2489,6 +2489,18 @@ function ENT:Think()
 		else
 			self:SetSoundState("ring",0,0)
 			self:PlayOnce("ring_end","cabin",0.45)
+		end
+	end
+	
+	local state = self:GetPackedBool("VPR")
+	self.PreviousVPRState = self.PreviousVPRState or false
+	if self.PreviousVPRState ~= state then
+		self.PreviousVPRState = state
+		if state then
+			self:SetSoundState("vpr",1,1)
+		else
+			self:SetSoundState("vpr",0,0)
+			self:PlayOnce("vpr_end","cabin",1)		
 		end
 	end
 	
@@ -2597,6 +2609,7 @@ function ENT:DrawPost(special)
 		surface.DrawTexturedRect(30,100,40,70)
 		surface.SetMaterial(Metrostroi.RouteTextures.p[rn[3]])
 		surface.DrawTexturedRect(70,100,40,70)
+		--surface.SetMaterial()
 		--[[
 		draw.Text({
 			text = self:GetNWString("RouteNumber",""),

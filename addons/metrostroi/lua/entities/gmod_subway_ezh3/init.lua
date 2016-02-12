@@ -135,6 +135,11 @@ function ENT:Initialize()
 		[KEY_LALT] = {
 			[KEY_V] = "VUD1Toggle",
 			[KEY_L] = "EPKToggle",
+			[KEY_PAD_PLUS] = "Custom2Set",
+			[KEY_PAD_MINUS] = "Custom1Set",
+			[KEY_PAD_ENTER] = "Custom3Set",
+			[KEY_PAD_ENTER] = "Custom3Set",
+			[KEY_PAD_MULTIPLY] = "CustomCToggle",
 		},
 		[KEY_RALT] = {
 			[KEY_L] = "EPKToggle",
@@ -400,6 +405,8 @@ function ENT:Think()
 	self:SetPackedBool(125,self.R_G.Value == 1.0)
 	self:SetPackedBool(126,self.R_Radio.Value == 1.0)
 	self:SetPackedBool(127,self.R_ZS.Value == 1.0)
+	self:SetPackedBool("R_VPR",self.R_VPR.Value == 1.0)
+	self:SetPackedBool("VPR",self.R_VPR.Value == 1.0 and self.A29.Value == 1.0 and self.Panel["V1"])
 	self:SetPackedBool(128,self.R_Program1.Value == 1.0)
 	self:SetPackedBool(129,self.R_Program2.Value == 1.0)
 	self:SetPackedBool(130,self.RC1.Value == 1.0)

@@ -5,7 +5,7 @@ Metrostroi.DefineSystem("81_717LVZ_Panel")
 
 function TRAIN_SYSTEM:Initialize()
 	-- Выключатель батареи (ВБ)
-	self.Train:LoadSystem("VB","Relay","Switch",{rc=true})
+	self.Train:LoadSystem("VB","Relay","Switch",{paketnik =true})
 
 	-- Buttons on the panel
 	self.Train:LoadSystem("DIPon","Relay","Switch", {button = true})
@@ -36,7 +36,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("R_UPO","Relay","Switch", {switch = true})
 	self.Train:LoadSystem("R_G","Relay","Switch", {switch = true})
 	self.Train:LoadSystem("R_Radio","Relay","Switch", {switch = true})
-	self.Train:LoadSystem("RC1","Relay","Switch",{ rc = true,normally_closed = true })
+	self.Train:LoadSystem("RC1","Relay","Switch",{ paketnik = true,normally_closed = true })
 	
 	self.Train:LoadSystem("Radio13","Relay","Switch", {button = true})
 	self.Train:LoadSystem("ARS13","Relay","Switch", {button = true})

@@ -107,6 +107,8 @@ function ENT:Initialize()
 	self.PneumaticBrakeForce = 100000.0
 	self.DisableSound = 0
 	
+	self.Angle = 0
+	
 	self.Variables = {}
 	
 	-- Pressure in brake cylinder
@@ -360,6 +362,7 @@ function ENT:Think()
 	self.PrevTime = self.PrevTime or CurTime()
 	self.DeltaTime = (CurTime() - self.PrevTime)
 	self.PrevTime = CurTime()
+	self.Angle = self.Wheels.Angle
 
 	self:SetNWEntity("TrainWheels",self.Wheels)
 
@@ -416,6 +419,7 @@ function ENT:Think()
 	local pneumaticFactor = math.max(0,math.min(1,1.5*self.Speed))
 	--if self:CPPIGetOwner():GetName():find("gleb") then print(self,Format("%d",pneumaticFactor),self.PneumaticBrakeForce,BrakeCP,self.ParkingBrake,BrakeCP < 0.05) end
 	local pneumaticForce = -sign*pneumaticFactor*self.PneumaticBrakeForce*BrakeCP
+	
 	if BrakeCP < 0.05 then pneumaticForce = 0 end
 	
 	-- Compensate forward friction
@@ -429,6 +433,7 @@ function ENT:Think()
 	-- Apply force
 	local dt_scale = 66.6/(1/self.DeltaTime)
 	local force = dt_scale*(motorForce + pneumaticForce + compensateF)
+	
 	local side_force = dt_scale*(sideForce)
 	
 	if self.Reversed
@@ -444,8 +449,8 @@ function ENT:Think()
 	
 	-- Calculate brake squeal
 	local k = ((self.SquealSensitivity or 0.5) - 0.5)*2
-	local brakeSqueal = (math.abs(pneumaticForce)/(30000*(1+0.8*k)))^2
-
+	local brakeSqueal = (math.abs(pneumaticForce)/(5000*(1+0.8*k)))^2
+	--print(pneumaticForce,brakeSqueal)
 	-- Send parameters to client
 	if self.DisableSound < 1 then
 		self:SetMotorPower(motorPower)
@@ -454,9 +459,11 @@ function ENT:Think()
 		self:SetdPdT(self.BrakeCylinderPressure_dPdT)
 		local brakeRamp = math.min(1.0,math.max(0.0,self.Speed/2.0))
 		if self.Speed > 2 then
-			brakeRamp = 1 - math.min(1.0,math.max(0.0,(self.Speed-3)/10.0))
+			--brakeRamp = 1 - math.min(1.0,math.max(0.0,(self.Speed-3)/10.0))
 		end
-		if brakeRamp > 0.01 and brakeSqueal > 0 then self:SetBrakeSqueal(self.BrakeSqueal or brakeSqueal) end
+	--	if brakeRamp > 0.01 and brakeSqueal > 0 then 
+		self:SetBrakeSqueal(self.BrakeSqueal or brakeSqueal)
+--		end
 	end
 	if self.DisableSound < 3 then
 		self:SetSpeed(absSpeed)

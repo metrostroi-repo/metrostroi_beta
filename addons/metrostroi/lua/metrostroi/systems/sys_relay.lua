@@ -298,6 +298,8 @@ function TRAIN_SYSTEM:Think(dT)
 				if self.av then self.Train:PlayOnce("auto_on","cabin") end
 				if self.mainav then self.Train:PlayOnce("mainauto_on","cabin") end
 				if self.krishka then self.Train:PlayOnce("kr_close","cabin") end
+				if self.paketnik then self.Train:PlayOnce("pak_on","cabin") end 
+				if self.switch then self.Train:PlayOnce("switch_on","cabin") end
 			end
 			if self.Value == 0.0 and self.maxvalue ~= 2 or self.Value == 1.0 and self.maxvalue == 2 then
 				if self.av3 then self.Train:PlayOnce("vu22b_off","cabin") end
@@ -309,8 +311,9 @@ function TRAIN_SYSTEM:Think(dT)
 				if self.av then self.Train:PlayOnce("auto_off","cabin") end
 				if self.mainav then self.Train:PlayOnce("mainauto_off","cabin") end
 				if self.krishka then self.Train:PlayOnce("kr_open","cabin") end
+				if self.paketnik then self.Train:PlayOnce("pak_off","cabin") end 
+				if self.switch then self.Train:PlayOnce("switch_off","cabin") end
 			end
-			if self.switch or self.rc then self.Train:PlayOnce("switch2","cabin") end
 		end
 	end
 end
