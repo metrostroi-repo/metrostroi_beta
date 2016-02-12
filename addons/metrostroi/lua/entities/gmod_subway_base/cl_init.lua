@@ -1501,9 +1501,6 @@ Metrostroi.RouteTextures = {
 		["9"] = CreateMaterial("models/metrostroi_train/signs/route/9","UnlitGeneric",{["$basetexture"] = "models/metrostroi_train/signs/route/9"}),
 	},
 }
-for _,v in pairs(Metrostroi.RouteTextures) do
-	for _,elem in pairs(v) do elem:SetShader("UnlitGeneric") end
-end
 
 net.Receive("metrostroi_train_limit",function()
 	GAMEMODE:AddNotify( "Wagons limit!",NOTIFY_ERROR, 10 )

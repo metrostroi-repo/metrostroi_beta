@@ -1396,7 +1396,7 @@ function ENT:Think()
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
 	self:SetSoundState("release3",math.Clamp(self.BrakeLineRamp2,0,1),1.0)
 	
-	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/6*(self:GetPackedBool(6) and 1 or 0)),1.0)
+	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),1.0)
 
 	-- Compressor
 	local state = self:GetPackedBool(20)
@@ -1419,6 +1419,18 @@ function ENT:Think()
 		else
 			self:SetSoundState("ring4",0,0)
 			self:PlayOnce("ring4_end","cabin",1,101)		
+		end
+	end
+	
+	local state = self:GetPackedBool("VPR")
+	self.PreviousVPRState = self.PreviousVPRState or false
+	if self.PreviousVPRState ~= state then
+		self.PreviousVPRState = state
+		if state then
+			self:SetSoundState("vpr",1,1)
+		else
+			self:SetSoundState("vpr",0,0)
+			self:PlayOnce("vpr_end","cabin",1)		
 		end
 	end
 	
