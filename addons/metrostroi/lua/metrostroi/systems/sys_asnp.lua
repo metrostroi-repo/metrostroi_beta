@@ -99,14 +99,14 @@ function TRAIN_SYSTEM:AnnDisplay(train,ezh3)
 			--for x = 0,math.min(19,#self.STR1r[y+1]-1)-xmin do
 				local char = self.STR1r[y+1][x+1]
 				if char == "|" then
-					Metrostroi.DrawLine(235+9+(x-xmin)*18 - (ezh3 and 5 or 0),141 + y*30-10,235+9+(x-xmin)*18,141+ y*30+9, Color(16,26,5),3)
+					Metrostroi.DrawLine(235+9+(x-xmin)*18 - (ezh3 and 5 or 0),141 + y*30-10,235+9+(x-xmin)*18,141+ y*30+9, Color(0,0,0),3)
 				elseif char == "_" then
 					if CurTime()%0.5<=0.25 then
-						draw.DrawText(char,"MetrostroiSubway_IGLA",236+(x-xmin)*18 - (ezh3 and 5 or 0),121 + y*30, Color(16,26,5))	
+						draw.DrawText(char,"MetrostroiSubway_IGLA",236+(x-xmin)*18 - (ezh3 and 5 or 0),121 + y*30, Color(0,0,0))	
 					end
 					xmin = xmin + 1
 				else
-					draw.DrawText(char,"MetrostroiSubway_IGLA",235+(x-xmin)*18 - (ezh3 and 5 or 0),125 + y*30, Color(16,26,5))
+					draw.DrawText(char,"MetrostroiSubway_IGLA",235+(x-xmin)*18 - (ezh3 and 5 or 0),125 + y*30, Color(0,0,0))
 				end
 				x = x + 1
 			end
@@ -135,7 +135,7 @@ function TRAIN_SYSTEM:DisplayStation(St,stay,max)
 	max = (max or 25)-1
 	local sz = stay and #self.STR1r[self.STR1x-1] or #self.STR1r[self.STR1x]
 	local Siz = stay and #self.STR1r[self.STR1x-1] or #self.STR1r[self.STR1x]
-	local StS = Metrostroi.AnnouncerData[St][1]
+	local StS = Metrostroi.AnnouncerData[St][1].."a"
 	local StT = string.Explode(" ",StS)
 	local str = ""
 	if #StT > 1 then
@@ -309,10 +309,16 @@ function TRAIN_SYSTEM:ClientThink()
 		local StL =Metrostroi.WorkingStations[Line][Stl]
 
 		if Depeat then self:STR1("Dep.  ") else self:STR1("Arr.  ") end
-		self:DisplayStation(St,true,23)
-		self:STR1(string.rep(" ",24-#self.STR1r[self.STR1x-1]),true)
-		self.Right = Metrostroi.AnnouncerData[St][2] 
-		if self.Right then self:STR1("R",true) else self:STR1("L",true) end
+		self:DisplayStation(St,true,22)
+		self:STR1(string.rep(" ",23-#self.STR1r[self.STR1x-1]),true)
+		--self.Right = Metrostroi.AnnouncerData[St][2] 
+		--if self.Right then self:STR1("*R",true) else self:STR1("*L",true) end
+		
+		if self.Train:GetNWInt("Announcer:Locked",0) > 0 and self.Train:GetNWInt("Announcer:Locked",0) ~= 2 then
+			self:STR1("*L",true)
+		else
+			self:STR1(" L",true)
+		end
 
 		if not self.Train:GetNWBool("Announcer:Playing1",false) then
 			if add > 0 then
@@ -329,15 +335,20 @@ function TRAIN_SYSTEM:ClientThink()
 			self:STR1("<<<LAST STATION>>>",true)
 			self.End = true
 		else
-			self:DisplayStation(StL,true,23)
+			self:DisplayStation(StL,true,22)
 			self.End = false
 		end
-		self:STR1(string.rep(" ",24-#self.STR1r[self.STR1x-1]),true)
+		self:STR1(string.rep(" ",23-#self.STR1r[self.STR1x-1]),true)
 		if add > 0 and StC < StL or add < 0 and StC > StL then
 			if not self.Train:GetNWBool("Announcer:Playing1",false) then
 				--if self.Right then self:STR1("R",true) else self:STR1("L",true) end
 			--else
-				if Metrostroi.AnnouncerData[StL][2] then self:STR1("R",true) else self:STR1("L",true) end
+				--if Metrostroi.AnnouncerData[StL][2] then self:STR1("*R",true) else self:STR1("*L",true) end
+				if self.Train:GetNWInt("Announcer:Locked",0) > 1 then
+					self:STR1("*R",true)
+				else
+					self:STR1(" R",true)
+				end
 			end
 		end
 	end
@@ -846,19 +857,21 @@ function TRAIN_SYSTEM:Think()
 	if self.State >= 8 then
 		local Distance = math.min(3072,self.Train:ReadCell(49165))
 		--local st = self.Train:ReadCell(49169) > 0 and Metrostroi.AnnouncerData[self.Train:ReadCell(49169)] or false
-		local st = Metrostroi.WorkingStations[self.Line] and Metrostroi.WorkingStations[self.Line][self.CurrentStation] and
-						Metrostroi.AnnouncerData[Metrostroi.WorkingStations[self.Line][self.CurrentStation]]
-		local right = st and Metrostroi.AnnouncerData[Metrostroi.WorkingStations[self.Line][self.CurrentStation]][2]
-		local lock = not st or Distance > 20 or self.Train.ALS_ARS.Speed > 1
-		if self.Train.ASNPOn.Value > 0.5 then
+		local st = self.Train:ReadCell(49169)
+		local right = st and Metrostroi.AnnouncerData[st] and Metrostroi.AnnouncerData[st][2]
+		local unlock = Distance > 100 and self.Train.ALS_ARS.Speed <= 2
+		local lock = self.Train.ALS_ARS.Speed > 2
+		if self.Train.ASNPOn.Value > 0.5 and not unlock then
 			if right then
 				if self.Train.ASNP31.Value == 0 then self.Train.ASNP31:TriggerInput("Set",1) end
 
-				if not lock and 	self.Train.ASNP32.Value == 1 then self.Train.ASNP32:TriggerInput("Set",0) end
-				if lock and 			self.Train.ASNP32.Value == 0 then self.Train.ASNP32:TriggerInput("Set",1) end
+				--if not lock and 	
+				if not lock and self.Train.ASNP32.Value == 1 then self.Train.ASNP32:TriggerInput("Set",0) end
+				if lock and 	self.Train.ASNP32.Value == 0 then self.Train.ASNP32:TriggerInput("Set",1) end
 			else
-				if not lock and	self.Train.ASNP31.Value == 1 and not lock then self.Train.ASNP31:TriggerInput("Set",0) end
-				if lock and 			self.Train.ASNP31.Value == 0 then self.Train.ASNP31:TriggerInput("Set",1) end
+				--if not lock and	
+				if not lock and self.Train.ASNP31.Value == 1 then self.Train.ASNP31:TriggerInput("Set",0) end
+				if lock and 	self.Train.ASNP31.Value == 0 then self.Train.ASNP31:TriggerInput("Set",1) end
 
 				if self.Train.ASNP32.Value == 0 then self.Train.ASNP32:TriggerInput("Set",1) end
 			end
@@ -897,6 +910,18 @@ function TRAIN_SYSTEM:Think()
 		self.Train:SetNWInt("Announcer:LastStationW",self.LastStationW)
 		self.Train:SetNWString("Announcer:CurrentStation",self.CurrentStation)
 		self.Train:SetNWBool("Announcer:Depeat",self.Depeat)
+		if self.Train.ASNP31.Value == 1 then
+			if self.Train.ASNP32.Value == 1 then
+				self.Train:SetNWInt("Announcer:Locked",3)
+			else
+				self.Train:SetNWInt("Announcer:Locked",1)
+			end
+		elseif self.Train.ASNP32.Value == 1 then
+			self.Train:SetNWInt("Announcer:Locked",2)
+		else
+			self.Train:SetNWInt("Announcer:Locked",0)
+		end
+		
 	end
 	if self.State == 9 then
 		self.Train:SetNWInt("Announcer:Choosed",self.Choosed)

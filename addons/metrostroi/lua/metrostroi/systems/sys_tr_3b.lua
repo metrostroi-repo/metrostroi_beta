@@ -129,8 +129,7 @@ function TRAIN_SYSTEM:Think(dT)
 				self.Train:PlayOnce("tr",sound_source,volume,math.random(90,120))
 				
 				-- Sparking probability
-				local probability = math.min(1.0,math.max(0.0,1.80 - (Metrostroi.Voltage/750.0) - (self.Train.Electric.Itotal/800)))
-
+				local probability = math.min(1.0,math.max(0.0,1-(self.Train.Electric.Itotal/600)))
 				if state and (math.random() > probability) then
 					local effectdata = EffectData()
 					if i == 1 then effectdata:SetOrigin(self.Train.FrontBogey:LocalToWorld(Vector(0,-70,-18))) end

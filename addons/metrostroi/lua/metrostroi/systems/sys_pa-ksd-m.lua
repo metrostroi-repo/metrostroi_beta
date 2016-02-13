@@ -1824,14 +1824,14 @@ function TRAIN_SYSTEM:SetState(state,add,state9)
 	end
 	if state == 6 then
 		self.State6Choose = 1
-		self.Line = 1
+		self.Line = self.Train.UPO.Line or 1
 		if Metrostroi.WorkingStations[self.Line] then
 			local Routelength = #Metrostroi.WorkingStations[self.Line]
-			--self.FirstStation = tostring(self.Train.UPO.Path == 2 and Metrostroi.WorkingStations[self.Line][Routelength] or Metrostroi.WorkingStations[self.Line][1])
-			--self.LastStation = tostring(self.Train.UPO.Path == 1 and Metrostroi.WorkingStations[self.Line][Routelength] or Metrostroi.WorkingStations[self.Line][1])
+			self.FirstStation = self.Train.UPO.FirstStation or self.FirstStation--tostring(self.Train.UPO.Path == 2 and Metrostroi.WorkingStations[self.Line][Routelength] or Metrostroi.WorkingStations[self.Line][1])
+			self.LastStation = self.Train.UPO.LastStation or self.LastStation--tostring(self.Train.UPO.Path == 1 and Metrostroi.WorkingStations[self.Line][Routelength] or Metrostroi.WorkingStations[self.Line][1])
 		else
-			--self.FirstStation = "111"
-			--self.LastStation = "123"
+			self.FirstStation = "111"
+			self.LastStation = "123"
 		end
 		self:UpdateUPO()
 		self.State6Error = false
@@ -2179,9 +2179,10 @@ function TRAIN_SYSTEM:Think(dT)
 	elseif not self.AutodriveWorking then
 		Train.Autodrive:Disable()
 	end
-	self.RouteNumber = string.gsub(Train.RouteNumber or "","^(0+)","")
-	self.Line = Train.UPO.Line
-	self.FirstStation = tostring(Train.UPO.FirstStation or "")
-	self.LastStation = tostring(Train.UPO.LastStation or "")
-	self.RealState = self.State
+	self.RouteNumber = string.gsub(self.Train.RouteNumber or "","^(0+)","")
+	if self.State > 7 then
+		self.Line = self.Train.UPO.Line
+		self.FirstStation = tostring(self.Train.UPO.FirstStation or "")
+		self.LastStation = tostring(self.Train.UPO.LastStation or "")
+	end
 end

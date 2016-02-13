@@ -363,7 +363,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		end
 		]]
 		--BPS Logic
-		local BPSWorking = (Train.BPS ~= nil and Train.BPS.Value > 0.5) and not KRUEnabled and Train:GetAngles().pitch < -1
+		local BPSWorking = false and (Train.BPS ~= nil and Train.BPS.Value > 0.5) and not KRUEnabled and Train:GetAngles().pitch < -1
 		if not BPSWorking then
 			self.StoppedOnSlopeByRP = false
 			self.BPSActive = false
@@ -460,6 +460,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 				Train.Pneumatic.EmergencyValveEPK = true
 
 				RunConsoleCommand("say","EPV braking (LKT off when stopped)",Train:GetDriverName())
+				self.BeOffARS = nil
 			end
 		else
 			self.EPKTimer2 = nil

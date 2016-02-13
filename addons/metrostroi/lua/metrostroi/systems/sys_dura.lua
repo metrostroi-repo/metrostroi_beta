@@ -70,10 +70,10 @@ function TRAIN_SYSTEM:Think()
 				Alt2 = Alt2 or (switch:GetChannel() == 2 and switch:GetSignal() > 0)
 				no_switches = false
 				if self.SelectAlternate == true then
-					switch:SendSignal(getSignal("alt",1),1)
+					if self.Channel == 1 then switch:SendSignal(getSignal("alt",1),1) end
 					if self.Channel == 2 then switch:SendSignal(getSignal("alt",2),2) end
 				elseif self.SelectAlternate == false then
-					switch:SendSignal(getSignal("main",1),1)
+					if self.Channel == 1 then switch:SendSignal(getSignal("main",1),1) end
 					if self.Channel == 2 then switch:SendSignal(getSignal("main",2),2) end
 				end
 				signal = math.max(signal,switch:GetSignal())

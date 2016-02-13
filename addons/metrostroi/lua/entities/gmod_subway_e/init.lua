@@ -481,10 +481,10 @@ function ENT:Think()
 	if self.Pneumatic.ValveType == 1 then
 		self:SetPackedRatio(4, self.Pneumatic.ReservoirPressure/12.0)
 	else
-		self:SetPackedRatio(4, self.Pneumatic.BrakeLinePressure/12.0)	
+		self:SetPackedRatio(4, self.Pneumatic.BrakeLinePressure/12.0)
 	end	
 	self:SetPackedRatio(5, self.Pneumatic.TrainLinePressure/12.0)
-	self:SetPackedRatio(6, (self.Pneumatic.BrakeCylinderPressure + 4.0*self.ManualBrake)/6.0)
+	self:SetPackedRatio(6,  math.min(2.7,self.Pneumatic.BrakeCylinderPressure + 4.0*self.ManualBrake)/6.0)
 	self:SetPackedRatio(7, self.Electric.Power750V/1000.0)
 	self:SetPackedRatio(8, math.abs(self.Electric.I24)/1000.0)	
 	--self:SetPackedRatio(9, self.Pneumatic.BrakeLinePressure_dPdT or 0)

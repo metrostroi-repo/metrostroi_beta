@@ -571,7 +571,7 @@ function ENT:Think()
 
 	if (brakeLinedPdT > -0.001)
 	then self.BrakeLineRamp1 = self.BrakeLineRamp1 + 4.0*(0-self.BrakeLineRamp1)*dT
-	else self.BrakeLineRamp1 = self.BrakeLineRamp1 + 4.0*((-0.4*brakeLinedPdT)-self.BrakeLineRamp1)*dT
+	else self.BrakeLineRamp1 = self.BrakeLineRamp1 + 4.0*((-0.6*brakeLinedPdT)-self.BrakeLineRamp1)*dT
 	end
 	self.BrakeLineRamp1 = math.Clamp(self.BrakeLineRamp1,0,1)
 	self:SetSoundState("release2_w",self.BrakeLineRamp1^1.65,1.0)
@@ -579,10 +579,10 @@ function ENT:Think()
 	self.BrakeLineRamp2 = self.BrakeLineRamp2 or 0
 	if (brakeLinedPdT < 0.001)
 	then self.BrakeLineRamp2 = self.BrakeLineRamp2 + 4.0*(0-self.BrakeLineRamp2)*dT
-	else self.BrakeLineRamp2 = self.BrakeLineRamp2 + 4.0*(0.04*brakeLinedPdT-self.BrakeLineRamp2)*dT
+	else self.BrakeLineRamp2 = self.BrakeLineRamp2 + 8.0*(0.1*brakeLinedPdT-self.BrakeLineRamp2)*dT
 	end
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
-	self:SetSoundState("release3_w",math.Clamp(self.BrakeLineRamp2,0,1),1.0)
+	self:SetSoundState("release3_w",self.BrakeLineRamp2 + math.max(0,self.BrakeLineRamp1/2-0.15),1.0)
 	
 	self:SetSoundState("cran1_w",math.min(1,self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),1.0)
 

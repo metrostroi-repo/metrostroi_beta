@@ -82,6 +82,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.AnnMenuChoosed = 0
 	self.Mode = 0
 	self.Mode1 = 0
+	
 end
 function TRAIN_SYSTEM:ClientInitialize()
 end
@@ -204,11 +205,29 @@ if CLIENT then
 					surface.SetDrawColor(Color(255,255,255))
 					surface.DrawRect(94,47,46,14)
 					draw.SimpleText("Back","Metrostroi_PAM15",117, 23,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-					draw.SimpleText("Select","Metrostroi_PAM15",117, 83,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+					draw.SimpleText("Send","Metrostroi_PAM15",117, 78,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 					
-					local RouteNumber = train:GetNWInt("Motorola:RouteNumber",-1) > -1 and tostring(train:GetNWInt("Motorola:RouteNumber")) or ""
-					draw.SimpleText(RouteNumber,"Metrostroi_PAM1_20",5, 35,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-					if CurTime()%0.5>0.25 then Metrostroi.DrawLine(5 +9*#RouteNumber, 40, 15+9*#RouteNumber, 40,Color(0,0,0),2) end
+					local Sel = train:GetNWBool("Motorola:DURAs", false)
+					local DURA1 = train:GetNWBool("Motorola:DURA1", false)
+					local DURA2 = train:GetNWBool("Motorola:DURA2", false)
+					
+					if not Sel and DURA1 or Sel and DURA2 then
+						draw.SimpleText("Main","Metrostroi_PAM15",117, 88,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+					else
+						draw.SimpleText("Alter","Metrostroi_PAM15",117, 88,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+					end
+					
+					draw.SimpleText("1","Metrostroi_PAM1_20",22, 40,Color(0,not Sel and 200 or 0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+					if not Sel and CurTime()%0.5>0.25 then Metrostroi.DrawLine(18, 47, 28, 47,Color(0,0,0),2) end
+					Metrostroi.DrawLine(15,50, 15, 70,Color(DURA1 and 0 or 200,0,0),2)
+					Metrostroi.DrawLine(15,71, 29, 50,Color(DURA1 and 200 or 0,0,0),2)
+					Metrostroi.DrawLine(15,70, 15, 90,Color(200,0,0),2)
+					
+					draw.SimpleText("2","Metrostroi_PAM1_20",67, 40,Color(0,Sel and 200 or 0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+					if Sel and CurTime()%0.5>0.25 then Metrostroi.DrawLine(63, 47, 73, 47,Color(0,0,0),2) end
+					Metrostroi.DrawLine(60,50, 60, 70,Color(DURA2 and 0 or 200,0,0),2)
+					Metrostroi.DrawLine(60,71, 74, 50,Color(DURA2 and 200 or 0,0,0),2)
+					Metrostroi.DrawLine(60,70, 60, 90,Color(200,0,0),2)
 				end
 				
 			end
@@ -354,6 +373,27 @@ function TRAIN_SYSTEM:Trigger(name)
 				self.AnnChoosed = 0
 			end
 		end
+		
+		if self.Mode == 4 then
+			if name == "MotorolaLeft" then
+				self.Train.DURA:TriggerInput("SelectChannel",1)
+			end
+			if name == "MotorolaRight" then
+				self.Train.DURA:TriggerInput("SelectChannel",2)
+			end
+			local Char = tonumber(name:sub(9,9))
+			if Char and Char > 0 and Char < 3 then
+				self.Train.DURA:TriggerInput("SelectChannel",Char)
+				if self.Train.DURA.Channel == 1 then if self.Train.DURA.Channel1Alternate  then self.Train.DURA:TriggerInput("SelectMain",1) else self.Train.DURA:TriggerInput("SelectAlternate",1) end end
+				if self.Train.DURA.Channel == 2 then if self.Train.DURA.Channel2Alternate  then self.Train.DURA:TriggerInput("SelectMain",1) else self.Train.DURA:TriggerInput("SelectAlternate",1) end end
+			end
+			if name == "MotorolaF2" then
+				if self.Train.DURA.Channel == 1 then if self.Train.DURA.Channel1Alternate  then self.Train.DURA:TriggerInput("SelectMain",1) else self.Train.DURA:TriggerInput("SelectAlternate",1) end end
+				if self.Train.DURA.Channel == 2 then if self.Train.DURA.Channel2Alternate  then self.Train.DURA:TriggerInput("SelectMain",1) else self.Train.DURA:TriggerInput("SelectAlternate",1) end end
+				
+			end
+		end
+
 		if name == "MotorolaF1" then
 			if not self.Error then self.Mode = 0 else self.Error = false end
 		end
@@ -461,6 +501,11 @@ function TRAIN_SYSTEM:Think(dT)
 		elseif self.Mode == 2 then
 		elseif self.Mode == 3 then
 			Train:SetNWInt("Motorola:AnnMenuChoosed",self.AnnMenuChoosed)
+		elseif self.Mode == 4 then
+			Train:SetNWInt("Motorola:DURAs",self.Train.DURA.Channel == 2)
+			Train:SetNWInt("Motorola:DURA1",self.Train.DURA.Channel1Alternate)
+			Train:SetNWInt("Motorola:DURA2",self.Train.DURA.Channel2Alternate)
+			
 		end
 	end
 	self.RouteNumber = string.gsub(Train.RouteNumber or "","^(0+)","")

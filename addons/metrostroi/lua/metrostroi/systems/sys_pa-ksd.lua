@@ -942,12 +942,12 @@ function TRAIN_SYSTEM:SetState(state,state7,noupd)
 			self.EnteredPass = ""
 		end
 		if state == 4 then
-			self.Line = 1
+			self.Line = self.Train.UPO.Line or 1
 			self.RouteNumber = ""
 			self.State4Choosed = 1
 			if Metrostroi.EndStations[self.Line] then
-				self.FirstStation = tostring(self.Train.UPO.Path == 2 and Metrostroi.EndStations[self.Line][#Metrostroi.EndStations[self.Line]] or Metrostroi.EndStations[self.Line][1])
-				self.LastStation = tostring(self.Train.UPO.Path == 1 and Metrostroi.EndStations[self.Line][#Metrostroi.EndStations[self.Line]] or Metrostroi.EndStations[self.Line][1])
+				self.FirstStation = self.Train.UPO.FirstStation or tostring(self.Train.UPO.Path == 2 and Metrostroi.EndStations[self.Line][#Metrostroi.EndStations[self.Line]] or Metrostroi.EndStations[self.Line][1])
+				self.LastStation = self.Train.UPO.LastStation or tostring(self.Train.UPO.Path == 1 and Metrostroi.EndStations[self.Line][#Metrostroi.EndStations[self.Line]] or Metrostroi.EndStations[self.Line][1])
 			else
 				self.FirstStation = "111"
 				self.LastStation = "123"
@@ -1205,7 +1205,9 @@ function TRAIN_SYSTEM:Think(dT)
 		self.Train.Autodrive:Enable()
 	end
 	self.RouteNumber = string.gsub(self.Train.RouteNumber or "","^(0+)","")
-	self.Line = self.Train.UPO.Line
-	self.FirstStation = tostring(self.Train.UPO.FirstStation or "")
-	self.LastStation = tostring(self.Train.UPO.LastStation or "")
+	if self.State > 4 and self.State ~= 49 then
+		self.Line = self.Train.UPO.Line
+		self.FirstStation = tostring(self.Train.UPO.FirstStation or "")
+		self.LastStation = tostring(self.Train.UPO.LastStation or "")
+	end
 end
