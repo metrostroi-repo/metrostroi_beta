@@ -124,7 +124,7 @@ if CLIENT then
 				draw.SimpleText(train:EntIndex().."/"..RouteNumber,"Metrostroi_PAM1_20",47, 30,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				draw.SimpleText("Folder 1","Metrostroi_PAM1_20",47, 48,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				draw.SimpleText("TRL "..(train:GetNWInt("Motorola:Line",0) > 0 and train:GetNWInt("Motorola:Line") or "N/A"),"Metrostroi_PAM1_20",47, 66,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText(os.date("%d-%m-%y %H.%M",os.time()),"Metrostroi_PAM15",47, 82,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText(os.date("!%d-%m-%y %H.%M",os.time()),"Metrostroi_PAM15",47, 82,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				draw.SimpleText("DURA","Metrostroi_PAM15",117, 23,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				Metrostroi.DrawLine(94, 47, 140, 47,Color(89,150,175),1)
 				draw.SimpleText("Menu","Metrostroi_PAM15",117, 53,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)

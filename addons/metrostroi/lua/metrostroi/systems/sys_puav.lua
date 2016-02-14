@@ -70,7 +70,7 @@ if CLIENT then
 		--self:DrawDigit(2.3+9.8*0,	4, 8, 0.0625, 0.056)
 		--self:DrawDigit(2.3+9.8*1,	4, 8, 0.0625, 0.056)
 		if self:GetNWInt("PUAV:Choose",0) == 0 then
-			local time = os.date("%H%M",os.time())--)os.date("%h",os_time)
+			local time = os.date("!%H%M",os.time())--)os.date("%h",os_time)
 			self:DrawDigit(2.3+9.8*2,	4, tonumber(time[1]), 0.0625, 0.056)
 			self:DrawDigit(2.3+9.8*3,	4, tonumber(time[2]), 0.0625, 0.056)
 			self:DrawDigit(2.3+9.8*4,	4, tonumber(time[3]), 0.0625, 0.056)

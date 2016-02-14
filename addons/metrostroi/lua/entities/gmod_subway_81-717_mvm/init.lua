@@ -280,6 +280,7 @@ function ENT:Initialize()
 		[60+7] = { "headlight", Vector(270-230*1,0,20), Angle(-90,0,0), Color(255,255,255), farz = 120, nearz = 1, shadows = 0, brightness = 0.1, fov = 170 },
 		[60+8] = { "headlight", Vector(270-230*2,0,20), Angle(-90,0,0), Color(255,255,255), farz = 120, nearz = 1, shadows = 0, brightness = 0.1, fov = 170 },
 		[60+9] = { "headlight", Vector(270-230*3,0,20), Angle(-90,0,0), Color(255,255,255), farz = 120, nearz = 1, shadows = 0, brightness = 0.1, fov = 170 },
+		[70    ] = { "headlight",	Vector( 430, -60, -47), Angle(45,-90,0), Color(255,255,255), brightness = 0.5, distance = 400 , fov=120, shadows = 1 },
 		
 		--[[2-2
 		[97] = { "headlight",		Vector(465,-45,-19), Angle(0,-20,0), Color(216,161,92), fov = 70 },
@@ -453,7 +454,7 @@ function ENT:Think()
 						math.min(1,self.Panel["HeadLights2"])*0.25 + 
 						math.min(1,self.Panel["HeadLights3"])*0.25)
 						or 0
-	self:SetLightPower(1,self.Panel["HeadLights3"] and (self.Panel["HeadLights3"] > 0.5) and (self.L_4.Value > 0.5),brightness*self.WorkingLights/6)
+	self:SetLightPower(1,self.Panel["HeadLights3"] and (self.Panel["HeadLights3"] > 0.5 or self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5),brightness*self.WorkingLights/6)
 	
 	if self.LED and self.Lights[1][4] ~= Color(127,255,255) then
 		for i = 1,7 do self:SetLightPower(i,false) end
@@ -887,6 +888,9 @@ function ENT:Think()
 			self:SetLightPower(i,false)
 		end
 	end
+	
+    self.SOSD = self.Panel["SD"] <= 0 and self.Panel["V1"] > 0 and self.KV.ReverserPosition ~= 0
+	self:SetLightPower(70,self.SOSD)
 	
 	-- Total temperature
 	local IGLA_Temperature = math.max(self.Electric.T1,self.Electric.T2)
@@ -1403,8 +1407,8 @@ function ENT:OnButtonPress(button,state)
 		if self.DriverValveDisconnect.Value == 1.0 then
 			if self.Pneumatic.ValveType == 2 then
 				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
-				if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 			end
+			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 		else
 			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
 			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end

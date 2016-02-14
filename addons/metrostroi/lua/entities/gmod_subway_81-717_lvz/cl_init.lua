@@ -427,6 +427,17 @@ for k,v in pairs(ENT.ButtonMap["AV"]) do
 	end
 end
 ENT.ButtonMap["AV_1"].pos = Vector(398.0,-11.3,50.5) + Vector(12,-47,0.5)	
+-- AV panel
+ENT.ButtonMap["VRD"] = {
+	pos = Vector(410.0,-30,60),
+	ang = Angle(0,90,90),
+	width = 100,
+	height = 100,
+	scale = 0.0625,
+	buttons = {
+		{ID = "VRDToggle", x=50, y=50, radius=50, tooltip=" ВРД: Выключатель разрешающий движение(под 0)\nVRD: Accept moving(when 0 on ALS)"},
+	}
+}
 ENT.ButtonMap["Battery"] = {
 	pos = Vector(410.0,-54.5,37),
 	ang = Angle(0,90,90),
@@ -457,7 +468,8 @@ ENT.ButtonMap["Battery_2"] = {
 		--{ID = "BPSToggle", x=356, y=68, radius=70, tooltip=" РЦ-БПС: Блок ПротивоСкатывания\nRC-BPS: Against Rolling System"},
 		{ID = "VAUToggle", x=356, y=68, radius=70, tooltip=" РЦ-ВАУ: Выключение АвтоУправления\nRC-VAU: Disable autodrive"},
 		--{ID = "UOSToggle", x=215, y=215, radius=70, tooltip="РЦ-УОС: Устройство ограничения скорости\nRC-UOS: Speed Limitation Device"},
-		{ID = "RC2Toggle", x=215, y=215, radius=70, tooltip=" РЦ-2: Цепи автоведения\nRC-2: Autodrive schemes"},
+		{ID = "VRDToggle", x=137, y=215, radius=70, tooltip=" ВРД: Выключатель разрешающий движение(под 0)\nVRD: Accept moving(when 0 on ALS)"},
+		{ID = "RC2Toggle", x=215, y=215, radius=70, tooltip=" РЦ-2: Цепи автоведения\nRC-2: Autodrive schemes"},--293
 		--{ID = "1:UOSPl",x=195, y=255, radius=20, tooltip="Пломба РЦ-УОС\nRC-UOS plomb"},
 	}
 }
@@ -1765,6 +1777,12 @@ Metrostroi.InsertHide("AV_1","L_5_1")
 Metrostroi.InsertHide("AV_1","A5Pl_1")
 --[[
 ]]
+
+Metrostroi.ClientPropForButton("VRD",{
+	panel = "VRD",
+	button = "VRDToggle",	
+	model = "models/metrostroi/81-717/rc.mdl",
+})
 Metrostroi.ClientPropForButton("battery",{
 	panel = "Battery",
 	button = "VBToggle",	
@@ -1802,6 +1820,11 @@ Metrostroi.ClientPropForButton("battery_2",{
 Metrostroi.ClientPropForButton("RC1_2",{
 	panel = "Battery_2",
 	button = "RC1Toggle",	
+	model = "models/metrostroi/81-717/rc.mdl",
+})
+Metrostroi.ClientPropForButton("VRD_2",{
+	panel = "Battery_2",
+	button = "VRDToggle",	
 	model = "models/metrostroi/81-717/rc.mdl",
 })
 Metrostroi.ClientPropForButton("RC1Pl_2",{
@@ -1940,6 +1963,8 @@ function ENT:Think()
 		self:HidePanel("Battery_2",not self.Breakers)
 		self:HidePanel("AV",self.Breakers)
 		self:HidePanel("AV_1",not self.Breakers)
+		self:HidePanel("VRD",self.Breakers or (self.Blok ~= 1 and self.Blok ~= 3))
+		self:ShowHide("VRD_2",not self.Breakers or (self.Blok != 1 and self.Blok ~= 3))
 	end
 	if self.Blok ~= self:GetNWBool("Blok",1) then
 		self.Blok = self:GetNWBool("Blok",1)
@@ -1964,6 +1989,8 @@ function ENT:Think()
 		self:HidePanel("PAKSDM",not self.Blok or self.Blok ~= 4)
 		self:HidePanel("PAKSDM1",not self.Blok or self.Blok ~= 4)
 		self:HidePanel("PAKSDM2",not self.Blok or self.Blok ~= 4)
+		self:HidePanel("VRD",self.Breakers or (self.Blok ~= 1 and self.Blok ~= 3))
+		self:ShowHide("VRD_2",not self.Breakers or (self.Blok != 1 and self.Blok ~= 3))
 	end
 	if self.ClientProps["KVPLight_light"] and self.ClientProps["KVPLight_light"].skin ~= self:GetNWInt("KVPType") then
 		self.ClientProps["KVPLight_light"].skin = self:GetNWInt("KVPType")
@@ -2109,6 +2136,8 @@ function ENT:Think()
 	self:Animate("brake_disconnect",self:GetPackedBool(6) and 1 or 0, 	1,0.5, 3, false)
 	self:Animate("battery",			self:GetPackedBool(7) and 0.87 or 1, 	0,1, 1, false)
 	self:Animate("battery_2",			self:GetPackedBool(7) and 0.87 or 1, 	0,1, 1, false)
+	self:Animate("VRD",			self:GetPackedBool("VRD") and 0.87 or 1, 	0,1, 1, false)
+	self:Animate("VRD_2",			self:GetPackedBool("VRD") and 0.87 or 1, 	0,1, 1, false)
 	self:Animate("RezMK",			self:GetPackedBool(8) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VMK",				self:GetPackedBool(9) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VAH",				self:GetPackedBool(10) and 1 or 0, 	0,1, 16, false)

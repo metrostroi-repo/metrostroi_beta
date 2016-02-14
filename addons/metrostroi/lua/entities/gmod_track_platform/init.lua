@@ -247,7 +247,7 @@ function ENT:Think()
 				end
 			
 				-- Open doors on station
-				if stopped_fine then
+				if stopped_fine and v.SOSD then
 					self.ARSOverride = true
 					self.HorliftTimer1 = self.HorliftTimer1 or CurTime()
 					if ((CurTime() - self.HorliftTimer1) > 0.5) and (stopped_fine) then

@@ -1158,6 +1158,7 @@ function TRAIN_SYSTEM:Think(dT)
 			self.Train:SetNWInt("PAKSD:Line",self.Line)
 			self.Train:SetNWInt("PAKSD:RouteNumber",tonumber(self.RouteNumber ~= "" and self.RouteNumber or -1))
 		elseif self.State == 7 then
+			self.Train:SetNWInt("PAKSD:LastStation",tonumber(self.LastStation))
 			self.Train:SetNWInt("PAKSD:State7",self.State7)
 			self.Train:SetNWInt("PAKSD:Nakat",self.Nakat)
 			self.Train:SetNWBool("PAKSD:VRD",self.VRD)

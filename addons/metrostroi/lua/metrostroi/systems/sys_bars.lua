@@ -27,6 +27,7 @@ end
 function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("RC2","Relay","Switch", {paketnik = true,normally_closed = true })
 	self.Train:LoadSystem("VAU","Relay","Switch",{ paketnik = true,normally_closed = true })	
+	self.Train:LoadSystem("VRD","Relay","Switch",{ paketnik = true })	
 	-- ALS state
 	self.Signal80 = false
 	self.Signal70 = false
@@ -477,12 +478,12 @@ function TRAIN_SYSTEM:Think(dT)
 				self.PneumaticBrake1 = false
 			end
 		end
-		if self.Signal0 and not self.Special and not self.RealNoFreq and not self.Signal40 and not self.Signal60 and not self.Signal70 and not self.Signal80 and (PAKSD or PAM or PAKSDM) then
-			if not self.NonVRD and not Train[KSDType].VRD then
+		if self.Signal0 and not self.Special and not self.RealNoFreq and not self.Signal40 and not self.Signal60 and not self.Signal70 and not self.Signal80 then
+			if not self.NonVRD and (not Train[KSDType].VRD and (PAKSD or PAKSDM) or self.Train.VRD.Value < 0.5 and (PAM or PUAV)) then
 				self.VRDTimer = nil
 			end
 				
-			self.NonVRD = not Train[KSDType].VRD
+			self.NonVRD = (PAKSD or PAKSDM)  and not Train[KSDType].VRD or  (PAM or PUAV) and self.Train.VRD.Value < 0.5
 			if self.NonVRD then
 				if self.VRDTimer and CurTime() - self.VRDTimer > 0 then
 					self.VRDTimer = false
@@ -490,12 +491,11 @@ function TRAIN_SYSTEM:Think(dT)
 					if not self.VRDTimer and self.KVT then self.VRDTimer = CurTime() + 1 end
 					if self.VRDTimer and not self.KVT then self.VRDTimer = nil end
 				end
+			else
+				self.VRDTimer = false
 			end
-		elseif (PAKSD or PAM or PAKSDM) then
-			if self.NonVRD then self.NonVRD = false end
-			self.VRDTimer = false
 		else
-			self.NonVRD = nil
+			if self.NonVRD then self.NonVRD = false end
 			self.VRDTimer = false
 		end
 

@@ -236,6 +236,7 @@ function ENT:Initialize()
 		[37] = { "light", 			Vector(444.7,-58.5,17.4-4.4), Angle(0,0,0), Color(255,160,0), brightness = 1.0, scale = 0.020 },
 		-- Custom G
 		[38] = { "light", 			Vector(444,-59.5,17.4-4.4), Angle(0,0,0), Color(100,255,0), brightness = 1.0, scale = 0.020 },
+		[70    ] = { "headlight",	Vector( 430, -60, -47), Angle(45,-90,0), Color(255,255,255), brightness = 0.5, distance = 400 , fov=120, shadows = 1 },
 	}
 		
 	for i = 1,23 do
@@ -483,7 +484,9 @@ function ENT:Think()
 		elseif self[v] then self:SetPackedBool(64+(i-1),self[v].Value == 1.0) 
 		end
 	end
-    
+    self.SOSD = self.Panel["SD"] <= 0 and self.Panel["V1"] > 0 and self.KV.ReverserPosition ~= 0
+	self:SetLightPower(70,self.SOSD)
+
 	-- Feed packed floats
 	self:SetPackedRatio(0, 1-self.Pneumatic.DriverValvePosition/7)
 	self:SetPackedRatio(1, (self.KV.ControllerPosition+3)/7)
@@ -859,8 +862,8 @@ function ENT:OnButtonPress(button)
 		if self.DriverValveDisconnect.Value == 1.0 then
 			if self.Pneumatic.ValveType == 2 then
 				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
-				if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 			end
+			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 		else
 			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
 			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end

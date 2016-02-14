@@ -144,7 +144,7 @@ end
 
 
 -- Calculate derivatives
-function TRAIN_SYSTEM:equalizeLeakPressure(dT,pressure,train,valve_status,rate,close_rate)
+function TRAIN_SYSTEM:equalizeCouplePressure(dT,pressure,train,valve_status,rate,close_rate)
 	if not valve_status then return end
 	local other
 	if IsValid(train) then other = train.Pneumatic end
@@ -232,9 +232,9 @@ function TRAIN_SYSTEM:UpdatePressures(Train,dT)
 	-- Equalize pressure
 	self.TrainLineOpen = false
 	if self.ValveType == 1 then
-		self:equalizeLeakPressure(dT,"ReservoirPressure",nil,self.EmergencyValve or self.EmergencyValveEPK,0.45 + 0.1875*(Train:GetWagonCount() - 1))
+		self:equalizeCouplePressure(dT,"ReservoirPressure",nil,self.EmergencyValve or self.EmergencyValveEPK,0.45 + 0.1875*(Train:GetWagonCount() - 1))
 	else
-		self:equalizeLeakPressure(dT,"BrakeLinePressure",nil,self.EmergencyValve or self.EmergencyValveEPK,0.75 + 0.1875*(Train:GetWagonCount() - 1))--1.5
+		self:equalizeCouplePressure(dT,"BrakeLinePressure",nil,self.EmergencyValve or self.EmergencyValveEPK,0.75 + 0.1875*(Train:GetWagonCount() - 1))--1.5
 	end
 	if (self.EmergencyValve or self.EmergencyValveEPK) ~= self.OldEmergencyValve then
 		self.OldEmergencyValve = self.EmergencyValve or self.EmergencyValveEPK
@@ -245,18 +245,18 @@ function TRAIN_SYSTEM:UpdatePressures(Train,dT)
 	if frontBrakeLeak then Ft = nil end
 	if rearBrakeLeak then Rt = nil end
 	if self.ValveType == 1 then
-		if not Ft then self:equalizeLeakPressure(dT,"ReservoirPressure",Ft,frontBrakeOpen,200.0) end
-		if not Rt then self:equalizeLeakPressure(dT,"ReservoirPressure",Rt,rearBrakeOpen,200.0) end
+		if not Ft then self:equalizeCouplePressure(dT,"ReservoirPressure",Ft,frontBrakeOpen,200.0) end
+		if not Rt then self:equalizeCouplePressure(dT,"ReservoirPressure",Rt,rearBrakeOpen,200.0) end
 	end
-	self:equalizeLeakPressure(dT,"BrakeLinePressure",Ft,frontBrakeOpen,200.0)
-	self:equalizeLeakPressure(dT,"BrakeLinePressure",Rt,rearBrakeOpen,200.0)
+	self:equalizeCouplePressure(dT,"BrakeLinePressure",Ft,frontBrakeOpen,200.0)
+	self:equalizeCouplePressure(dT,"BrakeLinePressure",Rt,rearBrakeOpen,200.0)
 	--end
 	local Ft = Train.FrontTrain
 	local Rt = Train.RearTrain
 	if frontTrainLeak then Ft = nil end
 	if rearTrainLeak then Rt = nil end
-	self:equalizeLeakPressure(dT,"TrainLinePressure",Ft,frontTrainOpen,200.0,0.08)
-	self:equalizeLeakPressure(dT,"TrainLinePressure",Rt,rearTrainOpen,200.0,0.08)
+	self:equalizeCouplePressure(dT,"TrainLinePressure",Ft,frontTrainOpen,200.0,0.08)
+	self:equalizeCouplePressure(dT,"TrainLinePressure",Rt,rearTrainOpen,200.0,0.08)
 end
 
 
