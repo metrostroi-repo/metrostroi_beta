@@ -764,7 +764,7 @@ function Metrostroi.UpdateTrainPositions()
 		end
 	end
 end
-timer.Create("Metrostroi_TrainPositionTimer",0.50,0,Metrostroi.UpdateTrainPositions)
+timer.Create("Metrostroi_TrainPositionTimer",0.1,0,Metrostroi.UpdateTrainPositions)
 
 
 --------------------------------------------------------------------------------
@@ -1024,6 +1024,7 @@ function Metrostroi.Load(name,keep_signs)
 						ent.Left = v.Left
 						ent.Approve0 = v.Approve0
 						ent.Depot = v.Depot
+						ent.NonAutoStop = v.NonAutoStop
 						ent.Lenses = string.Explode("-",ent.LensesStr)
 						ent.InS = nil
 						for i = 1,#ent.Lenses do
@@ -1102,6 +1103,7 @@ function Metrostroi.Save(name)
 				Approve0 = v.Approve0,
 				Depot = v.Depot,
 				Left = v.Left,
+				AutoStop = v.AutoStop,
 			})
 		end
 	end

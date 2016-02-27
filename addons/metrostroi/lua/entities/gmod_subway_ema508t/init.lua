@@ -124,8 +124,40 @@ function ENT:Initialize()
 	end
 	self.RearDoor = false
 	self.FrontDoor = false
+	self:UpdateTextures()
 end
 
+function ENT:UpdateTextures()
+	local texture = Metrostroi.Skins["train"][self.Texture]
+	local passtexture = Metrostroi.Skins["pass"][self.PassTexture]
+
+	for k,v in pairs(self:GetMaterials()) do
+		self:SetSubMaterial(k-1,"")
+	end
+	for k,v in pairs(self:GetMaterials()) do
+		if v == "models/metrostroi_train/81/int02" then
+			if not Metrostroi.Skins["717_schemes"] or not Metrostroi.Skins["717_schemes"]["m"] then
+				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""])
+			else
+				if not self.Adverts or self.Adverts ~= 4 then
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].adv)
+				else
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].clean)
+				end
+			end
+		end
+		local tex = string.Explode("/",v)
+		tex = tex[#tex]
+		if texture and texture.textures[tex] then
+			self:SetSubMaterial(k-1,texture.textures[tex])
+		end
+		if passtexture and passtexture.textures[tex] then
+			self:SetSubMaterial(k-1,passtexture.textures[tex])
+		end
+	end
+	self:SetNWString("texture",self.Texture)
+	self:SetNWString("passtexture",self.PassTexture)
+end
 
 --------------------------------------------------------------------------------
 function ENT:Think()

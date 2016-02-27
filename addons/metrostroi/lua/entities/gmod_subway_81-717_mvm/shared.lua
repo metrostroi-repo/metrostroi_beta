@@ -20,7 +20,7 @@ function ENT:GetStandingArea()
 end
 
 function ENT:InitializeSystems()
-	-- Электросистема 81-705
+	-- Электросистема 81-710
 	self:LoadSystem("Electric","81_717_Electric")
 	
 	-- Токоприёмник
@@ -57,9 +57,9 @@ function ENT:InitializeSystems()
 	self:LoadSystem("YARD_2")
 	self:LoadSystem("PR_14X_Panels")	
 
-	-- Пневмосистема 81-705
+	-- Пневмосистема 81-710
 	self:LoadSystem("Pneumatic","81_717_Pneumatic")
-	-- Панель управления 81-705
+	-- Панель управления 81-710
 	self:LoadSystem("Panel","81_717_Panel")
 	-- Everything else
 	self:LoadSystem("Battery")

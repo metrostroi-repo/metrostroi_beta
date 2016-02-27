@@ -4,7 +4,7 @@
 Metrostroi.DefineSystem("81_704_Electric")
 
 function TRAIN_SYSTEM:Initialize()
-	self.TrainSolver = "Ema508"
+	self.TrainSolver = "81_704"
 	self.ThyristorController = true
 
 	-- Load all functions from base

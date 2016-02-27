@@ -14,7 +14,7 @@ ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 ---------------------------------------------------
 ENT.SubwayTrain = {
 	Type = "81",
-	Name = "81-714",
+	Name = "81-714.5m",
 	WagType = 2,
 	Manufacturer = "MVM",
 }
@@ -203,19 +203,6 @@ function ENT:Initialize()
 	self:SetNWInt("BPSNType",self.BPSNType)
 	self.OldTexture = 0
 	
-	for k,v in pairs(self:GetMaterials()) do
-		if v == "models/metrostroi_train/81/int02" then
-			if Metrostroi.CurrentMap == "" or not Metrostroi.Skins["717_schemes"]["m_"..Metrostroi.CurrentMap:sub(4,-1) ] then
-				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
-			else
-				if not self.Adverts or self.Adverts ~= 4 then
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..Metrostroi.CurrentMap:sub(4,-1)].path1)
-				else
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..Metrostroi.CurrentMap:sub(4,-1)].path2)
-				end
-			end
-		end
-	end
 	self.LampsBlink = {}
 	self.Lamps = {}
 	self.BrokenLamps = {}
@@ -223,8 +210,41 @@ function ENT:Initialize()
 	for i = 1,23 do
 		if math.random() > rand then self.BrokenLamps[i] = math.random() > 0.5 end
 	end
+
+	self:UpdateTextures()
 end
 
+function ENT:UpdateTextures()
+	local texture = Metrostroi.Skins["train"][self.Texture]
+	local passtexture = Metrostroi.Skins["pass"][self.PassTexture]
+
+	for k,v in pairs(self:GetMaterials()) do
+		self:SetSubMaterial(k-1,"")
+	end
+	for k,v in pairs(self:GetMaterials()) do
+		if v == "models/metrostroi_train/81/int02" then
+			if not Metrostroi.Skins["717_schemes"] or not Metrostroi.Skins["717_schemes"]["m"] then
+				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""])
+			else
+				if not self.Adverts or self.Adverts ~= 4 then
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].adv)
+				else
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].clean)
+				end
+			end
+		end
+		local tex = string.Explode("/",v)
+		tex = tex[#tex]
+		if texture and texture.textures[tex] then
+			self:SetSubMaterial(k-1,texture.textures[tex])
+		end
+		if passtexture and passtexture.textures[tex] then
+			self:SetSubMaterial(k-1,passtexture.textures[tex])
+		end
+	end
+	self:SetNWString("texture",self.Texture)
+	self:SetNWString("passtexture",self.PassTexture)
+end
 
 function ENT:CreateJointSound(sndnum)
 	table.insert(self.Joints,{type = sndnum,state = self.SpeedSign > 0 and 0 or 4,dist = self.SpeedSign > 0 and 0 or 19.17})
@@ -254,26 +274,6 @@ function ENT:Think()
 		end
 	end
 
-	self.TextureTime = self.TextureTime or CurTime()
-	if (CurTime() - self.TextureTime) > 1.0 then
-		self:SetNWInt("LampType",(self.LampType or 1))
-		self.TextureTime = CurTime()
-		if self.Texture or self.PassTexture or self.SignsList	 then
-			for k,v in pairs(self:GetMaterials()) do
-				if v == "models/metrostroi_train/81/b01a" then
-					if self.Texture then self:SetSubMaterial(k-1,self.Texture) end
-				elseif v == "models/metrostroi_train/81/int01" then
-					if self.PassTexture then self:SetSubMaterial(k-1,self.PassTexture) end
-					--print(self.PassTexture)
-					--if self.SignsList then print(self.SignsList[self.SignsIndex][1]) end
-				elseif v ~= "models/metrostroi_train/81/int02" then
-					self:SetSubMaterial(k-1,"")
-				end
-			end
-			self:SetNWString("texture",self.Texture)
-			self:SetNWString("passtexture",self.PassTexture)
-		end
-	end
 	local retVal = self.BaseClass.Think(self)
 	self:SetBodygroup(1,(self.LampType or 1)-1)
 	self:SetBodygroup(2,(self.SeatType or 1)-1)	

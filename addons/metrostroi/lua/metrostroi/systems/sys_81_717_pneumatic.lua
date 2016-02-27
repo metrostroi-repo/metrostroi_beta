@@ -62,6 +62,9 @@ function TRAIN_SYSTEM:Initialize()
 	
 	-- Разобщение клапана машиниста
 	self.Train:LoadSystem("DriverValveDisconnect","Relay","Switch")
+	-- Краны двойной тяги
+	self.Train:LoadSystem("DriverValveTLDisconnect","Relay","Switch")
+	self.Train:LoadSystem("DriverValveBLDisconnect","Relay","Switch")
 	-- Воздухораспределитель
 	self.Train:LoadSystem("AirDistributorDisconnect","Relay","Switch")
 	--УАВА
@@ -303,7 +306,7 @@ function TRAIN_SYSTEM:Think(dT)
 	local trainLineConsumption_dPdT = 0.0
 	if self.ValveType == 1 then
 		-- 334: 1 Fill reservoir from train line, fill brake line from train line
-		if (self.DriverValvePosition == 1) and (Train.DriverValveDisconnect.Value == 1.0) then
+		if (self.DriverValvePosition == 1) and (Train.DriverValveTLDisconnect.Value == 1.0 and Train.DriverValveBLDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"ReservoirPressure", self.TrainLinePressure, 1.50)
 			self.BrakeLinePressure = self.ReservoirPressure
 			self.BrakeLinePressure_dPdT = self.ReservoirPressure_dPdT
@@ -311,7 +314,7 @@ function TRAIN_SYSTEM:Think(dT)
 		end
 		
 		-- 334: 2 Brake line, reservoir replenished from brake line reductor
-		if (self.DriverValvePosition == 2) and (Train.DriverValveDisconnect.Value == 1.0) then
+		if (self.DriverValvePosition == 2) and (Train.DriverValveTLDisconnect.Value == 1.0 and Train.DriverValveBLDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"ReservoirPressure", self.TrainToBrakeReducedPressure*1.05, 1.30)
 
 			self.BrakeLinePressure = self.ReservoirPressure
@@ -320,7 +323,7 @@ function TRAIN_SYSTEM:Think(dT)
 		end
 		
 		-- 334: 3 Close all valves
-		if (self.DriverValvePosition == 3) and (Train.DriverValveDisconnect.Value == 1.0) then
+		if (self.DriverValvePosition == 3) and (Train.DriverValveBLDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"ReservoirPressure", self.BrakeLinePressure, 3.00)
 			self:equalizePressure(dT,"BrakeLinePressure", self.ReservoirPressure, 3.00)
 			
@@ -329,14 +332,14 @@ function TRAIN_SYSTEM:Think(dT)
 		end
 		
 		-- 334: 4 Reservoir open to atmosphere, brake line equalizes with reservoir
-		if (self.DriverValvePosition == 4) and (Train.DriverValveDisconnect.Value == 1.0) then
+		if (self.DriverValvePosition == 4) and (Train.DriverValveBLDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"ReservoirPressure", 0.0,0.35 + 0.04*(Train:GetWagonCount() - 1))--0.35)-0.55
 			self.BrakeLinePressure = self.ReservoirPressure
 			self.BrakeLinePressure_dPdT = self.ReservoirPressure_dPdT
 		end
 		
 		-- 334: 5 Reservoir and brake line open to atmosphere
-		if (self.DriverValvePosition == 5) and (Train.DriverValveDisconnect.Value == 1.0) then
+		if (self.DriverValvePosition == 5) and (Train.DriverValveBLDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"ReservoirPressure", 0.0, 1.00 + 0.175*(Train:GetWagonCount() - 1))--1.70
 			self.BrakeLinePressure = self.ReservoirPressure
 			self.BrakeLinePressure_dPdT = self.ReservoirPressure_dPdT
@@ -431,7 +434,7 @@ function TRAIN_SYSTEM:Think(dT)
 	if (self.BrakeLinePressure < 2.0 or self.UAVA) and self.EmergencyValve then
 		self.EmergencyValve = false
 	end
-	if self.BrakeLinePressure < 3.0 and Train.UAVA and Train.UAVA.Value > 0.5 then
+	if Train.UAVA and Train.UAVA.Value > 0.5 then--self.BrakeLinePressure < 3.0 and 
 		self.UAVA = true
 	end
 	if Train.UAVA and Train.UAVA.Value < 0.5 then
@@ -580,12 +583,16 @@ function TRAIN_SYSTEM:Think(dT)
 			self.BrakeLinePressure = math.max(0.0,self.BrakeLinePressure - 3.0)
 		end
 	end
-	if self.EPKPrevious ~= (Train.EPK.Value == 1 and Train.DriverValveDisconnect.Value == 1) then
+	if self.ValveType == 1 and self.EPKPrevious ~= (Train.EPK.Value == 1 and Train.DriverValveBLDisconnect.Value == 1) then
+		self.EPKPrevious = (Train.EPK.Value == 1 and Train.DriverValveBLDisconnect.Value == 1)
+		if Train.EPK.Value == 1 and Train.DriverValveBLDisconnect.Value == 1 then
+			self.ReservoirPressure = math.max(0.0,self.ReservoirPressure - 1)
+			self.BrakeLinePressure = math.max(0.0,self.BrakeLinePressure - 1.0)
+		end
+	end
+	if self.ValveType == 2 and self.EPKPrevious ~= (Train.EPK.Value == 1 and Train.DriverValveDisconnect.Value == 1) then
 		self.EPKPrevious = (Train.EPK.Value == 1 and Train.DriverValveDisconnect.Value == 1)
 		if Train.EPK.Value == 1 and Train.DriverValveDisconnect.Value == 1 then
-			if self.ValveType == 1 then
-				self.ReservoirPressure = math.max(0.0,self.ReservoirPressure - 1)
-			end
 			self.BrakeLinePressure = math.max(0.0,self.BrakeLinePressure - 1.0)
 		end
 	end

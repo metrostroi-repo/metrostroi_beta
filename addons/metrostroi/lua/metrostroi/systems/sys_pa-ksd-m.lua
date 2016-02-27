@@ -1932,7 +1932,7 @@ function TRAIN_SYSTEM:Think(dT)
 	
 	--self.Train.UPO.Station = self.Train:ReadCell(49160) > 0 and self.Train:ReadCell(49160) or self.Train:ReadCell(49161)
 	--self.Train.UPO.Path = self.Train:ReadCell(49170)
-	--self.Train.UPO.Distance = math.min(9999,self.Train:ReadCell(49165) + (Train.Autodrive.Corrections[self.Train.UPO.Station] or 0) - 4.3)
+	--self.Train.UPO.Distance = math.min(9999,self.Train:ReadCell(49165) + (Train.Autodrive.Corrections[self.Train.UPO.Station] or 0))
 	if Train.VB.Value > 0.5 and Train.Battery.Voltage > 55 and self.State > -1  then
 		for k,v in pairs(self.TriggerNames) do
 			if Train[v] and (Train[v].Value > 0.5) ~= self.Triggers[v] then

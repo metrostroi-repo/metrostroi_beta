@@ -1,10 +1,10 @@
 ﻿--------------------------------------------------------------------------------
--- Электрические цепи 81-704/705 (Е, Еж, Ем)
+-- Электрические цепи 81-705
 --------------------------------------------------------------------------------
 Metrostroi.DefineSystem("81_705_Electric")
 
 function TRAIN_SYSTEM:Initialize()
-	self.TrainSolver = "Ezh3"
+	self.TrainSolver = "Ema508"
 	self.ThyristorController = true
 
 	-- Load all functions from base

@@ -269,11 +269,79 @@ function ENT:Initialize()
 	self.PassengerDoor = false
 
 	self.A5:TriggerInput("Set",0)
+	self:UpdateTextures()
+end
+function ENT:UpdateTextures()
+	local texture = Metrostroi.Skins["train"][self.Texture]
+	local passtexture = Metrostroi.Skins["pass"][self.PassTexture]
+	local cabintexture = Metrostroi.Skins["cab"][self.CabTexture]
+
+	for k,v in pairs(self:GetMaterials()) do
+		self:SetSubMaterial(k-1,"")
+	end
+	for k,v in pairs(self:GetMaterials()) do
+		if v == "models/metrostroi_train/81/int02" then
+			if not Metrostroi.Skins["717_schemes"] or not Metrostroi.Skins["717_schemes"]["m"] then
+				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""])
+			else
+				if not self.Adverts or self.Adverts ~= 4 then
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].adv)
+				else
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].clean)
+				end
+			end
+		end
+		local tex = string.Explode("/",v)
+		tex = tex[#tex]
+		if texture and texture.textures[tex] then
+			self:SetSubMaterial(k-1,texture.textures[tex])
+		end
+		if passtexture and passtexture.textures[tex] then
+			self:SetSubMaterial(k-1,passtexture.textures[tex])
+		end
+		if cabintexture and cabintexture.textures[tex] then
+			self:SetSubMaterial(k-1,cabintexture.textures[tex])
+		end
+	end
+	self:SetNWString("texture",self.Texture)
+	self:SetNWString("passtexture",self.PassTexture)
+	self:SetNWString("cabtexture",self.CabTexture)
 end
 
-
+local LK = {}
+local PKG = 0
+local RK = 0
+local KV = 0
+local OldTime
 --------------------------------------------------------------------------------
 function ENT:Think()
+	--[[
+	if self.KV.ControllerPosition ~= KV then
+		if KV == 0 then OldTime = nil end
+		if self.KV.ControllerPosition == 0 then OldTime = nil end
+		if not OldTime then print("") end
+		KV = self.KV.ControllerPosition
+		print(Format("Controller moved:%d",KV))
+	end
+	for i=1,5 do
+		if LK[i] ~= self["LK"..i].Value then
+			if not OldTime then OldTime = CurTime() end
+			print(Format("%.2f:LK%d = %d",CurTime()-OldTime,i,self["LK"..i].Value))
+			LK[i] = self["LK"..i].Value
+		end
+	end
+	if RK ~= math.floor(self.RheostatController.Position+0.5) then
+		if not OldTime then OldTime = CurTime() end
+		RK = math.floor(self.RheostatController.Position+0.5)
+		print(Format("%.2f:RK = %d",CurTime()-OldTime,RK))
+	end
+	if PKG ~= math.floor(self.PositionSwitch.Position+0.5) then
+		if not OldTime then OldTime = CurTime() end
+		local nPKG = math.floor(self.PositionSwitch.Position+0.5)
+		print(Format("%.2f:PK = %d->%d",CurTime()-OldTime,PKG,nPKG))
+		PKG = nPKG
+	end
+	]]
 	if self.YAR_13A and self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
 		self.YAR_13A:TriggerInput("Slope",1)
 	end
@@ -281,21 +349,7 @@ function ENT:Think()
 		self.YAR_13A:TriggerInput("Slope",0)
 	end
 	if self.ARSType then self.ARSType = nil end
-	self.TextureTime = self.TextureTime or CurTime()
-	if (CurTime() - self.TextureTime) > 1.0 then
-		--print(1)
-		self.TextureTime = CurTime()
-		if self.Texture then
-			for k,v in pairs(self:GetMaterials()) do
-				if v:find("ewagon") then
-					self:SetSubMaterial(k-1,self.Texture)
-				else
-					self:SetSubMaterial(k-1,"")
-				end
-			end
-			self:SetNWString("texture",self.Texture)
-		end
-	end
+
 	self.RetVal = self.BaseClass.Think(self)
 	-- Check if wrench was pulled out
 	if self.DriversWrenchPresent then
@@ -369,7 +423,6 @@ function ENT:Think()
 	self:SetPackedBool(19,self.OtklAVU.Value == 1.0)
 	self:SetPackedBool(20,self.Pneumatic.Compressor == 1.0)
 	self:SetPackedBool(21,self.Pneumatic.LeftDoorState[1] > 0.5)
-	self:SetPackedBool(22,self.Pneumatic.ValveType == 2)
 	--self:SetPackedBool(22,self.Pneumatic.LeftDoorState[2] > 0.5)
 	--self:SetPackedBool(23,self.Pneumatic.LeftDoorState[3] > 0.5)
 	--self:SetPackedBool(24,self.Pneumatic.LeftDoorState[4] > 0.5)
@@ -491,11 +544,7 @@ function ENT:Think()
 	self:SetPackedRatio(0, 1-self.Pneumatic.DriverValvePosition/7)
 	self:SetPackedRatio(1, (self.KV.ControllerPosition+3)/7)
 	self:SetPackedRatio(2, 1-(self.KV.ReverserPosition+1)/2)
-	if self.Pneumatic.ValveType == 1 then
-		self:SetPackedRatio(4, self.Pneumatic.ReservoirPressure/16.0)
-	else
-		self:SetPackedRatio(4, self.Pneumatic.BrakeLinePressure/16.0)	
-	end	
+	self:SetPackedRatio(4, self.Pneumatic.BrakeLinePressure/16.0)	
 	self:SetPackedRatio(5, self.Pneumatic.TrainLinePressure/16.0)
 	self:SetPackedRatio(6, (self.Pneumatic.BrakeCylinderPressure + 4.0*self.ManualBrake)/6.0)
 	self:SetPackedRatio(7, self.Electric.Power750V/1000.0)
@@ -860,9 +909,7 @@ function ENT:OnButtonPress(button)
 	
 	if button == "DriverValveDisconnectToggle" then
 		if self.DriverValveDisconnect.Value == 1.0 then
-			if self.Pneumatic.ValveType == 2 then
-				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
-			end
+			self:PlayOnce("pneumo_disconnect2","cabin",0.9)
 			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 		else
 			self:PlayOnce("pneumo_disconnect1","cabin",0.9)

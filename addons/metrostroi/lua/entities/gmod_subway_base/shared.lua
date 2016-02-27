@@ -190,8 +190,8 @@ function ENT:InitializeSounds()
 	self.SoundPositions["horn2"]	= "cabin"
 	self.SoundPositions["horn3"]	= "cabin"
 	
-	self.SoundNames["ring"]			= "subway_trains/new//ring1.wav"
-	self.SoundNames["ring_end"]		= "subway_trains/new/ring2.wav"
+	self.SoundNames["ring"]			= "subway_trains/ring_loop.wav"
+	self.SoundNames["ring_end"]		= "subway_trains/ring_end.wav"
 	self.SoundPositions["ring"] 	= "cabin"
 	self.SoundPositions["ring_end"] = "cabin"
 	
@@ -220,8 +220,14 @@ function ENT:InitializeSounds()
 	self.SoundNames["dura1"]		= "subway_trains/dura_alarm_1.wav"
 	self.SoundNames["dura2"]		= "subway_trains/dura_alarm_2.wav"
 	
-	self.SoundNames["rk_spin"]		= "subway_trains/rk_1.wav"
-	self.SoundNames["rk_stop"]		= "subway_trains/rk_2.wav"
+	self.SoundNames["rk_spin"]		= "subway_trains/rk_spin.wav"
+	self.SoundNames["rk_stop"]		= "subway_trains/rk_stop.wav"
+	
+	self.SoundNames["lk2_on"]		= "subway_trains/lk2_on.wav"
+	self.SoundNames["lk2_off"]		= "subway_trains/lk2_off.wav"
+	self.SoundNames["lk3_on"]		= "subway_trains/lk3_on.wav"
+	self.SoundNames["lk3_off"]		= "subway_trains/lk3_off.wav"
+	self.SoundNames["pkg"] = {"subway_trains/pkg1.wav","subway_trains/pkg2.wav"}
 
 	self.SoundNames["inf_on"]		= "subway_trains/program_on.wav"
 	self.SoundNames["inf_off"]		= "subway_trains/program_0.wav"
@@ -273,10 +279,11 @@ function ENT:InitializeSounds()
 		--"subway_trains/new/lsd_1.wav",
 		--"subway_trains/new/lsd_2.wav",
 		--"subway_trains/new/lsd_3.wav",
-		"subway_trains/new/lsd_4.wav",
-		"subway_trains/new/lsd_5.wav",
-		"subway_trains/new/lsd_6.wav",
-		"subway_trains/new/lsd_7.wav",
+		--"subway_trains/new/lsd_4.wav",
+		--"subway_trains/new/lsd_5.wav",
+		--"subway_trains/new/lsd_6.wav",
+		--"subway_trains/new/lsd_7.wav",
+		"subway_trains/sd.wav",
 	}
 	self.SoundNames["rvt_close"] = {
 		"subway_trains/brake_on.wav",
@@ -288,6 +295,9 @@ function ENT:InitializeSounds()
 		"subway_trains/new/drive_on1.wav",
 		"subway_trains/new/drive_on2.wav",
 		"subway_trains/new/drive_on3.wav",
+		--"subway_trains/drive_on2.wav",
+		--"subway_trains/drive_on3.wav",
+		--"subway_trains/drive_on4.wav",
 	}
 	self.SoundNames["rvt_open"] = {
 		"subway_trains/new/brake_off1.wav",
@@ -299,7 +309,8 @@ function ENT:InitializeSounds()
 	self.SoundNames["relay_close5"] = "subway_trains/new/relay_3.wav"
 	self.SoundNames["door_close1"] = {
 		"subway_trains/door_close_7.wav",
-		"subway_trains/door_close_8.wav"
+		"subway_trains/door_close_8.wav",
+		--"subway_trains/doorsclose_new.wav",
 	}
 	self.SoundNames["door_open1"] = {
 		"subway_trains/door_open_4.wav",
@@ -330,10 +341,12 @@ function ENT:InitializeSounds()
 	self.SoundNames["door_open_tor"] = "subway_trains/door_t_open.wav"
 	self.SoundNames["door_close_tor"] = "subway_trains/door_t_close.wav"
 
-	self.SoundNames["compressor"]		= "subway_trains/compressor_717.wav"
-	self.SoundNames["compressor_end"] 	= "subway_trains/compressor_717_off.wav"
-	self.SoundNames["compressor_ezh"]		= "subway_trains/compressor_ezh.wav"
-	self.SoundNames["compressor_ezh_end"] 	= "subway_trains/compressor_ezh_off.wav"
+	self.SoundNames["compressor_717"]		= "subway_trains/compressor_717_loop.wav"
+	self.SoundNames["compressor_717_end"] 	= "subway_trains/compressor_717_end.wav"
+	self.SoundNames["compressor_ezh"]		= "subway_trains/compressor_ezh_loop.wav"
+	self.SoundNames["compressor_ezh_end"] 	= "subway_trains/compressor_ezh_end.wav"
+	self.SoundNames["compressor_e"]		= "subway_trains/compressor_e_loop.wav"
+	self.SoundNames["compressor_e_end"] 	= "subway_trains/compressor_e_end.wav"
 
 	self.SoundNames["revers_f"]		= "subway_trains/revers_f.wav"
 	self.SoundNames["revers_0"]		= "subway_trains/revers_0.wav"
@@ -510,8 +523,8 @@ function ENT:LoadSystem(a,b,...)
 		sys_name = a
 	end
 	
-	if not Metrostroi.Systems[name] then error("No system defined: "..name) end
-	if self.Systems[sys_name] then error("System already defined: "..sys_name)  end
+	if not Metrostroi.Systems[name] then ErrorNoHalt("No system defined: "..name) return end
+	if self.Systems[sys_name] then ErrorNoHalt("System already defined: "..sys_name)  return end
 	
 	local no_acceleration = Metrostroi.BaseSystems[name].DontAccelerateSimulation
 	local run_everywhere = Metrostroi.BaseSystems[name].RunEverywhere

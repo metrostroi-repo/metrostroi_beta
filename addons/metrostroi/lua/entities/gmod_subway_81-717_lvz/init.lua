@@ -14,7 +14,7 @@ ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 ---------------------------------------------------
 ENT.SubwayTrain = {
 	Type = "81",
-	Name = "81-717",
+	Name = "81-717.5m",
 	Manufacturer = "LVZ",
 	WagType = 1,
 }
@@ -105,7 +105,7 @@ function ENT:Initialize()
 		[KEY_SPACE] = "PBSet",
 		[KEY_BACKSPACE] = "EmergencyBrake",
 
-		[KEY_PAD_0] = "DriverValveDisconnectToggle",
+		[KEY_PAD_0] = "DriverValveDisconnect",
 		[KEY_PAD_DECIMAL] = "EPKToggle",
 		[KEY_LSHIFT] = {
 			[KEY_W] = "KVUp_Unlocked",
@@ -345,26 +345,6 @@ function ENT:Initialize()
 	self.PassengerDoor = false
 
 	self.OldTexture = 0
-	for k,v in pairs(self:GetMaterials()) do
-		if v == "models/metrostroi_train/81/int02" then
-			if not Metrostroi.CurrentMap or Metrostroi.CurrentMap == "" or not Metrostroi.Skins["717_schemes"]["p_"..Metrostroi.CurrentMap:sub(4,-1) ] then
-				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
-			else
-				if not self.Adverts or self.Adverts ~= 4 then
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p_"..Metrostroi.CurrentMap:sub(4,-1)].path1)
-				else
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p_"..Metrostroi.CurrentMap:sub(4,-1)].path2)
-				end
-			end
-		end
-		local tex = Metrostroi.Skins["717_cabp"][self.CabTexture or 1]
-		for k1,v1 in pairs(self.Blok == 4 and tex.textures.paksdm or self.Blok == 3 and tex.textures.pam or self.Blok == 2 and tex.textures.paksd or tex.textures.puav) do
-			if v:find(k1) then
-				self:SetSubMaterial(k-1,v1)
-			end
-		end
-	end
-
 	self.LampsBlink = {}
 	self.Lamps = {}
 	self.BrokenLamps = {}
@@ -372,8 +352,68 @@ function ENT:Initialize()
 	for i = 1,23 do
 		if math.random() > rand then self.BrokenLamps[i] = math.random() > 0.5 end
 	end
+
+	self:UpdateTextures()
+end
+function ENT:UpdateTextures()
+	for k,v in pairs(self:GetMaterials()) do
+		if v == "models/metrostroi_train/81/int02" then
+			if not Metrostroi.Skins["717_schemes"] or not Metrostroi.Skins["717_schemes"]["p"] then
+				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""])
+			else
+				if not self.Adverts or self.Adverts ~= 4 then
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p"].adv)
+				else
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p"].clean)
+				end
+			end
+		end
+	end
 end
 --------------------------------------------------------------------------------
+
+function ENT:UpdateTextures()
+	local texture = Metrostroi.Skins["train"][self.Texture]
+	local passtexture = Metrostroi.Skins["pass"][self.PassTexture]
+	local cabintexture = Metrostroi.Skins["cab"][self.CabTexture]
+
+	for k,v in pairs(self:GetMaterials()) do
+		self:SetSubMaterial(k-1,"")
+	end
+	local cab = self.Blok == 4 and "paksdm" or self.Blok == 3 and "pam" or self.Blok == 2 and "paksd" or "puav"
+	for k,v in pairs(self:GetMaterials()) do
+		if v == "models/metrostroi_train/81/int02" then
+			if not Metrostroi.Skins["717_schemes"] or not Metrostroi.Skins["717_schemes"]["p"] then
+				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""])
+			else
+				if not self.Adverts or self.Adverts ~= 4 then
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p"].adv)
+				else
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p"].clean)
+				end
+			end
+		end
+		local tex = string.Explode("/",v)
+		tex = tex[#tex]
+		if texture and texture.textures[tex] then
+			self:SetSubMaterial(k-1,texture.textures[tex])
+		end
+		if passtexture and passtexture.textures[tex] then
+			self:SetSubMaterial(k-1,passtexture.textures[tex])
+		end
+		if cabintexture then print(1,cabintexture.textures) end
+		if cabintexture and cabintexture.textures[cab][tex] then
+			self:SetSubMaterial(k-1,cabintexture.textures[cab][tex])
+		end
+	end
+	self:SetNWInt("Blok",(self.Blok or 1))
+	self:SetNWBool("Breakers",(self.Breakers or 0) > 0)
+	self:SetNWInt("LampType",(self.LampType or 1))
+	self:SetNWBool("BPSNBuzzType",self.PNM)
+	self:SetNWString("texture",self.Texture)
+	self:SetNWString("passtexture",self.PassTexture)
+	self:SetNWString("cabtexture",self.CabTexture)
+end
 function ENT:Think()
 	self.ExtraSeat1:SetPos(Vector(420,-40,-28+1))
 	--self.ExtraSeat3:SetPos(Vector(402,50,-43))
@@ -408,59 +448,6 @@ function ENT:Think()
 		end
 	end
 
-	self.TextureTime = self.TextureTime or CurTime()
-	if (CurTime() - self.TextureTime) > 1.0 then
-		--table.insert(self.SignsList,"Синергия-1")
-		--print(1)
-		self.TextureTime = CurTime()
-		self:SetNWInt("Blok",(self.Blok or 1))
-		self:SetNWBool("Breakers",(self.Breakers or 0) > 0)
-		self:SetNWInt("LampType",(self.LampType or 1))
-		self:SetNWBool("BPSNBuzzType",self.PNM)
-		if self.Texture or self.PassTexture or self.SignsList	 then
-			for k,v in pairs(self:GetMaterials()) do
-				if v == "models/metrostroi_train/81/b01a" then
-					if self.Texture then self:SetSubMaterial(k-1,self.Texture) end
-				elseif v == "models/metrostroi_train/81/int01" then
-					if self.PassTexture then self:SetSubMaterial(k-1,self.PassTexture) end
-					--print(self.PassTexture)
-					--if self.SignsList then print(self.SignsList[self.SignsIndex][1]) end
-				elseif v == "models/metrostroi_train/81/tabl" then
-					if self.SignsList then
-						if self.SignsList[self.SignsIndex] then self:SetSubMaterial(k-1,self.SignsList[self.SignsIndex][1]) else print(self.SignsIndex) end
-					else
-						self:PrepareSigns()
-					end
-				elseif v ~= "models/metrostroi_train/81/int02" and not v:find("cabin") then
-					self:SetSubMaterial(k-1)
-				end
-			end
-			self:SetNWString("texture",self.Texture)
-			self:SetNWString("passtexture",self.PassTexture)
-		end
-	end
-	if self.OldBlok ~= self.Blok then
-		for k,v in pairs(self:GetMaterials()) do
-			local tex = Metrostroi.Skins["717_cabp"][self.CabTexture or 1]
-			for k1,v1 in pairs(self.Blok == 4 and tex.textures.paksdm or self.Blok == 3 and tex.textures.pam or self.Blok == 2 and tex.textures.paksd or tex.textures.puav) do
-				if v:find(k1) then
-					self:SetSubMaterial(k-1,v1)
-				end
-			end
-		end
-		self.OldBlok = self.Blok
-	end
-	if self.OldCabTexture ~= self.CabTexture then
-		for k,v in pairs(self:GetMaterials()) do
-			local tex = Metrostroi.Skins["717_cabp"][self.CabTexture or 1]
-			for k1,v1 in pairs(self.Blok == 4 and tex.textures.paksdm or self.Blok == 3 and tex.textures.pam or self.Blok == 2 and tex.textures.paksd or tex.textures.puav) do
-				if v:find(k1) then
-					self:SetSubMaterial(k-1,v1)
-				end
-			end
-		end
-		self.OldCabTexture = self.CabTexture
-	end
 	self:SetBodygroup(1,(self.Breakers or 0))
 	self:SetBodygroup(2,math.min(3,self.Adverts or 1)-1)
 	self:SetBodygroup(3,2)
@@ -828,6 +815,18 @@ function ENT:Think()
 	self:SetPackedBool("Wiper",self.Wiper.Value == 1)
 	self:SetPackedBool("ConverterProtection",self.ConverterProtection.Value == 1)
 	self:SetPackedBool("RZP",self:ReadTrainWire(35) == 1)
+	self:SetPackedBool("DriverValveBLDisconnect",self.DriverValveBLDisconnect.Value == 1.0)
+	self:SetPackedBool("DriverValveTLDisconnect",self.DriverValveTLDisconnect.Value == 1.0)
+	if self.DriverValveDisconnect.Blocked > 0 and self.Pneumatic.ValveType == 2 then
+		self.DriverValveDisconnect:TriggerInput("Block",0)
+		self.DriverValveBLDisconnect:TriggerInput("Block",1)
+		self.DriverValveTLDisconnect:TriggerInput("Block",1)
+	end
+	if self.DriverValveDisconnect.Blocked == 0 and self.Pneumatic.ValveType == 1 then
+		self.DriverValveDisconnect:TriggerInput("Block",1)
+		self.DriverValveBLDisconnect:TriggerInput("Block",0)
+		self.DriverValveTLDisconnect:TriggerInput("Block",0)
+	end
 	for k,v in pairs(self.Plombs) do
 		self:SetPackedBool(k.."Pl",v)
 		if not v then v = nil end
@@ -1422,20 +1421,56 @@ function ENT:OnButtonPress(button,state)
 		return
 	end
 	
-	if button == "DriverValveDisconnectToggle" then
-		if self.DriverValveDisconnect.Value == 1.0 then
-			if self.Pneumatic.ValveType == 2 then
+	if button == "DriverValveDisconnect" then
+		if self.Pneumatic.ValveType == 2 then
+			if self.DriverValveDisconnect.Value == 1.0 then
+				self.DriverValveDisconnect:TriggerInput("Set",0)
 				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
+				if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+			else
+				self.DriverValveDisconnect:TriggerInput("Set",1)
+				self:PlayOnce("pneumo_disconnect1","cabin",0.9)
+				if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
 			end
-			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 		else
-			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
-			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+			if self.DriverValveBLDisconnect.Value == 0 or self.DriverValveTLDisconnect.Value == 0 then
+				self.DriverValveBLDisconnect:TriggerInput("Set",1)
+				self.DriverValveTLDisconnect:TriggerInput("Set",1)
+			else
+				self.DriverValveBLDisconnect:TriggerInput("Set",0)
+				self.DriverValveTLDisconnect:TriggerInput("Set",0)
+			end
+			if self.DriverValveBLDisconnect.Value == 1.0 then
+				if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+			else
+				if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+			end
 		end
 		return
 	end
 	
-	if button == "EPKToggle" and self.DriverValveDisconnect.Value == 1.0 then
+	if button == "DriverValveDisconnectToggle" then
+		if self.DriverValveDisconnect.Value == 1.0 then
+			self:PlayOnce("pneumo_disconnect2","cabin",0.9)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+		else
+			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+		end
+		return
+	end
+	
+	if button == "DriverValveBLDisconnectToggle" then
+		if self.DriverValveBLDisconnect.Value == 1.0 then
+			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+		else
+			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+		end
+		return
+	end
+	
+	if button == "EPKToggle" and 
+		(self.Pneumatic.ValveType == 1 and self.DriverValveBLDisconnect.Value == 1.0 or self.Pneumatic.ValveType == 2 and self.DriverValveDisconnect.Value == 1.0) then
 		if self.EPK.Value == 1.0 then
 			self:PlayOnce("epv_off","cabin",0.9)
 		else

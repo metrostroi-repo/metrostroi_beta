@@ -23,11 +23,11 @@ function ENT:InitializeSounds()
 	self.BaseClass.InitializeSounds(self)
 	self.SoundNames["relay_close2"] = nil
 	self.SoundNames["relay_close3"] = nil
-	self.SoundNames["relay_close4"] = {"subway_trains/new/relay_7.wav","subway_trains/new/lsd_4.wav"}
+	--[[self.SoundNames["relay_close4"] = {"subway_trains/new/relay_7.wav","subway_trains/new/lsd_4.wav"}
 	self.SoundNames["pneumo_switch"] = {
 		"subway_trains/pneumo_8.wav",
 		"subway_trains/pneumo_9.wav",
-	}
+	}]]
 	self.SoundNames["rvt_close"] = "subway_trains/sbor.wav"
 	self.SoundNames["r1_5_close"] = "subway_trains/sbor_hod.wav"
 	self.SoundNames["rvt_open"] = "subway_trains/rasbor_t.wav"
@@ -47,8 +47,8 @@ function ENT:InitializeSounds()
 end
 
 function ENT:InitializeSystems()	
-	-- Электросистема 81-705
-	self:LoadSystem("Electric","81_705_Electric")
+	-- Электросистема 81-710
+	self:LoadSystem("Electric","81_710_Electric")
 
 	-- Токоприёмник
 	self:LoadSystem("TR","TR_3B")	
@@ -84,10 +84,11 @@ function ENT:InitializeSystems()
 	self:LoadSystem("YARD_2")
 	self:LoadSystem("PR_14X_Panels")	
 	
-	-- Пневмосистема 81-705
+	-- Пневмосистема 81-710
 	self:LoadSystem("Pneumatic","81_717_Pneumatic")
-	-- Панель управления 81-705
-	self:LoadSystem("Panel","81_705_Panel")
+	self.Pneumatic.ValveType = 2
+	-- Панель управления 81-710
+	self:LoadSystem("Panel","81_710_Panel")
 	-- Everything else
 	self:LoadSystem("Battery")
 	self:LoadSystem("PowerSupply","DIP_01K")

@@ -89,7 +89,7 @@ function ENT:Initialize()
 		[KEY_SPACE] = "PBSet",
 		[KEY_BACKSPACE] = "EmergencyBrake",
 
-		[KEY_PAD_0] = "DriverValveDisconnectToggle",
+		[KEY_PAD_0] = "DriverValveDisconnect",
 		[KEY_PAD_DECIMAL] = "EPKToggle",
 		[KEY_LSHIFT] = {
 			[KEY_W] = "KVUp_Unlocked",
@@ -101,7 +101,7 @@ function ENT:Initialize()
 			[KEY_1] = "DIPonSet",
 			[KEY_2] = "DIPoffSet",
 			[KEY_4] = "KVSet0Fast",
-			[KEY_L] = "DriverValveDisconnectToggle",
+			[KEY_L] = "DriverValveDisconnect",
 			
 			[KEY_7] = "KVWrenchNone",
 			[KEY_8] = "KVWrenchKRU",
@@ -115,7 +115,7 @@ function ENT:Initialize()
 			[KEY_8] = "KVWrenchKRU",
 			[KEY_9] = "KVWrenchKV",
 			[KEY_0] = "KVWrench0",
-			[KEY_L] = "DriverValveDisconnectToggle",
+			[KEY_L] = "DriverValveDisconnect",
 			[KEY_F] = "BCCDSet",
 			[KEY_R] = "VZPSet",
 		},
@@ -241,8 +241,44 @@ function ENT:Initialize()
 	self.PassengerDoor = false
 
 --	self.A5:TriggerInput("Set",0)
+	self:UpdateTextures()
 end
+function ENT:UpdateTextures()
+	local texture = Metrostroi.Skins["train"][self.Texture]
+	local passtexture = Metrostroi.Skins["pass"][self.PassTexture]
+	local cabintexture = Metrostroi.Skins["cab"][self.CabTexture]
 
+	for k,v in pairs(self:GetMaterials()) do
+		self:SetSubMaterial(k-1,"")
+	end
+	for k,v in pairs(self:GetMaterials()) do
+		if v == "models/metrostroi_train/81/int02" then
+			if not Metrostroi.Skins["717_schemes"] or not Metrostroi.Skins["717_schemes"]["m"] then
+				--self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""])
+			else
+				if not self.Adverts or self.Adverts ~= 4 then
+					--self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].adv)
+				else
+					--self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].clean)
+				end
+			end
+		end
+		local tex = string.Explode("/",v)
+		tex = tex[#tex]
+		if texture and texture.textures[tex] then
+			self:SetSubMaterial(k-1,texture.textures[tex])
+		end
+		if passtexture and passtexture.textures[tex] then
+			self:SetSubMaterial(k-1,passtexture.textures[tex])
+		end
+		if cabintexture and cabintexture.textures[tex] then
+			self:SetSubMaterial(k-1,cabintexture.textures[tex])
+		end
+	end
+	self:SetNWString("texture",self.Texture)
+	self:SetNWString("passtexture",self.PassTexture)
+	self:SetNWString("cabtexture",self.CabTexture)
+end
 
 --------------------------------------------------------------------------------
 function ENT:Think()
@@ -332,7 +368,6 @@ function ENT:Think()
 	self:SetPackedBool(3,self.DIPon.Value == 1.0)
 	self:SetPackedBool(4,self.DIPoff.Value == 1.0)
 	self:SetPackedBool(5,self.GV.Value == 1.0)
-	self:SetPackedBool(6,self.DriverValveDisconnect.Value == 1.0)
 	self:SetPackedBool(7,self.VB.Value == 1.0)
 	self:SetPackedBool(8,self.RezMK.Value == 1.0)
 	self:SetPackedBool(9,self.KU1.Value == 1.0)
@@ -395,11 +430,13 @@ function ENT:Think()
 	self:SetPackedBool(152,self.UAVA.Value == 1.0)
 	self:SetPackedBool(153,self.DURA.Channel1Alternate)
 	self:SetPackedBool(154,self.DURA.Channel2Alternate)
-	self:SetPackedBool(155,self.EPK.Value == 1.0)
 	self:SetPackedBool(156,self.RearDoor)
 	self:SetPackedBool(157,self.FrontDoor)
 	self:SetPackedBool(158,self.PassengerDoor)
 	self:SetPackedBool(159,self.CabinDoor)
+	self:SetPackedBool("DriverValveBLDisconnect",self.DriverValveBLDisconnect.Value == 1.0)
+	self:SetPackedBool("DriverValveTLDisconnect",self.DriverValveTLDisconnect.Value == 1.0)
+	self:SetPackedBool("EPK",self.EPK.Value == 1.0)
 
 	-- Signal if doors are open or no to platform simulation
 	self.LeftDoorsOpen = 
@@ -857,21 +894,32 @@ function ENT:OnButtonPress(button)
 		return
 	end
 	
-	if button == "DriverValveDisconnectToggle" then
-		if self.DriverValveDisconnect.Value == 1.0 then
-			if self.Pneumatic.ValveType == 2 then
-				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
-			end
-			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+	if button == "DriverValveDisconnect" then
+		if self.DriverValveBLDisconnect.Value == 0 or self.DriverValveTLDisconnect.Value == 0 then
+			self.DriverValveBLDisconnect:TriggerInput("Set",1)
+			self.DriverValveTLDisconnect:TriggerInput("Set",1)
 		else
-			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
+			self.DriverValveBLDisconnect:TriggerInput("Set",0)
+			self.DriverValveTLDisconnect:TriggerInput("Set",0)
+		end
+		if self.DriverValveBLDisconnect.Value == 1.0 then
 			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+		else
+			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 		end
 		return
 	end
 	
-	if button == "EPKToggle" and self.DriverValveDisconnect.Value == 1.0 then
-		if self.EPK.Value == 1.0 then
+	if button == "DriverValveBLDisconnectToggle" then
+		if self.DriverValveBLDisconnect.Value == 1.0 then
+			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+		else
+			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+		end
+		return
+	end
+	if button == "EPKToggle" and self.DriverValveBLDisconnect.Value == 1.0 then
+		if self.EPK.Value == 0.0 then
 			self:PlayOnce("epv_off","cabin",0.9)
 		else
 			self:PlayOnce("epv_on","cabin",0.9)

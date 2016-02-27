@@ -402,9 +402,43 @@ end
 ENT.RearDoor = 0
 ENT.FrontDoor = 0
 --------------------------------------------------------------------------------
+
+function ENT:UpdateTextures()
+	local texture = Metrostroi.Skins["train"][self:GetNWString("texture")]
+	local passtexture = Metrostroi.Skins["pass"][self:GetNWString("passtexture")]
+	local cabintexture = Metrostroi.Skins["cab"][self:GetNWString("cabtexture")]
+	for _,self in pairs(self.ClientEnts) do
+		if not IsValid(self) then continue end
+		for k,v in pairs(self:GetMaterials()) do
+			local tex = string.Explode("/",v)
+			tex = tex[#tex]
+			if texture and texture.textures[tex] then
+				self:SetSubMaterial(k-1,texture.textures[tex])
+			end
+			if passtexture and passtexture.textures[tex] then
+				self:SetSubMaterial(k-1,passtexture.textures[tex])
+			end
+			if cabintexture and cabintexture.textures[tex] then
+				self:SetSubMaterial(k-1,cabintexture.textures[tex])
+			end
+		end
+	end
+end
+--------------------------------------------------------------------------------
 function ENT:Think()
-	if not self.Animate then self.BaseClass = baseclass.Get("gmod_subway_base") end
 	self.BaseClass.Think(self)
+	if self.Texture ~= self:GetNWString("texture") then
+		self.Texture = self:GetNWString("texture")
+		self:UpdateTextures()
+	end
+	if self.PassTexture ~= self:GetNWString("passtexture") then
+		self.PassTexture = self:GetNWString("passtexture")
+		self:UpdateTextures()
+	end
+	if self.CabinTexture ~= self:GetNWString("cabtexture") then
+		self.CabinTexture = self:GetNWString("cabtexture")
+		self:UpdateTextures()
+	end
 	
 	-- Distance cull
 	local distance = self:GetPos():Distance(LocalPlayer():GetPos())
@@ -506,23 +540,6 @@ function ENT:Think()
 	self:Animate("gv_wrench",	(self:GetPackedBool(5) and 1 or 0), 	0,0.51, 128,  1,false)
 	self:ShowHide("gv_wrench",	CurTime() < self.ResetTime)
 	self.TextureTime = self.TextureTime or CurTime()
-	if (CurTime() - self.TextureTime) > 5.0 and self:GetNWString("texture",nil) then
-		--print(1)
-		self.TextureTime = CurTime()
-		for tex,ent in pairs(self.ClientEnts) do
-			if tex:find("door") then
-				for k,v in pairs(ent:GetMaterials()) do
-					if v == "models/metrostroi_train/81/b01a" then
-						ent:SetSubMaterial(k-1,self:GetNWString("texture"))
-					elseif v == "models/metrostroi_train/81/int01" then
-						ent:SetSubMaterial(k-1,self:GetNWString("passtexture"))
-					else
-						ent:SetSubMaterial(k-1,"")
-					end
-				end
-			end
-		end
-	end
 	
 	-- Animate doors
 	--[[for i=0,3 do
@@ -591,11 +608,15 @@ function ENT:Think()
 	self.PreviousCompressorState = self.PreviousCompressorState or false
 	if self.PreviousCompressorState ~= state then
 		self.PreviousCompressorState = state
-		if not state then
-			self:PlayOnce("compressor_end",nil,0.80,nil,true)
+		if 	state then
+			self:SetSoundState("compressor_717",1,1)
+		else
+			self:SetSoundState("compressor_717",0,1)
+			self:SetSoundState("compressor_717_end",0,1)
+			self:SetSoundState("compressor_717_end",1,1)
+			--self:PlayOnce("compressor_e_end",nil,1,nil,true)
 		end
 	end
-	self:SetSoundState("compressor",state and 1 or 0,1,nil,0.80)
 	
 	-- RK rotation
 	if self:GetPackedBool(112) then self.RKTimer = CurTime() end
@@ -604,10 +625,11 @@ function ENT:Think()
 	if self.PreviousRKState ~= state then
 		self.PreviousRKState = state
 		if state then
-			self:SetSoundState("rk_spin",0.67,1)
+			self:SetSoundState("rk_spin",0.7,1,nil,0.75)
 		else
-			self:SetSoundState("rk_spin",0,0)
-			self:PlayOnce("rk_stop",nil,0.67)		
+			self:SetSoundState("rk_spin",0,0,nil,0.75)
+			self:SetSoundState("rk_stop",0,1,nil,0.75)
+			self:SetSoundState("rk_stop",0.7,1,nil,0.75)
 		end
 	end
 	

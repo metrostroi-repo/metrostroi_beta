@@ -559,7 +559,6 @@ function ENT:ReadCell(Address)
 					end
 				end
 			end
-
 			if Address == 49160 then return current end
 			if Address == 49161 then return next end
 			if Address == 49162 then return prev end

@@ -129,8 +129,8 @@ end
 
 
 
-function Metrostroi.PositionFromPanel(panel,button_id_or_vec,z)
-	local self = ENT
+function Metrostroi.PositionFromPanel(panel,button_id_or_vec,z,train)
+	local self = train or ENT
 	local panel = self.ButtonMap[panel]
 	if not panel then return Vector(0,0,0) end
 	if not panel.buttons then return Vector(0,0,0) end
@@ -156,8 +156,8 @@ function Metrostroi.PositionFromPanel(panel,button_id_or_vec,z)
 	return panel.pos + vec * panel.scale
 end
 
-function Metrostroi.AngleFromPanel(panel,ang)
-	local self = ENT
+function Metrostroi.AngleFromPanel(panel,ang,train)
+	local self = train or ENT
 	local panel = self.ButtonMap[panel]
 	if not panel then return Vector(0,0,0) end
 	local true_ang = panel.ang + Angle(0,0,0)
@@ -172,7 +172,30 @@ function Metrostroi.ClientPropForButton(prop_name,config)
 		pos = Metrostroi.PositionFromPanel(config.panel,config.pos or config.button,(config.z or 0.2)),
 		ang = Metrostroi.AngleFromPanel(config.panel,config.ang),
 		color = config.color,
-		skin = config.skin or 0
+		skin = config.skin or 0,
+		config = config,
+	}
+	if self.ButtonMap[config.panel] and not config.ignorepanel and config.propname == nil then
+		for k,v in pairs(self.ButtonMap[config.panel].buttons) do
+			if v.ID == config.button then
+				v.PropName = prop_name
+				break
+			end
+		end
+		if not self.ButtonMap[config.panel].props then self.ButtonMap[config.panel].props = {} end
+		table.insert(self.ButtonMap[config.panel].props,prop_name)
+	end
+end
+
+function Metrostroi.TempoaryClientPropForButton(train,prop_name,config)
+	local self = train
+	self.ClientPropsOv[prop_name] = {
+		model = config.model or "models/metrostroi/81-717/button07.mdl",
+		pos = Metrostroi.PositionFromPanel(config.panel,config.pos or config.button,(config.z or 0.2),train),
+		ang = Metrostroi.AngleFromPanel(config.panel,config.ang,train),
+		color = config.color,
+		skin = config.skin or 0,
+		config = config,
 	}
 	if self.ButtonMap[config.panel] and not config.ignorepanel then
 		for k,v in pairs(self.ButtonMap[config.panel].buttons) do

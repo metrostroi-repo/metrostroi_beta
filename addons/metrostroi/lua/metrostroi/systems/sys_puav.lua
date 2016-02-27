@@ -171,6 +171,13 @@ if CLIENT then
 			surface.DrawRect(13,134,30,24)
 			draw.SimpleText("ЛРС","MetrostroiSubway_PUAV1",27, 146,Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 		end
+		local b = self:Animate("light_LKI1",self:GetPackedBool("LKI") and 0 or 1,0,1,15,false)
+		if b > 0 then
+			surface.SetAlphaMultiplier(b)
+			surface.SetDrawColor(Color(200,0,0))
+			surface.DrawRect(13,171,30,28)
+			draw.SimpleText("ЛКИ1","MetrostroiSubway_PUAV1",27, 185,Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+		end
 		--surface.SetDrawColor(Color(200,0,0))
 		--surface.DrawRect(13,171,30,28)
 		--draw.SimpleText("ЛКН1","MetrostroiSubway_PUAV1",27, 185,Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
@@ -327,4 +334,9 @@ function TRAIN_SYSTEM:Think(dT)
 	self.Line = Train.UPO.Line
 	self.FirstStation = tostring(Train.UPO.FirstStation or "")
 	self.LastStation = tostring(Train.UPO.LastStation or "")
+	local pathID
+	if (Metrostroi.TrainPositions[self.Train] and Metrostroi.TrainPositions[self.Train][1]) then
+		PathID = Metrostroi.TrainPositions[self.Train][1].path.id
+	end
+	Train:SetPackedBool("LKI",self.Train.Autodrive.Commands[PathID] and self.Train.Autodrive.Commands[PathID][self.Train.UPO.Station] ~= nil)
 end

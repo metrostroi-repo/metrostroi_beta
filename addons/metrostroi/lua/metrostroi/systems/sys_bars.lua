@@ -57,7 +57,7 @@ function TRAIN_SYSTEM:Initialize()
 	-- ARS wires
 	self["33D"] = 0
 	self["33G"] = 0
-	self["33Zh"] = 0
+	self["33Zh"] = 1
 	self["2"] = 0
 	self["6"] = 0
 	self["8"] = 0
@@ -166,7 +166,7 @@ function TRAIN_SYSTEM:Think(dT)
 	if (PAKSD or PAKSDM) then
 		EPKActivated = EnableARS
 	else
-		EPKActivated = Train.EPK and (Train.EPK.Value > 0.5 and Train.DriverValveDisconnect.Value > 0.5)
+		EPKActivated = Train.EPK.Value > 0.5 and (Train.Pneumatic.ValveType == 2 and Train.DriverValveDisconnect.Value > 0.5 or Train.DriverValveBLDisconnect.Value > 0.5)
 	end
 	if not self.EPKActivated and EPKActivated then
 		self.EPKActivated = EPKActivated
@@ -391,7 +391,7 @@ function TRAIN_SYSTEM:Think(dT)
 		self.PrevNoFreq = self.RealNoFreq
 		-- Check overspeed
 		if self.SpeedLimit > 20 then
-			if self.Speed >= self.SpeedLimit - 1 and not self.ARSBrake and (PAM or PAKSDM) then
+			if (PAM or PAKSDM) and self.Train.YAR_13A.Slope == 0 and self.Speed >= self.SpeedLimit and not self.ARSBrake then
 				self.ElectricBrake1 = true
 			end
 			if self.Speed >= self.SpeedLimit + 1 then
@@ -431,12 +431,12 @@ function TRAIN_SYSTEM:Think(dT)
 			self.PneumaticBrake2 = true
 		end
 			
-		if self.Speed < 0.25 then 
+		if self.Speed < 1.25 then 
  			self.PneumaticBrake1 = true
 		end
 		-- Parking brake limit
 		local BPSWorking = Train:ReadTrainWire(5) > 0 and (not (PAKSD or PAM or PAKSDM) or not Train[KSDType].Nakat)
-		if BPSWorking and (PAKSD or PAM or PAKSDM) then
+		if BPSWorking then
 			if self.Nakat ~= nil then
 				self.PneumaticBrake1 = true
 				self.AntiRolling = self.Nakat and true or nil
@@ -479,25 +479,40 @@ function TRAIN_SYSTEM:Think(dT)
 			end
 		end
 		if self.Signal0 and not self.Special and not self.RealNoFreq and not self.Signal40 and not self.Signal60 and not self.Signal70 and not self.Signal80 then
+			if not self.ReadyPeep then self.ReadyPeep = true end
 			if not self.NonVRD and (not Train[KSDType].VRD and (PAKSD or PAKSDM) or self.Train.VRD.Value < 0.5 and (PAM or PUAV)) then
 				self.VRDTimer = nil
 			end
 				
 			self.NonVRD = (PAKSD or PAKSDM)  and not Train[KSDType].VRD or  (PAM or PUAV) and self.Train.VRD.Value < 0.5
-			if self.NonVRD then
+			if self.NonVRD and self.Train:ReadTrainWire(6) < 0 then
 				if self.VRDTimer and CurTime() - self.VRDTimer > 0 then
 					self.VRDTimer = false
 				elseif self.VRDTimer ~= false then
 					if not self.VRDTimer and self.KVT then self.VRDTimer = CurTime() + 1 end
 					if self.VRDTimer and not self.KVT then self.VRDTimer = nil end
 				end
+			elseif self.Train:ReadTrainWire(6) > 0  then
+				self.VRDTimer = false
 			else
 				self.VRDTimer = false
 			end
 		else
+			if self.ReadyPeep then
+				self.ReadyPeep = nil
+				self.PeepTimer = CurTime() + 0.1
+			end
+			if self.PeepTimer and self.PeepTimer - CurTime() < 0 then
+				self.PeepTimer = nil
+			end
+			--	self.PeepTimer = nil
+			--if self.ReadyPeep == nil then
+				--self.ReadyPeep = true
+			--end
 			if self.NonVRD then self.NonVRD = false end
 			self.VRDTimer = false
 		end
+		local VRDoff =  (PAKSD or PAKSDM ) and 0 or 1
 
 		if (self.Train:ReadTrainWire(15) < 1.0) and (self.Speed < 1.0) and not Train[KSDType].KD and (PAKSD or PAM or PAKSDM) then
 			self.KD = true
@@ -512,20 +527,21 @@ function TRAIN_SYSTEM:Think(dT)
 			((self.SpeedLimit < 20 and not self.KVT and not self.ARSBrake) and 1 or 0),
 			(self.PneumaticBrake1 and 1 or 0),
 			(self.PneumaticBrake2 and 1 or 0)
+		local VRDBrake = self.NonVRD or self.VRDTimer ~= false
 		-- Apply ARS system commands
-		self["33D"] = (1 - Abrake) *(1-NFBrake)*((self.KD or self.NonVRD or self.VRDTimer ~= false or self.ElectricBrake1 or self.AntiRolling ~= nil or Train[KSDType].StopTrain) and 0 or 1) --*(2 - Pbrake2)
-		self["33G"] = Ebrake + NFBrake + ((self.NonVRD or self.VRDTimer ~= false) and 1 or 0)
-		self["33Zh"] = (1 - Abrake)*(1-NFBrake)*((self.KD or self.NonVRD or self.VRDTimer ~= false or self.ElectricBrake1 or self.AntiRolling ~= nil or Train[KSDType].StopTrain) and 0 or 1)--*(2 - Pbrake2)
+		self["33D"] = (1 - Abrake) *(1-NFBrake)*((self.KD  or self.ElectricBrake1 or VRDBrake or self.AntiRolling ~= nil or Train[KSDType].StopTrain) and 0 or 1) --*(2 - Pbrake2)
+		self["33G"] = Ebrake + NFBrake*VRDoff + ((VRDBrake) and 1 or 0)*VRDoff
+		self["33Zh"] = (1 - Abrake)*(1-NFBrake*VRDoff)*((self.KD or VRDBrake or self.ElectricBrake1 or self.AntiRolling ~= nil or Train[KSDType].StopTrain) and 0 or 1)--*(2 - Pbrake2)
 		--print(self["33Zh"])
-		self["2"] = Ebrake + NFBrake + ((self.NonVRD or self.VRDTimer ~= false) and 1 or 0)
-		self["20"] = Ebrake + NFBrake + ((self.NonVRD or self.VRDTimer ~= false) and 1 or 0)
+		self["2"] = Ebrake + NFBrake*VRDoff + ((VRDBrake) and 1 or 0)*VRDoff
+		self["20"] = Ebrake + NFBrake*VRDoff + ((VRDBrake) and 1 or 0)*VRDoff
 		self["29"] = Pbrake1-- + (self.BPSActive and 1 or 0)
 		--print(Train.Speed)
 		--if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then print(self.SpeedLimit,self.self.SpeedLimit <= 20 and not self.KVT) end
 		--if StPetersburg then print(self.Train:EntIndex()) end
 		self["8"] = Pbrake2
 			+ (KRUEnabled and 1 or 0)*Ebrake
-			+ ((self.SpeedLimit < 20 and not self.KVT or self.Speed > 20 and self.SpeedLimit < 20) and 1 or 0)
+			+ ((self.SpeedLimit < 20 and not self.KVT and VRDBrake == 0 or self.Speed > 20 and self.SpeedLimit < 20) and 1 or 0)
 			+ (self.BPSActive and 1 or 0)
 			+ (self.AntiRolling ~= nil and 1 or 0)
 			+ (1 - ((self.EPKActivated and 1 or 0) or 1)
@@ -534,7 +550,7 @@ function TRAIN_SYSTEM:Think(dT)
 		---self.LKT = (self["33G"] > 0.5) or (self["29"] > 0.5) or (Train:ReadTrainWire(35) > 0)
 		self.LVD = self.LVD or self["33D"] < 0.5
 		if Train:ReadTrainWire(6) < 1 and self["33D"] > 0.5  then  self.LVD = false end
-		self.Ring = ((self["33D"] < 0.5 and ((NFBrake < 1 and self.ARSBrakeTimer ~= nil and self.ARSBrakeTimer ~= false) or self.VRDTimer ~= false)) or self.KSZD)
+		self.Ring = ((self["33D"] < 0.5 and ((NFBrake < 1 and self.ARSBrakeTimer ~= nil and self.ARSBrakeTimer ~= false) or self.VRDTimer ~= false)) or self.KSZD or (self.PeepTimer and self.PeepTimer-CurTime() > 0))
 		if self.ElectricBrake or self.PneumaticBrake2 then
 			if not self.LKT then
 				self:EPVBrake("LKT not light-up when ARS stopping")
@@ -561,7 +577,7 @@ function TRAIN_SYSTEM:Think(dT)
 		self.PneumaticBrake2 = true
 		self.ARSBrake = true
 		self["33D"] = 0
-		self["33Zh"] = 0
+		self["33Zh"] = 1
 		self["8"] = KRUEnabled and (1-Train.RPB.Value) or 0
 		self["33G"] = 0
 		self["2"] = 0

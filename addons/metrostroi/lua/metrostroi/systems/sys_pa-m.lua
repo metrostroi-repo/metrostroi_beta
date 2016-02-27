@@ -1063,7 +1063,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 					end
 				elseif self.MenuChoosed == 7 then
 					if self.FirstStation == tostring(self.Train.UPO.Station) then
-						self:Trigger("BDown",true)
+						self.MenuChoosed = 4
 					end
 				end
 			end
@@ -1357,7 +1357,7 @@ function TRAIN_SYSTEM:Think(dT)
 	local Announcer = Train.Announcer
 --	self.Train.UPO.Station = self.Train:ReadCell(49160) > 0 and self.Train:ReadCell(49160) or self.Train:ReadCell(49161)
 --	self.Train.UPO.Path = Metrostroi.PathConverter[self.Train:ReadCell(65510)] or 0
---	self.Train.UPO.Distance = math.min(9999,self.Train:ReadCell(49165) + (Train.Autodrive.Corrections[self.Train.UPO.Station] or 0) - 4.3)
+--	self.Train.UPO.Distance = math.min(9999,self.Train:ReadCell(49165) + (Train.Autodrive.Corrections[self.Train.UPO.Station] or 0))
 	if Train.VAU.Value < 0.5 or Train.Panel["V1"] < 0.5 then self:SetState(-1) end
 	if Train.VAU.Value > 0.5 and self.State == -1 and Train.Panel["V1"] > 0.5 then self:SetState(0) end
 	if Train.VB.Value > 0.5 and Train.Battery.Voltage > 55 and self.State > -1  then

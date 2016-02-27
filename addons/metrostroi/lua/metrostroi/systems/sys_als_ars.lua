@@ -475,7 +475,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		self.PneumaticBrake2 = true
 		self.ARSBrake = true
 		self["33D"] = 0
-		self["33Zh"] = 0
+		self["33Zh"] = 1
 		self["8"] = KRUEnabled and (1-Train.RPB.Value) or 0
 		self["33G"] = 0
 		self["2"] = 0
@@ -577,7 +577,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 	end
 	-- RC1 operation
 	if self.Train.RC1 and (self.Train.RC1.Value == 0) then
-		local KAH = (Train.KAH ~= nil and Train.KAH.Value > 0.5) and 1 or 0
+		local KAH = (Train.KAH == nil or Train.KAH.Value > 0.5) and 1 or 0
 		self["33D"] = KAH
 		self["33G"] = 0                
 		self["33Zh"] = 1--KAH
@@ -598,7 +598,6 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 	else
 		if (not EPKActivated and (not self.Train.TormAT or self.Train.TormAT.Value == 0.0)) then
 			self["33D"] = 0
-			self["33Zh"] = 0
 		end
 	end
 end
@@ -633,7 +632,7 @@ function TRAIN_SYSTEM:Think(dT)
 	end
 	self.EnableARS = EnableARS
 	self.EnableALS = EnableALS
-	local EPKActivated = Train.EPK and (Train.EPK.Value > 0.5 and Train.DriverValveDisconnect.Value > 0.5) 
+	local EPKActivated = Train.EPK.Value > 0.5 and (Train.Pneumatic.ValveType == 2 and Train.DriverValveDisconnect.Value > 0.5 or Train.DriverValveBLDisconnect.Value > 0.5)
 	-- Pedal state
 	--if (Train.PB) and Train.PB.Value > 0.5 then self.AttentionPedal = true end
 	--if (Train.PB) and Train.PB.Value <  0.5 then self.AttentionPedal = false end
@@ -882,7 +881,6 @@ function TRAIN_SYSTEM:Think(dT)
 	-- 81-717 autodrive/autostop
 	if (Train.Pneumatic and Train.Pneumatic.EmergencyValve) or self.UAVAContacts then
 		self["33D"] = 0
-		self["33Zh"] = 1
 	end
 
 	-- 81-717 special VZ1 button

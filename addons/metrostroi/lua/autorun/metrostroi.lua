@@ -44,7 +44,7 @@ end
 if not Metrostroi then	
 	-- Global library
 	Metrostroi = {}
-	
+
 	-- Supported train classes
 	Metrostroi.TrainClasses = {}
 	Metrostroi.IsTrainClass = {}
@@ -62,9 +62,43 @@ if not Metrostroi then
 	Metrostroi.Systems = {}
 	Metrostroi.BaseSystems = {}
 end
-
 --------------------------------------------------------------------------------
--- Load core files
+-- Add skins function
+-- 	category - a skin category(pass, cab, train)
+-- 	name - name of skin(must be unique) or skin table(table must have a name)
+-- 	tbl - skin table
+-- Skin table:
+-- {
+--		typ = "81-717_lvz", (it's a gmod_subway_*(gmod_subway_81-717_lvz))
+--		name = "NAME",(or you can send name to function)
+-- 	textures = {
+--			texture_name = "path_to_texture",
+--			b01a = "myskin/mycoolskin",
+-- 	}
+-- }
+-- List of trains and manufacturers:
+-- 81-717_mvm
+-- 81-717_lvz
+-- Ezh3
+-- Em
+-- E
+--------------------------------------------------------------------------------
+function Metrostroi.AddSkin(category,name,tbl)
+	if type(name) == "table" then
+		local Table = name
+		name = Table.name
+		Table.name = nil
+		tbl = Table
+	end
+	if not Metrostroi.Skins[category] then
+		print(Format("Metrostroi: Added a %s skin category",category))
+		Metrostroi.Skins[category] = {}
+	end
+	if not tbl.typ then ErrorNoHalt(Format("Metrostroi:Skin error: %s wont have a typ direvtive!",tbl.name or name)) return end
+	Metrostroi.Skins[category][name] = tbl
+end
+--------------------------------------------------------------------------------
+-- Load core files and skins
 --------------------------------------------------------------------------------
 if SERVER then
 	DISABLE_TURBOSTROI = false
@@ -102,18 +136,67 @@ if SERVER then
 	-- Add all system files
 	local files = file.Find("metrostroi/systems/sys_*.lua","LUA")
 	for _,filename in pairs(files) do AddCSLuaFile("metrostroi/systems/"..filename) end
+	-- Add skin
+	Metrostroi.Skins = {}
+	local files = file.Find("metrostroi/skins/*.lua","LUA")
+	for _,filename in pairs(files) do 
+		AddCSLuaFile("metrostroi/skins/"..filename)
+		include("metrostroi/skins/"..filename)
+	end
+	
+	--Include map scripts
+	Metrostroi.AnnouncerData = {}
+	Metrostroi.NameConverter = {}
+	Metrostroi.NameConverter["81-714_mvm"] = "81-717_mvm"
+	Metrostroi.NameConverter["81-714_lvz"] = "81-717_lvz"
+	Metrostroi.NameConverter["ezh3"] = "ema508t"
+	Metrostroi.TrainSpawnerConverter = {
+		"81-717_mvm",
+		"81-717_lvz",
+		"e",
+		"em",
+		"ezh3",
+		"81-7036",
+	}
+	Metrostroi.Skins["717_schemes"] = {}
+	Metrostroi.Skins["717_schemes"][""] = "metrostroi_skins/81-717_schemes/int_blank"
+	local files = file.Find("metrostroi/maps/*.lua","LUA")
+	for _,filename in pairs(files) do 
+		AddCSLuaFile("metrostroi/maps/"..filename)
+		include("metrostroi/maps/"..filename)
+	end
 else
 	-- Load all clientside files
 	local files = file.Find("metrostroi/cl_*.lua","LUA")
 	for _,filename in pairs(files) do include("metrostroi/"..filename) end
 	
+	-- Add skins
+	Metrostroi.Skins = {}
+	local files = file.Find("metrostroi/skins/*.lua","LUA")
+	for _,filename in pairs(files) do include("metrostroi/skins/"..filename) end
+	--Include map scripts
+	Metrostroi.AnnouncerData = {}
+	Metrostroi.NameConverter = {}
+	Metrostroi.NameConverter["81-714_mvm"] = "81-717_mvm"
+	Metrostroi.NameConverter["81-714_lvz"] = "81-717_lvz"
+	Metrostroi.NameConverter["ezh3"] = "ema508t"
+	Metrostroi.TrainSpawnerConverter = {
+		"81-717_mvm",
+		"81-717_lvz",
+		"e",
+		"em",
+		"ezh3",
+		"81-7036",
+	}
+	Metrostroi.Skins["717_schemes"] = {}
+	Metrostroi.Skins["717_schemes"][""] = "metrostroi_skins/81-717_schemes/int_blank"
+	local files = file.Find("metrostroi/maps/*.lua","LUA")
+	for _,filename in pairs(files) do 	include("metrostroi/maps/"..filename) end
+	
 	-- Load all shared files
 	local files = file.Find("metrostroi/sh_*.lua","LUA")
 	for _,filename in pairs(files) do include("metrostroi/"..filename) end
 end
-
-
-
 
 --------------------------------------------------------------------------------
 -- Load systems
@@ -188,6 +271,7 @@ local function loadSystem(filename)
 		return tbl
 	end
 end
+
 
 -- Load all systems
 local files = file.Find("metrostroi/systems/sys_*.lua","LUA")

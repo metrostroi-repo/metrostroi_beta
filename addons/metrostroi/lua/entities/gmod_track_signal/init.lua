@@ -283,7 +283,7 @@ function ENT:GetARS(ARSID, Train)
 end
 function ENT:Get325Hz()
 	--print(self.Name,self.ARSNextSpeedLimit)
-	if self.OverrideTrackOccupied then return true end
+	if self.OverrideTrackOccupied then return false end
 	return self.ARSSpeedLimit == 0 and self.Approve0
 end
 function ENT:GetMaxARS()
@@ -530,7 +530,7 @@ function ENT:Think()
 				local TimeToOff = not (RealTime() % 1 > 0.25)
 				--if v[i] == "R" and #Route.LightsExploded[LightID] == 1 and AverageState then self.AutoEnabled = true end
 				if v[i] == "R" and AverageState > 0 then
-					self.AutoEnabled = true
+					self.AutoEnabled = not self.NonAutoStop
 					if self.Red == nil then self.Red = true end
 				elseif AverageState > 0 then
 					self.Red = false

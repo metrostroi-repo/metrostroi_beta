@@ -26,17 +26,15 @@ function ENT:InitializeSounds()
 	self.SoundNames["r1_5_close"] = nil
 	self.SoundNames["rvt_open"] = nil
 	self.SoundNames["r1_5_open"] = nil
-	self.SoundNames["relay_close4"] = {"subway_trains/new/relay_7.wav","subway_trains/new/lsd_4.wav"}
+	--[[self.SoundNames["relay_close4"] = {"subway_trains/new/relay_7.wav","subway_trains/new/lsd_4.wav"}
 	self.SoundNames["pneumo_switch"] = {
 		"subway_trains/pneumo_8.wav",
 		"subway_trains/pneumo_9.wav",
-	}
-	self.SoundNames["rk_spin"]		= "subway_trains/rk_3.wav"
-	self.SoundNames["rk_stop"]		= "subway_trains/rk_4.wav"
+	}]]
 end
 
 function ENT:InitializeSystems()	
-	-- Электросистема 81-705
+	-- Электросистема 81-710
 	self:LoadSystem("Electric","81_701_Electric")
 
 	-- Токоприёмник
@@ -73,7 +71,7 @@ function ENT:InitializeSystems()
 	self:LoadSystem("YARD_2")
 	self:LoadSystem("PR_14X_Panels")	
 	
-	-- Пневмосистема 81-705
+	-- Пневмосистема 81-710
 	self:LoadSystem("Pneumatic","81_717_Pneumatic")
 	-- Панель управления Е
 	self:LoadSystem("Panel","81_701_Panel")

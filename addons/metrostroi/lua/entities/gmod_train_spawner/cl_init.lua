@@ -7,10 +7,10 @@ local Settings = {
 	Train = 1,
 	Adv = 1,
 	WagNum = 3,
-	Texture = 1,
+	Texture = "",
 	Lighter = 1,
-	PassTexture = 1,
-	CabTexture = 1,
+	PassTexture = "",
+	CabTexture = "",
 	ARS = 1,
 	Cran = 1,
 	Prom = 1,
@@ -41,7 +41,9 @@ local Settings = {
 local Types = {
 	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,ARS,Cran,Mask,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv,PNM",
 	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,Blok,Cran,PiterMsk,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,Hand,Seat,Lamp,Breakers,Adv,PNM",
-	"Train,WagNum,Texture,Prom,Cran,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,PNM",
+	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,Hand,Seat,Lamp,Breakers,Adv",
+	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,Hand,Seat,Lamp,Breakers,Adv",
+	"Train,WagNum,Texture,Prom,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,PNM",
 	"Train,WagNum",
 }
 local function UpdateConCMD()
@@ -67,8 +69,16 @@ local function CreateList(name,text,tbl,OnSelect)
 	local List = vgui.Create("DComboBox", frame)--
 	List:SetPos(130 + 300*math.floor(Pos/MaxHorisontal), 28+24*(Pos%MaxHorisontal)) 
 	List:SetWide(80)
-	for i=1,#tbl do
-		List:AddChoice(tbl[i], i, Settings[name] == i)
+	if #tbl > 0 then
+		for i=1,#tbl do
+			List:AddChoice(tbl[i], i, Settings[name] == i)
+		end
+	else
+		for k,v in pairs(tbl) do
+			local name = k
+			if type(v) == "table" and v.name then name = v.name end
+			List:AddChoice(name, v, Settings[name] == v)
+		end
 	end
 	List.OnSelect = function(self,_, _, index)
 		Settings[name] = index
@@ -76,7 +86,7 @@ local function CreateList(name,text,tbl,OnSelect)
 		if OnSelect then OnSelect(List,ListLabel) end
 	end
 	table.insert(VGUI,function()
-		local on = Types[Settings.Train]:find(name) and #tbl > 0 
+		local on = Types[Settings.Train]:find(name) and tbl 
 		List:SetVisible(on)
 		ListLabel:SetVisible(on)
 		if on then
@@ -91,7 +101,6 @@ end
 	
 local function CreateSlider(name,decimals,min,max,text,OnSelect)
 	local Slider = vgui.Create("DNumSlider", frame)
-	print(math.ceil(Pos/MaxHorisontal))
 	Slider:SetPos(5 + 300*math.floor(Pos/MaxHorisontal), 28+24*(Pos%MaxHorisontal)-7)
 	Slider:SetWide(290)
 	Slider:SetMinMax(min, max)
@@ -149,36 +158,46 @@ end
 
 local function UpdateTrainList()
 	Pos = 0
-	if Settings.Train < 4 then
-		if #Metrostroi.Skins[Settings.Train == 1 and "717" or Settings.Train == 2 and "717p" or "ezh3"] < Settings.Texture then Settings.Texture = 1 end
-		VGUI.Texture:Clear()
-		PrintTable(Metrostroi.Skins[Settings.Train == 1 and "717" or Settings.Train == 2 and "717p" or "ezh3"])
-		for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717" or Settings.Train == 2 and "717p" or "ezh3"]) do
-			if not v.path:find("/16") or LocalPlayer():IsAdmin() then
-				VGUI.Texture:AddChoice(v.name, k, k == Settings.Texture)	
-				--Texture[k] = v.name
-			else
-				if k == Settings.Texture then Settings.Texture = 1 end
-				VGUI.Texture:ChooseOptionID(1)
+	if (Metrostroi.Skins["train"][Settings.Texture] or {}).typ ~= Metrostroi.TrainSpawnerConverter[Settings.Train or 1] then Settings.Texture = nil end
+	VGUI.Texture:Clear()
+	if (Metrostroi.Skins["pass"][Settings.PassTexture] or {}).typ ~= Metrostroi.TrainSpawnerConverter[Settings.Train or 1] then Settings.PassTexture = nil end
+	VGUI.PassTexture:Clear()
+	if (Metrostroi.Skins["cab"][Settings.CabTexture] or {}).typ ~= Metrostroi.TrainSpawnerConverter[Settings.Train or 1] then Settings.CabTexture = nil end
+	VGUI.CabTexture:Clear()
+	
+	for typ,skins in pairs(Metrostroi.Skins) do
+		for k,v in pairs(skins) do
+			if type(v) ~= "table" then continue end
+			local id = "Texture"
+			if typ == "pass" then id = "PassTexture" end
+			if typ == "cab" then id = "CabTexture" end
+			if v.typ == Metrostroi.TrainSpawnerConverter[Settings.Train or 1] then
+				if not Settings[id] then
+					Settings[id] = k
+				end
+				VGUI[id]:AddChoice(v.name or k, k, k == Settings[id])
 			end	
 		end
 	end
-	if Settings.Train < 3 then
-		if #Metrostroi.Skins[Settings.Train == 1 and "717_pass" or Settings.Train == 2 and "717_passp"] < Settings.PassTexture then Settings.PassTexture = 1 end
-		VGUI.PassTexture:Clear()
-		for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717_pass" or Settings.Train == 2 and "717_passp"]) do
-			VGUI.PassTexture:AddChoice(v.name, k, k == Settings.PassTexture)	
-			--Texture[k] = v.name
+	--[[
+	end
+	for k,v in pairs(Metrostroi.Skins["pass"] or {} ) do
+		if v.typ == Metrostroi.TrainSpawnerConverter[Settings.Train or 1] then
+			if not Settings.PassTexture then
+				Settings.PassTexture = k
+			end
+			VGUI.PassTexture:AddChoice(v.name or v, k, k == Settings.PassTexture)
 		end
 	end
-	if Settings.Train < 3 then
-		if #Metrostroi.Skins[Settings.Train == 1 and "717_cab" or Settings.Train == 2 and "717_cabp"] < Settings.CabTexture then Settings.CabTexture = 1 end
-		VGUI.CabTexture:Clear()
-		for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717_cab" or Settings.Train == 2 and "717_cabp"]) do
-			VGUI.CabTexture:AddChoice(v.name, k, k == Settings.CabTexture)	
-			--Texture[k] = v.name
+	for k,v in pairs(Metrostroi.Skins["cab"] or {} ) do
+		if v.typ == Metrostroi.TrainSpawnerConverter[Settings.Train or 1] then
+			if not Settings.CabTexture then
+				Settings.CabTexture = k
+			end
+			VGUI.CabTexture:AddChoice(v.name or v, k, k == Settings.CabTexture)
 		end
 	end
+	]]
 	for k,v in ipairs(VGUI) do
 		v()
 	end
@@ -189,21 +208,19 @@ local function UpdateTrainList()
 end
 local function Draw()
 	local Texture = {}
-	for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717" or Settings.Train == 2 and "717p" or "ezh3"]) do
-		if not v.path:find("/16") or LocalPlayer():IsAdmin() then
-			Texture[k] = v.name
-		end
+	for k,v in pairs(Metrostroi.Skins["train"] or {}) do
+		if v.typ == Metrostroi.TrainSpawnerConverter[Settings.Train or 1] then Texture[v.name or k] = v.name or k end
+		--end
 	end
 	local PassTexture = {}
-	for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717_pass" or Settings.Train == 2 and "717_passp" or "ezh3"]) do
-		--print(v)
-		PassTexture[k] = v.name
+	for k,v in pairs(Metrostroi.Skins["pass"] or {}) do
+		if v.typ == Metrostroi.TrainSpawnerConverter[Settings.Train or 1] then PassTexture[v.name or k] = v.name or k end
 	end
 	local CabTexture = {}
-	for k,v in pairs(Metrostroi.Skins[Settings.Train == 1 and "717_cab" or Settings.Train == 2 and "717_cabp" or "ezh3_cab"]) do
-		CabTexture[k] = v.name
+	for k,v in pairs(Metrostroi.Skins["cab"] or {}) do
+		if v.typ == Metrostroi.TrainSpawnerConverter[Settings.Train or 1] then CabTexture[v.name or k] = v.name or k end
 	end
-	CreateList("Train","Train("..GetGlobalInt("metrostroi_train_count").."/"..MaxWagons.."):\nMax for you:"..MaxWagonsOnPlayer,{"81-71x MVM","81-71x LVZ","Ezh","81-703x"},UpdateTrainList)
+	CreateList("Train","Train("..GetGlobalInt("metrostroi_train_count").."/"..MaxWagons.."):\nMax for you:"..MaxWagonsOnPlayer,{"81-71x MVM","81-71x LVZ","E","Em","Ezh","81-703x"},UpdateTrainList)
 	CreateSlider("WagNum",0,1, GetGlobalInt("metrostroi_maxwagons"),"Wagons")
 	CreateList("Texture","Texture",Texture)
 	CreateList("PassTexture","Passenger texture",PassTexture)

@@ -425,7 +425,7 @@ ENT.ButtonMap["HelperPanel"] = {
 	
 	buttons = {
 		{ID = "VUD2Toggle", x=32, y=42, radius=32, tooltip="ВУД2: Выключатель управления дверьми\nVUD2: Door control toggle (close doors)"},
-		{ID = "VDLSet",     x=32, y=112, radius=32, tooltip="ВДЛ: Выключатель левых дверей\nVDL: Left doors open"},
+		{ID = "VDLSet",     x=32, y=125, radius=32, tooltip="ВДЛ: Выключатель левых дверей\nVDL: Left doors open"},
 		{ID = "R_Program2Helper",  x=24, y=180, radius=20, tooltip="Программа 2\nProgram 2"},
 		{ID = "R_Program1Helper",  x=72, y=180,  radius=20, tooltip="Программа 1\nProgram 1"},
 	}
@@ -453,6 +453,7 @@ ENT.ButtonMap["DriverValveDisconnect"] = {
 	
 	buttons = {
 		{ID = "DriverValveDisconnectToggle", x=0, y=0, w=200, h=90, tooltip="Клапан разобщения\nDriver valve disconnect valve"},
+		{ID = "DriverValveBLDisconnectToggle", x=0, y=0, w=200, h=90, tooltip="Кран двойной тяги тормозной магистрали\nTrain line disconnect valve"},
 	}
 }
 ENT.ButtonMap["ParkingBrake"] = {
@@ -464,7 +465,24 @@ ENT.ButtonMap["ParkingBrake"] = {
 	
 	buttons = {
 		{ID = "ParkingBrakeToggle", x=0, y=0, w=200, h=120, tooltip="Стояночный тормоз\nParking brake"},
+		{ID = "DriverValveTLDisconnectToggle", x=0, y=0, w=200, h=120, tooltip="Кран двойной тяги напорной магистрали\nBrake line disconnect valve"},
 	}
+}
+ENT.ButtonMap["ParkingBrake2"] = {
+	pos = Vector(456.777527,5,-30),
+	ang = Angle(0,-90,90),
+	width = 200,
+	height = 120,
+	scale = 0.0625,
+	
+	buttons = {
+		{ID = "1:ParkingBrakeToggle", x=0, y=0, w=200, h=120, tooltip="Стояночный тормоз\nParking brake"},
+	}
+}
+ENT.ClientProps["ParkingBrake2"] = {
+	model = "models/metrostroi/81-717/uava.mdl",
+	pos = Vector(456.777527,-1.680647,-34.931717),
+	ang = Angle(0.000000,-90.000000,0.000000),
 }
 ENT.ButtonMap["EPKDisconnect"] = {
 	pos = Vector(439.0,-43.3,-33),
@@ -477,6 +495,7 @@ ENT.ButtonMap["EPKDisconnect"] = {
 		{ID = "EPKToggle", x=0, y=0, w=200, h=120, tooltip="Кран ЭПВ\nEPK disconnect valve"},
 	}
 }
+
 ENT.ButtonMap["Reverser"] = {
 	pos = Vector(446.0,-30.1,-3),
 	ang = Angle(0,180,90),
@@ -700,20 +719,31 @@ ENT.ClientProps["reverser"] = {
 	pos = Vector(445.5,-32+1.7,-7.5),
 	ang = Angle(93,0,0)
 }
+ENT.ClientProps["ParkingBrake"] = {
+	model = "models/metrostroi/81-717/uava.mdl",
+	pos = Vector(436.6,-24,-34.8),
+	ang = Angle(0,180,0),
+}
 ENT.ClientProps["brake_disconnect"] = {
 	model = "models/metrostroi/81-717/uava.mdl",
 	pos = Vector(431.8,-24.1+1.5,-33.7),
 	ang = Angle(0,180,0)
+}
+ENT.ClientProps["brake_disconnect2"] = {
+	model = "models/metrostroi/81-717/uava.mdl",
+	pos = Vector(431.8,-24.1+1.5,-33.7),
+	ang = Angle(0,180,0),
 }
 ENT.ClientProps["EPK_disconnect"] = {
 	model = "models/metrostroi/81-717/uava.mdl",
 	pos = Vector(437.2,-53.1,-32.0),
 	ang = Angle(0,90,-90),
 }
-ENT.ClientProps["ParkingBrake"] = {
+ENT.ClientProps["train_disconnect"] = {
 	model = "models/metrostroi/81-717/uava.mdl",
 	pos = Vector(436.6,-24,-34.8),
 	ang = Angle(0,180,0),
+	color = Color(0,212,255),
 }
 ENT.ClientProps["krureverser"] = {
 	model = "models/metrostroi/81-717/reverser.mdl",
@@ -1096,8 +1126,8 @@ Metrostroi.ClientPropForButton("KRZD",{
 Metrostroi.ClientPropForButton("VUD1",{
 	panel = "Main",
 	button = "VUD1Toggle",
-	model = "models/metrostroi_train/81/vud.mdl",
-	ang = 0
+	model = "models/metrostroi_train/switches/vudwhite.mdl",
+	z=-5,
 })
 Metrostroi.ClientPropForButton("DoorSelect",{
 	panel = "Main",
@@ -1187,14 +1217,15 @@ Metrostroi.ClientPropForButton("KDLRK",{
 Metrostroi.ClientPropForButton("VDL",{
 	panel = "HelperPanel",
 	button = "VDLSet",
-	model = "models/metrostroi_train/81/vud.mdl",
-	ang = 0,
+	model = "models/metrostroi_train/switches/vudwhite.mdl",
+	z=-5,
 })
 Metrostroi.ClientPropForButton("VUD2",{
 	panel = "HelperPanel",
 	button = "VUD2Toggle",	
-	model = "models/metrostroi_train/81/vud.mdl",
-	ang = 0
+	model = "models/metrostroi_train/switches/vudwhite.mdl",
+	ang=90,
+	z=-5,
 })
 Metrostroi.ClientPropForButton("Program1",{
 	panel = "HelperPanel",
@@ -1733,9 +1764,43 @@ end
 function ENT:Initialize()
 	self.BaseClass.Initialize(self)
 end
+
+function ENT:UpdateTextures()
+	local texture = Metrostroi.Skins["train"][self:GetNWString("texture")]
+	local passtexture = Metrostroi.Skins["pass"][self:GetNWString("passtexture")]
+	local cabintexture = Metrostroi.Skins["cab"][self:GetNWString("cabtexture")]
+	for _,self in pairs(self.ClientEnts) do
+		if not IsValid(self) then continue end
+		for k,v in pairs(self:GetMaterials()) do
+			local tex = string.Explode("/",v)
+			tex = tex[#tex]
+			if texture and texture.textures[tex] then
+				self:SetSubMaterial(k-1,texture.textures[tex])
+			end
+			if passtexture and passtexture.textures[tex] then
+				self:SetSubMaterial(k-1,passtexture.textures[tex])
+			end
+			if cabintexture and cabintexture.textures[tex] then
+				self:SetSubMaterial(k-1,cabintexture.textures[tex])
+			end
+		end
+	end
+end
 --------------------------------------------------------------------------------
 function ENT:Think()
 	self.BaseClass.Think(self)
+	if self.Texture ~= self:GetNWString("texture") then
+		self.Texture = self:GetNWString("texture")
+		self:UpdateTextures()
+	end
+	if self.PassTexture ~= self:GetNWString("passtexture") then
+		self.PassTexture = self:GetNWString("passtexture")
+		self:UpdateTextures()
+	end
+	if self.CabinTexture ~= self:GetNWString("cabtexture") then
+		self.CabinTexture = self:GetNWString("cabtexture")
+		self:UpdateTextures()
+	end
 	--if self.Breakers == nil then self.Breakers = false end
 	if self.Breakers ~= self:GetNWBool("Breakers") then
 		self.Breakers = self:GetNWBool("Breakers")
@@ -1802,6 +1867,24 @@ function ENT:Think()
 	self:ShowHide("brake013",		self:GetPackedBool(22))
 	self:ShowHide("brake334",		not self:GetPackedBool(22))
 
+	self:Animate("brake_disconnect",self:GetPackedBool(6) and 1 or 0, 	1,0.5, 3, false)
+	self:Animate("ParkingBrake",	self:GetPackedBool(160) and 0 or 1,0,0.5, 3, false)
+	
+	self:Animate("brake_disconnect2",self:GetPackedBool("DriverValveBLDisconnect") and 1 or 0, 	0,0.5, 3, false)
+	self:Animate("train_disconnect",self:GetPackedBool("DriverValveTLDisconnect") and 1 or 0, 	0,0.5, 3, false)
+
+	self:Animate("ParkingBrake2",	self:GetPackedBool(160) and 0 or 1,0.5,1, 3, false)
+	self:ShowHide("brake_disconnect", self:GetPackedBool(22))
+	self:ShowHide("ParkingBrake", self:GetPackedBool(22))
+	self:ShowHide("brake_disconnect2", not self:GetPackedBool(22))
+	self:ShowHide("train_disconnect", not self:GetPackedBool(22))
+	self:ShowHide("ParkingBrake2", not self:GetPackedBool(22))
+	self:ShowHide("DriverValveDisconnectToggle", self:GetPackedBool(22))
+	self:ShowHide("ParkingBrakeToggle", self:GetPackedBool(22))
+	self:ShowHide("DriverValveTLDisconnect", not self:GetPackedBool(22))
+	self:ShowHide("DriverValveBLDisconnect", not self:GetPackedBool(22))
+	self:ShowHide("1:ParkingBrakeToggle", not self:GetPackedBool(22))
+
 	self:ShowHide("controller",		self:GetNWBool("NewKV"))
 	self:ShowHide("controller_old",		not self:GetNWBool("NewKV"))
 	--print(self:GetPackedRatio(6))
@@ -1817,14 +1900,13 @@ function ENT:Think()
 	self:Animate("VozvratRP",		self:GetPackedBool(2) and 1 or 0, 	0,1, 16, false)
 	self:Animate("DIPon",			self:GetPackedBool(3) and 1 or 0, 	0,1, 16, false)
 	self:Animate("DIPoff",			self:GetPackedBool(4) and 1 or 0, 	0,1, 16, false)	
-	self:Animate("brake_disconnect",self:GetPackedBool(6) and 1 or 0, 	1,0.5, 3, false)
 	self:Animate("battery",			self:GetPackedBool(7) and 0.87 or 1, 	0,1, 1, false)
 	self:Animate("battery_2",			self:GetPackedBool(7) and 0.87 or 1, 	0,1, 1, false)
 	self:Animate("RezMK",			self:GetPackedBool(8) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VMK",				self:GetPackedBool(9) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VAH",				self:GetPackedBool(10) and 1 or 0, 	0,1, 16, false)
 	local VAD = self:Animate("VAD",				self:GetPackedBool(11) and 1 or 0, 	0,1, 16, false)
-	self:Animate("VUD1",			1-(self:GetPackedBool(12) and 1 or 0), 	0,1, 8, false)
+	self:Animate("VUD1",			(self:GetPackedBool(12) and 1 or 0), 	0,1, 8, false)
 	self:Animate("VUD2",			self:GetPackedBool(13) and 1 or 0, 	0,1, 8, false)
 	self:Animate("VDL",				self:GetPackedBool(14) and 1 or 0, 	0,1, 8, false)
 	self:Animate("VZ1",				self:GetPackedBool("VZ1") and 1 or 0, 	0,1, 16, false)
@@ -1933,7 +2015,6 @@ function ENT:Think()
 	self:Animate("Radio13",			self:GetPackedBool(151) and 1 or 0, 0,1, 16, false)
 	self:Animate("UAVALever",	self:GetPackedBool(152) and 1 or 0, 	0,0.25, 128,  3,false)
 	self:Animate("EPK_disconnect",	self:GetPackedBool(155) and 0 or 1,0,0.5, 3, false)
-	self:Animate("ParkingBrake",	self:GetPackedBool(160) and 0 or 1,0,0.5, 3, false)
 	self:Animate("KAH",	self:GetPackedBool(163) and 1 or 0,0,1, 16, false)
 	self:Animate("Indicate",self:GetPackedBool("Indicate3") and 0.4 or self:GetPackedBool("Indicate2") and 0.29 or self:GetPackedBool("Indicate1") and 0.17 or 0,0.0,1,2,false)
 	self:Animate("BCCD",self:GetPackedBool("BCCD") and 1 or 0,0,1,8,false)
@@ -2062,24 +2143,6 @@ function ENT:Think()
 	end
 	self:Animate("gv_wrench",	(self:GetPackedBool(5) and 1 or 0), 	0,0.51, 128,  1,false)
 	self:ShowHide("gv_wrench",	CurTime() < self.ResetTime)
-	self.TextureTime = self.TextureTime or CurTime()
-	if (CurTime() - self.TextureTime) > 5.0 and self:GetNWString("texture",nil) then
-		self.TextureTime = CurTime()
-		for tex,ent in pairs(self.ClientEnts) do
-			if tex:find("door") then
-				for k,v in pairs(ent:GetMaterials()) do
-						--print(v)
-					if v == "models/metrostroi_train/81/b01a" then
-						ent:SetSubMaterial(k-1,self:GetNWString("texture"))
-					elseif v == "models/metrostroi_train/81/int01" then
-						ent:SetSubMaterial(k-1,self:GetNWString("passtexture"))
-					else
-						ent:SetSubMaterial(k-1,"")
-					end
-				end
-			end
-		end
-	end
 	-- Animate doors
 	for i=0,3 do
 		for k=0,1 do
@@ -2133,12 +2196,15 @@ function ENT:Think()
 	self.PreviousCompressorState = self.PreviousCompressorState or false
 	if self.PreviousCompressorState ~= state then
 		self.PreviousCompressorState = state
-		if not state then
-			self:PlayOnce("compressor_end",nil,0.80,nil,true)
+		if 	state then
+			self:SetSoundState("compressor_717",1,1)
+		else
+			self:SetSoundState("compressor_717",0,1)
+			self:SetSoundState("compressor_717_end",0,1)
+			self:SetSoundState("compressor_717_end",1,1)
+			--self:PlayOnce("compressor_e_end",nil,1,nil,true)
 		end
 	end
-	self:SetSoundState("compressor",state and 1 or 0,1,nil,0.80)
-	
 	-- ARS/ringer alert
 	local state = self:GetPackedBool(39)
 	self.PreviousAlertState = self.PreviousAlertState or false
@@ -2148,7 +2214,8 @@ function ENT:Think()
 			self:SetSoundState("ring2",0.20,1)
 		else
 			self:SetSoundState("ring2",0,0)
-			self:PlayOnce("ring2_end","cabin",0.45)
+			self:SetSoundState("ring2_end",0,1.02)
+			self:SetSoundState("ring2_end",0.20,1.02)
 		end
 	end
 	
@@ -2171,10 +2238,11 @@ function ENT:Think()
 	if self.PreviousRKState ~= state then
 		self.PreviousRKState = state
 		if state then
-			self:SetSoundState("rk_spin",0.67,1)
+			self:SetSoundState("rk_spin",0.7,1,nil,0.75)
 		else
-			self:SetSoundState("rk_spin",0,0)
-			self:PlayOnce("rk_stop",nil,0.67)
+			self:SetSoundState("rk_spin",0,0,nil,0.75)
+			self:SetSoundState("rk_stop",0,1,nil,0.75)
+			self:SetSoundState("rk_stop",0.7,1,nil,0.75)
 		end
 	end
 	

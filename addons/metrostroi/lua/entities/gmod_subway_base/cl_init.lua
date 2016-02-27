@@ -263,41 +263,54 @@ function ENT:ApplyMatrix(name,pos,ang)
 	]]
 end
 function ENT:SpawnCSEnt(k)
-	local v = self.ClientProps[k]
-	if k ~= "BaseClass" and not IsValid(self.ClientEnts[k]) and not self.Hidden[k] and not self.HiddenAnim[id] then
+	local v = self.ClientPropsOv and self.ClientPropsOv[k] or self.ClientProps[k]	
+	if v and k ~= "BaseClass" and not IsValid(self.ClientEnts[k]) and not self.Hidden[k] and not self.HiddenAnim[id] then
 		local cent = ClientsideModel(v.model ,RENDERGROUP_OPAQUE)
+		if not IsValid(cent) then return end
 		cent:SetPos(self:LocalToWorld(v.pos))
 		cent:SetAngles(self:LocalToWorldAngles(v.ang))
 		cent:SetParent(self)
-		cent:SetColor(v.color or color_white)
 
 		cent:SetSkin(v.skin or 0)
+		
 		if v.bodygroup then
 			for k,v in pairs(v.bodygroup) do
 				cent:SetBodygroup(v,k)
 			end
 		end
+		
+		local texture = Metrostroi.Skins["train"][self:GetNWString("texture")]
+		local passtexture = Metrostroi.Skins["pass"][self:GetNWString("passtexture")]
+		local cabintexture = Metrostroi.Skins["cab"][self:GetNWString("cabtexture")]
+		for k,v in pairs(cent:GetMaterials()) do
+			local tex = string.Explode("/",v)
+			tex = tex[#tex]
+			if texture and texture.textures[tex] then
+				cent:SetSubMaterial(k-1,texture.textures[tex])
+			end
+			if passtexture and passtexture.textures[tex] then
+				cent:SetSubMaterial(k-1,passtexture.textures[tex])
+			end
+			
+			if cabintexture and cabintexture.textures[tex] then
+				if type(cabintexture.textures[tex]) ~= "table" then
+					cent:SetSubMaterial(k-1,cabintexture.textures[tex])
+				end
+			end
+		end
 		--if self.ClientPropsMatrix[k] then cent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[k]) end
 		--print(self:GetNWString("texture",nil))
 		self.ClientEnts[k] = cent
-
-		for k,v in pairs(cent:GetMaterials()) do
-			if v:find("ewagon") or v == "models/metrostroi_train/81/b01a" then
-				cent:SetSubMaterial(k-1,self:GetNWString("texture"))
-			elseif v == "models/metrostroi_train/81/int01" then
-				cent:SetSubMaterial(k-1,self:GetNWString("passtexture"))
-			else
-				cent:SetSubMaterial(k-1,"")
-			end
-		end
 		if self.Anims[k] and self.Anims[k].alpha then
-			if self.Anims[k].alpha > 0 then		
-				cent:SetColor(Color(v.color.r,v.color.g,v.color.b,self.Anims[k].alpha*255))
+			if self.Anims[k].alpha > 0 then
+				cent:SetColor(ColorAlpha(v.color or color_white,self.Anims[k].alpha*255))
 				cent:SetRenderMode(RENDERMODE_TRANSALPHA)
 			else
 				cent:Remove()
 				self:ShowHide(k, false,true)
 			end
+		else
+			cent:SetColor(v.color or color_white)
 		end
 		self:ShowHide(k, not self.Hidden[k],true)
 	end
@@ -309,6 +322,12 @@ function ENT:SetCSBodygroup(csent,id,value)
 end
 function ENT:CreateCSEnts()
 	for k,v in pairs(self.ClientProps) do
+		if k ~= "BaseClass" and not IsValid(self.ClientEnts[k]) then
+			self:SpawnCSEnt(k)
+		end
+	end
+	if not self.ClientPropsOv then return end
+	for k,v in pairs(self.ClientPropsOv) do
 		if k ~= "BaseClass" and not IsValid(self.ClientEnts[k]) then
 			self:SpawnCSEnt(k)
 		end
@@ -354,17 +373,18 @@ end
 function ENT:CanDrawThings()
 	return not IsValid(LocalPlayer():GetVehicle()) or self == LocalPlayer():GetVehicle():GetNWEntity("TrainEntity")
 end
-function ENT:Initialize()
-
-	hook.Add("PostDrawOpaqueRenderables", "metrostroi_base_draw_"..self:EntIndex(), function(isDD)
-		if not IsValid(self) or isDD then
-			return
-		end
+hook.Add("PostDrawOpaqueRenderables", "metrostroi_base_draw", function(isDD)	
+	if isDD then
+		return
+	end
+	for _,self in pairs(ents.GetAll()) do
+		--print(self.BaseClassName)
+		if self.Base ~= "gmod_subway_base" then continue end
 		if self.DrawPost then self:DrawPost(not self:CanDrawThings()) end
-		if not self:CanDrawThings() then return end
+		if not self:CanDrawThings() then continue end
 		self.CLDraw = true
 
-		if not self.ShouldRenderClientEnts or not self:ShouldRenderClientEnts() then return end
+		if not self.ShouldRenderClientEnts or not self:ShouldRenderClientEnts() then continue end
 
 		if self.Systems then
 			for k,v in pairs(self.Systems) do
@@ -437,7 +457,9 @@ function ENT:Initialize()
 				end
 			end
 		end
-	end)
+	end
+end)
+function ENT:Initialize()
 	-- Create clientside props
 	self.ClientEnts = {}
 	self.ClientPropsMatrix = {}
@@ -472,7 +494,6 @@ function ENT:Initialize()
 end
 
 function ENT:OnRemove()
-	hook.Remove("PostDrawOpaqueRenderables", "metrostroi_signal_draw_"..self:EntIndex())
 	self:RemoveCSEnts()
 	drawCrosshair = false
 	canDrawCrosshair = false
@@ -840,6 +861,13 @@ function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
 		self.Anims[id].V = 0.0
 		self.Anims[id].block = false
 	end
+	if self.Anims[id].Ignore then
+		if CurTime()-self.Anims[id].Ignore < 0 then
+			return
+		else
+			self.Anims[id].Ignore = nil
+		end
+	end
 	if value ~= self.Anims[id].oldival then
 		self.Anims[id].block = false
 	end
@@ -966,18 +994,22 @@ function ENT:ShowHideSmooth(clientProp, value)
 		self:ShowHide(clientProp,false)
 	end
 	if IsValid(self.ClientEnts[clientProp]) then
-		local v = self.ClientProps[clientProp]
-		if v.color then
-			self.ClientEnts[clientProp]:SetColor(Color(v.color.r,v.color.g,v.color.b,value*255))
-		else
-			self.ClientEnts[clientProp]:SetColor(Color(255,255,255,value*255))
-		end
+		local v = self.ClientPropsOv and self.ClientPropsOv[clientProp] or self.ClientProps[clientProp]
+		--if v.color then
+		--else
+		--	self.ClientEnts[clientProp]:SetColor(Color(255,255,255,value*255))
+		--end
 		self.ClientEnts[clientProp]:SetRenderMode(RENDERMODE_TRANSALPHA)
+		self.ClientEnts[clientProp]:SetColor(ColorAlpha(v.color or color_white,value*255))
 		--self.HiddenQuele[clientProp] = nil
 	--else
 	end
 	--self.Anims[clientProp].val = value
 	self.HiddenAnim[clientProp] = value == 0
+	self.Anims[clientProp].alpha = value
+end
+function ENT:ShowHideSmoothFrom(clientProp,from)
+	self:ShowHideSmooth(clientProp,self.Anims[from].alpha or 0)
 end
 
 local digit_bitmap = {
@@ -1211,8 +1243,8 @@ local function findAimButton(ply,press)
 				if GetConVarNumber("metrostroi_drawdebug") > 0 and press then print(kp,panel.aimX,panel.aimY) end
 				--Loop trough every button on it
 				for kb,button in pairs(panel.buttons) do
-					if train.Hidden[button.PropName] or train.HiddenButton[button.PropName] then continue end
-					if train.Hidden[button.ID] or train.HiddenButton[button.ID] then  continue end
+					if (train.Hidden[button.PropName] or train.HiddenButton[button.PropName]) and (not train.ClientProps[button.PropName] or not train.ClientProps[button.PropName].config or not train.ClientProps[button.PropName].config.staylabel) then continue end
+					if (train.Hidden[button.ID] or train.HiddenButton[button.ID])  and (not train.ClientProps[button.ID] or not train.ClientProps[button.ID].config or not train.ClientProps[button.ID].config.staylabel) then  continue end
 					if button.w and button.h then
 						if panel.aimX >= button.x and panel.aimX <= (button.x + button.w) and
 								panel.aimY >= button.y and panel.aimY <= (button.y + button.h) then
@@ -1300,7 +1332,11 @@ hook.Add("Think","metrostroi-cabin-panel",function()
 		if ttdelay and ttdelay >= 0 then
 			local button = findAimButton(ply)
 			--print(train.ClientProps[button.ID].button)
-			if button and (train.Hidden[button.ID] or train.Hidden[button.PropName] or train.HiddenButton[button.ID] or train.HiddenButton[button.PropName]) then return end
+			if button and 
+				((train.Hidden[button.ID] or train.Hidden[button.PropName]) and (not train.ClientProps[button.ID].config or not train.ClientProps[button.ID].config.staylabel) or 
+				(train.HiddenButton[button.ID] or train.HiddenButton[button.PropName]) and (not train.ClientProps[button.PropName].config or not train.ClientProps[button.PropName].config.staylabel)) then
+				return
+			end
 			if button != lastAimButton then
 				lastAimButtonChange = CurTime()
 				lastAimButton = button

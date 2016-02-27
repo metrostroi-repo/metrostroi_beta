@@ -249,7 +249,7 @@ end
 function TRAIN_SYSTEM:ClientThink()
 	if not self.Train.Blok or self.Train.Blok ~= 2 then return end
 	self.Time = self.Time or CurTime()
-	if (CurTime() - self.Time) > 0.5 then
+	if (CurTime() - self.Time) > 0.1 then
 		--print(1)
 		self.Time = CurTime()
 		--self.STR1 = string.Explode("\n",self.Train:GetNWString("PAKSD1"))
@@ -1037,7 +1037,7 @@ function TRAIN_SYSTEM:Think(dT)
 	local Announcer = self.Train.Announcer
 	--self.Train.UPO.Station = self.Train:ReadCell(49160) > 0 and self.Train:ReadCell(49160) or self.Train:ReadCell(49161)
 	--self.Train.UPO.Path = Metrostroi.PathConverter[self.Train:ReadCell(65510)] or 0
-	--self.Train.UPO.Distance = self.Train:ReadCell(49165) + (self.Train.Autodrive.Corrections[self.Train.UPO.Station] or 0) - 4.3
+	--self.Train.UPO.Distance = self.Train:ReadCell(49165) + (self.Train.Autodrive.Corrections[self.Train.UPO.Station] or 0)
 	--print(self.Train.VB.Value < 0.5 or self.Train.Battery.Voltage < 55)
 	if self.Train.VB.Value < 0.5 or self.Train.Battery.Voltage < 55 or not self.VPA  then self:SetState(0) elseif self.State == 0 then self:SetState(-2) end
 	--if not ARS.EnableARS and self.State > 6 then self.State = -1 end
@@ -1077,7 +1077,7 @@ function TRAIN_SYSTEM:Think(dT)
 		end
 	elseif self.State > 6 and self.State ~= 8 and self.State ~= 49 and self.State ~= 45 and self.State ~= 48 then
 		if self.VRD and (not ARS.Signal0 or ARS.Signal0 and (ARS.Signal40 or ARS.Signal60 or ARS.Signal70 or ARS.Signal80)) then self.VRD = false end
-		if self.Train.UPO.Distance > 40 and (self.Train.UPO.Distance + (self.Train.Autodrive.Corrections[self.Train.UPO.Station] or 0) - 4.3) < (160+35*self.Train.Autodrive.MU - (ARS.SpeedLimit == 40 and 30 or 0)) then
+		if self.Train.UPO.Distance > 40 and (self.Train.UPO.Distance) < (160+35*self.Train.Autodrive.MU - (ARS.SpeedLimit == 40 and 30 or 0)) then
 			self.Train.UPO.StationAutodrive = true
 		end
 		if (self.Train.UPO:GetSTNum(self.LastStation) > self.Train.UPO:GetSTNum(self.FirstStation) and self.Train.UPO.Path == 2) or (self.Train.UPO:GetSTNum(self.FirstStation) > self.Train.UPO:GetSTNum(self.LastStation)  and self.Train.UPO.Path == 1) then

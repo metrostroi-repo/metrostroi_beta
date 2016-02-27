@@ -75,6 +75,7 @@ function TOOL:SpawnSignal(ply,trace,param)
 			ent.RouteNumber =	Signal.RouteNumber
 			ent.IsolateSwitches = Signal.IsolateSwitches
 			ent.Approve0 = Signal.Approve0
+			ent.NonAutoStop = Signal.NonAutoStop
 			ent.Depot = Signal.Depot
 			ent.Routes = Signal.Routes
 			ent.Left = Signal.Left
@@ -401,6 +402,13 @@ function TOOL:BuildCPanelCustom()
 				VAppC:SetValue(Signal.Approve0 or false)
 				function VAppC:OnChange()
 					Signal.Approve0 = self:GetChecked()
+					tool:SendSettings()
+				end
+		local VAuStC = CPanel:CheckBox("Autostop")
+				VAuStC:SetTooltip("Is autostop present or no?")
+				VAuStC:SetValue(Signal.NonAutoStop or true)
+				function VAuStC:OnChange()
+					Signal.NonAutoStop = not self:GetChecked()
 					tool:SendSettings()
 				end
 		local VDepC = CPanel:CheckBox("Depot signal")

@@ -8,6 +8,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.ControllerPosition = 0
 	self.ReverserPosition = 0
 	self.RealControllerPosition = 0
+	self.ControllerPositionAutodrive = 0
 	self.Type = 1
 	self.ChangeSpeed = 0.10
 
@@ -104,15 +105,11 @@ function TRAIN_SYSTEM:TriggerInput(name,value)
 		
 	elseif name == "ControllerAutodriveSet" then
 		if (self.Enabled ~= 0) and (self.ReverserPosition ~= 0) and (math.floor(value) ~= self.ControllerPositionAutodrive) then
-			if value == 4 then
-				self.ControllerPositionAutodrive = nil
-			else
-				self.ControllerPositionAutodrive = math.floor(value)
-				
-				-- Limit motion
-				if self.ControllerPositionAutodrive >  3 then self.ControllerPosition =  3 end
-				if self.ControllerPositionAutodrive < -3 then self.ControllerPosition = -3 end
-			end
+			self.ControllerPositionAutodrive = math.floor(value)
+			
+			-- Limit motion
+			if self.ControllerPositionAutodrive >  3 then self.ControllerPosition =  3 end
+			if self.ControllerPositionAutodrive < -3 then self.ControllerPosition = -3 end
 		end		
 		
 	elseif name == "ReverserSet" then
@@ -200,7 +197,10 @@ function TRAIN_SYSTEM:Think()
 		if (A == -2) and (B == -3) then self.Train:PlayOnce((self.Type == 1 and "ezh_" or "").."kv_t1a_t2",  "cabin",0.8) end
 	end
 	if self.RealControllerPosition == 0 then self.ChangeSpeed = 0.10 end
-	
+	local position = self.RealControllerPosition
+	if (self.ControllerPositionAutodrive < self.RealControllerPosition or self.RealControllerPosition >= 0) and self.ControllerPositionAutodrive ~= 0 then
+		position = self.ControllerPositionAutodrive
+	end
 	-- Update contacts
 	for i=1,#self.ReverserMatrix/2 do
 		local v = self.ReverserMatrix[i*2-1]
@@ -210,6 +210,6 @@ function TRAIN_SYSTEM:Think()
 	for i=1,#self.ControllerMatrix/2 do
 		local v = self.ControllerMatrix[i*2-1]
 		local d = self.ControllerMatrix[i*2]
-		self[v[1].."-"..v[2]] = d[(self.ControllerPositionAutodrive or self.RealControllerPosition)+4]
+		self[v[1].."-"..v[2]] = d[(position)+4]
 	end
 end

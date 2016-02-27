@@ -41,7 +41,6 @@ function TOOL:LeftClick(trace)
 	if train:GetClass():find("1-703") then return end
 	--train:SetSkin(self:GetClientNumber("skin"))
 	train.LED = self:GetClientNumber("led") > 0
-	train.Pneumatic.ValveType = self:GetClientNumber("cran")
 	train.ARSType = self:GetClientNumber("ars")
 	train:SetNWInt("ARSType",train.ARSType)
 	train.LampType = self:GetClientNumber("lamp") 
@@ -84,6 +83,7 @@ function TOOL:LeftClick(trace)
 		train.Texture = path
 		--ent:SetSkin(self.tbl.Paint == 1 and math.random(0,2) or self.tbl.Paint-2)
 	else
+		train.Pneumatic.ValveType = self:GetClientNumber("cran")
 		train.Texture = Metrostroi.Skins["717"][self:GetClientNumber("texture")] and Metrostroi.Skins["717"][self:GetClientNumber("texture")].path or nil
 		local path = Metrostroi.Skins["717_pass"][self:GetClientNumber("passtexture")] and Metrostroi.Skins["717_pass"][self:GetClientNumber("passtexture")].path or nil
 		if path == "RND" then
@@ -110,7 +110,10 @@ end
 
 local SettingTypes = {
 	"Train,Texture,PassTexture,ARS,Cran,Mask,LED,BPSN,KVSnd,Horn,OldKVPos,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv",
-	"Train,Texture,Cran,Horn",
+	"Train,Texture,PassTexture,ARS,Cran,Mask,LED,BPSN,KVSnd,Horn,OldKVPos,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv",
+	"Train",
+	"Train",
+	"Train,Texture,Horn",
 	"Train",
 }
 function TOOL:UpdateConCMD()
@@ -215,17 +218,17 @@ function TOOL:BuildCPanelCustom()
 	--panel:SetSpacing(0)
 	panel:Dock( FILL )
 	local Texture = {}
-	for k,v in pairs(Metrostroi.Skins[self.Settings.Train == 1 and "717" or "ezh3"]) do
-		if not v.path:find("/16") or LocalPlayer():IsAdmin() then
-			Texture[k] = v.name
-		end
-	end
+--	for k,v in pairs(Metrostroi.Skins[self.Settings.Train == 1 and "717" or "ezh3"]) do
+		--if not v.path:find("/16") or LocalPlayer():IsAdmin() then
+--			Texture[k] = v.name
+		--end
+	--end
 	local PassTexture = {}
-	for k,v in pairs(Metrostroi.Skins[self.Settings.Train == 1 and "717_pass" or "717_pass"]) do
+	--for k,v in pairs(Metrostroi.Skins[self.Settings.Train == 1 and "717_pass" or "717_pass"]) do
 		--print(v)
-		PassTexture[k] = v.name
-	end
-	self:CreateList("Train","Train:",{"81-71x","Ezh","81-703x"},function() self:UpdateTrainList() end)
+--		PassTexture[k] = v.name
+--	end
+	self:CreateList("Train","Train:",{"81-71x MVM","81-71x LVZ","E","Em","Ezh","81-703x"},function() self:UpdateTrainList() end)
 --	self:CreateSlider("WagNum",0,1, GetGlobalInt("metrostroi_maxwagons"),"Wagons")
 	self:CreateList("Texture","Texture",Texture)
 	self:CreateList("PassTexture","PassTexture",PassTexture)

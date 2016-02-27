@@ -13,7 +13,7 @@ ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 ---------------------------------------------------
 ENT.SubwayTrain = {
 	Type = "81",
-	Name = "81-717",
+	Name = "81-717.5m",
 	WagType = 1,
 	Manufacturer = "MVM",
 	ARS = {
@@ -109,7 +109,7 @@ function ENT:Initialize()
 		[KEY_SPACE] = "PBSet",
 		[KEY_BACKSPACE] = "EmergencyBrake",
 
-		[KEY_PAD_0] = "DriverValveDisconnectToggle",
+		[KEY_PAD_0] = "DriverValveDisconnect",
 		[KEY_PAD_DECIMAL] = "EPKToggle",
 		[KEY_LSHIFT] = {
 			[KEY_W] = "KVUp_Unlocked",
@@ -326,19 +326,6 @@ function ENT:Initialize()
 	self.CabinDoor = false
 	self.PassengerDoor = false
 
-	for k,v in pairs(self:GetMaterials()) do
-		if v == "models/metrostroi_train/81/int02" then
-			if Metrostroi.CurrentMap == "" or not Metrostroi.Skins["717_schemes"]["m_"..Metrostroi.CurrentMap:sub(4,-1) ] then
-				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""].path)
-			else
-				if not self.Adverts or self.Adverts ~= 4 then
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..Metrostroi.CurrentMap:sub(4,-1) ].path1)
-				else
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m_"..Metrostroi.CurrentMap:sub(4,-1)].path2)
-				end
-			end
-		end
-	end
 	self.OldTexture = 0
 	self.LampsBlink = {}
 	self.Lamps = {}
@@ -347,9 +334,84 @@ function ENT:Initialize()
 	for i = 1,23 do
 		if math.random() > rand then self.BrokenLamps[i] = math.random() > 0.5 end
 	end
+	
+	self:UpdateTextures()
 end
+
+function ENT:UpdateTextures()
+	local texture = Metrostroi.Skins["train"][self.Texture]
+	local passtexture = Metrostroi.Skins["pass"][self.PassTexture]
+	local cabintexture = Metrostroi.Skins["cab"][self.CabTexture]
+
+	for k,v in pairs(self:GetMaterials()) do
+		self:SetSubMaterial(k-1,"")
+	end
+	for k,v in pairs(self:GetMaterials()) do
+		if v == "models/metrostroi_train/81/int02" then
+			if not Metrostroi.Skins["717_schemes"] or not Metrostroi.Skins["717_schemes"]["m"] then
+				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""])
+			else
+				if not self.Adverts or self.Adverts ~= 4 then
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].adv)
+				else
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].clean)
+				end
+			end
+		end
+		local tex = string.Explode("/",v)
+		tex = tex[#tex]
+		if texture and texture.textures[tex] then
+			self:SetSubMaterial(k-1,texture.textures[tex])
+		end
+		if passtexture and passtexture.textures[tex] then
+			self:SetSubMaterial(k-1,passtexture.textures[tex])
+		end
+		if cabintexture and cabintexture.textures[tex] then
+			self:SetSubMaterial(k-1,cabintexture.textures[tex])
+		end
+	end
+	self:SetNWInt("ARSType",(self.ARSType or 1))
+	self:SetNWInt("LampType",(self.LampType or 1))
+	self:SetNWBool("Breakers",(self.Breakers or 0) > 0)
+	self:SetNWBool("BPSNBuzzType",self.PNM)
+	self:SetNWString("texture",self.Texture)
+	self:SetNWString("passtexture",self.PassTexture)
+	self:SetNWString("cabtexture",self.CabTexture)
+end
+local LK = {}
+local PKG = 0
+local RK = 0
+local KV = 0
+local OldTime
 --------------------------------------------------------------------------------
 function ENT:Think()
+	--[[
+	if self.KV.ControllerPosition ~= KV then
+		if KV == 0 then OldTime = nil end
+		if self.KV.ControllerPosition == 0 then OldTime = nil end
+		if not OldTime then print("") end
+		KV = self.KV.ControllerPosition
+		print(Format("Controller moved:%d",KV))
+	end
+	for i=1,5 do
+		if LK[i] ~= self["LK"..i].Value then
+			if not OldTime then OldTime = CurTime() end
+			print(Format("%.2f:LK%d = %d",CurTime()-OldTime,i,self["LK"..i].Value))
+			LK[i] = self["LK"..i].Value
+		end
+	end
+	if RK ~= math.floor(self.RheostatController.Position+0.5) then
+		if not OldTime then OldTime = CurTime() end
+		RK = math.floor(self.RheostatController.Position+0.5)
+		print(Format("%.2f:RK = %d",CurTime()-OldTime,RK))
+	end
+	if PKG ~= math.floor(self.PositionSwitch.Position+0.5) then
+		if not OldTime then OldTime = CurTime() end
+		local nPKG = math.floor(self.PositionSwitch.Position+0.5)
+		print(Format("%.2f:PK = %d->%d",CurTime()-OldTime,PKG,nPKG))
+		PKG = nPKG
+	end
+	]]
 	if self.Plombs and self.Plombs.Init then
 		self.Plombs.Init = nil
 		for k,v in pairs(self.Plombs) do
@@ -379,37 +441,7 @@ function ENT:Think()
 			end
 		end
 	end
-	self.TextureTime = self.TextureTime or CurTime()
-	if (CurTime() - self.TextureTime) > 1.0 then
-		--table.insert(self.SignsList,"Синергия-1")
-		--print(1)
-		self.TextureTime = CurTime()
-		self:SetNWInt("ARSType",(self.ARSType or 1))
-		self:SetNWInt("LampType",(self.LampType or 1))
-		self:SetNWBool("Breakers",(self.Breakers or 0) > 0)
-		self:SetNWBool("BPSNBuzzType",self.PNM)
-		if self.Texture or self.PassTexture or self.SignsList	 then
-			for k,v in pairs(self:GetMaterials()) do
-				if v == "models/metrostroi_train/81/b01a" then
-					if self.Texture then self:SetSubMaterial(k-1,self.Texture) end
-				elseif v == "models/metrostroi_train/81/int01" then
-					if self.PassTexture then self:SetSubMaterial(k-1,self.PassTexture) end
-					--print(self.PassTexture)
-					--if self.SignsList then print(self.SignsList[self.SignsIndex][1]) end
-				elseif v == "models/metrostroi_train/81/tabl" then
-					if self.SignsList then
-						if self.SignsList[self.SignsIndex] then self:SetSubMaterial(k-1,self.SignsList[self.SignsIndex][1]) else print(self.SignsIndex) end
-					else
-						self:PrepareSigns()
-					end
-				elseif v ~= "models/metrostroi_train/81/int02" then
-					self:SetSubMaterial(k-1,"")
-				end
-			end
-			self:SetNWString("texture",self.Texture)
-			self:SetNWString("passtexture",self.PassTexture)
-		end
-	end
+
 	if self.ARSType ~= self.OldARSType then
 		self.OldARSType = self.ARSType
 		self.RVT:TriggerInput("OpenTime",self.ARSType == 4 and 1.3 or 0.3 )
@@ -762,6 +794,18 @@ function ENT:Think()
 	self:SetPackedBool("Wiper",self.Wiper.Value == 1)
 	self:SetPackedBool("ConverterProtection",self.ConverterProtection.Value == 1)
 	self:SetPackedBool("RZP",self:ReadTrainWire(35) == 1)
+	self:SetPackedBool("DriverValveBLDisconnect",self.DriverValveBLDisconnect.Value == 1.0)
+	self:SetPackedBool("DriverValveTLDisconnect",self.DriverValveTLDisconnect.Value == 1.0)
+	if self.DriverValveDisconnect.Blocked > 0 and self.Pneumatic.ValveType == 2 then
+		self.DriverValveDisconnect:TriggerInput("Block",0)
+		self.DriverValveBLDisconnect:TriggerInput("Block",1)
+		self.DriverValveTLDisconnect:TriggerInput("Block",1)
+	end
+	if self.DriverValveDisconnect.Blocked == 0 and self.Pneumatic.ValveType == 1 then
+		self.DriverValveDisconnect:TriggerInput("Block",1)
+		self.DriverValveBLDisconnect:TriggerInput("Block",0)
+		self.DriverValveTLDisconnect:TriggerInput("Block",0)
+	end
 	for k,v in pairs(self.Plombs) do
 		self:SetPackedBool(k.."Pl",v)
 		if not v then v = nil end
@@ -1403,15 +1447,50 @@ function ENT:OnButtonPress(button,state)
 		return
 	end
 	
+	if button == "DriverValveDisconnect" then
+		if self.Pneumatic.ValveType == 2 then
+			if self.DriverValveDisconnect.Value == 1.0 then
+				self.DriverValveDisconnect:TriggerInput("Set",0)
+				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
+				if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+			else
+				self.DriverValveDisconnect:TriggerInput("Set",1)
+				self:PlayOnce("pneumo_disconnect1","cabin",0.9)
+				if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+			end
+		else
+			if self.DriverValveBLDisconnect.Value == 0 or self.DriverValveTLDisconnect.Value == 0 then
+				self.DriverValveBLDisconnect:TriggerInput("Set",1)
+				self.DriverValveTLDisconnect:TriggerInput("Set",1)
+			else
+				self.DriverValveBLDisconnect:TriggerInput("Set",0)
+				self.DriverValveTLDisconnect:TriggerInput("Set",0)
+			end
+			if self.DriverValveBLDisconnect.Value == 1.0 then
+				if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+			else
+				if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+			end
+		end
+		return
+	end
+	
 	if button == "DriverValveDisconnectToggle" then
 		if self.DriverValveDisconnect.Value == 1.0 then
-			if self.Pneumatic.ValveType == 2 then
-				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
-			end
-			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+			self:PlayOnce("pneumo_disconnect2","cabin",0.9)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
 		else
 			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+		end
+		return
+	end
+	
+	if button == "DriverValveBLDisconnectToggle" then
+		if self.DriverValveBLDisconnect.Value == 1.0 then
 			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+		else
+			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 		end
 		return
 	end

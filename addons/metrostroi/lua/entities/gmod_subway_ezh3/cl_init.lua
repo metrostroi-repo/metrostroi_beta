@@ -533,16 +533,6 @@ ENT.ClientProps["brake013"] = {
 	pos = Vector(431,-59.5,2.7),
 	ang = Angle(0,180,0)
 }
-ENT.ClientProps["brake334"] = {
-	model = "models/metrostroi/81-717/brake334.mdl",
-	pos = Vector(432,-58.0,4.0),
-	ang = Angle(0,180-45,0)
-}
-ENT.ClientProps["brake334_body"] = {
-	model = "models/metrostroi/81-717/brake334_body.mdl",
-	pos = Vector(429,-57.9,1.0),
-	ang = Angle(0,0,0)
-}
 ENT.ClientProps["controller"] = {
 	model = "models/metrostroi/81-717/ezh_controller.mdl",
 	pos = Vector(447,-26,1.8),
@@ -992,8 +982,43 @@ ENT.Texture = "7"
 ENT.OldTexture = nil
 --local X = Material( "metrostroi_skins/81-717/6.png")		
 --------------------------------------------------------------------------------
+
+function ENT:UpdateTextures()
+	local texture = Metrostroi.Skins["train"][self:GetNWString("texture")]
+	local passtexture = Metrostroi.Skins["pass"][self:GetNWString("passtexture")]
+	local cabintexture = Metrostroi.Skins["cab"][self:GetNWString("cabtexture")]
+	for _,self in pairs(self.ClientEnts) do
+		if not IsValid(self) then continue end
+		for k,v in pairs(self:GetMaterials()) do
+			local tex = string.Explode("/",v)
+			tex = tex[#tex]
+			if texture and texture.textures[tex] then
+				self:SetSubMaterial(k-1,texture.textures[tex])
+			end
+			if passtexture and passtexture.textures[tex] then
+				self:SetSubMaterial(k-1,passtexture.textures[tex])
+			end
+			if cabintexture and cabintexture.textures[tex] then
+				self:SetSubMaterial(k-1,cabintexture.textures[tex])
+			end
+		end
+	end
+end
+--------------------------------------------------------------------------------
 function ENT:Think()
 	self.BaseClass.Think(self)
+	if self.Texture ~= self:GetNWString("texture") then
+		self.Texture = self:GetNWString("texture")
+		self:UpdateTextures()
+	end
+	if self.PassTexture ~= self:GetNWString("passtexture") then
+		self.PassTexture = self:GetNWString("passtexture")
+		self:UpdateTextures()
+	end
+	if self.CabinTexture ~= self:GetNWString("cabtexture") then
+		self.CabinTexture = self:GetNWString("cabtexture")
+		self:UpdateTextures()
+	end
 	if not self.Animate then self.BaseClass = baseclass.Get("gmod_subway_base") end
 	--print(self.FrontDoor,self:GetPackedBool(114))
 	--print(self.RearDoor,self:GetPackedBool(156))
@@ -1054,16 +1079,11 @@ function ENT:Think()
 	end
 
 	-- Simulate pressure gauges getting stuck a little 
-	self:Animate("brake334", 		1-self:GetPackedRatio(0), 			0.00, 0.65,  256,24)
 	self:Animate("brake013", 		self:GetPackedRatio(0)^0.5,			0.00, 0.65,  256,24)
 	self:Animate("controller",		self:GetPackedRatio(1),				0.53, 0.80,  2,false)
 	self:Animate("reverser",		self:GetPackedRatio(2),				0.20, 0.55,  4,false)
 	self:Animate("volt1", 			self:GetPackedRatio(10),			0.38,0.64)
 	self:ShowHide("reverser",		self:GetPackedBool(0))
-
-	self:ShowHide("brake013",		self:GetPackedBool(22))
-	self:ShowHide("brake334",		not self:GetPackedBool(22))
-	self:ShowHide("brake334_body",	not self:GetPackedBool(22))
 
 	self:Animate("brake_line",		self:GetPackedRatio(4),				0.16, 0.84,  256,2)--,,0.01)
 	self:Animate("train_line",		self:GetPackedRatio(5)-transient,	0.16, 0.84,  256,2)--,,0.01)
@@ -1138,22 +1158,6 @@ function ENT:Think()
 	self:Animate("gv_wrench",	(self:GetPackedBool(5) and 1 or 0), 	0,0.51, 128,  1,false)
 	self:ShowHide("gv_wrench",	CurTime() < self.ResetTime)
 	
-	self.TextureTime = self.TextureTime or CurTime()
-	if (CurTime() - self.TextureTime) > 5.0 and self:GetNWString("texture",nil) then
-		--print(1)
-		self.TextureTime = CurTime()
-		for tex,ent in pairs(self.ClientEnts) do
-			if tex:find("door") then
-				for k,v in pairs(ent:GetMaterials()) do
-					if v:find("ewagon") then
-						ent:SetSubMaterial(k-1,self:GetNWString("texture"))
-					else
-						ent:SetSubMaterial(k-1,"")
-					end
-				end
-			end
-		end
-	end
 	-- Animate doors
 	for i=0,4 do
 		for k=0,1 do
@@ -1205,11 +1209,15 @@ function ENT:Think()
 	self.PreviousCompressorState = self.PreviousCompressorState or false
 	if self.PreviousCompressorState ~= state then
 		self.PreviousCompressorState = state
-		if not state then
-			self:PlayOnce("compressor_ezh_end",nil,0.80,nil,true)
+		if 	state then
+			self:SetSoundState("compressor_ezh",1,1)
+		else
+			self:SetSoundState("compressor_ezh",0,1)
+			self:SetSoundState("compressor_ezh_end",0,1)
+			self:SetSoundState("compressor_ezh_end",1,1)
+			--self:PlayOnce("compressor_e_end",nil,1,nil,true)
 		end
 	end
-	self:SetSoundState("compressor_ezh",state and 1 or 0,1,nil,0.80)
 	
 	-- ARS/ringer alert
 	local state = self:GetPackedBool(39)
@@ -1217,10 +1225,11 @@ function ENT:Think()
 	if self.PreviousAlertState ~= state then
 		self.PreviousAlertState = state
 		if state then
-			self:SetSoundState("ring",0.20,1)
+			self:SetSoundState("ring",0.95,1)
 		else
 			self:SetSoundState("ring",0,0)
-			self:PlayOnce("ring_end","cabin",0.45)		
+			self:SetSoundState("ring_end",0.95,1)
+			--self:PlayOnce("ring_end","cabin",0.45,101)
 		end
 	end
 	
@@ -1243,10 +1252,11 @@ function ENT:Think()
 	if self.PreviousRKState ~= state then
 		self.PreviousRKState = state
 		if state then
-			self:SetSoundState("rk_spin",0.67,1)
+			self:SetSoundState("rk_spin",0.7,1,nil,0.75)
 		else
-			self:SetSoundState("rk_spin",0,0)
-			self:PlayOnce("rk_stop",nil,0.67)		
+			self:SetSoundState("rk_spin",0,0,nil,0.75)
+			self:SetSoundState("rk_stop",0,1,nil,0.75)
+			self:SetSoundState("rk_stop",0.7,1,nil,0.75)
 		end
 	end
 	

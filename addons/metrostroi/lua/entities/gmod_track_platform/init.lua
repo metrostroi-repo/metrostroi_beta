@@ -205,13 +205,15 @@ function ENT:Think()
 	-- Platforms with tracks in middle
 	local dot = (self:GetPos() - platformStart):Cross(platformEnd - platformStart)
 	local swap_side = dot.z > 0.0
-	self.MustPlayAnnounces = (not Metrostroi.Stations[self.StationIndex][self.PlatformIndex == 2 and 1 or 2] or self.PlatformIndex == 1) and Metrostroi.AnnouncerData[self.StationIndex] and Metrostroi.AnnouncerData[self.StationIndex][1] ~= nil
-	self:SetNWBool("MustPlaySpooky",(not Metrostroi.Stations[self.StationIndex][self.PlatformIndex == 2 and 1 or 2] or not Metrostroi.AnnouncerData[self.StationIndex] or not  Metrostroi.AnnouncerData[self.StationIndex][1]) and self.PlatformIndex == 1)
-	if not timer.Exists("metrostroi_station_announce_"..self:EntIndex()) and self.MustPlayAnnounces then
-		timer.Create("metrostroi_station_announce_"..self:EntIndex(),0,0,function() self:PlayAnnounce() end)
+	if Metrostroi.Stations[self.StationIndex] then
+		self.MustPlayAnnounces = (not Metrostroi.Stations[self.StationIndex][self.PlatformIndex == 2 and 1 or 2] or self.PlatformIndex == 1) and Metrostroi.AnnouncerData[self.StationIndex] and Metrostroi.AnnouncerData[self.StationIndex][1] ~= nil
+		self:SetNWBool("MustPlaySpooky",(not Metrostroi.Stations[self.StationIndex][self.PlatformIndex == 2 and 1 or 2] or not Metrostroi.AnnouncerData[self.StationIndex] or not  Metrostroi.AnnouncerData[self.StationIndex][1]) and self.PlatformIndex == 1)
+		if not timer.Exists("metrostroi_station_announce_"..self:EntIndex()) and self.MustPlayAnnounces then
+			timer.Create("metrostroi_station_announce_"..self:EntIndex(),0,0,function() self:PlayAnnounce() end)
+		end
+		self.SyncAnnounces = swap_side and Metrostroi.Stations[self.StationIndex][self.PlatformIndex == 2 and 1 or 2]
+		self:SetNWBool("MustPlayAnnounces",self.MustPlayAnnounces or swap_side)
 	end
-	self.SyncAnnounces = swap_side and Metrostroi.Stations[self.StationIndex][self.PlatformIndex == 2 and 1 or 2]
-	self:SetNWBool("MustPlayAnnounces",self.MustPlayAnnounces or swap_side)
 	local boardingDoorList = {}
 	self.HasTrain = nil
 	for k,v in pairs(trains) do
