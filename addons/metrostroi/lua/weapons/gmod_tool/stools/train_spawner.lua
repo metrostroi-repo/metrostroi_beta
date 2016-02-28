@@ -292,7 +292,7 @@ function TOOL:SetSettings(ent, ply, i,inth)
 	if ent.SubwayTrain.Name ~= "81-7036" then
 		if ent.SubwayTrain.Type == "81" then
 			--ent:SetSkin(self.tbl.Paint-1)
-			if not ent.SubwayTrain.Manufacturer == "MVM" then
+			if ent.SubwayTrain.Manufacturer == "MVM" then
 				ent.ARSType = self.tbl.ARS
 				ent.MaskType = self.tbl.Mask
 			else

@@ -355,22 +355,6 @@ function ENT:Initialize()
 
 	self:UpdateTextures()
 end
-function ENT:UpdateTextures()
-	for k,v in pairs(self:GetMaterials()) do
-		if v == "models/metrostroi_train/81/int02" then
-			if not Metrostroi.Skins["717_schemes"] or not Metrostroi.Skins["717_schemes"]["p"] then
-				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""])
-			else
-				if not self.Adverts or self.Adverts ~= 4 then
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p"].adv)
-				else
-					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p"].clean)
-				end
-			end
-		end
-	end
-end
---------------------------------------------------------------------------------
 
 function ENT:UpdateTextures()
 	local texture = Metrostroi.Skins["train"][self.Texture]
@@ -395,15 +379,14 @@ function ENT:UpdateTextures()
 		end
 		local tex = string.Explode("/",v)
 		tex = tex[#tex]
-		if texture and texture.textures[tex] then
-			self:SetSubMaterial(k-1,texture.textures[tex])
+		if cabintexture and cabintexture.textures[cab][tex] then
+			self:SetSubMaterial(k-1,cabintexture.textures[cab][tex])
 		end
 		if passtexture and passtexture.textures[tex] then
 			self:SetSubMaterial(k-1,passtexture.textures[tex])
 		end
-		if cabintexture then print(1,cabintexture.textures) end
-		if cabintexture and cabintexture.textures[cab][tex] then
-			self:SetSubMaterial(k-1,cabintexture.textures[cab][tex])
+		if texture and texture.textures[tex] then
+			self:SetSubMaterial(k-1,texture.textures[tex])
 		end
 	end
 	self:SetNWInt("Blok",(self.Blok or 1))

@@ -415,7 +415,7 @@ function Metrostroi.ScanTrack(itype,node,func,x,dir,checked,startx,train)
 			local isolating = false
 			if IsValid(v) then
 				if itype == "light" then
-					isolating = (v.TrackDir == dir and not v.Routes[v.Route or 1].Repeater) or (v.TrackDir == dir and v.Routes[v.Route or 1].Repeater and tonumber(v.RouteNumber) == 9) or (tonumber(v.RouteNumber) ~= nil and v.Routes[v.Route or 1].Repeater)
+					isolating = ((v.TrackDir == dir and not v.Routes[v.Route or 1].Repeater) or (v.TrackDir == dir and v.Routes[v.Route or 1].Repeater and tonumber(v.RouteNumber) == 9) or (tonumber(v.RouteNumber) ~= nil and v.Routes[v.Route or 1].Repeater)) and not v.PassOcc
 				end
 				if itype == "ars" then
 					isolating = v.TrackDir == dir
@@ -1025,6 +1025,7 @@ function Metrostroi.Load(name,keep_signs)
 						ent.Approve0 = v.Approve0
 						ent.Depot = v.Depot
 						ent.NonAutoStop = v.NonAutoStop
+						ent.PassOcc = v.PassOcc
 						ent.Lenses = string.Explode("-",ent.LensesStr)
 						ent.InS = nil
 						for i = 1,#ent.Lenses do
@@ -1104,6 +1105,7 @@ function Metrostroi.Save(name)
 				Depot = v.Depot,
 				Left = v.Left,
 				AutoStop = v.AutoStop,
+				PassOcc = v.PassOcc,
 			})
 		end
 	end

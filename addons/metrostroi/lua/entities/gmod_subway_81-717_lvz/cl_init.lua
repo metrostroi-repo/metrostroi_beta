@@ -1993,11 +1993,11 @@ function ENT:UpdateTextures()
 		for k,v in pairs(self:GetMaterials()) do
 			local tex = string.Explode("/",v)
 			tex = tex[#tex]
-			if texture and texture.textures[tex] then
-				self:SetSubMaterial(k-1,texture.textures[tex])
-			end
 			if passtexture and passtexture.textures[tex] then
 				self:SetSubMaterial(k-1,passtexture.textures[tex])
+			end
+			if texture and texture.textures[tex] then
+				self:SetSubMaterial(k-1,texture.textures[tex])
 			end
 		end
 	end

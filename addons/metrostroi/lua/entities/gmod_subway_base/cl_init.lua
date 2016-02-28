@@ -285,17 +285,16 @@ function ENT:SpawnCSEnt(k)
 		for k,v in pairs(cent:GetMaterials()) do
 			local tex = string.Explode("/",v)
 			tex = tex[#tex]
-			if texture and texture.textures[tex] then
-				cent:SetSubMaterial(k-1,texture.textures[tex])
-			end
-			if passtexture and passtexture.textures[tex] then
-				cent:SetSubMaterial(k-1,passtexture.textures[tex])
-			end
-			
 			if cabintexture and cabintexture.textures[tex] then
 				if type(cabintexture.textures[tex]) ~= "table" then
 					cent:SetSubMaterial(k-1,cabintexture.textures[tex])
 				end
+			end
+			if passtexture and passtexture.textures[tex] then
+				cent:SetSubMaterial(k-1,passtexture.textures[tex])
+			end
+			if texture and texture.textures[tex] then
+				cent:SetSubMaterial(k-1,texture.textures[tex])
 			end
 		end
 		--if self.ClientPropsMatrix[k] then cent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[k]) end

@@ -668,7 +668,7 @@ function TRAIN_SYSTEM:PlayAnnounce1(val)
 			if Metrostroi.AnnouncerData[curr +add] and not Metrostroi.AnnouncerData[curr +add][1] then self.Train.Announcer:MultiQuele(0230,curr +add,0001)  end
 
 			self.Train.Announcer:MultiQuele(0218,0219,next) -- ОДЗ СС
-			if nextt[2] then self.Train.Announcer:MultiQuele(self.Style == 2 and 0215 or 0231) end -- Платформа справа(или киевский вариант)
+			if nextt and nextt[2] then self.Train.Announcer:MultiQuele(self.Style == 2 and 0215 or 0231) end -- Платформа справа(или киевский вариант)
 			--[=[
 			if nextt[7] and nextt[7] ~= 0 then
 				if Metrostroi.AnnouncerData[nextt[7][1]] then
@@ -678,8 +678,8 @@ function TRAIN_SYSTEM:PlayAnnounce1(val)
 				end
 			end -- Переход
 			]=]
-			if nextt[5] and self.Style == 3 then self.Train.Announcer:MultiQuele(0213) end -- Прислоняться
-			if nextt[3] then
+			if nextt and nextt[5] and self.Style == 3 then self.Train.Announcer:MultiQuele(0213) end -- Прислоняться
+			if nextt and nextt[3] then
 				--uvpass = true
 				if self.Style == 1 then	self.Train.Announcer:MultiQuele(0230) end
 				self.Train.Announcer:MultiQuele(self.Style == 2 and 0214 or 0232) -- Вежливость

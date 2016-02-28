@@ -265,14 +265,14 @@ function ENT:UpdateTextures()
 		end
 		local tex = string.Explode("/",v)
 		tex = tex[#tex]
-		if texture and texture.textures[tex] then
-			self:SetSubMaterial(k-1,texture.textures[tex])
+		if cabintexture and cabintexture.textures[tex] then
+			self:SetSubMaterial(k-1,cabintexture.textures[tex])
 		end
 		if passtexture and passtexture.textures[tex] then
 			self:SetSubMaterial(k-1,passtexture.textures[tex])
 		end
-		if cabintexture and cabintexture.textures[tex] then
-			self:SetSubMaterial(k-1,cabintexture.textures[tex])
+		if texture and texture.textures[tex] then
+			self:SetSubMaterial(k-1,texture.textures[tex])
 		end
 	end
 	self:SetNWString("texture",self.Texture)

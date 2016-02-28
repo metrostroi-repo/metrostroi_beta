@@ -97,6 +97,7 @@ function Metrostroi.AddSkin(category,name,tbl)
 	if not tbl.typ then ErrorNoHalt(Format("Metrostroi:Skin error: %s wont have a typ direvtive!",tbl.name or name)) return end
 	Metrostroi.Skins[category][name] = tbl
 end
+
 --------------------------------------------------------------------------------
 -- Load core files and skins
 --------------------------------------------------------------------------------
@@ -147,8 +148,8 @@ if SERVER then
 	--Include map scripts
 	Metrostroi.AnnouncerData = {}
 	Metrostroi.NameConverter = {}
-	Metrostroi.NameConverter["81-714_mvm"] = "81-717_mvm"
-	Metrostroi.NameConverter["81-714_lvz"] = "81-717_lvz"
+	Metrostroi.NameConverter["81-717_mvm"] = "81-714_mvm"
+	Metrostroi.NameConverter["81-717_lvz"] = "81-714_lvz"
 	Metrostroi.NameConverter["ezh3"] = "ema508t"
 	Metrostroi.TrainSpawnerConverter = {
 		"81-717_mvm",

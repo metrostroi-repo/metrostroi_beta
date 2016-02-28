@@ -54,6 +54,8 @@ function TOOL:SpawnSignal(ply,trace,param)
 		Signal.Approve0 = ent.Approve0
 		Signal.Depot = ent.Depot
 		Signal.ARSOnly = ent.ARSOnly
+		Signal.NonAutoStop = ent.NonAutoStop
+		Signal.PassOcc = ent.PassOcc
 		Signal.Routes = ent.Routes
 		Signal.Left = ent.Left
 		net.Start("metrostroi-stool-signalling")
@@ -80,6 +82,7 @@ function TOOL:SpawnSignal(ply,trace,param)
 			ent.Routes = Signal.Routes
 			ent.Left = Signal.Left
 			ent.Lenses = string.Explode("-",ent.LensesStr)
+			ent.PassOcc = Signal.PassOcc
 			ent.InS = nil
 			ent:SendUpdate()
 			for i = 1,#ent.Lenses do
@@ -426,6 +429,15 @@ function TOOL:BuildCPanelCustom()
 					tool:SendSettings()
 					tool:BuildCPanelCustom()
 				end
+		local VPassOccC = CPanel:CheckBox("Pass occupation singal")
+				VPassOccC:SetTooltip("Pass occupation singal")
+				VPassOccC:SetValue(Signal.PassOcc or false)
+				function VPassOccC:OnChange()
+					Signal.PassOcc = self:GetChecked()
+					tool:SendSettings()
+					tool:BuildCPanelCustom()
+				end
+				
 		for i = 1,(Signal.Routes and #Signal.Routes or 0) do
 			local CollCat = vgui.Create("DForm")
 			CollCat:SetLabel(RouteTypes[Signal.Routes[i].Manual and 2 or Signal.Routes[i].Repeater and 3 or 1])

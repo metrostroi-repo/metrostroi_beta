@@ -259,7 +259,7 @@ end
 function TRAIN_SYSTEM:Queue(id)
 	if (not Metrostroi.Announcements[id]) and (not Metrostroi.AnnouncementsPNM[id]) and
 		(not Metrostroi.AnnouncementSequences[id]) then return end
-	if self.Train and self.Train.SubwayTrain.Name and self.Train.SubwayTrain.Name:sub(1,-2) ~= "81-71" and
+	if self.Train and self.Train.SubwayTrain and self.Train.SubwayTrain.Type and self.Train.SubwayTrain.Type == "E" and
 		(id == 5 or id == 6) then return end
 	-- Add announcement to queue
 	if #self.Schedule < 16 then
@@ -337,7 +337,6 @@ function TRAIN_SYSTEM:Think()
 					self.Train.AnnouncementToLeaveWagon = false
 				end
 			end
-			
 			-- BPSN buzz
 			if targetAnnouncement == 5 and self.Train.PNM then timer.Simple(0.1,function() self.Train:SetNWBool("BPSNBuzz",true) end) end
 			if targetAnnouncement == 5 and not self.Train.PNM then timer.Simple(0.2,function() self.Train:SetNWBool("BPSNBuzz",true) end) end

@@ -54,7 +54,11 @@ end
 
 local function LoadConCMD()
 	for k in pairs(Settings) do
-		Settings[k] = GetConVarNumber("train_spawner_"..k:lower())	
+		if type(Settings[k]) == "string" then
+			Settings[k] = GetConVarString("train_spawner_"..k:lower())	
+		else
+			Settings[k] = GetConVarNumber("train_spawner_"..k:lower())
+		end
 	end
 end
 local Pos = 0
