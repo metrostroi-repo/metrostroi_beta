@@ -178,7 +178,7 @@ function TRAIN_SYSTEM:Think(dT)
 						if not Train.Pneumatic.UAVA then
 							RunConsoleCommand("say","Autostop braking",Train:GetDriverName(),arsback.Name)
 						end
-						if not IsValid(Train.FrontBogey) or not IsValid(Train.RearBogey)then
+						if not IsValid(Train.FrontTrain) or not IsValid(Train.RearTrain)then
 							RunConsoleCommand("say","Passed stop signal",Train:GetDriverName(),arsback.Name)
 						end
 					end

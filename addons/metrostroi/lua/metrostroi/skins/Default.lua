@@ -21,13 +21,13 @@
 --------------------------------------------------------------------------------
 Metrostroi.AddSkin("train","Def_EmOld",{
 	name = "Old",
-	typ = "em",
+	typ = "ema",
 	textures = {
 	}
 })
 Metrostroi.AddSkin("train","Def_EmNew",{
 	name = "New",
-	typ = "em",
+	typ = "ema",
 	textures = {
 		em_body = "metrostroi_skins/em/em_piter",
 		ema_doors = "metrostroi_skins/em/em_piter_doors",

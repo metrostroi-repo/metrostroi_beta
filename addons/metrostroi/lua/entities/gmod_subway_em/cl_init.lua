@@ -23,13 +23,13 @@ ENT.ButtonMap["Main"] = {
 		{ID = "KU1Toggle",			x=16,y=129,w=45,h=90, tooltip="КУ1:Включение мотор-компрессора\nTurn motor-compressor on"},
 		{ID = "VUD1Toggle",		x=248,y=129,w=45,h=90, tooltip="КУ2: Закрытие дверей\nVUD: Door control toggle (close doors)"},
 		----Lamps
-		{ID = "Lamp1",		x=42, y=30, radius=20, tooltip="ЛВД: Лампа включения двигателей\nLVD: Engines engaged"},
-		{ID = "Lamp6",		x=86, y=30, radius=20, tooltip="ЛСТ: Лампа сигнализации торможения\nLST: Brakes engaged"},
+		--{ID = "Lamp1",		x=42, y=30, radius=20, tooltip="ЛВД: Лампа включения двигателей\nLVD: Engines engaged"},
+		--{ID = "Lamp6",		x=86, y=30, radius=20, tooltip="ЛСТ: Лампа сигнализации торможения\nLST: Brakes engaged"},
 		--{ID = "Lamp2",	x=134, y=30, radius=20, tooltip="Красная лампа РК (Вращение Реостатного контроллера)\nRK: Rheostat controller motion "},
-		{ID = "DoorsWag",		x=134, y=30, radius=20, tooltip="Синяя лампа СД: Сигнализация дверей вагона\nBlue door state light (doors on wagon are closed)"},
+		--{ID = "DoorsWag",		x=134, y=30, radius=20, tooltip="Синяя лампа СД: Сигнализация дверей вагона\nBlue door state light (doors on wagon are closed)"},
 		{ID = "RedRP",	x=177, y=30, radius=20, tooltip="Красная РП: Красная лампа реле перегрузки\nRP: Red overload relay  (power circuits failed to assemble)"},
-		{ID = "GreenRP",	x=226.8, y=30, radius=20, tooltip="Зеленая РП: Зелёная лампа реле перегрузки (Сигнализация перегрузки)\nRP: Green overload relay  (overload relay open on current train)"},
-		{ID = "Doors",		x=265, y=30, radius=20, tooltip="Белая лампа СД: Сигнализация дверей поезда\nWhite door state light (doors on train are closed)"},
+		{ID = "GreenRP",	x=223, y=30, radius=20, tooltip="Зеленая РП: Зелёная лампа реле перегрузки (Сигнализация перегрузки)\nRP: Green overload relay  (overload relay open on current train)"},
+		{ID = "DoorsWag",		x=265, y=30, radius=20, tooltip="Белая лампа СД: Сигнализация дверей поезда\nWhite door state light (doors on train are closed)"},
 		
 		{ID = "KDLSet",			x=92, y=169, radius=20, tooltip="КУ12: Кнопка левых дверей\nKDL: Left doors open"},
 		{ID = "KRZDSet",		x=212, y=169, radius=20, tooltip="КУ10: Кнопка резервного закрытия дверей\nKRZD: Emergency door closing"},
@@ -37,30 +37,6 @@ ENT.ButtonMap["Main"] = {
 	}
 }
 
-Metrostroi.ClientPropForButton("Lamp1",{
-	panel = "Main",
-	button = "Lamp1",
-	model = "models/metrostroi_train/e/lampwhite1.mdl",
-	z = 6,
-	ang = 90,
-	staylabel = true,
-})
-Metrostroi.ClientPropForButton("Lamp6",{
-	panel = "Main",
-	button = "Lamp6",
-	model = "models/metrostroi_train/e/lampwhite1.mdl",
-	z = 6,
-	ang = 90,
-	staylabel = true,
-})
-Metrostroi.ClientPropForButton("Doors",{
-	panel = "Main",
-	button = "Doors",
-	model = "models/metrostroi_train/e/lampwhite1.mdl",
-	z = 6,
-	ang = 90,
-	staylabel = true,
-})
 Metrostroi.ClientPropForButton("GreenRP",{
 	panel = "Main",
 	button = "GreenRP",
@@ -228,7 +204,6 @@ Metrostroi.ClientPropForButton("VB",{
 	model = "models/metrostroi_train/switches/autobl2.mdl",
 	z=15,
 })
-
 
 --VU Panel
 ENT.ButtonMap["VU"] = {
@@ -791,9 +766,9 @@ function ENT:Think()
 	self:ShowHideSmooth("Lamps_full2",self.Anims["lamps_full"].val)
 
 	--self:ShowHideSmooth("Lamp2",self:Animate("Lamp2_hs",self:GetPackedBool("Lamp2") and 1 or 0,0,1,5,false))
-	self:ShowHideSmooth("Lamp1",self:Animate("Lamp1_hs",self:GetPackedBool("Lamp1") and 1 or 0,0,1,5,false))
-	self:ShowHideSmooth("Lamp6",self:Animate("Lamp6_hs",self:GetPackedBool("Lamp6") and 1 or 0,0,1,5,false))
-	self:ShowHideSmooth("Doors",self:Animate("Doors_hs",self:GetPackedBool(40) and 1 or 0,0,1,5,false))
+	--self:ShowHideSmooth("Lamp1",self:Animate("Lamp1_hs",self:GetPackedBool("Lamp1") and 1 or 0,0,1,5,false))
+	--self:ShowHideSmooth("Lamp6",self:Animate("Lamp6_hs",self:GetPackedBool("Lamp6") and 1 or 0,0,1,5,false))
+	--self:ShowHideSmooth("Doors",self:Animate("Doors_hs",self:GetPackedBool(40) and 1 or 0,0,1,5,false))
 	self:ShowHideSmooth("DoorsWag",self:Animate("DoorsWag_hs",self:GetPackedBool("DoorsWag") and 1 or 0,0,1,5,false))
 	self:ShowHideSmooth("GreenRP",self:Animate("GreenRP_hs",self:GetPackedBool(36) and 1 or 0,0,1,5,false))
 	self:ShowHideSmooth("RedRP",self:Animate("RedRP_hs",self:GetPackedBool(35) and 1 or 0,0,1,5,false) + self:Animate("RedLSN_hs",self:GetPackedBool(131) and 1 or 0,0,0.4,5,false))

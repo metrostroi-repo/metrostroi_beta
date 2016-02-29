@@ -224,7 +224,7 @@ local function Draw()
 	for k,v in pairs(Metrostroi.Skins["cab"] or {}) do
 		if v.typ == Metrostroi.TrainSpawnerConverter[Settings.Train or 1] then CabTexture[v.name or k] = v.name or k end
 	end
-	CreateList("Train","Train("..GetGlobalInt("metrostroi_train_count").."/"..MaxWagons.."):\nMax for you:"..MaxWagonsOnPlayer,{"81-71x MVM","81-71x LVZ","E","Em","Ezh","81-703x"},UpdateTrainList)
+	CreateList("Train","Train("..GetGlobalInt("metrostroi_train_count").."/"..MaxWagons.."):\nMax for you:"..MaxWagonsOnPlayer,{"81-71x MVM","81-71x LVZ","E","EmA","Ezh","81-703x"},UpdateTrainList)
 	CreateSlider("WagNum",0,1, GetGlobalInt("metrostroi_maxwagons"),"Wagons")
 	CreateList("Texture","Texture",Texture)
 	CreateList("PassTexture","Passenger texture",PassTexture)

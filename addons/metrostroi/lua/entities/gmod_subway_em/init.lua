@@ -424,15 +424,15 @@ function ENT:Think()
 	-- Ring
 	self:SetPackedBool(39,self.Panel["Ring"] > 0.5)
 	-- SD
-	self:SetPackedBool(40,self.Panel["SD"] > 0.5)
+	--self:SetPackedBool(40,self.Panel["SD"] > 0.5)
 	self:SetPackedBool("DriverValveBLDisconnect",self.DriverValveBLDisconnect.Value == 1.0)
 	self:SetPackedBool("DriverValveTLDisconnect",self.DriverValveTLDisconnect.Value == 1.0)
 	for i=1,#self.NetworkSwitches do
 		local switch = self.NetworkSwitches[i]
 		self:SetPackedBool(switch,self[switch].Value == 1.0)
 	end
-	self:SetPackedBool("Lamp6",self:ReadTrainWire(6) > 0.5)
-	self:SetPackedBool("Lamp1",self:ReadTrainWire(1) > 0.5)
+	--self:SetPackedBool("Lamp6",self:ReadTrainWire(6) > 0.5)
+	--self:SetPackedBool("Lamp1",self:ReadTrainWire(1) > 0.5)
 	--self:SetPackedBool("Lamp2",self:ReadTrainWire(2) > 0.5)
 	self:SetPackedBool("DoorsWag",self.BD.Value == 0.0 and self.Panel["V1"] > 0.5)
 	self:SetPackedBool(20,self.Pneumatic.Compressor == 1.0)
