@@ -59,7 +59,7 @@ function ENT:InitializeSystems()
 	-- Групповой переключатель положений
 	self:LoadSystem("PositionSwitch","EKG_18B")
 	-- Кулачковый контроллер
-	self:LoadSystem("KV","KV_70")
+	self:LoadSystem("KV","KV_70_lite")
 	-- Контроллер резервного управления
 	self:LoadSystem("KRU")
 
@@ -82,25 +82,10 @@ function ENT:InitializeSystems()
 	-- Everything else
 	self:LoadSystem("Battery")
 	self:LoadSystem("PowerSupply","DIP_01K")
-	self:LoadSystem("DURA")
-	self:LoadSystem("ALS_ARS","BARS_Em")
 	self:LoadSystem("Horn")
 	self:LoadSystem("Announcer")
-	
-	
-	self:LoadSystem("UPO")
-	self:LoadSystem("Autodrive")
-	self:LoadSystem("KSAUP")
+
 	self:LoadSystem("ADoorDisable","Relay")
-
-	self:LoadSystem("Custom1","Relay","Switch")
-	self:LoadSystem("Custom2","Relay","Switch")
-	self:LoadSystem("Custom3","Relay","Switch")
-	self:LoadSystem("CustomC","Relay","Switch")
-	self:LoadSystem("CustomD","Relay","Switch")
-	self:LoadSystem("CustomE","Relay","Switch")
-	self:LoadSystem("CustomF","Relay","Switch")
-	self:LoadSystem("CustomG","Relay","Switch")
-
 	
+	self:LoadSystem("ALS_ARS","NoARS")
 end

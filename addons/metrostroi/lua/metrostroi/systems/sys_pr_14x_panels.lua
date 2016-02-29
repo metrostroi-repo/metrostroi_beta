@@ -44,5 +44,9 @@ function TRAIN_SYSTEM:Think()
 		end
 		self.Checked = true
 	end
-	self.Train.RPB:TriggerInput("Set",(self.Train.PB.Value + self.Train.KVT.Value + self.Train.RV_2.Value)*self.Train.VB.Value)
+	if self.Train.KVT then
+		self.Train.RPB:TriggerInput("Set",(self.Train.PB.Value + self.Train.KVT.Value + self.Train.RV_2.Value)*self.Train.VB.Value)
+	else
+		self.Train.RPB:TriggerInput("Set",1)
+	end
 end

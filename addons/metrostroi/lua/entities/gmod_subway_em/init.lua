@@ -49,16 +49,13 @@ function ENT:Initialize()
 	-- Initialize key mapping
 	self.KeyMap = {
 		[KEY_1] = "KVSetX1",
-		[KEY_2] = "KVSetX2",
-		[KEY_3] = "KVSetX3",
+		--[KEY_2] = "KVSetX2",
+		--[KEY_3] = "KVSetX3",
 		[KEY_4] = "KVSet0",
 		[KEY_5] = "KVSetT1",
 		[KEY_6] = "KVSetT1AB",
 		[KEY_7] = "KVSetT2",
 		[KEY_8] = "KRP",
-		
-		[KEY_EQUAL] = "R_Program1Set",
-		[KEY_MINUS] = "R_Program2Set",
 
 		[KEY_G] = "VozvratRPSet",
 		
@@ -75,29 +72,19 @@ function ENT:Initialize()
 		[KEY_D] = "KDP",
 		[KEY_V] = "VUD1Toggle",
 		[KEY_L] = "HornEngage",
-		[KEY_N] = "VZ1Set",
 		[KEY_PAD_1] = "PneumaticBrakeSet1",
 		[KEY_PAD_2] = "PneumaticBrakeSet2",
 		[KEY_PAD_3] = "PneumaticBrakeSet3",
 		[KEY_PAD_4] = "PneumaticBrakeSet4",
 		[KEY_PAD_5] = "PneumaticBrakeSet5",
-		[KEY_PAD_6] = "PneumaticBrakeSet6",
-		[KEY_PAD_7] = "PneumaticBrakeSet7",
-		[KEY_PAD_DIVIDE] = "KRPSet",
-		[KEY_PAD_MULTIPLY] = "KAHSet",
-		
-		[KEY_SPACE] = "PBSet",
+
 		[KEY_BACKSPACE] = "EmergencyBrake",
 
 		[KEY_PAD_0] = "DriverValveDisconnect",
-		[KEY_PAD_DECIMAL] = "EPKToggle",
 		[KEY_LSHIFT] = {
 			[KEY_W] = "KVUp_Unlocked",
 			[KEY_SPACE] = "KVTSet",
-		
-			[KEY_A] = "DURASelectAlternate",
-			[KEY_D] = "DURASelectMain",
-			[KEY_V] = "DURAToggleChannel",
+
 			[KEY_1] = "DIPonSet",
 			[KEY_2] = "DIPoffSet",
 			[KEY_4] = "KVSet0Fast",
@@ -116,15 +103,11 @@ function ENT:Initialize()
 			[KEY_9] = "KVWrenchKV",
 			[KEY_0] = "KVWrench0",
 			[KEY_L] = "DriverValveDisconnect",
-			[KEY_F] = "BCCDSet",
-			[KEY_R] = "VZPSet",
 		},
 		[KEY_LALT] = {
 			[KEY_V] = "VUD1Toggle",
-			[KEY_L] = "EPKToggle",
 		},
 		[KEY_RALT] = {
-			[KEY_L] = "EPKToggle",
 		},
 	}
 	
@@ -189,7 +172,7 @@ function ENT:Initialize()
 		--[9] = { "light",			Vector(458+11, 30.7, 54.2), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
 		
 		-- Cabin
-		[10] = { "dynamiclight",	Vector(435,0,20), Angle(0,-0,0), Color(255,107,50), brightness = 0.004, distance = 600, shadows = 1},
+		[10] = { "dynamiclight",	Vector(434,-32,18), Angle(0,-0,0), Color(255,107,50), brightness = 0.4, distance = 600, shadows = 1},
 		
 		-- Interior
 		[11] = { "dynamiclight",	Vector( 250, 0, 0), Angle(0,0,0), Color(255,95,10), brightness = 5, distance = 300 , fov=180,farz = 128 },
@@ -231,7 +214,13 @@ function ENT:Initialize()
 
 	}
 	self.NetworkSwitches = {
-		"VB","VBA",
+		"VB",
+		"RezMK",
+		"VU3","VU1","VU2","AV8B","VU",
+		"VUD2","VUD2L","VDL",
+		"KDL","DIPon","DIPoff","VozvratRP","KSN","KDP",
+		"KU1","KRZD","VUD1",
+		--[["VB","VBA",
 
 		"KVT","VZP","VZD","KRZD",
 
@@ -249,15 +238,16 @@ function ENT:Initialize()
 
 		"RC1","RC2","VRD",
 
-		"PB","VU3","VU1","VU2","AV8B","VU","KDLK","VDLK","KDPK","KAHK","L_3","RST","VSOSD",
+		"PB","VU3","VU1","VU2","AV8B","VU","KDLK","VDLK","KDPK","KAHK","L_3","RST","VSOSD",]]
 	}
 	self.Plombs = {
-		RST = true,
+		VU = true,
+		--[[RST = true,
 		VAH = true,
 		VAD = true,
 		OVT = true,
 		RC1 = true,
-		RC2 = true,
+		RC2 = true,]]
 		Init = true,
 	}
 	-- Lights
@@ -290,7 +280,6 @@ function ENT:Initialize()
 	self.FrontDoor = false
 	self.CabinDoor = false
 	self.PassengerDoor = false
-
 --	self.A5:TriggerInput("Set",0)
 	self:UpdateTextures()
 end
@@ -369,20 +358,19 @@ function ENT:Think()
 	self:SetPackedBool("HeadLights1",self.Panel["HeadLights1"] > 0.5)
 	self:SetPackedBool("HeadLights2",self.Panel["HeadLights2"] > 0.5)
 	self:SetPackedBool("RedLight",self.Panel["RedLightLeft"] > 0.5 or self.Panel["RedLightRight"] > 0.5)
-	-- Interior/cabin lights
-	self:SetLightPower(10, self.Panel["CabinLight"] > 0.5)
 
 	local lightsActive2 = self.PowerSupply.XT3_4 > 65.0
 	local lightsActive1 = self.Panel["EmergencyLight"] > 0.5 or lightsActive2
 	self:SetPackedBool("Lamps_emer",lightsActive1)
 	self:SetPackedBool("Lamps_full",lightsActive2)
+	
+	-- Interior/cabin lights
+	self:SetLightPower(10, lightsActive2, 0.8)--self.Panel["CabinLight"] > 0.5)
 
 	self:SetLightPower(11, lightsActive1, lightsActive2 and 0.8 or 0.4)
 	self:SetLightPower(12, lightsActive1, lightsActive2 and 0.8 or 0.4)
 	self:SetLightPower(13, lightsActive1, lightsActive2 and 0.8 or 0.4)
    
-	self.SOSD = self.Panel["SD"] <= 0 and self.Panel["V1"] > 0 and self.KV.ReverserPosition ~= 0 and self.VSOSD.Value > 0.5
-	self:SetLightPower(70,self.SOSD)
 	--self:SetLightPower(12, lightsActive1,0.1 + ((self.PowerSupply.XT3_4 > 65.0) and 0.7 or 0))
 	--self:SetLightPower(13, lightsActive2, 0.8)
 	--for i = 1,23 do
@@ -401,12 +389,6 @@ function ENT:Think()
 	--self:SetLightPower(17, self.Panel["TrainBrakes"] > 0.5)
 	--self:SetLightPower(21, self.Panel["TrainBrakes"] > 0.5)
 
-	self:SetLightPower(32,self.L_3.Value > 0.5)
-	self:SetLightPower(33,self.L_3.Value > 0.5)
-	self:SetLightPower(34,self.L_3.Value > 0.5)
-	self:SetLightPower(35,self.L_3.Value > 0.5)
-	self:SetLightPower(36,self.L_3.Value > 0.5)
-	self:SetLightPower(37,self.L_3.Value > 0.5)
 	-- Total temperature
 	local IGLA_Temperature = math.max(self.Electric.T1,self.Electric.T2)
 	
@@ -443,34 +425,16 @@ function ENT:Think()
 	self:SetPackedBool(39,self.Panel["Ring"] > 0.5)
 	-- SD
 	self:SetPackedBool(40,self.Panel["SD"] > 0.5)
-	-- OCh
-	self:SetPackedBool(41,self.ALS_ARS.NoFreq)
-	-- 0
-	self:SetPackedBool(42,self.ALS_ARS.Signal0)
-	-- 40
-	self:SetPackedBool(43,self.ALS_ARS.Signal40)
-	-- 60
-	self:SetPackedBool(44,self.ALS_ARS.Signal60)
-	-- 75
-	self:SetPackedBool(45,self.ALS_ARS.Signal70)
-	-- 80
-	self:SetPackedBool(46,self.ALS_ARS.Signal80)
-	-- KT
-	self:SetPackedBool(47,self.ALS_ARS.LKT and self.Panel["V1"] > 0.5)
-	-- KVD
-	self:SetPackedBool(48,self.ALS_ARS.LVD)
 	self:SetPackedBool("DriverValveBLDisconnect",self.DriverValveBLDisconnect.Value == 1.0)
 	self:SetPackedBool("DriverValveTLDisconnect",self.DriverValveTLDisconnect.Value == 1.0)
-	self:SetPackedBool("EPK",self.EPK.Value == 1.0)
 	for i=1,#self.NetworkSwitches do
 		local switch = self.NetworkSwitches[i]
 		self:SetPackedBool(switch,self[switch].Value == 1.0)
 	end
-	self:SetPackedBool("VPR",self.RST.Value > 0 and self.Panel["V1"] > 0)
 	self:SetPackedBool("Lamp6",self:ReadTrainWire(6) > 0.5)
 	self:SetPackedBool("Lamp1",self:ReadTrainWire(1) > 0.5)
-	self:SetPackedBool("Lamp2",self:ReadTrainWire(2) > 0.5)
-	self:SetPackedBool("DoorsWag",self.BD.Value == 0.0 and self.Panel["V1"] > 0.5 and self.KSD.Value > 0.5)
+	--self:SetPackedBool("Lamp2",self:ReadTrainWire(2) > 0.5)
+	self:SetPackedBool("DoorsWag",self.BD.Value == 0.0 and self.Panel["V1"] > 0.5)
 	self:SetPackedBool(20,self.Pneumatic.Compressor == 1.0)
 	self:SetPackedBool(21,self.Pneumatic.LeftDoorState[1] > 0.5)
 	self:SetPackedBool(25,self.Pneumatic.RightDoorState[1] > 0.5)
@@ -867,20 +831,6 @@ function ENT:OnButtonPress(button)
 			self.DriverValveBLDisconnect:TriggerInput("Set",0)
 			self.DriverValveTLDisconnect:TriggerInput("Set",0)
 		end
-		if self.DriverValveBLDisconnect.Value == 1.0 then
-			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
-		else
-			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
-		end
-		return
-	end
-	
-	if button == "DriverValveBLDisconnectToggle" then
-		if self.DriverValveBLDisconnect.Value == 1.0 then
-			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
-		else
-			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
-		end
 		return
 	end
 	
@@ -915,16 +865,6 @@ function ENT:OnButtonPress(button)
 			else
 				self:PlayOnce("uava_off","cabin")
 			end
-		end
-		return
-	end
-
-
-	if button == "EPKToggle" and self.DriverValveBLDisconnect.Value == 1.0 then
-		if self.EPK.Value == 0.0 then
-			self:PlayOnce("epv_off","cabin",0.9)
-		else
-			self:PlayOnce("epv_on","cabin",0.9)
 		end
 		return
 	end
