@@ -91,18 +91,7 @@ function ENT:Initialize()
 	self:SetNWVector("PlatformStart",self.PlatformStart)
 	self:SetNWVector("PlatformEnd",self.PlatformEnd)
 	self:SetNWVector("StationCenter",self:GetPos())
-	
-	Metrostroi.PlatformMap = ""
-	local Map = game.GetMap() or ""
-	if Map:find("gm_metrostroi") and Map:find("lite") then
-		Metrostroi.PlatformMap = "gm_metrostroi_lite"
-	elseif Map:find("gm_metrostroi") then
-		Metrostroi.PlatformMap = "gm_metrostroi"
-	elseif Map:find("gm_mus_orange_line") and Map:find("long") then
-		Metrostroi.PlatformMap = "gm_orange"
-	elseif Map:find("gm_mus_orange_line") then
-		Metrostroi.PlatformMap = "gm_orange_lite"
-	end
+
 	-- FIXME make this nicer
 	for i=1,32 do self:SetNWVector("TrainDoor"..i,Vector(0,0,0)) end
 	self:SetNWInt("TrainDoorCount",0)
