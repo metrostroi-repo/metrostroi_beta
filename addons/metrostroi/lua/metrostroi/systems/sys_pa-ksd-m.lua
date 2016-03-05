@@ -184,7 +184,7 @@ if CLIENT then
 			self.ErrorCodes = {
 				[0x9999] = {"","Проверь хвостовую ПА"},
 				[0x0001] = {"","Хвостовая ПА загружается"},
-				[0x0002] = {"","Хвостовая ПА в режиме настрйки"},
+				[0x0002] = {"","Хвостовая ПА в режиме настройки"},
 			}
 			local ErrorCode = train:GetNWInt("PAKSDM:ErrorCode",0)
 			local BackErrorCode = train:GetNWInt("PAKSDM:BErrorCode",0)
@@ -489,7 +489,7 @@ if CLIENT then
 				if Metrostroi.AnnouncerData[Station] then draw.SimpleText(Metrostroi.AnnouncerData[Station][1],"Metrostroi_PAM20",508, 30,Color(212,212,212),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER) end
 			else
 				draw.SimpleText("выход на линию","Metrostroi_PAM20",508, 13,Color(212,212,212),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
-				draw.SimpleText(Metrostroi.AnnouncerData[LastStation][1],"Metrostroi_PAM20",508, 30,Color(212,212,212),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
+				draw.SimpleText(Metrostroi.AnnouncerData[LastStation] and Metrostroi.AnnouncerData[LastStation][1] or "unk","Metrostroi_PAM20",508, 30,Color(212,212,212),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
 			end
 			if Path and Path > 0 then
 				draw.SimpleText("Путь "..Path,"Metrostroi_PAM25",260, 15,Color(254,237,142),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
@@ -534,7 +534,7 @@ if CLIENT then
 			if train:GetNWBool("PAKSDM:Arrived",false) then
 				draw.SimpleText("Tпр=00:00:00","Metrostroi_PAM28",6, 340,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 				draw.SimpleText("Нагон=","Metrostroi_PAM28",170, 340,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Тост = "..train:GetNWInt("PAKSDM:BoardTime",0),"Metrostroi_PAM28",290, 340,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Тост = "..math.max(-99,train:GetNWInt("PAKSDM:BoardTime",0)),"Metrostroi_PAM28",290, 340,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 				draw.SimpleText("S= "..S.."м","Metrostroi_PAM28",506, 340,Color(110,172,95),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
 			else
 				draw.SimpleText("РЦ= "..train:GetNWString("PAKSDM:SName",""),"Metrostroi_PAM30",6, 340,Color(254,237,142),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)

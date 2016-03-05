@@ -870,7 +870,7 @@ ENT.ClientPropsInitialized = false
 ENT.ClientProps["brake"] = {
 	model = "models/metrostroi_train/81/334cran.mdl",
 	pos = Vector(460.11,-53.7,3.7),
-	ang = Angle(0,47,0)
+	ang = Angle(0,34,0)
 }
 ENT.ClientProps["controller"] = {
 	model = "models/metrostroi_train/em/kv.mdl",
@@ -1318,15 +1318,10 @@ function ENT:Think()
 
 	-- Simulate pressure gauges getting stuck a little 
 	self:Animate("brake", 		1-self:GetPackedRatio(0), 			0.00, 0.65,  256,24)
-	self:Animate("brake013", 		self:GetPackedRatio(0)^0.5,			0.00, 0.65,  256,24)
 	self:Animate("controller",		self:GetPackedRatio(1),				0, 0.31,  2,false)
 	self:Animate("reverser",		self:GetPackedRatio(2),				0.26, 0.35,  4,false)
 	self:Animate("volt1", 			self:GetPackedRatio(10),			0,0.244,256,2)
 	self:ShowHide("reverser",		self:GetPackedBool(0))
-
-	self:ShowHide("brake013",		self:GetPackedBool(22))
-	self:ShowHide("brake",		not self:GetPackedBool(22))
-	self:ShowHide("brake_body",	not self:GetPackedBool(22))
 
 	self:Animate("brake_line",		self:GetPackedRatio(4),				0, 0.725,  256,2)--,,0.01)
 	self:Animate("train_line",		self:GetPackedRatio(5)-transient,	0, 0.725,  256,2)--,,0.01)

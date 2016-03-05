@@ -400,8 +400,8 @@ end
 function ENT:Think()
 	self.ExtraSeat1:SetPos(Vector(420,-40,-28+1))
 	--self.ExtraSeat3:SetPos(Vector(402,50,-43))
-	if self.VUD1.Value > 0 and self.ASNP31.Value == 0 then self.ASNP31:TriggerInput("Set",1) self.ASNP32:TriggerInput("Set",1) end
-	if self.VUD1.Value == 0 and self.ASNP31.Value > 0 then self.ASNP31:TriggerInput("Set",0) self.ASNP32:TriggerInput("Set",0) end
+	if self.VUD1.Value > 0 and self.VUD2.Value > 0 and self.ASNP31.Value == 0 then self.ASNP31:TriggerInput("Set",1) self.ASNP32:TriggerInput("Set",1) end
+	if (self.VUD1.Value == 0 or self.VUD2.Value == 0) and self.ASNP31.Value > 0 then self.ASNP31:TriggerInput("Set",0) self.ASNP32:TriggerInput("Set",0) end
 	if self.Plombs and self.Plombs.Init then
 		self.Plombs.Init = nil
 		for k,v in pairs(self.Plombs) do

@@ -70,8 +70,6 @@ function ENT:Initialize()
 		[KEY_PAD_MINUS] = "KVReverserDown",
 		[KEY_W] = "KVUp",
 		[KEY_S] = "KVDown",
-		["invprev"] = "KVUp",
-		["invnext"] = "KVDown",
 		[KEY_F] = "PneumaticBrakeUp",
 		[KEY_R] = "PneumaticBrakeDown",
 		
@@ -783,6 +781,17 @@ function ENT:OnButtonPress(button)
 		--print(self.ManualBrake)
 	end	
 	
+	if button == "KVUp" then
+		if self.KV.ControllerPosition ~= -1 then
+			self.KV:TriggerInput("ControllerUp",1.0)
+		end
+	end
+	if button == "KVUp_Unlocked" then
+		self.KV:TriggerInput("ControllerUp",1.0)
+	end
+	if button == "KVDown" then
+		self.KV:TriggerInput("ControllerDown",1.0)
+	end
 	-- KRU
 	if (self.KVWrenchMode == 2) and (button == "KVReverserUp") then
 		self.KRU:TriggerInput("Up",1)

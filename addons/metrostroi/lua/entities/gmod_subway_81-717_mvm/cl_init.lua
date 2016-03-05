@@ -1847,7 +1847,7 @@ function ENT:Think()
 	end
 	if not self.WiperValue then self.WiperValue = 0 end
 	if self:GetPackedBool("Wiper") then
-		self.WiperValue = self.WiperValue + 3.14*self.DeltaTime
+		self.WiperValue = self.WiperValue + 3.14*self.DeltaTime*(self:GetPackedRatio(5)*2)
 	end
 	if self.WiperValue > math.pi*2 then self.WiperValue = 0 end
 	-- Simulate pressure gauges getting stuck a little
@@ -2378,8 +2378,8 @@ function ENT:DrawPost(special)
 
 			------------------------------------------------------------------------
 			local speedValue = math.floor(speed/5 + 0.5)
-			for i=1,20 do
-				if i > speedValue then break end
+			for i=1,speedValue do
+				--if i > speedValue then break end
 				surface.SetAlphaMultiplier(1.0)
 				surface.SetDrawColor(150,255,50)
 				surface.DrawRect((127.5+2.20*i)*10,70.5*10,(i==20) and 6 or 14,44)
@@ -2522,9 +2522,9 @@ function ENT:DrawPost(special)
 				surface.SetDrawColor(150,255,50)
 				surface.DrawRect(88*10+17,(28.4+11*3)*10,8*10,8.7*10)
 				surface.DrawPoly({
-					{ x = 1711-18,	y = 838+0 },
-					{ x = 1711+0,	y = 838-30 },
-					{ x = 1711+18,	y = 838+0 },
+					{ x = 1611-18,	y = 838+0 },
+					{ x = 1611+0,	y = 838-30 },
+					{ x = 1611+18,	y = 838+0 },
 				})
 				draw.DrawText("70","MetrostroiSubway_LargeText2",88*10-1+17,(29+11*3)*10-5,Color(0,0,0,255))
 			end
@@ -2535,9 +2535,9 @@ function ENT:DrawPost(special)
 				surface.SetDrawColor(150,255,50)
 				surface.DrawRect(88*10+17,(28+11.3*4)*10-5,8*10,8.7*10)
 				surface.DrawPoly({
-					{ x = 1760-18,	y = 838+0 },
-					{ x = 1760+0,	y = 838-30 },
-					{ x = 1760+18,	y = 838+0 },
+					{ x = 1660-18,	y = 838+0 },
+					{ x = 1660+0,	y = 838-30 },
+					{ x = 1660+18,	y = 838+0 },
 				})
 					
 				draw.DrawText("80","MetrostroiSubway_LargeText2",88*10-2+16,(28+11.5*4)*10-5-5,Color(0,0,0,255))

@@ -74,6 +74,7 @@ function TRAIN_SYSTEM:Think()
 	if self.XT1_2 > 1000 then self.Train.RZP:TriggerInput("Close",1) end
 	local voltage = 0
 	if (self.XT1_2 > 550) and (self.XT1_2 < 975) then voltage = 75 end
+	if voltage < 55 then self.Active = 0 self.LightsActive = 0 end
 	-- Generate output
 	self.XT3_1 = voltage * self.Active
 	self.XT3_4 = voltage * self.Active

@@ -632,7 +632,7 @@ function TRAIN_SYSTEM:Think(dT)
 	end
 	self.EnableARS = EnableARS
 	self.EnableALS = EnableALS
-	local EPKActivated = Train.EPK.Value > 0.5 and (Train.Pneumatic.ValveType == 2 and Train.DriverValveDisconnect.Value > 0.5 or Train.DriverValveBLDisconnect.Value > 0.5)
+	local EPKActivated = Train.EPK and Train.EPK.Value > 0.5 and (Train.Pneumatic.ValveType == 2 and Train.DriverValveDisconnect.Value > 0.5 or Train.DriverValveBLDisconnect.Value > 0.5)
 	-- Pedal state
 	--if (Train.PB) and Train.PB.Value > 0.5 then self.AttentionPedal = true end
 	--if (Train.PB) and Train.PB.Value <  0.5 then self.AttentionPedal = false end

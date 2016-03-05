@@ -135,7 +135,7 @@ function TRAIN_SYSTEM:DisplayStation(St,stay,max)
 	max = (max or 25)-1
 	local sz = stay and #self.STR1r[self.STR1x-1] or #self.STR1r[self.STR1x]
 	local Siz = stay and #self.STR1r[self.STR1x-1] or #self.STR1r[self.STR1x]
-	local StS = Metrostroi.AnnouncerData[St][1].."a"
+	local StS = Metrostroi.AnnouncerData[St] and Metrostroi.AnnouncerData[St][1] or "Unknown"
 	local StT = string.Explode(" ",StS)
 	local str = ""
 	if #StT > 1 then
@@ -406,7 +406,7 @@ function TRAIN_SYSTEM:UpdateAnnouncer()
 					v.ASNP.CurrentStation = self.LastStationW
 					v.ASNP.FirstStation = self.LastStation
 					v.ASNP.FirstStationW= self.LastStationW
-					if Metrostroi.AnnouncerData[Metrostroi.EndStations[self.Line][self.LastStation]][9] then
+					if Metrostroi.EndStations[self.Line] and Metrostroi.AnnouncerData[Metrostroi.EndStations[self.Line][self.LastStation]] and Metrostroi.AnnouncerData[Metrostroi.EndStations[self.Line][self.LastStation]][9] then
 							v.ASNP.LastStation = self.LastStation
 							v.ASNP.LastStationW = self.LastStationW
 							v.ASNP.CurrentStation = self.FirstStationW

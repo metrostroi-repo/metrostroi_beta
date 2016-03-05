@@ -2160,7 +2160,7 @@ function ENT:Think()
 	end
 	if not self.WiperValue then self.WiperValue = 0 end
 	if self:GetPackedBool("Wiper") then
-		self.WiperValue = self.WiperValue + 3.14*self.DeltaTime
+		self.WiperValue = self.WiperValue + 3.14*self.DeltaTime*(self:GetPackedRatio(5)*2)
 	end
 	if self.WiperValue > math.pi*2 then self.WiperValue = 0 end
 	-- Simulate pressure gauges getting stuck a little
@@ -2745,8 +2745,7 @@ function ENT:DrawPost(special)
 
 		------------------------------------------------------------------------
 		local speedValue = math.floor(speed/5 + 0.5)
-		for i=1,20 do
-			if i > speedValue then break end
+		for i=1,speedValue do
 			surface.SetAlphaMultiplier(1.0)
 			surface.SetDrawColor(150,255,50)
 			surface.DrawRect((127.5+2.20*i)*10,70.5*10,(i==20) and 6 or 14,44)

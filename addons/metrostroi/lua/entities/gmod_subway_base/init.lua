@@ -1917,7 +1917,7 @@ net.Receive("metrostroi-cabin-button", function(len, ply)
 		-- Player currently driving
 		train = seat:GetNWEntity("TrainEntity")
 		if (not train) or (not train:IsValid()) then return end
-		if (seat != train.DriverSeat) and (seat != train.InstructorsSeat) and not train:CPPICanPhysgun(ply) and not button:find("Door") then return end
+		if (seat != train.DriverSeat) and (seat != train.InstructorsSeat) and (train.CPPICanPhysgun and not train:CPPICanPhysgun(ply)) and not button:find("Door") then return end
 	else
 		-- Player not driving, check recent train
 		train = ply.lastVehicleDriven and ply.lastVehicleDriven:GetNWEntity("TrainEntity") or NULL
@@ -1930,7 +1930,7 @@ net.Receive("metrostroi-cabin-button", function(len, ply)
 			train = trace.Entity
 		end
 		if !IsValid(train) then return end
-		if outside and not train:CPPICanPhysgun(ply) then return end
+		if outside and (train.CPPICanPhysgun and not train:CPPICanPhysgun(ply)) then return end
 		if not outside and ply != train.DriverSeat.lastDriver then return end
 		if not outside and train.DriverSeat.lastDriverTime and (CurTime() - train.DriverSeat.lastDriverTime) > 1 then return end
 	end

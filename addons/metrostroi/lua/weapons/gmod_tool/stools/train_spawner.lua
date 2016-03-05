@@ -14,7 +14,7 @@ TOOL.ClientConVar["mask"] = 1
 TOOL.ClientConVar["pitermsk"] = 1
 TOOL.ClientConVar["bpsn"] = 2
 TOOL.ClientConVar["led"] = 0
-TOOL.ClientConVar["kvsnd"] = 0
+TOOL.ClientConVar["kvsnd"] = 1
 TOOL.ClientConVar["oldkvpos"] = 0
 TOOL.ClientConVar["horn"] = 0
 TOOL.ClientConVar["nm"] = 8.2
@@ -130,7 +130,7 @@ function TOOL:GetConvar()
 	tbl.PiterMsk = self:GetClientNumber("pitermsk")
 	tbl.LED = self:GetClientNumber("led")
 	tbl.Horn = self:GetClientNumber("horn")
-	tbl.KVSnd = self:GetClientNumber("kvsnd")
+	tbl.KVSnd = math.max(1,self:GetClientNumber("kvsnd"))
 	tbl.OldKVPos = self:GetClientNumber("oldkvpos")
 	tbl.BPSN = self:GetClientNumber("bpsn")
 	tbl.NM = self:GetClientNumber("nm")

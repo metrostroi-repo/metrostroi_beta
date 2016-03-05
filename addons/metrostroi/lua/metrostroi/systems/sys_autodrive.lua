@@ -88,7 +88,11 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 	local Train= self.Train
 	-- Calculate distance to station
 	local dX = self.Train.UPO.Distance
-	local speedLimit = (Train.ALS_ARS.Signal0 or Train.ALS_ARS.RealNoFreq) and 0 or Train.ALS_ARS.Signal40 and 40 or Train.ALS_ARS.Signal60 and 60 or Train.ALS_ARS.Signal70 and 70 or Train.ALS_ARS.Signal80 and 80 or 0
+	--local speedLimit = (Train.ALS_ARS.Signal0 or Train.ALS_ARS.RealNoFreq) and 0 or Train.ALS_ARS.Signal40 and 40 or Train.ALS_ARS.Signal60 and 60 or Train.ALS_ARS.Signal70 and 70 or Train.ALS_ARS.Signal80 and 80 or 0
+	local speedLimit = 0--(self.Train.ALS_ARS.Signal0 or self.Train.ALS_ARS.RealNoFreq) and 0 or self.Train.ALS_ARS.Signal40 and 40 or self.Train.ALS_ARS.Signal60 and 60 or self.Train.ALS_ARS.Signal70 and 70 or self.Train.ALS_ARS.Signal80 and 80 or 0
+	if self.Train.ALS_ARS.AVSpeedLimit and self.Train.ALS_ARS.AVSpeedLimit > 20 then
+		speedLimit = self.Train.ALS_ARS.AVSpeedLimit
+	end
 	local OnStation = dX < (160+35*self.MU - (speedLimit == 40 and 30 or 0)) and not self.StartMoving and Metrostroi.AnnouncerData[self.Train.UPO.Station]and Metrostroi.AnnouncerData[self.Train.UPO.Station][1]
 	if StationBraking and (dX >= (160+35*self.MU - (speedLimit == 40 and 30 or 0)) or not OnStation) then self.Train.UPO.StationAutodrive = false return end
 	-- Target and real RK position (0 if not braking)
@@ -156,7 +160,7 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 	end
 	local PneumaticValve1 = ((dX < 1.55) and (Train.ALS_ARS.Speed > 0.1) and OnStation and TargetBrakeRKPosition == 18) or (Train.ALS_ARS.Speed > (Train.ALS_ARS.SpeedLimit - threshold))
 	--or (Train:ReadCell(6) > 0 and Train:ReadCell(18) < 1 and Slope > 1)
-
+	if dX < 2 and Train.ALS_ARS.Speed < 0.5 then self.AutodriveReset = true end
 	--Disable autodrive on end of station brake
 	--local StatID = Metrostroi.WorkingStations[self.Train.UPO.Station] or Metrostroi.WorkingStations[self.Train.UPO.Station + (self.Path == 1 and 1 or -1)] or 0
 
@@ -166,11 +170,11 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 
 			--
 			--self.VUDOverride = true
-
+			--[[
 			--local self.Train.UPO.Station = self.Train:ReadCell(49160) > 0 and self.Train:ReadCell(49160) or self.Train:ReadCell(49161)
 			if self.Train.UPO.Station == 0 then return end
-			--local StatID = Metrostroi.WorkingStations[self.Train.UPO.Station] or Metrostroi.WorkingStations[self.Train.UPO.Station + (self.Path == 1 and 1 or -1)] or 0
-			if GetConVarNumber("metrostroi_paksd_autoopen",0) > 0 and not StationBraking then
+			local StatID = Metrostroi.WorkingStations[self.Train.UPO.Station] or Metrostroi.WorkingStations[self.Train.UPO.Station + (self.Path == 1 and 1 or -1)] or 0
+			if not StationBraking then--GetConVarNumber("metrostroi_paksd_autoopen",0) > 0 and not StationBraking then
 				local Curr = Metrostroi.AnnouncerData[self.Train.UPO.Station]
 				if Curr[2] then
 					Train:WriteCell(32,1)
@@ -184,6 +188,7 @@ function TRAIN_SYSTEM:Autodrive(StationBraking)
 				end)
 				Train.ADoorDisable:TriggerInput("Set",1)
 			end
+			]]
 		end
 		self.AutodriveReset = true
 		return
@@ -532,8 +537,11 @@ function TRAIN_SYSTEM:GetCurrentCommand()
 			pos = v[2]
 		end
 	end
-	local speedLimit = (self.Train.ALS_ARS.Signal0 or self.Train.ALS_ARS.RealNoFreq) and 0 or self.Train.ALS_ARS.Signal40 and 40 or self.Train.ALS_ARS.Signal60 and 60 or self.Train.ALS_ARS.Signal70 and 70 or self.Train.ALS_ARS.Signal80 and 80 or 0
-	if self.Train.Speed > speedLimit-1 and pos > 0 then pos = 0 end
+	local speedLimit = 0--(self.Train.ALS_ARS.Signal0 or self.Train.ALS_ARS.RealNoFreq) and 0 or self.Train.ALS_ARS.Signal40 and 40 or self.Train.ALS_ARS.Signal60 and 60 or self.Train.ALS_ARS.Signal70 and 70 or self.Train.ALS_ARS.Signal80 and 80 or 0
+	if self.Train.ALS_ARS.AVSpeedLimit and self.Train.ALS_ARS.AVSpeedLimit > 20 then
+		speedLimit = self.Train.ALS_ARS.AVSpeedLimit
+	end
+	--if self.Train.Speed > speedLimit-1 and pos > 0 then pos = 0 end
 	local RKPosition = math.floor(self.Train.RheostatController.Position+0.5)
 	local PP = math.floor(self.Train.PositionSwitch.Position + 0.5) == 2
 	if pos == 2.5 then
@@ -640,7 +648,7 @@ function TRAIN_SYSTEM:Think()
 	self.Time = self.Time or CurTime()
  	if (CurTime() - self.Time) > 0.1 and self.Train.A29 and self.Train.A29.Value < 0.5 then
 		self.Time = CurTime()
-		RunConsoleCommand("say",Format("station:%.2f,%.2f\t distance:%.2f",self.Train.UPO.Station,self.Train:ReadCell(49165),S))
+		--RunConsoleCommand("say",Format("station:%.2f,%.2f\t distance:%.2f",self.Train.UPO.Station,self.Train:ReadCell(49165),S))
 	end
 	if self.Train.KSAUP then return end
 	if self.Train.VZP then

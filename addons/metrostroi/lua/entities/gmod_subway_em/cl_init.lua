@@ -509,7 +509,7 @@ ENT.ClientPropsInitialized = false
 ENT.ClientProps["brake"] = {
 	model = "models/metrostroi_train/81/334cran.mdl",
 	pos = Vector(460.11,-53.7,3.7),
-	ang = Angle(0,47,0)
+	ang = Angle(0,34,0)
 }
 ENT.ClientProps["controller"] = {
 	model = "models/metrostroi_train/em/kv.mdl",

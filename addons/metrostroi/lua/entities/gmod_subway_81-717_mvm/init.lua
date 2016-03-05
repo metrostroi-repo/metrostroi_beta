@@ -246,7 +246,7 @@ function ENT:Initialize()
 		[33] = { "headlight", 		Vector(458.05,-32.8+1.5,21.1), Angle(-90,0,0), Color(216,161,92), farz = 10, nearz = 1, shadows = 0, brightness = 4.0, fov = 60 },
 		-- Voltmeter
 		[34] = { "headlight", 		Vector(458.05,-32.8+1.5,24.85), Angle(-90,0,0), Color(216,161,92), farz = 10, nearz = 1, shadows = 0, brightness = 4.0, fov = 60 },
-
+		[35] = { "headlight", 		Vector(457,1.51,9.4), Angle(-45,0,0), Color(216,161,92), farz = 3.5, nearz = 1, shadows = 0, brightness = 2, fov = 160 },
 	
 		-- ARS panel lights
 		[40] = { "light", Vector(459.4,10.8,13.1)+vY*5.15+vX*3,				Angle(0,0,0), Color(160,255,0), brightness = 1.0, scale = 0.008 },
@@ -661,7 +661,8 @@ function ENT:Think()
 	self:SetLightPower(32, (self.Panel["CabinLight"] > 0.5) and (self.L_3.Value > 0.5))
 	self:SetLightPower(33, (self.Panel["CabinLight"] > 0.5) and (self.L_3.Value > 0.5))
 	self:SetLightPower(34, (self.Panel["CabinLight"] > 0.5) and (self.L_3.Value > 0.5))
-
+	
+	self:SetLightPower(35,self.ARSType == 4 and (self.Panel["CabinLight"] > 0.5) and (self.L_3.Value > 0.5))
 	-- Door button lights
 	self:SetPackedBool("Left",(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 0))
 	self:SetPackedBool("Right",(self.Panel["HeadLights2"] > 0.5) and (self.DoorSelect.Value == 1))

@@ -281,6 +281,11 @@ function TRAIN_SYSTEM:Think(dT)
 				self.NoFreq		= ars:GetARS(1,Train) or not (self.Signal80 or self.Signal70 or self.Signal60 or self.Signal40 or self.Signal0)
 				if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then RunConsoleCommand("say",ars.Name,tostring(arsback and arsback.Name),tostring(ars.NextSignalLink and ars.NextSignalLink.Name or "unknown"),tostring(pos.node1.path.id),tostring(Metrostroi.TrainDirections[Train])) end
 				self.RealNoFreq = not (self.Signal80 or self.Signal70 or self.Signal60 or self.Signal40 or self.Signal0)
+				
+				self.AVSpeedLimit = 20
+				if ars:GetMaxARS() >= 4 then
+					self.AVSpeedLimit = ars:GetMaxARS()*10
+				end
 			else
 				if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then RunConsoleCommand("say","LOSE SIGNAL",tostring(pos and pos.node1.path.id or "unknown"),tostring(Metrostroi.TrainDirections[Train])) end
 				if (self.CheckedNF  and self.CheckedNF > 1) or (self.CheckedNF == 0 and self.NoFreq) or self.RealNoFreq then
@@ -390,6 +395,7 @@ function TRAIN_SYSTEM:Think(dT)
 		end
 		self.PrevNoFreq = self.RealNoFreq
 		-- Check overspeed
+		--if self.Train.Owner:GetName():find("E11") then self.SpeedLimit = 25 end
 		if self.SpeedLimit > 20 then
 			if (PAM or PAKSDM) and self.Train.YAR_13A.Slope == 0 and self.Speed >= self.SpeedLimit and not self.ARSBrake then
 				self.ElectricBrake1 = true
@@ -397,17 +403,21 @@ function TRAIN_SYSTEM:Think(dT)
 			if self.Speed >= self.SpeedLimit + 1 then
 				 if Train:ReadTrainWire(6) == 0 then
 					self.ElectricBrake = true
-					self.PneumaticBrake1 = true
+					--self.PneumaticBrake1 = true
 				end
 				self.ElectricBrake1 = true
 				self.ARSBrake = true
 			end
 		end
+		if self.ElectricBrake  then
+			self.PneumaticBrake1 = self.Train.Electric.I24 > -50
+			--print(self.PneumaticBrake1)
+		end
 		if self.Overspeed then
 			self.ARSBrake = true
 			self.ElectricBrake1 = true
 			self.ElectricBrake = true
-			self.PneumaticBrake1 = true
+			--self.PneumaticBrake1 = true
 		end
 		-- Check cancel of overspeed command
 		if not self.Overspeed and not self.ElectricBrake1 and self.ARSBrake then
@@ -513,7 +523,6 @@ function TRAIN_SYSTEM:Think(dT)
 			self.VRDTimer = false
 		end
 		local VRDoff =  (PAKSD or PAKSDM ) and 0 or 1
-
 		if (self.Train:ReadTrainWire(15) < 1.0) and (self.Speed < 1.0) and not Train[KSDType].KD and (PAKSD or PAM or PAKSDM) then
 			self.KD = true
 		end

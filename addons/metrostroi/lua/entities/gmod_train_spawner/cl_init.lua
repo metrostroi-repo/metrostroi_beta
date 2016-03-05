@@ -41,8 +41,8 @@ local Settings = {
 local Types = {
 	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,ARS,Cran,Mask,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv,PNM",
 	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,Blok,Cran,PiterMsk,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,Hand,Seat,Lamp,Breakers,Adv,PNM",
-	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,Hand,Seat,Lamp,Breakers,Adv",
-	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,Hand,Seat,Lamp,Breakers,Adv",
+	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,DoorsL,DoorsR,GV,PB,Adv",
+	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,DoorsL,DoorsR,GV,PB,Adv",
 	"Train,WagNum,Texture,Prom,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,PNM",
 	"Train,WagNum",
 }
@@ -116,7 +116,7 @@ local function CreateSlider(name,decimals,min,max,text,OnSelect)
 	local _old = Slider.ValueChanged
 	function Slider:ValueChanged(...)
 		_old(self, ...)
-		Settings[name] = math.floor(self:GetValue())
+		Settings[name] = math.Round(self:GetValue(),decimals)
 		UpdateConCMD()
 		if OnSelect then OnSelect(Slider) end
 	end

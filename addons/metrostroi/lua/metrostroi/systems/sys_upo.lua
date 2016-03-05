@@ -208,19 +208,23 @@ function TRAIN_SYSTEM:Think()
 			local tbl = Metrostroi.WorkingStations[self.Line]
 			self:PlayDepeate(self.Station,tbl[tbl[self.Station] + (self.Path == 1 and 1 or -1)],self.Path)
 		end
+		self.ODZ = true
 		self.Arrived = false
 	end	
 	if self.Distance > 75 then self.Arrived = nil end
 	if self.Arrived == nil then
 		self.Ring = nil
 	end
-	if self.Ring == false and self.Train.Panel.SD > 0.5 then 
+	if self.Ring == false and self.Train.Panel.SD > 0.5 and self.ODZ == nil  then 
 		self.Ring = 1
 	end
-	if self.Train:ReadCell(48) == 218  then
-		self.ODZ = true
+	if self.Ring == false and self.Train.Panel.SD > 0.5 and self.ODZ ~= nil  then 
+		self.Ring = 0
 	end
-	if self.ODZ and self.Train:ReadCell(48) ~= 218  then
+	if self.Train:ReadCell(48) == 218  then
+		--self.ODZ = true
+	end
+	if self.ODZ and self.BoardTime and self.BoardTime - CurTime() < 0  then
 		self.ODZ = false
 		self.Ring = 2
 	end

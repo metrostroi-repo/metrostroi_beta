@@ -233,6 +233,8 @@ function ENT:UpdateTextures()
 			self:SetSubMaterial(k-1,texture.textures[tex])
 		end
 	end
+	self:SetNWInt("LampType",(self.LampType or 1))
+	self:SetNWBool("BPSNBuzzType",self.PNM)
 	self:SetNWString("texture",self.Texture)
 	self:SetNWString("passtexture",self.PassTexture)
 end

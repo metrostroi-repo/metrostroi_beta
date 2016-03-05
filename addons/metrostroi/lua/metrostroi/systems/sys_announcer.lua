@@ -317,7 +317,7 @@ function TRAIN_SYSTEM:Think()
 
 			-- Emit the sound
 			if self.Sound ~= "" then
-				if self.Train.DriverSeat and (self.Train.R_G.Value > 0.5) then
+				if self.Train.DriverSeat and (not self.Train.R_G or self.Train.R_G.Value > 0.5) then
 					self.Train.DriverSeat:EmitSound(self.Sound, 73, 100)
 				end
 				if onlyCabin == false then
@@ -396,6 +396,12 @@ function TRAIN_SYSTEM:Think()
 		elseif self.Train:ReadTrainWire(48) == -1 then
 			self.Train:WriteTrainWire(48,0)
 		end
-		return
+	end
+	if self.Train.R_UPO and self.Train.KV then
+		if self.Train.R_UPO.Value < 0.5 and self.Train.KV.ReverserPosition == 1.0 then
+			self.Train:WriteTrainWire(48,-1)
+		elseif self.Train:ReadTrainWire(48) == -1 then
+			self.Train:WriteTrainWire(48,0)
+		end
 	end
 end
