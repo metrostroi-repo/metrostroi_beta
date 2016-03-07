@@ -476,7 +476,7 @@ if CLIENT then
 			local Path = train:GetNW2Int("PAKSDM:Path",0)
 			local Station = tonumber(train:GetNW2Int("PAKSDM:Station",0))
 			local LastStation = tonumber(train:GetNW2Int("PAKSDM:LastStation",-1))
-			local S = Format("%.2f",train:GetNW2Int("PAKSDM:Distance",0))
+			local S = Format("%.2f",train:GetNW2Float("PAKSDM:Distance",0))
 			local speed = math.floor(self.Train:GetPackedRatio(3)*100.0)
 			local spd = self.Train:GetNW2Bool("PAKSDM:UOS", false) and 35 or self.Train:GetNW2Bool("PAKSDM:VRD",false) and 20 or self.Train:GetPackedBool(46) and 80 or self.Train:GetPackedBool(45) and 70 or self.Train:GetPackedBool(44) and 60 or self.Train:GetPackedBool(43) and 40 or self.Train:GetPackedBool(42) and 0 or "НЧ"
 			--Metrostroi.DrawRectOutline(10, 6, 100, 40,Color(110,172,95),3 )
@@ -555,7 +555,7 @@ if CLIENT then
 			surface.DrawRect(222,360,57,26)
 			surface.DrawRect(280,360,60,26)
 			surface.DrawRect(341,360,50,26)
-			draw.SimpleText(self.Types[train:GetNW2Bool("PAKSDM:Type",false)].."="..self.Positions[train:GetNW2Bool("PAKSDM:KV",false)],"Metrostroi_PAM30",171, 371,Color(20,20,20),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+			draw.SimpleText(self.Types[train:GetNW2Int("PAKSDM:Type",1)].."="..self.Positions[train:GetNW2Int("PAKSDM:KV",1)],"Metrostroi_PAM30",171, 371,Color(20,20,20),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			if train:GetNW2Bool("PAKSDM:VZ1",false) or train:GetNW2Bool("PAKSDM:VZ2",false) then
 				draw.SimpleText(train:GetNW2Bool("PAKSDM:VZ1",false) and (train:GetNW2Bool("PAKSDM:VZ2",false) and "В1 2" or "В1") or "В   2","Metrostroi_PAM30",224, 371,Color(20,20,20),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			end
@@ -2126,7 +2126,7 @@ function TRAIN_SYSTEM:Think(dT)
 			Train:SetNW2Int("PAKSDM:Path",self.Train.UPO.Path)
 			Train:SetNW2Int("PAKSDM:Station",self.State9 == 0 and 0 or self.Train.UPO.Station)
 			Train:SetNW2Int("PAKSDM:LastStation",self.LastStation)
-			Train:SetNW2Int("PAKSDM:Distance",math.Round(self.Train.UPO.Distance,2))
+			Train:SetNW2Float("PAKSDM:Distance",math.Round(self.Train.UPO.Distance,2))
 			Train:SetNW2String("PAKSDM:SName",ARS.Signal and ARS.Signal.RealName or "ERR")
 			Train:SetNW2Bool("PAKSDM:RR",self.Train.KV.ReverserPosition ~= 0)
 			Train:SetNW2Int("PAKSDM:Type",(self.Train.Pneumatic.EmergencyValveEPK and 0 or self.Train.ALS_ARS.UAVAContacts and 4 or self.UOS and 5 or self.VRD and 2 or (self.Train.Autodrive.AutodriveEnabled or self.Train.UPO.StationAutodrive) and 1 or 3))
