@@ -236,8 +236,8 @@ ENT.TrafficLightModels[2] = {
 }
 ENT.SignalConverter = {
 	R = 1,
-	Y = 2,
-	G = 3,
+	Y = 6,
+	G = 2,
 	B = 4,
 	W = 5
 }

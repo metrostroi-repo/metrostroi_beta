@@ -249,10 +249,10 @@ function ENT:Think()
 					if not IsValid(self.Models[3][ID..ID2]) and State > 0 then self.Signals[ID][i] = nil end
 					
 					if State >0 and self.Signals[ID][i] ~= State  and not IsValid(self.Models[3][ID..ID2]) then
-						self.Models[3][ID..ID2] = ClientsideModel("models/metrostroi/train/sign_lense.mdl",RENDERGROUP_OPAQUE)
+						self.Models[3][ID..ID2] = ClientsideModel("models/metrostroi/signals/sign_lense.mdl",RENDERGROUP_OPAQUE)
 						self.Models[3][ID..ID2]:SetPos(self:LocalToWorld(self.BasePosition + offset + data[3][i-1]*Vector(1,self.Left and -1.1 or 1,1)+Vector(0,0.1,0)))
-						self.Models[3][ID..ID2]:SetAngles(self:LocalToWorldAngles(Angle(0,90*(self.Left and -1 or 1),0)))
-						self.Models[3][ID..ID2]:SetSkin(self.SignalConverter[v[i]])
+						self.Models[3][ID..ID2]:SetAngles(self:LocalToWorldAngles(Angle(90,90*(self.Left and -1 or 1),0)))
+						self.Models[3][ID..ID2]:SetSkin(self.SignalConverter[v[i]]-1)
 						self.Models[3][ID..ID2]:SetParent(self)
 						self.Models[3][ID..ID2]:SetRenderMode(RENDERMODE_TRANSALPHA)
 						self.Models[3][ID..ID2]:SetColor(Color(255,255,255,0))
@@ -322,7 +322,6 @@ function ENT:Think()
 	self.OldLenses = self.Lenses
 	self.OldName = self.Name
 end
-
 function ENT:Draw()
 	-- Draw model
 	self:DrawModel()

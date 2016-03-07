@@ -2,6 +2,7 @@
 {
 
 	$basetexture "models/metrostroi/signals/yellow"
+	$selfillum 1
 
 
 }
