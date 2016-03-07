@@ -877,7 +877,7 @@ function ENT:Think()
 	-- LRS
 	self:SetPackedBool(54,(self.Panel["V1"] > 0.5) and 
 		(self.ALS.Value > 0.5) and 
-		(self.ALS_ARS.NextLimit >= self.ALS_ARS.SpeedLimit))
+		(GetConVarNumber("metrostroi_ars_sfreq") > 0 and not self.ALS_ARS.RealNoFreq and self.ALS_ARS.NextLimit >= self.ALS_ARS.SpeedLimit))
 	
 	-- AV states
 	for i,v in ipairs(self.Panel.AVMap) do

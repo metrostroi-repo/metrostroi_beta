@@ -279,22 +279,22 @@ if CLIENT then
 			draw.SimpleText("Депо. Начальное меню.","Metrostroi_PAM30",20, 30,Color(0,0,0,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			--elf.Train:GetNW2Int("PAKSDM:Pass",0) ~= -1 and string.rep("*",self.Train:GetNW2Int("PAKSDM:Pass",0)) or "ACCESS ERROR"
 			
-			Metrostroi.DrawTextRectOL(40, 140, 432, 40,train:GetNW2Bool("PAKSDM:State5",1) == 1 and Color(42,58,148) or Color(230,230,230),gr_up,3,Color(110,110,110))
-			draw.SimpleText("1","Metrostroi_PAM30",60, 160,train:GetNW2Bool("PAKSDM:State5",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			Metrostroi.DrawLine(60,173,75,173,train:GetNW2Bool("PAKSDM:State5",1) == 1 and Color(255,255,255) or Color(0,0,0),3)
-			draw.SimpleText("Выход на линию","Metrostroi_PAM30",100, 160,train:GetNW2Bool("PAKSDM:State5",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+			Metrostroi.DrawTextRectOL(40, 140, 432, 40,train:GetNW2Int("PAKSDM:State5",1) == 1 and Color(42,58,148) or Color(230,230,230),gr_up,3,Color(110,110,110))
+			draw.SimpleText("1","Metrostroi_PAM30",60, 160,train:GetNW2Int("PAKSDM:State5",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+			Metrostroi.DrawLine(60,173,75,173,train:GetNW2Int("PAKSDM:State5",1) == 1 and Color(255,255,255) or Color(0,0,0),3)
+			draw.SimpleText("Выход на линию","Metrostroi_PAM30",100, 160,train:GetNW2Int("PAKSDM:State5",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 
 			if train:GetNW2Bool("PAKSDM:Restart") then
-				Metrostroi.DrawTextRectOL(40, 190, 432, 40,train:GetNW2Bool("PAKSDM:State5",1) == 2 and Color(42,58,148) or Color(230,230,230),gr_up,3,Color(110,110,110))
-				draw.SimpleText("2","Metrostroi_PAM30",60, 210,train:GetNW2Bool("PAKSDM:State5",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-				Metrostroi.DrawLine(60,222,75,222,train:GetNW2Bool("PAKSDM:State5",1) == 2 and Color(255,255,255) or Color(0,0,0),3)
-				draw.SimpleText("Перезапуск","Metrostroi_PAM30",100, 210,train:GetNW2Bool("PAKSDM:State5",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(40, 190, 432, 40,train:GetNW2Int("PAKSDM:State5",1) == 2 and Color(42,58,148) or Color(230,230,230),gr_up,3,Color(110,110,110))
+				draw.SimpleText("2","Metrostroi_PAM30",60, 210,train:GetNW2Int("PAKSDM:State5",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawLine(60,222,75,222,train:GetNW2Int("PAKSDM:State5",1) == 2 and Color(255,255,255) or Color(0,0,0),3)
+				draw.SimpleText("Перезапуск","Metrostroi_PAM30",100, 210,train:GetNW2Int("PAKSDM:State5",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			end
 			
-			Metrostroi.DrawTextRectOL(40, 240, 432, 40,train:GetNW2Bool("PAKSDM:State5",1) == 3 and Color(42,58,148) or Color(230,230,230),gr_up,3,Color(110,110,110))
-			--draw.SimpleText("1","Metrostroi_PAM30",60, 260,train:GetNW2Bool("PAKSDM:State5",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			--Metrostroi.DrawLine(60,273,75,273,train:GetNW2Bool("PAKSDM:State5",1) == 1 and Color(255,255,255) or Color(0,0,0),3)
-			draw.SimpleText("Назад","Metrostroi_PAM30",100, 260,train:GetNW2Bool("PAKSDM:State5",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+			Metrostroi.DrawTextRectOL(40, 240, 432, 40,train:GetNW2Int("PAKSDM:State5",1) == 3 and Color(42,58,148) or Color(230,230,230),gr_up,3,Color(110,110,110))
+			--draw.SimpleText("1","Metrostroi_PAM30",60, 260,train:GetNW2Int("PAKSDM:State5",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+			--Metrostroi.DrawLine(60,273,75,273,train:GetNW2Int("PAKSDM:State5",1) == 1 and Color(255,255,255) or Color(0,0,0),3)
+			draw.SimpleText("Назад","Metrostroi_PAM30",100, 260,train:GetNW2Int("PAKSDM:State5",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 		end
 		if train:GetNW2Int("PAKSDM:State",-1) == 6 then
 			local Line = self.Train:GetNW2Int("PAKSDM:Line",0)
@@ -311,19 +311,19 @@ if CLIENT then
 			surface.DrawRect(170,80,172,20)
 			draw.SimpleText("Ввод данных","Metrostroi_PAM30",256, 90,Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			draw.SimpleText("Линия","Metrostroi_PAM22",60, 130,Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			Metrostroi.DrawTextRectOL(310, 115, 140, 30,train:GetNW2Bool("PAKSDM:State6",1) == 1 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
+			Metrostroi.DrawTextRectOL(310, 115, 140, 30,train:GetNW2Int("PAKSDM:State6",1) == 1 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
 			if Line > -1 then draw.SimpleText(Line,"Metrostroi_PAM30",380,130,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) end
 		
 			draw.SimpleText("Начальная станция","Metrostroi_PAM22",60, 162,Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			Metrostroi.DrawTextRectOL(310, 147, 140, 30,train:GetNW2Bool("PAKSDM:State6",1) == 2 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
+			Metrostroi.DrawTextRectOL(310, 147, 140, 30,train:GetNW2Int("PAKSDM:State6",1) == 2 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
 			if FirstStation > -1 then draw.SimpleText(FirstStation,"Metrostroi_PAM30",380,163,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) end
 			
 			draw.SimpleText("Конечная станция","Metrostroi_PAM22",60, 194,Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			Metrostroi.DrawTextRectOL(310, 179, 140, 30,train:GetNW2Bool("PAKSDM:State6",1) == 3 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
+			Metrostroi.DrawTextRectOL(310, 179, 140, 30,train:GetNW2Int("PAKSDM:State6",1) == 3 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
 			if LastStation > -1 then draw.SimpleText(LastStation,"Metrostroi_PAM30",380,195,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) end
 	
 			draw.SimpleText("Маршрут","Metrostroi_PAM22",60, 226,Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			Metrostroi.DrawTextRectOL(310, 211, 140, 30,train:GetNW2Bool("PAKSDM:State6",1) == 4 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
+			Metrostroi.DrawTextRectOL(310, 211, 140, 30,train:GetNW2Int("PAKSDM:State6",1) == 4 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
 			if RouteNumber > -1 then draw.SimpleText(RouteNumber,"Metrostroi_PAM30",380,225,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) end
 			
 			
@@ -407,15 +407,15 @@ if CLIENT then
 			surface.DrawRect(170,80,172,20)
 			draw.SimpleText("Ввод данных","Metrostroi_PAM30",256, 90,Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			draw.SimpleText("Линия","Metrostroi_PAM22",60, 130,Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			Metrostroi.DrawTextRectOL(310, 115, 140, 30,train:GetNW2Bool("PAKSDM:State6",1) == 1 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
+			Metrostroi.DrawTextRectOL(310, 115, 140, 30,train:GetNW2Int("PAKSDM:State6",1) == 1 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
 			if Line > -1 then draw.SimpleText(Line,"Metrostroi_PAM30",380,130,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) end
 		
 			draw.SimpleText("Конечная станция","Metrostroi_PAM22",60, 162,Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			Metrostroi.DrawTextRectOL(310, 147, 140, 30,train:GetNW2Bool("PAKSDM:State6",1) == 2 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
+			Metrostroi.DrawTextRectOL(310, 147, 140, 30,train:GetNW2Int("PAKSDM:State6",1) == 2 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
 			if LastStation > -1 then draw.SimpleText(LastStation,"Metrostroi_PAM30",380,163,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) end
 			
 			draw.SimpleText("Маршрут","Metrostroi_PAM22",60, 194,Color(0,0,0),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			Metrostroi.DrawTextRectOL(310, 179, 140, 30,train:GetNW2Bool("PAKSDM:State6",1) == 3 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
+			Metrostroi.DrawTextRectOL(310, 179, 140, 30,train:GetNW2Int("PAKSDM:State6",1) == 3 and Color(144,255,237) or Color(230,230,230),gr_up,1,Color(110,110,110))
 			if RouteNumber > -1 then draw.SimpleText(RouteNumber,"Metrostroi_PAM30",380,195,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) end
 			
 			
@@ -589,7 +589,6 @@ if CLIENT then
 			--draw.SimpleText("Na   =","Metrostroi_PAM20",375, 347.5,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			draw.SimpleText("Тост = "..train:GetNW2Int("PAKSDM:BoardTime",0),"Metrostroi_PAM20",375, 365,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			]]
-			
 			if train:GetNW2Bool("PAKSDM:Arrived",false) then
 				if Station > 0 then
 					if Metrostroi.AnnouncerData[Station] then
@@ -602,55 +601,55 @@ if CLIENT then
 			end
 			if train:GetNW2Int("PAKSDM:Menu",0) > 0 then
 				Metrostroi.DrawRectOL(10, 140, 492, 180,Color(110,110,110),1,Color(200,200,200))
-				Metrostroi.DrawTextRectOL(10, 140, 164, 45,train:GetNW2Bool("PAKSDM:Menu",1) == 1 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("1","Metrostroi_PAM30",30, 162,train:GetNW2Bool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Проверка","Metrostroi_PAM22",92, 154,train:GetNW2Bool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("наката","Metrostroi_PAM22",92, 170,train:GetNW2Bool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				Metrostroi.DrawTextRectOL(174, 140, 164, 45,train:GetNW2Bool("PAKSDM:Menu",1) == 2 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("2","Metrostroi_PAM30",194, 162,train:GetNW2Bool("PAKSDM:Menu",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Движение","Metrostroi_PAM22",256, 154,train:GetNW2Bool("PAKSDM:Menu",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText(train:GetNW2Bool("PAKSDM:KD") and "с КД" or "без КД","Metrostroi_PAM22",256, 170,train:GetNW2Bool("PAKSDM:Menu",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				Metrostroi.DrawTextRectOL(338, 140, 164, 45,train:GetNW2Bool("PAKSDM:Menu",1) == 3 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("3","Metrostroi_PAM30",358, 162,train:GetNW2Bool("PAKSDM:Menu",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Смена","Metrostroi_PAM22",420, 154,train:GetNW2Bool("PAKSDM:Menu",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("настроек","Metrostroi_PAM22",420, 170,train:GetNW2Bool("PAKSDM:Menu",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(10, 140, 164, 45,train:GetNW2Int("PAKSDM:Menu",1) == 1 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("1","Metrostroi_PAM30",30, 162,train:GetNW2Int("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Проверка","Metrostroi_PAM22",92, 154,train:GetNW2Int("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("наката","Metrostroi_PAM22",92, 170,train:GetNW2Int("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(174, 140, 164, 45,train:GetNW2Int("PAKSDM:Menu",1) == 2 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("2","Metrostroi_PAM30",194, 162,train:GetNW2Int("PAKSDM:Menu",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Движение","Metrostroi_PAM22",256, 154,train:GetNW2Int("PAKSDM:Menu",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText(train:GetNW2Bool("PAKSDM:KD") and "с КД" or "без КД","Metrostroi_PAM22",256, 170,train:GetNW2Int("PAKSDM:Menu",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(338, 140, 164, 45,train:GetNW2Int("PAKSDM:Menu",1) == 3 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("3","Metrostroi_PAM30",358, 162,train:GetNW2Int("PAKSDM:Menu",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Смена","Metrostroi_PAM22",420, 154,train:GetNW2Int("PAKSDM:Menu",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("настроек","Metrostroi_PAM22",420, 170,train:GetNW2Int("PAKSDM:Menu",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 
-				Metrostroi.DrawTextRectOL(10, 185, 164, 45,train:GetNW2Bool("PAKSDM:Menu",1) == 4 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("4","Metrostroi_PAM30",30, 207,train:GetNW2Bool("PAKSDM:Menu",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Движение","Metrostroi_PAM22",92, 199,train:GetNW2Bool("PAKSDM:Menu",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("транзитом","Metrostroi_PAM22",92, 215,train:GetNW2Bool("PAKSDM:Menu",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				Metrostroi.DrawTextRectOL(174, 185, 164, 45,train:GetNW2Bool("PAKSDM:Menu",1) == 5 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("5","Metrostroi_PAM30",194, 207,train:GetNW2Bool("PAKSDM:Menu",1) == 5 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Движение","Metrostroi_PAM22",256, 199,train:GetNW2Bool("PAKSDM:Menu",1) == 5 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("при Vф=0","Metrostroi_PAM22",256, 215,train:GetNW2Bool("PAKSDM:Menu",1) == 5 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				Metrostroi.DrawTextRectOL(338, 185, 164, 45,train:GetNW2Bool("PAKSDM:Menu",1) == 6 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("6","Metrostroi_PAM30",358, 207,train:GetNW2Bool("PAKSDM:Menu",1) == 6 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Зонный","Metrostroi_PAM22",420, 199,train:GetNW2Bool("PAKSDM:Menu",1) == 6 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("оборот","Metrostroi_PAM22",420, 215,train:GetNW2Bool("PAKSDM:Menu",1) == 6 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(10, 185, 164, 45,train:GetNW2Int("PAKSDM:Menu",1) == 4 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("4","Metrostroi_PAM30",30, 207,train:GetNW2Int("PAKSDM:Menu",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Движение","Metrostroi_PAM22",92, 199,train:GetNW2Int("PAKSDM:Menu",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("транзитом","Metrostroi_PAM22",92, 215,train:GetNW2Int("PAKSDM:Menu",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(174, 185, 164, 45,train:GetNW2Int("PAKSDM:Menu",1) == 5 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("5","Metrostroi_PAM30",194, 207,train:GetNW2Int("PAKSDM:Menu",1) == 5 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Движение","Metrostroi_PAM22",256, 199,train:GetNW2Int("PAKSDM:Menu",1) == 5 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("при Vф=0","Metrostroi_PAM22",256, 215,train:GetNW2Int("PAKSDM:Menu",1) == 5 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(338, 185, 164, 45,train:GetNW2Int("PAKSDM:Menu",1) == 6 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("6","Metrostroi_PAM30",358, 207,train:GetNW2Int("PAKSDM:Menu",1) == 6 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Зонный","Metrostroi_PAM22",420, 199,train:GetNW2Int("PAKSDM:Menu",1) == 6 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("оборот","Metrostroi_PAM22",420, 215,train:GetNW2Int("PAKSDM:Menu",1) == 6 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 	
-				Metrostroi.DrawTextRectOL(10, 230, 164, 45,train:GetNW2Bool("PAKSDM:Menu",1) ==7 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("7","Metrostroi_PAM30",30, 252,train:GetNW2Bool("PAKSDM:Menu",1) == 7 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Фиксация","Metrostroi_PAM22",92, 244,train:GetNW2Bool("PAKSDM:Menu",1) == 7 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("станции","Metrostroi_PAM22",92, 260,train:GetNW2Bool("PAKSDM:Menu",1) == 7 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(10, 230, 164, 45,train:GetNW2Int("PAKSDM:Menu",1) ==7 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("7","Metrostroi_PAM30",30, 252,train:GetNW2Int("PAKSDM:Menu",1) == 7 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Фиксация","Metrostroi_PAM22",92, 244,train:GetNW2Int("PAKSDM:Menu",1) == 7 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("станции","Metrostroi_PAM22",92, 260,train:GetNW2Int("PAKSDM:Menu",1) == 7 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 
-				Metrostroi.DrawTextRectOL(174, 230, 164, 45,train:GetNW2Bool("PAKSDM:Menu",1) ==8 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("8","Metrostroi_PAM30",194, 252,train:GetNW2Bool("PAKSDM:Menu",1) == 8 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("ИГРУФКИ","Metrostroi_PAM22",256, 252,train:GetNW2Bool("PAKSDM:Menu",1) == 8 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				--draw.SimpleText(train:GetNW2Bool("PAKSDM:KD") and "с КД" or "без КД","Metrostroi_PAM22",256, 170,train:GetNW2Bool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(174, 230, 164, 45,train:GetNW2Int("PAKSDM:Menu",1) ==8 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("8","Metrostroi_PAM30",194, 252,train:GetNW2Int("PAKSDM:Menu",1) == 8 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("ИГРУФКИ","Metrostroi_PAM22",256, 252,train:GetNW2Int("PAKSDM:Menu",1) == 8 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				--draw.SimpleText(train:GetNW2Bool("PAKSDM:KD") and "с КД" or "без КД","Metrostroi_PAM22",256, 170,train:GetNW2Int("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			--[[
 				Metrostroi.DrawTextRectOL(338, 230, 164, 45,Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("9","Metrostroi_PAM30",358, 162,train:GetNW2Bool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Смена","Metrostroi_PAM22",420, 154,train:GetNW2Bool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("настроек","Metrostroi_PAM22",420, 170,train:GetNW2Bool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("9","Metrostroi_PAM30",358, 162,train:GetNW2Int("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Смена","Metrostroi_PAM22",420, 154,train:GetNW2Int("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("настроек","Metrostroi_PAM22",420, 170,train:GetNW2Int("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			
 				Metrostroi.DrawTextRectOL(10, 275, 164, 45,Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("1","Metrostroi_PAM30",30, 162,train:GetNW2Bool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Проверка","Metrostroi_PAM22",92, 154,train:GetNW2Bool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("наката","Metrostroi_PAM22",92, 170,train:GetNW2Bool("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("1","Metrostroi_PAM30",30, 162,train:GetNW2Int("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Проверка","Metrostroi_PAM22",92, 154,train:GetNW2Int("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("наката","Metrostroi_PAM22",92, 170,train:GetNW2Int("PAKSDM:Menu",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				Metrostroi.DrawTextRectOL(174, 230, 164, 45,Color(230,230,230),gr_up,2,Color(110,110,110))
 				]]
-				Metrostroi.DrawTextRectOL(338, 275, 164, 45,train:GetNW2Bool("PAKSDM:Menu",1) == 12 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("Закрыть","Metrostroi_PAM22",420, 297,train:GetNW2Bool("PAKSDM:Menu",1) == 12 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(338, 275, 164, 45,train:GetNW2Int("PAKSDM:Menu",1) == 12 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("Закрыть","Metrostroi_PAM22",420, 297,train:GetNW2Int("PAKSDM:Menu",1) == 12 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				--[[
 				Metrostroi.DrawRectOutline(50, 150, 385, 24*8,Color(160,160,160), 3)
 				surface.SetDrawColor(Color(200,200,200))
@@ -673,30 +672,30 @@ if CLIENT then
 			end
 			if train:GetNW2Int("PAKSDM:Ann",0) > 0 then
 				Metrostroi.DrawRectOL(10, 140, 492, 180,Color(110,110,110),1,Color(200,200,200))
-				Metrostroi.DrawTextRectOL(10, 140, 164, 45,train:GetNW2Bool("PAKSDM:Ann",1) == 1 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("1","Metrostroi_PAM30",30, 162,train:GetNW2Bool("PAKSDM:Ann",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Просьба","Metrostroi_PAM22",92, 150,train:GetNW2Bool("PAKSDM:Ann",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("выйти","Metrostroi_PAM22",92, 162,train:GetNW2Bool("PAKSDM:Ann",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("из вагонов","Metrostroi_PAM22",92, 174,train:GetNW2Bool("PAKSDM:Ann",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				Metrostroi.DrawTextRectOL(174, 140, 164, 45,train:GetNW2Bool("PAKSDM:Ann",1) == 2 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("2","Metrostroi_PAM30",194, 162,train:GetNW2Bool("PAKSDM:Ann",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Заходите","Metrostroi_PAM22",266, 150,train:GetNW2Bool("PAKSDM:Ann",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("и выходите","Metrostroi_PAM22",266, 162,train:GetNW2Bool("PAKSDM:Ann",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("быстрее","Metrostroi_PAM22",266, 174,train:GetNW2Bool("PAKSDM:Ann",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				Metrostroi.DrawTextRectOL(338, 140, 164, 45,train:GetNW2Bool("PAKSDM:Ann",1) == 3 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("3","Metrostroi_PAM30",358, 162,train:GetNW2Bool("PAKSDM:Ann",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Отпустите","Metrostroi_PAM22",440, 150,train:GetNW2Bool("PAKSDM:Ann",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("пожалуйста","Metrostroi_PAM22",440, 162,train:GetNW2Bool("PAKSDM:Ann",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("двери","Metrostroi_PAM22",440, 174,train:GetNW2Bool("PAKSDM:Ann",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(10, 140, 164, 45,train:GetNW2Int("PAKSDM:Ann",1) == 1 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("1","Metrostroi_PAM30",30, 162,train:GetNW2Int("PAKSDM:Ann",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Просьба","Metrostroi_PAM22",92, 150,train:GetNW2Int("PAKSDM:Ann",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("выйти","Metrostroi_PAM22",92, 162,train:GetNW2Int("PAKSDM:Ann",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("из вагонов","Metrostroi_PAM22",92, 174,train:GetNW2Int("PAKSDM:Ann",1) == 1 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(174, 140, 164, 45,train:GetNW2Int("PAKSDM:Ann",1) == 2 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("2","Metrostroi_PAM30",194, 162,train:GetNW2Int("PAKSDM:Ann",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Заходите","Metrostroi_PAM22",266, 150,train:GetNW2Int("PAKSDM:Ann",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("и выходите","Metrostroi_PAM22",266, 162,train:GetNW2Int("PAKSDM:Ann",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("быстрее","Metrostroi_PAM22",266, 174,train:GetNW2Int("PAKSDM:Ann",1) == 2 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(338, 140, 164, 45,train:GetNW2Int("PAKSDM:Ann",1) == 3 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("3","Metrostroi_PAM30",358, 162,train:GetNW2Int("PAKSDM:Ann",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Отпустите","Metrostroi_PAM22",440, 150,train:GetNW2Int("PAKSDM:Ann",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("пожалуйста","Metrostroi_PAM22",440, 162,train:GetNW2Int("PAKSDM:Ann",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("двери","Metrostroi_PAM22",440, 174,train:GetNW2Int("PAKSDM:Ann",1) == 3 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 
-				Metrostroi.DrawTextRectOL(10, 185, 164, 45,train:GetNW2Bool("PAKSDM:Ann",1) == 4 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("4","Metrostroi_PAM30",30, 207,train:GetNW2Bool("PAKSDM:Ann",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("Поезд","Metrostroi_PAM22",92, 195,train:GetNW2Bool("PAKSDM:Ann",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("скоро","Metrostroi_PAM22",92, 207,train:GetNW2Bool("PAKSDM:Ann",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-				draw.SimpleText("отправится","Metrostroi_PAM22",92, 219,train:GetNW2Bool("PAKSDM:Ann",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(10, 185, 164, 45,train:GetNW2Int("PAKSDM:Ann",1) == 4 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("4","Metrostroi_PAM30",30, 207,train:GetNW2Int("PAKSDM:Ann",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("Поезд","Metrostroi_PAM22",92, 195,train:GetNW2Int("PAKSDM:Ann",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("скоро","Metrostroi_PAM22",92, 207,train:GetNW2Int("PAKSDM:Ann",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				draw.SimpleText("отправится","Metrostroi_PAM22",92, 219,train:GetNW2Int("PAKSDM:Ann",1) == 4 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 
-				Metrostroi.DrawTextRectOL(338, 275, 164, 45,train:GetNW2Bool("PAKSDM:Ann",1) == 5 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
-				draw.SimpleText("Закрыть","Metrostroi_PAM22",420, 297,train:GetNW2Bool("PAKSDM:Ann",1) == 5 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+				Metrostroi.DrawTextRectOL(338, 275, 164, 45,train:GetNW2Int("PAKSDM:Ann",1) == 5 and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
+				draw.SimpleText("Закрыть","Metrostroi_PAM22",420, 297,train:GetNW2Int("PAKSDM:Ann",1) == 5 and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			end
 			if train:GetNW2Int("PAKSDM:NeedConfirm",0) > 0 then
 				Metrostroi.DrawTextRectOL(106, 155, 300, 30,Color(42,58,148),gr_up,1,Color(110,110,110))
@@ -2133,8 +2132,8 @@ function TRAIN_SYSTEM:Think(dT)
 			Train:SetNW2Int("PAKSDM:KV",self.Train.Autodrive.AutodriveEnabled and (self.Rotating and -3 or self.Brake and -1 or self.Accelerate and 3 or 0) or (ARS["33G"] > 0 or (self.UOS and (ARS["8"] + (1-self.Train.RPB.Value)) > 0)) and 5 or self.Train.KV.RealControllerPosition)
 			Train:SetNW2Bool("PAKSDM:VZ1", self.Train:ReadTrainWire(29) > 0)
 			Train:SetNW2Bool("PAKSDM:VZ2", self.Train.PneumaticNo2.Value > 0)
-			Train:SetNW2Bool("PAKSDM:Menu", self.MenuChoosed or 0)
-			Train:SetNW2Bool("PAKSDM:Ann",self.AnnChoosed)
+			Train:SetNW2Int("PAKSDM:Menu", self.MenuChoosed)
+			Train:SetNW2Int("PAKSDM:Ann",self.AnnChoosed)
 			Train:SetNW2Int("PAKSDM:NeedConfirm",self.NeedConfirm)
 			if self.NeedConfirm > 0 then
 				Train:SetNW2Bool("PAKSDM:NCOk",self.NCOk)

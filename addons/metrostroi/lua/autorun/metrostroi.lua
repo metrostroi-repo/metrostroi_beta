@@ -286,13 +286,6 @@ for _,short_filename in pairs(files) do
 	else timer.Simple(0.05, function() loadSystem(filename) end)
 	end
 end
--- Quick lookup
-for k,v in pairs(Metrostroi.Announcements) do
-	v[3] = k
-end
-for k,v in pairs(Metrostroi.AnnouncementsPNM) do
-	v[3] = k
-end	
 for k, v in pairs(Metrostroi.WorkingStations) do
 	for k1, v1 in pairs(v) do
 		Metrostroi.WorkingStations[k][v1] = k1
