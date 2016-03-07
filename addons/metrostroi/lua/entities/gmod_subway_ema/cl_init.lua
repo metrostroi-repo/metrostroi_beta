@@ -1126,9 +1126,9 @@ ENT.OldTexture = nil
 --local X = Material( "metrostroi_skins/81-717/6.png")		
 
 function ENT:UpdateTextures()
-	local texture = Metrostroi.Skins["train"][self:GetNWString("texture")]
-	local passtexture = Metrostroi.Skins["pass"][self:GetNWString("passtexture")]
-	local cabintexture = Metrostroi.Skins["cab"][self:GetNWString("cabtexture")]
+	local texture = Metrostroi.Skins["train"][self:GetNW2String("texture")]
+	local passtexture = Metrostroi.Skins["pass"][self:GetNW2String("passtexture")]
+	local cabintexture = Metrostroi.Skins["cab"][self:GetNW2String("cabtexture")]
 	for _,self in pairs(self.ClientEnts) do
 		if not IsValid(self) then continue end
 		for k,v in pairs(self:GetMaterials()) do
@@ -1149,16 +1149,16 @@ end
 --------------------------------------------------------------------------------
 function ENT:Think()
 	self.BaseClass.Think(self)
-	if self.Texture ~= self:GetNWString("texture") then
-		self.Texture = self:GetNWString("texture")
+	if self.Texture ~= self:GetNW2String("texture") then
+		self.Texture = self:GetNW2String("texture")
 		self:UpdateTextures()
 	end
-	if self.PassTexture ~= self:GetNWString("passtexture") then
-		self.PassTexture = self:GetNWString("passtexture")
+	if self.PassTexture ~= self:GetNW2String("passtexture") then
+		self.PassTexture = self:GetNW2String("passtexture")
 		self:UpdateTextures()
 	end
-	if self.CabinTexture ~= self:GetNWString("cabtexture") then
-		self.CabinTexture = self:GetNWString("cabtexture")
+	if self.CabinTexture ~= self:GetNW2String("cabtexture") then
+		self.CabinTexture = self:GetNW2String("cabtexture")
 		self:UpdateTextures()
 	end
 	--print(self.FrontDoor,self:GetPackedBool(114))
@@ -1346,10 +1346,10 @@ function ENT:Think()
 	self:Animate("door2",	self:GetPackedBool(156) and (self.Door3 or 0.99) or 0,0,0.25, 1024, 1)
 	self:Animate("door4",	self:GetPackedBool(159) and (self.Door2 or 0.99) or 0,1,0.77, 1024, 1)
 
-	self:Animate("FrontBrake", self:GetNWBool("FbI") and 0 or 1,0,0.35, 3, false)
-	self:Animate("FrontTrain",	self:GetNWBool("FtI") and 0 or 1,0,0.35, 3, false)
-	self:Animate("RearBrake",	self:GetNWBool("RbI") and 1 or 0,0,0.35, 3, false)
-	self:Animate("RearTrain",	self:GetNWBool("RtI") and 1 or 0,0,0.35, 3, false)
+	self:Animate("FrontBrake", self:GetNW2Bool("FbI") and 0 or 1,0,0.35, 3, false)
+	self:Animate("FrontTrain",	self:GetNW2Bool("FtI") and 0 or 1,0,0.35, 3, false)
+	self:Animate("RearBrake",	self:GetNW2Bool("RbI") and 1 or 0,0,0.35, 3, false)
+	self:Animate("RearTrain",	self:GetNW2Bool("RtI") and 1 or 0,0,0.35, 3, false)
 	
 	self:ShowHideSmooth("AVULight_light",self:Animate("AVUl",self:GetPackedBool(38) and 1 or 0,0,1,10,false))
 
@@ -1463,15 +1463,15 @@ function ENT:DrawPost()
 	if self.InfoTableTimeout and (CurTime() < self.InfoTableTimeout) then
 		self:DrawOnPanel("InfoTableSelect",function()
 			draw.Text({
-				text = self:GetNWString("RouteNumber",""),
-				font = "MetrostroiSubway_InfoPanel",--..self:GetNWInt("Style",1),
+				text = self:GetNW2String("RouteNumber",""),
+				font = "MetrostroiSubway_InfoPanel",--..self:GetNW2Int("Style",1),
 				pos = { 140, -50 },
 				xalign = TEXT_ALIGN_CENTER,
 				yalign = TEXT_ALIGN_CENTER,
 				color = Color(255,0,0,255)})
 			draw.Text({
-				text = self:GetNWString("FrontText",""),
-				font = "MetrostroiSubway_InfoPanel",--..self:GetNWInt("Style",1),
+				text = self:GetNW2String("FrontText",""),
+				font = "MetrostroiSubway_InfoPanel",--..self:GetNW2Int("Style",1),
 				pos = { 140, -100 },
 				xalign = TEXT_ALIGN_CENTER,
 				yalign = TEXT_ALIGN_CENTER,
@@ -1587,15 +1587,15 @@ function ENT:DrawPost()
 	end)]]
 
 	self:DrawOnPanel("FrontPneumatic",function()
-		draw.DrawText(self:GetNWBool("FbI") and "Isolated" or "Open","Trebuchet24",150,0,Color(0,0,0,255))
-		draw.DrawText(self:GetNWBool("FtI") and "Isolated" or "Open","Trebuchet24",670,0,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("FbI") and "Isolated" or "Open","Trebuchet24",150,0,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("FtI") and "Isolated" or "Open","Trebuchet24",670,0,Color(0,0,0,255))
 	end)
 	self:DrawOnPanel("RearPneumatic",function()
-		draw.DrawText(self:GetNWBool("RbI") and "Isolated" or "Open","Trebuchet24",150,0,Color(0,0,0,255))
-		draw.DrawText(self:GetNWBool("RtI") and "Isolated" or "Open","Trebuchet24",670,0,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("RbI") and "Isolated" or "Open","Trebuchet24",150,0,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("RtI") and "Isolated" or "Open","Trebuchet24",670,0,Color(0,0,0,255))
 	end)
 	self:DrawOnPanel("AirDistributor",function()
-		draw.DrawText(self:GetNWBool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
 	end)
 	
 	-- Draw train numbers

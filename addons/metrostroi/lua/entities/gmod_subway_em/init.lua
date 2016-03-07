@@ -316,9 +316,9 @@ function ENT:UpdateTextures()
 			self:SetSubMaterial(k-1,texture.textures[tex])
 		end
 	end
-	self:SetNWString("texture",self.Texture)
-	self:SetNWString("passtexture",self.PassTexture)
-	self:SetNWString("cabtexture",self.CabTexture)
+	self:SetNW2String("texture",self.Texture)
+	self:SetNW2String("passtexture",self.PassTexture)
+	self:SetNW2String("cabtexture",self.CabTexture)
 end
 
 --------------------------------------------------------------------------------
@@ -512,7 +512,7 @@ function ENT:Think()
 	end
 	
 	-- RUT test
-	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNWFloat("PassengerCount")/300)))
+	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNW2Float("PassengerCount")/300)))
 	if math.abs(self:GetAngles().pitch) > 2.5 then weightRatio = weightRatio + 1.00 end
 	self.YAR_13A:TriggerInput("WeightLoadRatio",math.max(0,math.min(2.50,weightRatio)))
 	
@@ -563,8 +563,8 @@ function ENT:Think()
 	end
 
 	-- Temporary hacks
-	--self:SetNWFloat("V",self.Speed)
-	--self:SetNWFloat("A",self.Acceleration)
+	--self:SetNW2Float("V",self.Speed)
+	--self:SetNW2Float("A",self.Acceleration)
 
 	return self.RetVal
 end
@@ -635,14 +635,14 @@ function ENT:OnButtonPress(button)
 		self.SignsIndex = self.SignsIndex + 1
 		if self.SignsIndex > #self.SignsList then self.SignsIndex = 1 end
 		
-		self:SetNWString("FrontText",self.SignsList[self.SignsIndex][2])
+		self:SetNW2String("FrontText",self.SignsList[self.SignsIndex][2])
 	end
 	if button == "PrevSign" then
 		self:PrepareSigns()
 		self.SignsIndex = self.SignsIndex - 1
 		if self.SignsIndex < 1 then self.SignsIndex = #self.SignsList end
 		
-		self:SetNWString("FrontText",self.SignsList[self.SignsIndex][2])
+		self:SetNW2String("FrontText",self.SignsList[self.SignsIndex][2])
 	end
 
 	if button == "Num1P" then
@@ -651,11 +651,11 @@ function ENT:OnButtonPress(button)
 		num = num + 1
 		if num > 9 then num = 0 end
 		self.RouteNumber = string.SetChar(self.RouteNumber,2, num)
-		self:SetNWString("RouteNumber",self.RouteNumber)
+		self:SetNW2String("RouteNumber",self.RouteNumber)
 		local trn = self.WagonList[#self.WagonList]
 		if IsValid(trn) and trn ~= self then
 			trn.RouteNumber = self.RouteNumber
-			trn:SetNWString("RouteNumber",self.RouteNumber)
+			trn:SetNW2String("RouteNumber",self.RouteNumber)
 		end
 	end
 	if button == "Num1M" then
@@ -664,11 +664,11 @@ function ENT:OnButtonPress(button)
 		num = num - 1
 		if num < 0 then num = 9 end
 		self.RouteNumber = string.SetChar(self.RouteNumber,2, num)
-		self:SetNWString("RouteNumber",self.RouteNumber)
+		self:SetNW2String("RouteNumber",self.RouteNumber)
 		local trn = self.WagonList[#self.WagonList]
 		if IsValid(trn) and trn ~= self then
 			trn.RouteNumber = self.RouteNumber
-			trn:SetNWString("RouteNumber",self.RouteNumber)
+			trn:SetNW2String("RouteNumber",self.RouteNumber)
 		end
 	end
 	if button == "Num2P" then
@@ -677,11 +677,11 @@ function ENT:OnButtonPress(button)
 		num = num + 1
 		if num > 9 then num = 0 end
 		self.RouteNumber = string.SetChar(self.RouteNumber,1, num)
-		self:SetNWString("RouteNumber",self.RouteNumber)
+		self:SetNW2String("RouteNumber",self.RouteNumber)
 		local trn = self.WagonList[#self.WagonList]
 		if IsValid(trn) and trn ~= self then
 			trn.RouteNumber = self.RouteNumber
-			trn:SetNWString("RouteNumber",self.RouteNumber)
+			trn:SetNW2String("RouteNumber",self.RouteNumber)
 		end
 	end
 	if button == "Num2M" then
@@ -690,11 +690,11 @@ function ENT:OnButtonPress(button)
 		num = num - 1
 		if num < 0 then num = 9 end
 		self.RouteNumber = string.SetChar(self.RouteNumber,1, num)
-		self:SetNWString("RouteNumber",self.RouteNumber)
+		self:SetNW2String("RouteNumber",self.RouteNumber)
 		local trn = self.WagonList[#self.WagonList]
 		if IsValid(trn) and trn ~= self then
 			trn.RouteNumber = self.RouteNumber
-			trn:SetNWString("RouteNumber",self.RouteNumber)
+			trn:SetNW2String("RouteNumber",self.RouteNumber)
 		end
 	end
 

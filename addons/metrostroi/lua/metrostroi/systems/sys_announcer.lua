@@ -280,8 +280,8 @@ function TRAIN_SYSTEM:ClientInitialize()
 end
 
 function TRAIN_SYSTEM:ClientThink()
-	local active = self.Train:GetNWBool("BPSNBuzz",false) and self.Train:GetPackedBool(52)
-	local btype = self.Train:GetNWBool("BPSNBuzzType",false)
+	local active = self.Train:GetNW2Bool("BPSNBuzz",false) and self.Train:GetPackedBool(52)
+	local btype = self.Train:GetNW2Bool("BPSNBuzzType",false)
 	self.Train:SetSoundState("bpsn_ann",(active and  not btype and (self.Train:GetPackedBool(127) or self.Train:GetPackedBool(132))) and 0.175 or 0,1)
 	self.Train:SetSoundState("bpsn_ann_cab",(active and  not btype and self.Train:GetPackedBool(125)) and 0.175 or 0,1)
 	self.Train:SetSoundState("bpsn_ann_pnm",(active and  btype and (self.Train:GetPackedBool(127) or self.Train:GetPackedBool(132))) and 0.175 or 0,1)
@@ -333,22 +333,22 @@ function TRAIN_SYSTEM:Think()
 				--else
 					--self.Train.AnnouncementToLeaveWagon = false
 				end
-				if self.Train:GetNWFloat("PassengerCount") == 0 then
+				if self.Train:GetNW2Float("PassengerCount") == 0 then
 					self.Train.AnnouncementToLeaveWagon = false
 				end
 			end
 			-- BPSN buzz
-			if targetAnnouncement == 5 and self.Train.PNM then timer.Simple(0.1,function() self.Train:SetNWBool("BPSNBuzz",true) end) end
-			if targetAnnouncement == 5 and not self.Train.PNM then timer.Simple(0.2,function() self.Train:SetNWBool("BPSNBuzz",true) end) end
+			if targetAnnouncement == 5 and self.Train.PNM then timer.Simple(0.1,function() self.Train:SetNW2Bool("BPSNBuzz",true) end) end
+			if targetAnnouncement == 5 and not self.Train.PNM then timer.Simple(0.2,function() self.Train:SetNW2Bool("BPSNBuzz",true) end) end
 			if targetAnnouncement == 6 then
-				self.Train:SetNWBool("BPSNBuzz",false)
+				self.Train:SetNW2Bool("BPSNBuzz",false)
 					--[[
 					if self.Train.PNM then
-					self.Train:SetNWBool("BPSNBuzz",false)
+					self.Train:SetNW2Bool("BPSNBuzz",false)
 					self.BPSNBuzzTimeout1 = CurTime() + 0
 				else
 					self.BPSNBuzzTimeout1 = CurTime() + 0.4
-					--timer.Simple(0.4,function() if not IsValid(self.Train) then return end self.Train:SetNWBool("BPSNBuzz",false) end)
+					--timer.Simple(0.4,function() if not IsValid(self.Train) then return end self.Train:SetNW2Bool("BPSNBuzz",false) end)
 				end
 				]]
 			end
@@ -361,11 +361,11 @@ function TRAIN_SYSTEM:Think()
 	-- Buzz timeout
 	if self.BPSNBuzzTimeout and (CurTime() > self.BPSNBuzzTimeout) then
 		self.BPSNBuzzTimeout = nil
-		self.Train:SetNWBool("BPSNBuzz",false)
+		self.Train:SetNW2Bool("BPSNBuzz",false)
 	end
 	if self.BPSNBuzzTimeout1 and (CurTime() > self.BPSNBuzzTimeout1) then
 		self.BPSNBuzzTimeout1 = nil
-		self.Train:SetNWBool("BPSNBuzz",false)
+		self.Train:SetNW2Bool("BPSNBuzz",false)
 	end
 
 	-- Check if new announcement must be started from schedule

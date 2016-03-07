@@ -83,18 +83,18 @@ function ENT:Initialize()
 	self.PassengersLeft = 0 -- Number of passengers that left trains
 	
 	-- Send things to client
-	self:SetNWFloat("X0",self.PlatformX0)
-	self:SetNWFloat("Sigma",self.PlatformSigma)
-	self:SetNWInt("WindowStart",self.WindowStart)
-	self:SetNWInt("WindowEnd",self.WindowEnd)
-	self:SetNWInt("PassengersLeft",self.PassengersLeft)
-	self:SetNWVector("PlatformStart",self.PlatformStart)
-	self:SetNWVector("PlatformEnd",self.PlatformEnd)
-	self:SetNWVector("StationCenter",self:GetPos())
+	self:SetNW2Float("X0",self.PlatformX0)
+	self:SetNW2Float("Sigma",self.PlatformSigma)
+	self:SetNW2Int("WindowStart",self.WindowStart)
+	self:SetNW2Int("WindowEnd",self.WindowEnd)
+	self:SetNW2Int("PassengersLeft",self.PassengersLeft)
+	self:SetNW2Vector("PlatformStart",self.PlatformStart)
+	self:SetNW2Vector("PlatformEnd",self.PlatformEnd)
+	self:SetNW2Vector("StationCenter",self:GetPos())
 
 	-- FIXME make this nicer
-	for i=1,32 do self:SetNWVector("TrainDoor"..i,Vector(0,0,0)) end
-	self:SetNWInt("TrainDoorCount",0)
+	for i=1,32 do self:SetNW2Vector("TrainDoor"..i,Vector(0,0,0)) end
+	self:SetNW2Int("TrainDoorCount",0)
 end
 
 function ENT:OnRemove()
@@ -181,9 +181,9 @@ function ENT:Think()
 	end
 	
 	-- Send update to client
-	self:SetNWInt("WindowStart",self.WindowStart)
-	self:SetNWInt("WindowEnd",self.WindowEnd)
-	self:SetNWInt("PassengersLeft",self.PassengersLeft)
+	self:SetNW2Int("WindowStart",self.WindowStart)
+	self:SetNW2Int("WindowEnd",self.WindowEnd)
+	self:SetNW2Int("PassengersLeft",self.PassengersLeft)
 	
 	-- Check if any trains are at the platform
 	local platformStart	= self.PlatformStart
@@ -196,12 +196,12 @@ function ENT:Think()
 	local swap_side = dot.z > 0.0
 	if Metrostroi.Stations[self.StationIndex] then
 		self.MustPlayAnnounces = (not Metrostroi.Stations[self.StationIndex][self.PlatformIndex == 2 and 1 or 2] or self.PlatformIndex == 1) and Metrostroi.AnnouncerData[self.StationIndex] and Metrostroi.AnnouncerData[self.StationIndex][1] ~= nil
-		self:SetNWBool("MustPlaySpooky",(not Metrostroi.Stations[self.StationIndex][self.PlatformIndex == 2 and 1 or 2] or not Metrostroi.AnnouncerData[self.StationIndex] or not  Metrostroi.AnnouncerData[self.StationIndex][1]) and self.PlatformIndex == 1)
+		self:SetNW2Bool("MustPlaySpooky",(not Metrostroi.Stations[self.StationIndex][self.PlatformIndex == 2 and 1 or 2] or not Metrostroi.AnnouncerData[self.StationIndex] or not  Metrostroi.AnnouncerData[self.StationIndex][1]) and self.PlatformIndex == 1)
 		if not timer.Exists("metrostroi_station_announce_"..self:EntIndex()) and self.MustPlayAnnounces then
 			timer.Create("metrostroi_station_announce_"..self:EntIndex(),0,0,function() self:PlayAnnounce() end)
 		end
 		self.SyncAnnounces = swap_side and Metrostroi.Stations[self.StationIndex][self.PlatformIndex == 2 and 1 or 2]
-		self:SetNWBool("MustPlayAnnounces",self.MustPlayAnnounces or swap_side)
+		self:SetNW2Bool("MustPlayAnnounces",self.MustPlayAnnounces or swap_side)
 	end
 	local boardingDoorList = {}
 	self.HasTrain = nil
@@ -280,7 +280,7 @@ function ENT:Think()
 				if self.PlatformLast then proportion = 1 end
 				if (v.AnnouncementToLeaveWagon == true) then proportion = 1 end
 				-- Total count
-				v.PassengersToLeave = math.floor(proportion * v:GetNWFloat("PassengerCount") + 0.5)
+				v.PassengersToLeave = math.floor(proportion * v:GetNW2Float("PassengerCount") + 0.5)
 			end
 			-- Calculate number of passengers near the train
 			local passenger_density = math.abs(CDF(train_start,self.PlatformX0,self.PlatformSigma) - CDF(train_end,self.PlatformX0,self.PlatformSigma))
@@ -404,9 +404,9 @@ function ENT:Think()
 	
 	-- Send boarding list FIXME make this nicer
 	for k,v in ipairs(boardingDoorList) do
-		self:SetNWVector("TrainDoor"..k,v)
+		self:SetNW2Vector("TrainDoor"..k,v)
 	end
-	self:SetNWInt("TrainDoorCount",#boardingDoorList)
+	self:SetNW2Int("TrainDoorCount",#boardingDoorList)
 	self:NextThink(CurTime() + dT)
 	return true
 end

@@ -166,6 +166,24 @@ if SERVER then
 		AddCSLuaFile("metrostroi/maps/"..filename)
 		include("metrostroi/maps/"..filename)
 	end
+	-- Quick lookup
+	for k,v in pairs(Metrostroi.Announcements) do
+		v[3] = k
+	end
+	for k,v in pairs(Metrostroi.AnnouncementsPNM) do
+		v[3] = k
+	end	
+	for k, v in pairs(Metrostroi.WorkingStations) do
+		for k1, v1 in pairs(v) do
+			Metrostroi.WorkingStations[k][v1] = k1
+		end
+	end
+
+	for k, v in pairs(Metrostroi.EndStations) do
+		for k1, v1 in pairs(v) do
+			Metrostroi.EndStations[k][v1] = k1
+		end
+	end
 else
 	-- Load all clientside files
 	local files = file.Find("metrostroi/cl_*.lua","LUA")

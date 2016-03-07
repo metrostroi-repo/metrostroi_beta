@@ -279,9 +279,9 @@ function ENT:SpawnCSEnt(k)
 			end
 		end
 		
-		local texture = Metrostroi.Skins["train"][self:GetNWString("texture")]
-		local passtexture = Metrostroi.Skins["pass"][self:GetNWString("passtexture")]
-		local cabintexture = Metrostroi.Skins["cab"][self:GetNWString("cabtexture")]
+		local texture = Metrostroi.Skins["train"][self:GetNW2String("texture")]
+		local passtexture = Metrostroi.Skins["pass"][self:GetNW2String("passtexture")]
+		local cabintexture = Metrostroi.Skins["cab"][self:GetNW2String("cabtexture")]
 		for k,v in pairs(cent:GetMaterials()) do
 			local tex = string.Explode("/",v)
 			tex = tex[#tex]
@@ -298,7 +298,7 @@ function ENT:SpawnCSEnt(k)
 			end
 		end
 		--if self.ClientPropsMatrix[k] then cent:EnableMatrix("RenderMultiply",self.ClientPropsMatrix[k]) end
-		--print(self:GetNWString("texture",nil))
+		--print(self:GetNW2String("texture",nil))
 		self.ClientEnts[k] = cent
 		if self.Anims[k] and self.Anims[k].alpha then
 			if self.Anims[k].alpha > 0 then
@@ -362,7 +362,7 @@ end
 local function isValidTrainDriver(ply)
 	local seat = ply:GetVehicle()
 	if (not seat) or (not seat:IsValid()) then return false end
-	local train = seat:GetNWEntity("TrainEntity")
+	local train = seat:GetNW2Entity("TrainEntity")
 	if (not train) or (not train:IsValid()) then return false end
 	return train
 end
@@ -370,7 +370,7 @@ end
 -- Clientside initialization
 --------------------------------------------------------------------------------
 function ENT:CanDrawThings()
-	return not IsValid(LocalPlayer():GetVehicle()) or self == LocalPlayer():GetVehicle():GetNWEntity("TrainEntity")
+	return not IsValid(LocalPlayer():GetVehicle()) or self == LocalPlayer():GetVehicle():GetNW2Entity("TrainEntity")
 end
 hook.Add("PostDrawOpaqueRenderables", "metrostroi_base_draw", function(isDD)	
 	if isDD then
@@ -580,17 +580,17 @@ function ENT:Think()
 	
 	-- Update passengers
 	if self.RenderClientEnts then
-		if #self.PassengerEnts ~= self:GetNWFloat("PassengerCount") then	
+		if #self.PassengerEnts ~= self:GetNW2Float("PassengerCount") then	
 
 			-- Passengers go out
-			while #self.PassengerEnts > self:GetNWFloat("PassengerCount") do
+			while #self.PassengerEnts > self:GetNW2Float("PassengerCount") do
 				local ent = self.PassengerEnts[#self.PassengerEnts]
 				table.remove(self.PassengerPositions,#self.PassengerPositions)
 				table.remove(self.PassengerEnts,#self.PassengerEnts)
 				ent:Remove()			
 			end
 			-- Passengers go in
-			while #self.PassengerEnts < self:GetNWFloat("PassengerCount") do
+			while #self.PassengerEnts < self:GetNW2Float("PassengerCount") do
 				local min,max = self:GetStandingArea()
 				local pos = min + Vector((max.x-min.x)*math.random(),(max.y-min.y)*math.random(),(max.z-min.z)*math.random())
 				
@@ -756,18 +756,18 @@ function ENT:DrawSchedule(panel)
 	end
 
 	-- HACK get schedule from train
-	local N = self:GetNWInt("_schedule_N")
+	local N = self:GetNW2Int("_schedule_N")
 	Schedule = {
 		stations = {},
-		total = math.floor(self:GetNWInt("_schedule_duration")/5+0.5)*5,
-		interval = self:GetNWInt("_schedule_interval"),
-		routenumber = self:GetNWInt("_schedule_id"),
-		pathnumber = self:GetNWInt("_schedule_path"),
+		total = math.floor(self:GetNW2Int("_schedule_duration")/5+0.5)*5,
+		interval = self:GetNW2Int("_schedule_interval"),
+		routenumber = self:GetNW2Int("_schedule_id"),
+		pathnumber = self:GetNW2Int("_schedule_path"),
 	}
 	for i=1,N do
 		Schedule.stations[i] = {
-			self:GetNWString("_schedule_"..i.."_5"),
-			math.floor(self:GetNWInt("_schedule_"..i.."_3")*60/5)*5
+			self:GetNW2String("_schedule_"..i.."_5"),
+			math.floor(self:GetNW2Int("_schedule_"..i.."_3")*60/5)*5
 		}
 	end
 	
@@ -1119,7 +1119,7 @@ end
 hook.Add("CalcView", "Metrostroi_TrainView", function(ply,pos,ang,fov,znear,zfar)
 	local seat = ply:GetVehicle()
 	if (not seat) or (not seat:IsValid()) then return end
-	local train = seat:GetNWEntity("TrainEntity")
+	local train = seat:GetNW2Entity("TrainEntity")
 	if (not train) or (not train:IsValid()) then return end
 
 	--local hack = string.find(train:GetClass(),"81")
@@ -1174,13 +1174,13 @@ hook.Add("CalcView", "Metrostroi_TrainView", function(ply,pos,ang,fov,znear,zfar
 			}
 		end
 	else
-		--train.HeadAcceleration = GetConVarNumber("metrostroi_disablecamaccel") == 0 and math.Clamp((train.HeadAcceleration or 0)*0.95 + (train:GetNWFloat("Accel"))*1.1, -10, 10) or 0
+		--train.HeadAcceleration = GetConVarNumber("metrostroi_disablecamaccel") == 0 and math.Clamp((train.HeadAcceleration or 0)*0.95 + (train:GetNW2Float("Accel"))*1.1, -10, 10) or 0
 --function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
-	--print(train:GetNWFloat("Accel")*1.1,train:Animate("accel",train:GetNWFloat("Accel")*1.1+5,-0,10, 				nil, nil,  64,2,4))
-		train.HeadAcceleration = GetConVarNumber("metrostroi_disablecamaccel") == 0 and (train:Animate("accel",(train:GetNWFloat("Accel")+1)/2,-1,1, 4, 1)*20 - 5) or 0
+	--print(train:GetNW2Float("Accel")*1.1,train:Animate("accel",train:GetNW2Float("Accel")*1.1+5,-0,10, 				nil, nil,  64,2,4))
+		train.HeadAcceleration = GetConVarNumber("metrostroi_disablecamaccel") == 0 and (train:Animate("accel",(train:GetNW2Float("Accel")+1)/2,-1,1, 4, 1)*20 - 5) or 0
 		--local headPos = train:WorldToLocal(pos)
 		return {
-			origin = train:LocalToWorld(train:WorldToLocal(pos)+Vector(math.Round((GetConVarNumber("metrostroi_disablecamaccel") == 0 and (train:Animate("accel",(train:GetNWFloat("Accel")+1)/2,-1,1, 4, 1)*20 - 5) or 0),2),0,0)),--train:LocalToWorld(Vector(math.Round(train.HeadAcceleration,2),0,0)) ,
+			origin = train:LocalToWorld(train:WorldToLocal(pos)+Vector(math.Round((GetConVarNumber("metrostroi_disablecamaccel") == 0 and (train:Animate("accel",(train:GetNW2Float("Accel")+1)/2,-1,1, 4, 1)*20 - 5) or 0),2),0,0)),--train:LocalToWorld(Vector(math.Round(train.HeadAcceleration,2),0,0)) ,
 			angles = angles,
 			fov = fov/90*75,
 			znear = znear,

@@ -130,7 +130,7 @@ function ENT:Initialize()
 	end
 	--self:Remove()
 	-- Type
-	self:SetNWString("TrainType",self.TrainType)
+	self:SetNW2String("TrainType",self.TrainType)
 end
 
 --[[concommand.Add("metrostroi_ai_spawn", function(ply, _, args)

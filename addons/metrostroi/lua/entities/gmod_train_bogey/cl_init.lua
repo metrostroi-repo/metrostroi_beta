@@ -8,7 +8,11 @@ function ENT:ReinitializeSounds()
 	self.SoundNames["engine5"]		= "subway_trains/engine_5.wav"
 	self.SoundNames["engine6"]		= "subway_trains/engine_6.wav"
 	for i = 1,6 do
-		self.SoundNames["ted"..i]		= "subway_trains/new/ted"..i..".wav"
+		--if i > 1 and i < 6 then
+			--self.SoundNames["ted"..i]		= "subway_trains/ted"..i..".wav"
+		--else
+			self.SoundNames["ted"..i]		= "subway_trains/new/ted"..i..".wav"
+		--end
 	end
 	self.TEDSpeeds = {
 		{12,0.25,1.75},
@@ -18,11 +22,21 @@ function ENT:ReinitializeSounds()
 		{65,0.77,1.1},
 		{75,0.9}
 	}
+	--[[
+	self.TEDSpeeds = {
+		{12,0.25,1.75},
+		{20,0.57,1.65},
+		{37,0.6,1.35},
+		{45,0.75,1.25},--45
+		{65,0.78,1.1},
+		{75,0.9}
+	}
+	]]
 	--self.SoundNames["run1"]			= "subway_trains/run_1.wav"
 	--self.SoundNames["run2"]			= "subway_trains/run_2.wav"
 	--self.SoundNames["run3"]			= "subway_trains/run_3.wav"
 	self.SoundNames["run2"]			= "subway_trains/new/run_1.wav"
-	self.SoundNames["run3"]			= "subway_trains/new/run_2.wav"
+	self.SoundNames["run3"]			= "subway_trains/run.wav"
 	--self.SoundNames["run2"]			= "subway_trains/new/noise.wav"
 	--self.SoundNames["run3"]			= "subway_trains/new/noise.wav"
 	--self.SoundNames["run4"]			= "subway_trains/run_4a.mp3"
@@ -57,8 +71,8 @@ function ENT:ReinitializeSounds()
 		--end
 		util.PrecacheSound(v)
 		local e = self
-		if (k == "brake3a") and IsValid(self:GetNWEntity("TrainWheels")) then
-			e = self:GetNWEntity("TrainWheels")
+		if (k == "brake3a") and IsValid(self:GetNW2Entity("TrainWheels")) then
+			e = self:GetNW2Entity("TrainWheels")
 		end
 		self.Sounds[k] = CreateSound(e, Sound(v))
 	end
@@ -226,7 +240,7 @@ function ENT:Think()
 			{75,0.9}
 		}
 		]]
-		--if self:GetNWBool("IsForwardBogey") then self:SetSoundState("ted4",1,1.35) else self:SetSoundState("ted5",1,1) end
+		--if self:GetNW2Bool("IsForwardBogey") then self:SetSoundState("ted4",1,1.35) else self:SetSoundState("ted5",1,1) end
 		--self:SetSoundState("engine",0,0)
 		--self:SetSoundState("engine5",0,0)
 		--self:SetSoundState("engine6",0,0)
@@ -287,7 +301,7 @@ function ENT:Think()
 	end
 	
 	-- Brake squeal sound
-	local squealSound = self:GetNWInt("SquealSound",0)
+	local squealSound = self:GetNW2Int("SquealSound",0)
 	local brakeSqueal = math.max(0.0,math.min(1.2,self:GetBrakeSqueal()))
 	--local brakeRamp = math.min(1.0,math.max(0.0,speed/2.0))
 	local brakeRamp = math.min(1.0,math.max(0.0,speed/8.0))

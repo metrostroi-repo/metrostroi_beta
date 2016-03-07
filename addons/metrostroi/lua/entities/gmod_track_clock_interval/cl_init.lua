@@ -9,8 +9,8 @@ function ENT:Draw()
 	cam.Start3D2D(pos, ang, 0.125)
 		--surface.SetDrawColor(255, 0, 0, 255)
 		--surface.DrawRect(0, 0, 400, 240)
-		local T0 = self:GetNWFloat("T0",os.time())+1396011937
-		local T1 = self:GetNWFloat("T1",CurTime())
+		local T0 = self:GetNW2Float("T0",os.time())+1396011937
+		local T1 = self:GetNW2Float("T1",CurTime())
 		local dT = (os.time()-T0 + (CurTime() % 1.0)) - (CurTime()-T1)
 		
 		local digits = { 1,2,3 }

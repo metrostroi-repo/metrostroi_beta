@@ -80,7 +80,33 @@ end
 
 function ENT:SayHook(ply, comm)
 	--print(ply,comm,self)
-	if comm:sub(1,8) == "!sclose " then
+	if comm:sub(1,8) == "!sactiv " then
+		comm = comm:sub(9,-1):upper()
+		
+		comm = string.Explode(":",comm)
+		if self.Routes then
+			for k,v in pairs(self.Routes) do
+				if v.RouteName and v.RouteName:upper() == comm[1] and v.Emer then
+					if self.LastOpenedRoute and k ~= self.LastOpenedRoute then self:CloseRoute(self.LastOpenedRoute) end
+					v.IsOpened = true
+					break
+				end
+			end
+		end
+	elseif comm:sub(1,10) == "!sdeactiv " then
+		comm = comm:sub(11,-1):upper()
+		
+		comm = string.Explode(":",comm)
+		if self.Routes then
+			for k,v in pairs(self.Routes) do
+				if v.RouteName and v.RouteName:upper() == comm[1] and v.Emer then
+					--if self.LastOpenedRoute and k ~= self.LastOpenedRoute then self:CloseRoute(self.LastOpenedRoute) end
+					v.IsOpened = false
+					break
+				end
+			end
+		end
+	elseif comm:sub(1,8) == "!sclose " then
 		comm = comm:sub(9,-1):upper()
 		--RunConsoleCommand("say",comm,"IT WORKED!!!")
 		
@@ -240,6 +266,7 @@ function ENT:PostInitalize()
 			table.insert(SwitchesTbl,{n = SwitchName,s = SwitchState})
 		end
 		self.Switches[i] = SwitchesTbl
+		if #SwitchesTbl == 0 then continue end
 		self.SwitchesFunction[i] = function()
 			local GoodSwitches = true
 			for i1 = 1,#self.Switches[i] do
@@ -363,22 +390,29 @@ function ENT:ARSLogic(tim)
 		self.NextSignalLink = self.NextSignals[self.Routes[1].NextSignal]
 		self.Route = 1
 	else
+		local route 
 		--Finding right route
 		for i = 1,#self.Routes do
 			--if not self.Routes[i].Switches then continue end
 			--If we have NSL, then we don't must find right route
-			if self.NextSignalLink ~= nil then break end
 			
 			--If all switches right - get this signal!
-			if not self.SwitchesFunction[i] or self.SwitchesFunction[i]() then
-				if self.Route ~= i then
-					self.Route = i
-					self.NextSignalLink = nil
-					break
-				end
-				self.NextSignalLink = self.NextSignals[self.Routes[i].NextSignal]
-				break
+			if self.SwitchesFunction[i] and self.SwitchesFunction[i]() then
+				--if self.Route ~= i then
+				route = i
+					--self.NextSignalLink = nil
+				--end
+			elseif not self.SwitchesFunction[i] and (not self.Routes[i].Manual and not self.Routes[i].Emer or self.Routes[i].IsOpened) then
+				route = i
+				--self.NextSignalLink = nil
 			end
+		end
+		if self.Route ~= route and (not self.Routes[route] or not self.Routes[route].Emer) then
+			self.Route = route
+			self.NextSignalLink = nil
+		else
+			if self.Route ~= route then self.Route = route end
+			self.NextSignalLink = self.Routes[route] and self.NextSignals[self.Routes[route].NextSignal]
 		end
 	end
 	if not self.NextSignalLink then
@@ -433,9 +467,9 @@ function ENT:Think()
 	--if self.Name == "PR 2R3" then print(self.TrackPosition and self.TrackPosition.path.id or "shit") end
 	--Outdated for now
 	--Setting network vars
-	--self:SetNWInt("LightType", (self.SignalType or 0))
-	--self:SetNWString("Name", self.Name or "NOT LOADED")
-	--self:SetNWString("Lenses", self.ARSOnly and "ARSOnly" or self.LensesStr)
+	--self:SetNW2Int("LightType", (self.SignalType or 0))
+	--self:SetNW2String("Name", self.Name or "NOT LOADED")
+	--self:SetNW2String("Lenses", self.ARSOnly and "ARSOnly" or self.LensesStr)
 
 	self.PrevTime = self.PrevTime or 0
 	if (CurTime() - self.PrevTime) > 1.0 then
@@ -474,7 +508,7 @@ function ENT:Think()
 				self.Sprites = nil
 			end
 		end
-		self:SetNWString("Signal","")
+		self:SetNW2String("Signal","")
 		self.AutoEnabled = not self.ARSOnly and Metrostroi.Voltage <= 50
 		return
 	end
@@ -561,7 +595,7 @@ function ENT:Think()
 				index = index + 1
 			end
 		else
-			if number then self:SetNWString("Number",self.Red and "" or number) end
+			if number then self:SetNW2String("Number",self.Red and "" or number) end
 			--[[
 			--Get the some models data
 			local data = self.TrafficLightModels[self.SignalType][Metrostroi.Signal_RP]
@@ -589,7 +623,7 @@ function ENT:Think()
 			]]
 		end
 	end
-	self:SetNWString("Signal",self.Sig)
+	self:SetNW2String("Signal",self.Sig)
 	if self.Sig ~= self.Oldsig then
 		--net.Start("metrostroi-signal-state")
 --			net.WriteEntity(self)

@@ -31,12 +31,12 @@ function SWEP:Think()
 	local tr = util.GetPlayerTrace( self.Owner )
 	tr.mask = bit.bor( CONTENTS_SOLID, CONTENTS_MOVEABLE, CONTENTS_MONSTER, CONTENTS_WINDOW, CONTENTS_DEBRIS, CONTENTS_GRATE, CONTENTS_AUX )
 	local trace = util.TraceLine( tr )
-	if (!trace.Hit) or not IsValid(trace.Entity) then self:SetNWInt("Type",0) return end
+	if (!trace.Hit) or not IsValid(trace.Entity) then self:SetNW2Int("Type",0) return end
 	if trace.Entity:GetClass() == "gmod_train_bogey" then
-		self:SetNWInt("Type",1)
-		self:SetNWBool("EKK",trace.Entity:GetConnectDisconnect())
+		self:SetNW2Int("Type",1)
+		self:SetNW2Bool("EKK",trace.Entity:GetConnectDisconnect())
 	else
-		self:SetNWInt("Type",0)
+		self:SetNW2Int("Type",0)
 	end
 end
 function SWEP:PrimaryAttack()

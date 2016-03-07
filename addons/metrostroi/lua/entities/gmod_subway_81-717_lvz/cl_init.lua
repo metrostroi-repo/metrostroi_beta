@@ -1985,9 +1985,9 @@ function ENT:Initialize()
 end
 
 function ENT:UpdateTextures()
-	local texture = Metrostroi.Skins["train"][self:GetNWString("texture")]
-	local passtexture = Metrostroi.Skins["pass"][self:GetNWString("passtexture")]
-	local cabintexture = Metrostroi.Skins["cab"][self:GetNWString("cabtexture")]
+	local texture = Metrostroi.Skins["train"][self:GetNW2String("texture")]
+	local passtexture = Metrostroi.Skins["pass"][self:GetNW2String("passtexture")]
+	local cabintexture = Metrostroi.Skins["cab"][self:GetNW2String("cabtexture")]
 	for _,self in pairs(self.ClientEnts) do
 		if not IsValid(self) then continue end
 		for k,v in pairs(self:GetMaterials()) do
@@ -2002,24 +2002,25 @@ function ENT:UpdateTextures()
 		end
 	end
 end
+
 --------------------------------------------------------------------------------
 function ENT:Think()
 	self.BaseClass.Think(self)
-	if self.Texture ~= self:GetNWString("texture") then
-		self.Texture = self:GetNWString("texture")
+	if self.Texture ~= self:GetNW2String("texture") then
+		self.Texture = self:GetNW2String("texture")
 		self:UpdateTextures()
 	end
-	if self.PassTexture ~= self:GetNWString("passtexture") then
-		self.PassTexture = self:GetNWString("passtexture")
+	if self.PassTexture ~= self:GetNW2String("passtexture") then
+		self.PassTexture = self:GetNW2String("passtexture")
 		self:UpdateTextures()
 	end
-	if self.CabinTexture ~= self:GetNWString("cabtexture") then
-		self.CabinTexture = self:GetNWString("cabtexture")
+	if self.CabinTexture ~= self:GetNW2String("cabtexture") then
+		self.CabinTexture = self:GetNW2String("cabtexture")
 		self:UpdateTextures()
 	end
 	--if self.Breakers == nil then self.Breakers = false end
-	if self.Breakers ~= self:GetNWBool("Breakers") then
-		self.Breakers = self:GetNWBool("Breakers")
+	if self.Breakers ~= self:GetNW2Bool("Breakers") then
+		self.Breakers = self:GetNW2Bool("Breakers")
 		self:HidePanel("Battery",self.Breakers)
 		self:HidePanel("Battery_2",not self.Breakers)
 		self:HidePanel("AV",self.Breakers)
@@ -2027,8 +2028,8 @@ function ENT:Think()
 		self:HidePanel("VRD",self.Breakers or (self.Blok ~= 1 and self.Blok ~= 3))
 		self:ShowHide("VRD_2",not self.Breakers or (self.Blok != 1 and self.Blok ~= 3))
 	end
-	if self.Blok ~= self:GetNWBool("Blok",1) then
-		self.Blok = self:GetNWBool("Blok",1)
+	if self.Blok ~= self:GetNW2Int("Blok",1) then
+		self.Blok = self:GetNW2Int	("Blok",1)
 		self:ShowHide("VPA",self.Blok and (self.Blok == 2 or self.Blok == 4))
 		self:ShowHide("VPAOn",self.Blok and (self.Blok == 2 or self.Blok == 4))
 		self:ShowHide("VPAOff",self.Blok and (self.Blok == 2 or self.Blok == 4))
@@ -2053,21 +2054,21 @@ function ENT:Think()
 		self:HidePanel("VRD",self.Breakers or (self.Blok ~= 1 and self.Blok ~= 3))
 		self:ShowHide("VRD_2",not self.Breakers or (self.Blok != 1 and self.Blok ~= 3))
 	end
-	if self.ClientProps["KVPLight_light"] and self.ClientProps["KVPLight_light"].skin ~= self:GetNWInt("KVPType") then
-		self.ClientProps["KVPLight_light"].skin = self:GetNWInt("KVPType")
-		if IsValid(self.ClientEnts["KVPLight_light"]) then self.ClientEnts["KVPLight_light"]:SetSkin(self:GetNWInt("KVPType")) end
+	if self.ClientProps["KVPLight_light"] and self.ClientProps["KVPLight_light"].skin ~= self:GetNW2Int("KVPType") then
+		self.ClientProps["KVPLight_light"].skin = self:GetNW2Int("KVPType")
+		if IsValid(self.ClientEnts["KVPLight_light"]) then self.ClientEnts["KVPLight_light"]:SetSkin(self:GetNW2Int("KVPType")) end
 	end
-	if self.ClientProps["KVPLight"] and self.ClientProps["KVPLight"].skin ~= self:GetNWInt("KVPType") then
-		self.ClientProps["KVPLight"].skin = self:GetNWInt("KVPType")
-		if IsValid(self.ClientEnts["KVPLight"]) then self.ClientEnts["KVPLight"]:SetSkin(self:GetNWInt("KVPType")) end
+	if self.ClientProps["KVPLight"] and self.ClientProps["KVPLight"].skin ~= self:GetNW2Int("KVPType") then
+		self.ClientProps["KVPLight"].skin = self:GetNW2Int("KVPType")
+		if IsValid(self.ClientEnts["KVPLight"]) then self.ClientEnts["KVPLight"]:SetSkin(self:GetNW2Int("KVPType")) end
 	end
 	--Vector(407.3,-10.5,47)+ps
 	--Vector(417.3,-57.5,47.5)
 	--[[
 		self:RemoveCSEnts()
-		self.Breakers = self:GetNWBool("Breakers")
+		self.Breakers = self:GetNW2Bool("Breakers")
 
-		self:SetAutobreakersPos(self:GetNWBool("Breakers") and Vector(12,-47,0.5) or Vector())
+		self:SetAutobreakersPos(self:GetNW2Bool("Breakers") and Vector(12,-47,0.5) or Vector())
 	
 		self.ButtonMap["Battery"] = self.BatteryMap[self.Breakers and 2 or 1]
 		
@@ -2102,7 +2103,7 @@ function ENT:Think()
 		self.Reloaded = false
 	end
 	]]
-	--self.ButtonMap["Battery"].pos = Vector(419.0,-55.5,38) + (self:GetNWBool("Breakers") and Vector(12,-47,0.5) or Vector())
+	--self.ButtonMap["Battery"].pos = Vector(419.0,-55.5,38) + (self:GetNW2Bool("Breakers") and Vector(12,-47,0.5) or Vector())
 	for i = 0,33 do
 		--self:SetSubMaterial(i,"")
 	end
@@ -2198,8 +2199,8 @@ function ENT:Think()
 	self:ShowHide("DriverValveBLDisconnect", not self:GetPackedBool(22))
 	self:ShowHide("1:ParkingBrakeToggle", not self:GetPackedBool(22))
 
-	self:ShowHide("controller",		self:GetNWBool("NewKV"))
-	self:ShowHide("controller_old",		not self:GetNWBool("NewKV"))
+	self:ShowHide("controller",		self:GetNW2Bool("NewKV"))
+	self:ShowHide("controller_old",		not self:GetNW2Bool("NewKV"))
 	--print(self:GetPackedRatio(6))
 	self:Animate("brake_line",		self:GetPackedRatio(4),				0.21, 0.865,  256,2)--,0.01)
 	self:Animate("train_line",		self:GetPackedRatio(5),	0.21, 0.865,  4096,0)--,0.01)
@@ -2445,7 +2446,7 @@ function ENT:Think()
 	self:ShowHideSmooth("CustomF_light",self:Animate("CustomF",self:GetPackedBool("CustomF") and 1 or 0,0,1,10,false))
 	self:ShowHideSmooth("CustomG_light",self:Animate("CustomG",self:GetPackedBool("CustomG") and 1 or 0,0,1,10,false))
 
-	local accel = self:GetNWFloat("Accel")
+	local accel = self:GetNW2Float("Accel")
 	
 	if math.abs(accel) > 0.1 then
 		--if self.Door1 then self.Door1 = math.min(0.99,math.max(0,self.Door1+accel*self.DeltaTime)) end
@@ -2464,8 +2465,8 @@ function ENT:Think()
 		--sendButtonMessage({ID = "CabinDoor",state = true})
 		--sendButtonMessage({ID = "CabinDoor",state = false})
 	end
-	if self.LampType ~= self:GetNWInt("LampType",1) then
-		self.LampType = self:GetNWInt("LampType",1)
+	if self.LampType ~= self:GetNW2Int("LampType",1) then
+		self.LampType = self:GetNW2Int("LampType",1)
 		for i = 1,23 do
 			self:ShowHide("lamp1_"..i,self.LampType == 1)
 			if i < 13 then
@@ -2492,10 +2493,10 @@ function ENT:Think()
 	self:Animate("door2",	self:GetPackedBool(158) and (self.Door2 or 0.99) or 0,0,0.51, 1024, 1)
 	self:Animate("door3",	self:GetPackedBool(159) and (self.Door3 or 0.99) or 0,0,0.54, 1024, 1)
 
-	self:Animate("FrontBrake", self:GetNWBool("FbI") and 0 or 1,0,0.35, 3, false)
-	self:Animate("FrontTrain",	self:GetNWBool("FtI") and 0 or 1,0,0.35, 3, false)
-	self:Animate("RearBrake",	self:GetNWBool("RbI") and 1 or 0,0,0.35, 3, false)
-	self:Animate("RearTrain",	self:GetNWBool("RtI") and 1 or 0,0,0.35, 3, false)
+	self:Animate("FrontBrake", self:GetNW2Bool("FbI") and 0 or 1,0,0.35, 3, false)
+	self:Animate("FrontTrain",	self:GetNW2Bool("FtI") and 0 or 1,0,0.35, 3, false)
+	self:Animate("RearBrake",	self:GetNW2Bool("RbI") and 1 or 0,0,0.35, 3, false)
+	self:Animate("RearTrain",	self:GetNW2Bool("RtI") and 1 or 0,0,0.35, 3, false)
 
 	self:Animate("PB",	self:GetPackedBool(165) and 1 or 0,0,0.2,  8,false)
 	-- Animate AV switches
@@ -2620,7 +2621,7 @@ function ENT:Think()
 	--self:SetSoundState("ring2",0.20,1)
 	
 	-- BPSN sound
-	self.BPSNType = self:GetNWInt("BPSNType",7)
+	self.BPSNType = self:GetNW2Int("BPSNType",7)
 	if not self.OldBPSNType then self.OldBPSNType = self.BPSNType end
 	if self.BPSNType ~= self.OldBPSNType then
 		if self.OldBPSNType ~= 7 then
@@ -2680,13 +2681,13 @@ function ENT:DrawPost(special)
 
 	if self.InfoTableTimeout and (CurTime() < self.InfoTableTimeout) then
 		self:DrawOnPanel("InfoTableSelect",function()
-			local text = self:GetNWString("FrontText","")
+			local text = self:GetNW2String("FrontText","")
 			local col = text:find("ЗЕЛ") and Color(100,200,0) or text:find("СИН") and Color(0,100,200) or text:find("МАЛ") and Color(200,100,200) or text:find("ОРА") and Color(200,200,0) or text:find("БИР") and Color(48,213,200) or Color(255,0,0)
-			draw.DrawText(self:GetNWString("RouteNumber","") .. " " .. text,"MetrostroiSubway_InfoPanel",260, -100,col,TEXT_ALIGN_CENTER)
+			draw.DrawText(self:GetNW2String("RouteNumber","") .. " " .. text,"MetrostroiSubway_InfoPanel",260, -100,col,TEXT_ALIGN_CENTER)
 			--[[
 			draw.Text({
-				text = self:GetNWString("RouteNumber","") .. " " .. self:GetNWString("FrontText",""),
-				font = "MetrostroiSubway_InfoPanel",--..self:GetNWInt("Style",1),
+				text = self:GetNW2String("RouteNumber","") .. " " .. self:GetNW2String("FrontText",""),
+				font = "MetrostroiSubway_InfoPanel",--..self:GetNW2Int("Style",1),
 				pos = { 260, -100 },
 				xalign = TEXT_ALIGN_CENTER,
 				yalign = TEXT_ALIGN_CENTER,
@@ -2699,7 +2700,7 @@ function ENT:DrawPost(special)
 		surface.SetAlphaMultiplier(1)
 		surface.SetDrawColor(255,255,255) --255*dc.x,250*dc.y,220*dc.z)
 		--surface.DrawRect(0,100,88,70)
-		local rn = string.format("%003d",tonumber(self:GetNWString("RouteNumber","000")) or 0)
+		local rn = string.format("%003d",tonumber(self:GetNW2String("RouteNumber","000")) or 0)
 		surface.SetMaterial(Metrostroi.RouteTextures.p[rn[1]])
 		surface.DrawTexturedRect(-10,100,40,70)
 		surface.SetMaterial(Metrostroi.RouteTextures.p[rn[2]])
@@ -2709,8 +2710,8 @@ function ENT:DrawPost(special)
 		--surface.SetMaterial()
 		--[[
 		draw.Text({
-			text = self:GetNWString("RouteNumber",""),
-			font = "MetrostroiSubway_InfoRoute",--..self:GetNWInt("Style",1),
+			text = self:GetNW2String("RouteNumber",""),
+			font = "MetrostroiSubway_InfoRoute",--..self:GetNW2Int("Style",1),
 			pos = { 44, 135 },
 			xalign = TEXT_ALIGN_CENTER,
 			yalign = TEXT_ALIGN_CENTER,
@@ -2773,7 +2774,7 @@ function ENT:DrawPost(special)
 			surface.DrawRect(210.4*10-10,56*10+2,8*10,4*10)
 			draw.DrawText("ЛКТ","MetrostroiSubway_VerySmallText",210.4*10+0-10,56*10-5+2,Color(0,0,0,255))
 		end
-		b = self:Animate("light_PA",((self.Blok == 2 and self:GetNWInt("PAKSD:State",-1) ~= 0) or (self.Blok == 4 and self:GetNWInt("PAKSDM:State",-1) ~= -1)) and 1 or 0,0,1,15,false)
+		b = self:Animate("light_PA",((self.Blok == 2 and self:GetNW2Int("PAKSD:State",-1) ~= 0) or (self.Blok == 4 and self:GetNW2Int("PAKSDM:State",-1) ~= -1)) and 1 or 0,0,1,15,false)
 		if b > 0.0 then
 			surface.SetAlphaMultiplier(b)
 			surface.SetDrawColor(150,255,50)
@@ -2991,15 +2992,15 @@ function ENT:DrawPost(special)
 	end)
 
 	self:DrawOnPanel("FrontPneumatic",function()
-		draw.DrawText(self:GetNWBool("FbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
-		draw.DrawText(self:GetNWBool("FtI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("FbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("FtI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
 	end)
 	self:DrawOnPanel("RearPneumatic",function()
-		draw.DrawText(self:GetNWBool("RtI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
-		draw.DrawText(self:GetNWBool("RbI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("RtI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("RbI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
 	end)
 	self:DrawOnPanel("AirDistributor",function()
-		draw.DrawText(self:GetNWBool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
 	end)
 	
 	-- Draw train numbers

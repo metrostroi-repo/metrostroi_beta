@@ -984,9 +984,9 @@ ENT.OldTexture = nil
 --------------------------------------------------------------------------------
 
 function ENT:UpdateTextures()
-	local texture = Metrostroi.Skins["train"][self:GetNWString("texture")]
-	local passtexture = Metrostroi.Skins["pass"][self:GetNWString("passtexture")]
-	local cabintexture = Metrostroi.Skins["cab"][self:GetNWString("cabtexture")]
+	local texture = Metrostroi.Skins["train"][self:GetNW2String("texture")]
+	local passtexture = Metrostroi.Skins["pass"][self:GetNW2String("passtexture")]
+	local cabintexture = Metrostroi.Skins["cab"][self:GetNW2String("cabtexture")]
 	for _,self in pairs(self.ClientEnts) do
 		if not IsValid(self) then continue end
 		for k,v in pairs(self:GetMaterials()) do
@@ -1007,16 +1007,16 @@ end
 --------------------------------------------------------------------------------
 function ENT:Think()
 	self.BaseClass.Think(self)
-	if self.Texture ~= self:GetNWString("texture") then
-		self.Texture = self:GetNWString("texture")
+	if self.Texture ~= self:GetNW2String("texture") then
+		self.Texture = self:GetNW2String("texture")
 		self:UpdateTextures()
 	end
-	if self.PassTexture ~= self:GetNWString("passtexture") then
-		self.PassTexture = self:GetNWString("passtexture")
+	if self.PassTexture ~= self:GetNW2String("passtexture") then
+		self.PassTexture = self:GetNW2String("passtexture")
 		self:UpdateTextures()
 	end
-	if self.CabinTexture ~= self:GetNWString("cabtexture") then
-		self.CabinTexture = self:GetNWString("cabtexture")
+	if self.CabinTexture ~= self:GetNW2String("cabtexture") then
+		self.CabinTexture = self:GetNW2String("cabtexture")
 		self:UpdateTextures()
 	end
 	if not self.Animate then self.BaseClass = baseclass.Get("gmod_subway_base") end
@@ -1274,8 +1274,8 @@ function ENT:DrawPost()
 		surface.SetDrawColor(0,0,0) --255*dc.x,250*dc.y,220*dc.z)
 		surface.DrawRect(50,0,540,100)
 		draw.Text({
-			text = self:GetNWString("FrontText",""),
-			font = "MetrostroiSubway_InfoPanel",--..self:GetNWInt("Style",1),
+			text = self:GetNW2String("FrontText",""),
+			font = "MetrostroiSubway_InfoPanel",--..self:GetNW2Int("Style",1),
 			pos = { 320, 50 },
 			xalign = TEXT_ALIGN_CENTER,
 			yalign = TEXT_ALIGN_CENTER,
@@ -1285,15 +1285,15 @@ function ENT:DrawPost()
 	if self.InfoTableTimeout and (CurTime() < self.InfoTableTimeout) then
 		self:DrawOnPanel("InfoTableSelect",function()
 			draw.Text({
-				text = self:GetNWString("RouteNumber",""),
-				font = "MetrostroiSubway_InfoPanel",--..self:GetNWInt("Style",1),
+				text = self:GetNW2String("RouteNumber",""),
+				font = "MetrostroiSubway_InfoPanel",--..self:GetNW2Int("Style",1),
 				pos = { 140, -50 },
 				xalign = TEXT_ALIGN_CENTER,
 				yalign = TEXT_ALIGN_CENTER,
 				color = Color(255,0,0,255)})
 			draw.Text({
-				text = self:GetNWString("FrontText",""),
-				font = "MetrostroiSubway_InfoPanel",--..self:GetNWInt("Style",1),
+				text = self:GetNW2String("FrontText",""),
+				font = "MetrostroiSubway_InfoPanel",--..self:GetNW2Int("Style",1),
 				pos = { 140, -100 },
 				xalign = TEXT_ALIGN_CENTER,
 				yalign = TEXT_ALIGN_CENTER,
@@ -1306,15 +1306,15 @@ function ENT:DrawPost()
 		surface.SetAlphaMultiplier(1)
 		surface.SetDrawColor(255,255,255) --255*dc.x,250*dc.y,220*dc.z)
 		--surface.DrawRect(0,100,88,70)
-		local rn = self:GetNWString("RouteNumber","00")
+		local rn = self:GetNW2String("RouteNumber","00")
 		surface.SetMaterial(Metrostroi.RouteTextures.m[rn[1]])
 		surface.DrawTexturedRect(-2,100,44,70)
 		surface.SetMaterial(Metrostroi.RouteTextures.m[rn[2]])
 		surface.DrawTexturedRect(46,100,44,70)
 		--[[
 		draw.Text({
-			text = self:GetNWString("RouteNumber","00"),
-			font = "MetrostroiSubway_InfoRoute",--..self:GetNWInt("Style",1),
+			text = self:GetNW2String("RouteNumber","00"),
+			font = "MetrostroiSubway_InfoRoute",--..self:GetNW2Int("Style",1),
 			pos = { 44, 135 },
 			xalign = TEXT_ALIGN_CENTER,
 			yalign = TEXT_ALIGN_CENTER,
@@ -1326,15 +1326,15 @@ function ENT:DrawPost()
 		surface.SetDrawColor(142,132,101) --255*dc.x,250*dc.y,220*dc.z)
 		--surface.DrawRect(0,100,88,70)
 		draw.Text({
-			text = self:GetNWString("RouteNumber","  ")[1],
-			font = "MetrostroiSubway_InfoRoute",--..self:GetNWInt("Style",1),
+			text = self:GetNW2String("RouteNumber","  ")[1],
+			font = "MetrostroiSubway_InfoRoute",--..self:GetNW2Int("Style",1),
 			pos = { 20, 135 },
 			xalign = TEXT_ALIGN_CENTER,
 			yalign = TEXT_ALIGN_CENTER,
 			color = Color(0,0,0,255)})
 		draw.Text({
-			text = self:GetNWString("RouteNumber","  ")[2],
-			font = "MetrostroiSubway_InfoRoute",--..self:GetNWInt("Style",1),
+			text = self:GetNW2String("RouteNumber","  ")[2],
+			font = "MetrostroiSubway_InfoRoute",--..self:GetNW2Int("Style",1),
 			pos = { 68, 135 },
 			xalign = TEXT_ALIGN_CENTER,
 			yalign = TEXT_ALIGN_CENTER,
@@ -1603,15 +1603,15 @@ function ENT:DrawPost()
 	end)
 
 	self:DrawOnPanel("FrontPneumatic",function()
-		draw.DrawText(self:GetNWBool("FbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
-		draw.DrawText(self:GetNWBool("FtI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("FbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("FtI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
 	end)
 	self:DrawOnPanel("RearPneumatic",function()
-		draw.DrawText(self:GetNWBool("RbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
-		draw.DrawText(self:GetNWBool("RtI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("RbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("RtI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
 	end)
 	self:DrawOnPanel("AirDistributor",function()
-		draw.DrawText(self:GetNWBool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
 	end)
 	
 	-- Draw train numbers

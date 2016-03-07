@@ -14,7 +14,7 @@ hook.Add("PostDrawOpaqueRenderables", "metrostroi_sign_debug_draw", function(isD
 		end
 end )
 function ENT:Initialize()
-	--self.ModelProp = self:GetNWInt("Model")
+	--self.ModelProp = self:GetNW2Int("Model")
 	hook.Add("PlayerBindPress", "metrostroi_sign_startup"..self:EntIndex(), function()
 		self.SendReq = CurTime() + math.random(3)
 		hook.Remove("PlayerBindPress", "metrostroi_signal_startup"..self:EntIndex())
@@ -45,8 +45,8 @@ function ENT:Think()
 	else
 		self.MustDraw = true
 	end
-	--self.ModelProp = self.SignModels[self:GetNWInt("Type",99)-1]
-	--self.Offset = self:GetNWVector("Offset")
+	--self.ModelProp = self.SignModels[self:GetNW2Int("Type",99)-1]
+	--self.Offset = self:GetNW2Vector("Offset")
 	if not self.ModelProp and not self.sended then
 		--print(self,"require signs")
 		net.Start("metrostroi-signs")

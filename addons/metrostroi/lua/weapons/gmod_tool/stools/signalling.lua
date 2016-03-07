@@ -13,7 +13,7 @@ if SERVER then util.AddNetworkString "metrostroi-stool-signalling" end
 local Types = {"Signal","Sign",[0] = "Choose type"}
 local TypesOfSignal = {"Inside","Outside big","Outside small"}
 local TypesOfSign = {"NF","40","60","70","80","Station border","C(horn) Street","STOP Street","Dangerous","Deadlock","Stop marker","!(stop)","T","T Start","T End","T Sbor(engage)","Engines off","Engines on","C(horn)","Stop rail T","Stop rail","Left doors"}
-local RouteTypes = {"Auto", "Manual","Repeater"}
+local RouteTypes = {"Auto", "Manual","Repeater","Emerg"}
 local Type = 0
 local RouteType = 1
 local Signal-- = {}
@@ -440,11 +440,12 @@ function TOOL:BuildCPanelCustom()
 				
 		for i = 1,(Signal.Routes and #Signal.Routes or 0) do
 			local CollCat = vgui.Create("DForm")
-			CollCat:SetLabel(RouteTypes[Signal.Routes[i].Manual and 2 or Signal.Routes[i].Repeater and 3 or 1])
+			local rou = Signal.Routes[i].Manual and 2 or Signal.Routes[i].Repeater and 3 or Signal.Routes[i].Emer and 4 or 1
+			CollCat:SetLabel(RouteTypes[rou])
 			CollCat:SetExpanded(1)
 				local VTypeOfRouteI = vgui.Create("DComboBox")
 					--VType:SetValue("Choose type")
-					VTypeOfRouteI:ChooseOption(RouteTypes[Signal.Routes[i].Manual and 2 or Signal.Routes[i].Repeater and 3 or 1],Signal.Routes[i].Manual and 2 or Signal.Routes[i].Repeater and 3 or 1)
+					VTypeOfRouteI:ChooseOption(RouteTypes[rou],rou)
 					for i1 = 1,#RouteTypes do
 						VTypeOfRouteI:AddChoice(RouteTypes[i1])
 					end
@@ -452,6 +453,7 @@ function TOOL:BuildCPanelCustom()
 						VTypeOfRouteI:SetValue(name)
 						Signal.Routes[i].Manual = index == 2
 						Signal.Routes[i].Repeater = index == 3
+						Signal.Routes[i].Emer = index == 4
 						tool:SendSettings()
 						self:BuildCPanelCustom()
 					end
@@ -529,7 +531,7 @@ function TOOL:BuildCPanelCustom()
 		local VAddR = CPanel:Button("Add route")
 		VAddR.DoClick = function()
 			if not Signal.Routes then Signal.Routes = {} end
-			table.insert(Signal.Routes,{Manual = RouteType==2, Repeater = RouteType == 3, RouteName = ""})
+			table.insert(Signal.Routes,{Manual = RouteType==2, Repeater = RouteType == 3, Emer = RouteType == 4, RouteName = ""})
 			tool:SendSettings()
 			self:BuildCPanelCustom()
 		end

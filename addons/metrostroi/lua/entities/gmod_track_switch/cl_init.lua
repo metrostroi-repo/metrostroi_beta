@@ -11,7 +11,7 @@ function ENT:Initialize()
 				surface.SetDrawColor(125, 125, 0, 255)
 				surface.DrawRect(0, 0, 160, 24)
 
-				draw.DrawText("SwitchID:"..self:GetNWString("ID"),"Trebuchet24",5,0,Color(0,0,0,255))
+				draw.DrawText("SwitchID:"..self:GetNW2String("ID"),"Trebuchet24",5,0,Color(0,0,0,255))
 			cam.End3D2D()
 	end )
 end

@@ -252,11 +252,11 @@ function TRAIN_SYSTEM:ClientThink()
 	if (CurTime() - self.Time) > 0.1 then
 		--print(1)
 		self.Time = CurTime()
-		--self.STR1 = string.Explode("\n",self.Train:GetNWString("PAKSD1"))
-		--self.STR2 = string.Explode("\n",self.Train:GetNWString("PAKSD2"))
+		--self.STR1 = string.Explode("\n",self.Train:GetNW2String("PAKSD1"))
+		--self.STR2 = string.Explode("\n",self.Train:GetNW2String("PAKSD2"))
 		self:STR1(true)
 		self:STR2(true)
-		local State = self.Train:GetNWInt("PAKSD:State",0)
+		local State = self.Train:GetNW2Int("PAKSD:State",0)
 		if State == -1 or State == -9 or State >= 1 and State < 6 then
 			self:STR2("<*>")
 		end
@@ -274,17 +274,17 @@ function TRAIN_SYSTEM:ClientThink()
 		elseif State == 2 then
 			self:STR1("ENTER PASSWORD")
 			self:STR1("TO ENTER SYSTEM>")
-			self:STR1(self.Train:GetNWInt("PAKSD:Pass",0) ~= -1 and string.rep("*",self.Train:GetNWInt("PAKSD:Pass",0)) or "ACCESS ERROR")
+			self:STR1(self.Train:GetNW2Int("PAKSD:Pass",0) ~= -1 and string.rep("*",self.Train:GetNW2Int("PAKSD:Pass",0)) or "ACCESS ERROR")
 		elseif State == 3 then
 			self:STR1(" 1 GO TO LINE")
-			if self.Train:GetNWBool("PAKSD:Restart",false) then self:STR1(" 2 RESTART") end
+			if self.Train:GetNW2Bool("PAKSD:Restart",false) then self:STR1(" 2 RESTART") end
 			--if self.FirstStation ~= "" and self.LastStation ~= "" then self:STR1("\n 2 RESTART" end
 		elseif State == 4 then
-			local State4Choosed = self.Train:GetNWInt("PAKSD:State4",1)
+			local State4Choosed = self.Train:GetNW2Int("PAKSD:State4",1)
 			if State4Choosed < 4 then
-				local Line = self.Train:GetNWInt("PAKSD:Line",0)
-				local FirstStation = self.Train:GetNWInt("PAKSD:FirstStation",-1)
-				local LastStation = self.Train:GetNWInt("PAKSD:LastStation",-1)
+				local Line = self.Train:GetNW2Int("PAKSD:Line",0)
+				local FirstStation = self.Train:GetNW2Int("PAKSD:FirstStation",-1)
+				local LastStation = self.Train:GetNW2Int("PAKSD:LastStation",-1)
 				local tbl = Metrostroi.EndStations
 				self:STR1("LINE "..Line..(State4Choosed == 1 and "_" or " ").." ")
 				if tbl[Line] then
@@ -305,15 +305,15 @@ function TRAIN_SYSTEM:ClientThink()
 				self:STR1("LAST  "..(LastStation ~= -1 and LastStation or "")..(State4Choosed == 3 and "_" or " ")..st:upper())
 				self:STR1("        VVVV        ")
 			else
-				local RouteNumber = self.Train:GetNWInt("PAKSD:RouteNumber",-1)
+				local RouteNumber = self.Train:GetNW2Int("PAKSD:RouteNumber",-1)
 				self:STR1("ROUTEn "..(RouteNumber ~= -1 and RouteNumber or "").."_")
 				self:STR1("\"ENTER\" FOR CONFIRM")
 			end
 		elseif State == 49 then
-			local State4Choosed = self.Train:GetNWInt("PAKSD:State4",1)
-			local Line = self.Train:GetNWInt("PAKSD:Line",0)
-			local LastStation = self.Train:GetNWInt("PAKSD:LastStation",-1)
-			local RouteNumber = self.Train:GetNWInt("PAKSD:RouteNumber",-1)
+			local State4Choosed = self.Train:GetNW2Int("PAKSD:State4",1)
+			local Line = self.Train:GetNW2Int("PAKSD:Line",0)
+			local LastStation = self.Train:GetNW2Int("PAKSD:LastStation",-1)
+			local RouteNumber = self.Train:GetNW2Int("PAKSD:RouteNumber",-1)
 			local tbl = Metrostroi.EndStations
 			self:STR1("LINE "..Line..(State4Choosed == 1 and "_" or " ").." ")
 			if tbl[Line] then
@@ -347,19 +347,19 @@ function TRAIN_SYSTEM:ClientThink()
 		elseif State > 6 then
 			
 			local speed = math.floor(self.Train:GetPackedRatio(3)*100.0)
-			local station = self.Train:GetNWInt("PAKSD:Station",0)
-			local spd = self.Train:GetNWBool("PAKSD:UOS", false) and 35 or self.Train:GetNWBool("PAKSD:VRD",false) and 20 or self.Train:GetPackedBool(46) and 80 or self.Train:GetPackedBool(45) and 70 or self.Train:GetPackedBool(44) and 60 or self.Train:GetPackedBool(43) and 40 or self.Train:GetPackedBool(42) and "00" or "H4"
-			local VZ = (self.Train:GetNWBool("PAKSD:VZ1",false) and "B1" or "").." "..(self.Train:GetNWBool("PAKSD:VZ2",false) and "B2" or "")
-			if self.OldVRD ~= self.Train:GetNWBool("PAKSD:VRD",false) then
-				self.OldVRD = self.Train:GetNWBool("PAKSD:VRD",false)
+			local station = self.Train:GetNW2Int("PAKSD:Station",0)
+			local spd = self.Train:GetNW2Bool("PAKSD:UOS", false) and 35 or self.Train:GetNW2Bool("PAKSD:VRD",false) and 20 or self.Train:GetPackedBool(46) and 80 or self.Train:GetPackedBool(45) and 70 or self.Train:GetPackedBool(44) and 60 or self.Train:GetPackedBool(43) and 40 or self.Train:GetPackedBool(42) and "00" or "H4"
+			local VZ = (self.Train:GetNW2Bool("PAKSD:VZ1",false) and "B1" or "").." "..(self.Train:GetNW2Bool("PAKSD:VZ2",false) and "B2" or "")
+			if self.OldVRD ~= self.Train:GetNW2Bool("PAKSD:VRD",false) then
+				self.OldVRD = self.Train:GetNW2Bool("PAKSD:VRD",false)
 				if self.OldVRD then
 					self.VRDTimer = CurTime() + 7
 				end
 			end
-			local distance = self.Train:GetNWInt("PAKSD:Distance",-99)
-			local pos =self.Positions[self.Train:GetNWInt("PAKSD:KV",0)]
-			local typ = self.Types[self.Train:GetNWInt("PAKSD:Type",0)]
-			local RK = (self.Positions2[self.Train:GetNWInt("PAKSD:PPT",1)]).."="..tostring(self.Train:GetNWInt("PAKSD:RK",0))
+			local distance = self.Train:GetNW2Int("PAKSD:Distance",-99)
+			local pos =self.Positions[self.Train:GetNW2Int("PAKSD:KV",0)]
+			local typ = self.Types[self.Train:GetNW2Int("PAKSD:Type",0)]
+			local RK = (self.Positions2[self.Train:GetNW2Int("PAKSD:PPT",1)]).."="..tostring(self.Train:GetNW2Int("PAKSD:RK",0))
 			if speed < 10 then
 				speed = "0"..speed
 			end
@@ -379,15 +379,15 @@ function TRAIN_SYSTEM:ClientThink()
 				self:STR1()
 				self:STR1("YES-\"ENTER\"  NO-\"<-\"")
 			elseif State == 74 then
-				local State74 = self.Train:GetNWInt("PAKSD:State74",1)
-				local SD = self.Train:GetNWBool("PAKSD:KD",false)
+				local State74 = self.Train:GetNW2Int("PAKSD:State74",1)
+				local SD = self.Train:GetNW2Bool("PAKSD:KD",false)
 				if State74 < 4 then
 					self:STR1("1"..(State74 == 1 and "%" or "")..":"..(State74 == 1 and "$" or "").."ROLLING CHECK")
 					self:STR1("2"..(State74 == 2 and "%" or "")..":"..(State74 == 2 and "$" or "").."DRIVE "..(SD and "WITH" or "WITHOUT").." SD")
 					self:STR1("3"..(State74 == 3 and "%" or "")..":"..(State74 == 3 and "$" or "").."SETTINGS CHANGE")
 					self:STR1("        VVVV        ")
 				elseif State74 < 7 then
-					self:STR1("4"..(State74 == 4 and "%" or "")..":"..(State74 == 4 and "$" or "")..(self.Train:GetNWBool("PAKSD:Transit",false) and "DIS " or "").."TRANSIT MODE")
+					self:STR1("4"..(State74 == 4 and "%" or "")..":"..(State74 == 4 and "$" or "")..(self.Train:GetNW2Bool("PAKSD:Transit",false) and "DIS " or "").."TRANSIT MODE")
 					self:STR1("5"..(State74 == 5 and "%" or "")..":"..(State74 == 5 and "$" or "").."DRIVE WITH Vd=0")
 					self:STR1("6"..(State74 == 6 and "%" or "")..":"..(State74 == 6 and "$" or "").."ZONED TURN")
 					self:STR1("        VVVV        ")
@@ -396,7 +396,7 @@ function TRAIN_SYSTEM:ClientThink()
 					self:STR1("8"..(State74 == 8 and "%" or "")..":"..(State74 == 8 and "$" or "").."STATION MODE")
 				end
 			elseif State == 75 then
-				local State75 = self.Train:GetNWInt("PAKSD:State75",1)
+				local State75 = self.Train:GetNW2Int("PAKSD:State75",1)
 				self:STR1("1"..(State75 == 1 and "%" or "")..":"..(State75 == 1 and "$" or "").."GO OUT FROM TRAIN")
 				self:STR1("2"..(State75 == 2 and "%" or "")..":"..(State75 == 2 and "$" or "").."ENTRY FASTER")
 				self:STR1("3"..(State75 == 3 and "%" or "")..":"..(State75 == 3 and "$" or "").."RELEASE DOORS")
@@ -430,13 +430,13 @@ function TRAIN_SYSTEM:ClientThink()
 				self:STR1("FOR CANCEL")
 				self:STR1("PRESS \"-\"")
 			]]
-			elseif self.Train:GetNWBool("PAKSD:Nakat",false) then
+			elseif self.Train:GetNW2Bool("PAKSD:Nakat",false) then
 				self:STR1("ROLLING CHECK")
-				self:STR1("DISTANCE:"..Format("%.2f",self.Train:GetNWFloat("PAKSD:Meters",0)))
-				self:STR1("DIRECTION:"..(self.Train:GetNWBool("PAKSD:Sign",false) and "BACKWARD" or "FORWARD"))
+				self:STR1("DISTANCE:"..Format("%.2f",self.Train:GetNW2Float("PAKSD:Meters",0)))
+				self:STR1("DIRECTION:"..(self.Train:GetNW2Bool("PAKSD:Sign",false) and "BACKWARD" or "FORWARD"))
 				self:STR1(typ.."="..pos..string.rep(" ",6-#typ-#pos)..VZ..string.rep(" ",20-5-#VZ-6-1).."Vf="..speed)
 			else
-				local State7 = self.Train:GetNWInt("PAKSD:State7",0)
+				local State7 = self.Train:GetNW2Int("PAKSD:State7",0)
 				if State7 == 0 then
 					self:STR1("  EXIT TO THE LINE")
 					local date = os.date("!*t",os_time)
@@ -444,30 +444,30 @@ function TRAIN_SYSTEM:ClientThink()
 					self:STR1()
 					if self.VRDTimer and CurTime() - self.VRDTimer < 0 then
 						self:STR1("@ACC MOV WITH Vd=0")
-					elseif self.Train:GetNWBool("PAKSD:Transit",false) then
+					elseif self.Train:GetNW2Bool("PAKSD:Transit",false) then
 						self:STR1("TRANSIT MODE")
 					else
 						self:STR1(typ.."="..pos..string.rep(" ",6-#typ-#pos)..VZ..string.rep(" ",20-5-#VZ-6-1).."Vd="..spd)
 						self.VRDTimer = nil
 					end
 				elseif State7 == 1 and Metrostroi.AnnouncerData then
-					local path =  self.Train:GetNWInt("PAKSD:Path",0)
-					local bt = tostring(self.Train:GetNWInt("PAKSD:BoardTime",0))
+					local path =  self.Train:GetNW2Int("PAKSD:Path",0)
+					local bt = tostring(self.Train:GetNW2Int("PAKSD:BoardTime",0))
 					local date = os.date("!*t",os_time)
 					local tm = Format("%02d:%02d:%02d",date.hour,date.min,date.sec)
 					self:STR1((Metrostroi.AnnouncerData[station] and Metrostroi.AnnouncerData[station][1]) and Metrostroi.AnnouncerData[station][1]:upper() or "UNK")
-					self:STR1("TO "..Metrostroi.AnnouncerData[self.Train:GetNWInt("PAKSD:LastStation",108)][1]:upper())
+					self:STR1("TO "..Metrostroi.AnnouncerData[self.Train:GetNW2Int("PAKSD:LastStation",108)][1]:upper())
 					self:STR1("ST "..bt..string.rep(" ",20-8-3-#bt)..tm)
 					if self.VRDTimer and CurTime() - self.VRDTimer < 0 then
 						self:STR1("@ACC MOV WITH Vd=0")
-					elseif self.Train:GetNWBool("PAKSD:Transit",false) then
+					elseif self.Train:GetNW2Bool("PAKSD:Transit",false) then
 						self:STR1("TRANSIT MODE")
 					else
 						self:STR1(typ.."="..pos..string.rep(" ",6-#typ-#pos)..VZ..string.rep(" ",20-6-4-#VZ)..(path == 1 and "I " or "II" ).."P")
 						self.VRDTimer = nil
 					end
 				else
-					local name = self.Train:GetNWString("PAKSD:SName","ERR")
+					local name = self.Train:GetNW2String("PAKSD:SName","ERR")
 					local curr = string.rep("#",speed/4.7-1)
 					local max = string.rep("-",(spd ~= "H4" and spd or 0)/4.7-1)
 					self:STR1(curr.."<"..string.rep(" ",20-#curr-3)..speed)
@@ -475,7 +475,7 @@ function TRAIN_SYSTEM:ClientThink()
 					self:STR1("TC="..name..string.rep(" ",20-9-#name)..math.min(9999,math.floor(distance)).." m")
 					if self.VRDTimer and CurTime() - self.VRDTimer < 0 then
 						self:STR1("@ACC MOV WITH Vd=0")
-					elseif self.Train:GetNWBool("PAKSD:Transit",false) then
+					elseif self.Train:GetNW2Bool("PAKSD:Transit",false) then
 						self:STR1("TRANSIT MODE")
 					else
 						self:STR1(typ.."="..pos..string.rep(" ",6-#typ-#pos)..VZ..string.rep(" ",20-2-6-1-#VZ-math.max(4,#self.StataionData[station])).."<"..self.StataionData[station]..">")
@@ -1132,68 +1132,68 @@ function TRAIN_SYSTEM:Think(dT)
 		--print(1)
 		self.Time = CurTime()
 		--if self.STR1 ~= self.STR1Real then
-			--self.Train:SetNWString("PAKSD1",self.STR1)
+			--self.Train:SetNW2String("PAKSD1",self.STR1)
 			--self.STR1 = self.STR1Real
 		--end
 		--if self.STR2 ~= self.STR2Real then
-			--self.Train:SetNWString("PAKSD2",self.STR2)
+			--self.Train:SetNW2String("PAKSD2",self.STR2)
 			--self.STR2 = self.STR2Real
 		--end
-		--self.Train:SetNWString("PAKSD2","V+= 59 VD= 70 self.Train.UPO.Distance= 307\nKB=T1       Tx= -2c")
-		self.Train:SetNWInt("PAKSD:State",self.State)
-		if self.State == 2 then self.Train:SetNWInt("PAKSD:Pass",self.EnteredPass ~= "/" and #self.EnteredPass or -1)
-		elseif self.State == 3 then self.Train:SetNWBool("PAKSD:Restart",self.FirstStation ~= "" and self.LastStation ~= "")
+		--self.Train:SetNW2String("PAKSD2","V+= 59 VD= 70 self.Train.UPO.Distance= 307\nKB=T1       Tx= -2c")
+		self.Train:SetNW2Int("PAKSD:State",self.State)
+		if self.State == 2 then self.Train:SetNW2Int("PAKSD:Pass",self.EnteredPass ~= "/" and #self.EnteredPass or -1)
+		elseif self.State == 3 then self.Train:SetNW2Bool("PAKSD:Restart",self.FirstStation ~= "" and self.LastStation ~= "")
 		elseif self.State == 4 then
-			self.Train:SetNWInt("PAKSD:State4",self.State4Choosed)
+			self.Train:SetNW2Int("PAKSD:State4",self.State4Choosed)
 			if self.State4Choosed < 4 then
-				self.Train:SetNWInt("PAKSD:FirstStation",tonumber(self.FirstStation) or -1)
-				self.Train:SetNWInt("PAKSD:LastStation",tonumber(self.LastStation) or -1)
-				self.Train:SetNWInt("PAKSD:Line",self.Line)
+				self.Train:SetNW2Int("PAKSD:FirstStation",tonumber(self.FirstStation) or -1)
+				self.Train:SetNW2Int("PAKSD:LastStation",tonumber(self.LastStation) or -1)
+				self.Train:SetNW2Int("PAKSD:Line",self.Line)
 			else
-				self.Train:SetNWInt("PAKSD:RouteNumber",tonumber(self.RouteNumber ~= "" and self.RouteNumber or -1))
+				self.Train:SetNW2Int("PAKSD:RouteNumber",tonumber(self.RouteNumber ~= "" and self.RouteNumber or -1))
 			end
 		elseif self.State == 49 then
-			self.Train:SetNWInt("PAKSD:State4",self.State4Choosed)
-			self.Train:SetNWInt("PAKSD:LastStation",tonumber(self.LastStation) or -1)
-			self.Train:SetNWInt("PAKSD:Line",self.Line)
-			self.Train:SetNWInt("PAKSD:RouteNumber",tonumber(self.RouteNumber ~= "" and self.RouteNumber or -1))
+			self.Train:SetNW2Int("PAKSD:State4",self.State4Choosed)
+			self.Train:SetNW2Int("PAKSD:LastStation",tonumber(self.LastStation) or -1)
+			self.Train:SetNW2Int("PAKSD:Line",self.Line)
+			self.Train:SetNW2Int("PAKSD:RouteNumber",tonumber(self.RouteNumber ~= "" and self.RouteNumber or -1))
 		elseif self.State == 7 then
-			self.Train:SetNWInt("PAKSD:LastStation",tonumber(self.LastStation))
-			self.Train:SetNWInt("PAKSD:State7",self.State7)
-			self.Train:SetNWInt("PAKSD:Nakat",self.Nakat)
-			self.Train:SetNWBool("PAKSD:VRD",self.VRD)
-			self.Train:SetNWBool("PAKSD:Transit",self.Transit)
-			self.Train:SetNWInt("PAKSD:Station",self.Train.UPO.Station)
-			self.Train:SetNWInt("PAKSD:Distance",self.Train.UPO.Distance)
-			self.Train:SetNWInt("PAKSD:Type",(self.Train.Pneumatic.EmergencyValveEPK and 0 or self.Train.ALS_ARS.UAVAContacts and 4 or self.UOS and 5 or self.VRD and 2 or (self.Train.AutodriveEnabled or self.Train.UPO.StationAutodrive) and 1 or 3))
-			self.Train:SetNWInt("PAKSD:PPT",math.Clamp(math.floor(self.Train.PositionSwitch.Position + 0.5),1,3))
-			self.Train:SetNWInt("PAKSD:RK",math.floor(self.Train.RheostatController.Position+0.5))
-			self.Train:SetNWInt("PAKSD:KV",self.Train.Autodrive.AutodriveEnabled and (self.Rotating and -3 or self.Brake and -1 or self.Accelerate and 3 or 0) or (ARS["33G"] > 0 or (self.UOS and (ARS["8"] + (1-self.Train.RPB.Value)) > 0)) and 5 or self.Train.KV.RealControllerPosition)
-			self.Train:SetNWBool("PAKSD:VZ1", self.Train:ReadTrainWire(29) > 0)
-			self.Train:SetNWBool("PAKSD:VZ2", self.Train.PneumaticNo2.Value > 0)
-			self.Train:SetNWBool("PAKSD:UOS", self.UOS)
+			self.Train:SetNW2Int("PAKSD:LastStation",tonumber(self.LastStation))
+			self.Train:SetNW2Int("PAKSD:State7",self.State7)
+			self.Train:SetNW2Int("PAKSD:Nakat",self.Nakat)
+			self.Train:SetNW2Bool("PAKSD:VRD",self.VRD)
+			self.Train:SetNW2Bool("PAKSD:Transit",self.Transit)
+			self.Train:SetNW2Int("PAKSD:Station",self.Train.UPO.Station)
+			self.Train:SetNW2Int("PAKSD:Distance",self.Train.UPO.Distance)
+			self.Train:SetNW2Int("PAKSD:Type",(self.Train.Pneumatic.EmergencyValveEPK and 0 or self.Train.ALS_ARS.UAVAContacts and 4 or self.UOS and 5 or self.VRD and 2 or (self.Train.AutodriveEnabled or self.Train.UPO.StationAutodrive) and 1 or 3))
+			self.Train:SetNW2Int("PAKSD:PPT",math.Clamp(math.floor(self.Train.PositionSwitch.Position + 0.5),1,3))
+			self.Train:SetNW2Int("PAKSD:RK",math.floor(self.Train.RheostatController.Position+0.5))
+			self.Train:SetNW2Int("PAKSD:KV",self.Train.Autodrive.AutodriveEnabled and (self.Rotating and -3 or self.Brake and -1 or self.Accelerate and 3 or 0) or (ARS["33G"] > 0 or (self.UOS and (ARS["8"] + (1-self.Train.RPB.Value)) > 0)) and 5 or self.Train.KV.RealControllerPosition)
+			self.Train:SetNW2Bool("PAKSD:VZ1", self.Train:ReadTrainWire(29) > 0)
+			self.Train:SetNW2Bool("PAKSD:VZ2", self.Train.PneumaticNo2.Value > 0)
+			self.Train:SetNW2Bool("PAKSD:UOS", self.UOS)
 			
-			--self.Train:SetNWInt("PAKSD:ARS",ARS.Signal80 and 80 or ARS.Signal70 and 70 or ARS.Signal60 and 60 or ARS.Signal40 and 40 or ARS.Signal0 and 0 or -1)
+			--self.Train:SetNW2Int("PAKSD:ARS",ARS.Signal80 and 80 or ARS.Signal70 and 70 or ARS.Signal60 and 60 or ARS.Signal40 and 40 or ARS.Signal0 and 0 or -1)
 			--local speed = tostring(math.floor(ARS.Speed))
 
 			if self.State7 == 1 then
-				self.Train:SetNWInt("PAKSD:BoardTime",math.floor((self.Train.UPO.BoardTime or CurTime()) - CurTime()))
-				self.Train:SetNWInt("PAKSD:Path",self.Train.UPO.Path)
+				self.Train:SetNW2Int("PAKSD:BoardTime",math.floor((self.Train.UPO.BoardTime or CurTime()) - CurTime()))
+				self.Train:SetNW2Int("PAKSD:Path",self.Train.UPO.Path)
 			elseif self.State7 == 2 then
-				self.Train:SetNWString("PAKSD:SName",ARS.Signal and ARS.Signal.RealName or "ERR")
+				self.Train:SetNW2String("PAKSD:SName",ARS.Signal and ARS.Signal.RealName or "ERR")
 			end
 			if self.Nakat then
-				self.Train:SetNWFloat("PAKSD:Meters",math.Round(math.abs(self.Meters or 0),1))
-				self.Train:SetNWBool("PAKSD:Sign",ARS.Speed > 0.5 and self.Train.SpeedSign < 0)
+				self.Train:SetNW2Float("PAKSD:Meters",math.Round(math.abs(self.Meters or 0),1))
+				self.Train:SetNW2Bool("PAKSD:Sign",ARS.Speed > 0.5 and self.Train.SpeedSign < 0)
 			end
 		elseif self.State == 74 then
-			self.Train:SetNWInt("PAKSD:State74",self.State74)
-			self.Train:SetNWBool("PAKSD:KD",self.KD)
-			self.Train:SetNWBool("PAKSD:Transit",self.Transit)
+			self.Train:SetNW2Int("PAKSD:State74",self.State74)
+			self.Train:SetNW2Bool("PAKSD:KD",self.KD)
+			self.Train:SetNW2Bool("PAKSD:Transit",self.Transit)
 		elseif self.State == 75 then
-			self.Train:SetNWInt("PAKSD:State75",self.State75)
+			self.Train:SetNW2Int("PAKSD:State75",self.State75)
 		elseif self.State == 8 then
-			self.Train:SetNWBool("PAKSD:VRD",self.VRD)
+			self.Train:SetNW2Bool("PAKSD:VRD",self.VRD)
 			self.AutodriveWorking = false
 			self.UOS = false
 			self.VRD = false

@@ -59,7 +59,7 @@ function ENT:InitializeSystems()
 	-- Групповой переключатель положений
 	self:LoadSystem("PositionSwitch","EKG_18B")
 	-- Кулачковый контроллер
-	self:LoadSystem("KV","KV_70_lite")
+	self:LoadSystem("KV","KV_70")--_lite")
 	-- Контроллер резервного управления
 	self:LoadSystem("KRU")
 

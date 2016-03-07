@@ -155,7 +155,7 @@ local function RerailConCMDHandler(ply,cmd,args,fullstring)
 	
 	
 	--If we're aiming at bogeys or wheels
-	local nwent = train:GetNWEntity("TrainEntity")
+	local nwent = train:GetNW2Entity("TrainEntity")
 	if nwent and nwent.SubwayTrain ~= nil then 
 		train = nwent
 	end

@@ -70,9 +70,9 @@ function ENT:PostEntityPaste(ply,ent,createdEntities)
 			self.SquealSound = self.SquealSound or math.floor(4*math.random())
 			self.SquealSensitivity = self.SquealSensitivity or math.random()
 			v[1].SquealSensitivity = self.SquealSensitivity
-			v[1]:SetNWInt("SquealSound",self.SquealSound)
-			v[1]:SetNWBool("IsForwardBogey", k == 1)
-			v[1]:SetNWEntity("TrainEntity", self)
+			v[1]:SetNW2Int("SquealSound",self.SquealSound)
+			v[1]:SetNW2Bool("IsForwardBogey", k == 1)
+			v[1]:SetNW2Entity("TrainEntity", self)
 
 			-- Constraint bogey to the train
 			if self.NoPhysics then
@@ -265,7 +265,7 @@ function ENT:Initialize()
 	self.RightDoorsOpen = false
 	self.RightDoorsBlocked = false
 	self.RightDoorPositions = { Vector(0,0,0) }
-	--self:SetNWFloat("PassengerCount", 0)
+	--self:SetNW2Float("PassengerCount", 0)
 	
 	-- Get default train mass
 	if IsValid(self:GetPhysicsObject()) then
@@ -639,14 +639,14 @@ function ENT:WriteCell(Address, value)
 	if (Address >= 32768) and (Address < (32768+32*24)) then
 		local stringID = math.floor((Address-32768)/32)
 		local charID = (Address-32768)%32
-		local prevStr = self:GetNWString("CustomStr"..stringID)
+		local prevStr = self:GetNW2String("CustomStr"..stringID)
 		local newStr = ""
 		for i=0,31 do
 			local ch = string.byte(prevStr,i+1) or 32
 			if i == charID then ch = value end
 			newStr = newStr..(string.char(ch) or "?")
 		end
-		self:SetNWString("CustomStr"..stringID,newStr)		
+		self:SetNW2String("CustomStr"..stringID,newStr)		
 	end
 	if Address == 49164 then
 		if self.Announcer then
@@ -959,7 +959,7 @@ function ENT:OnCouple(bogey,isfront)
 		self.RearCoupledBogey = bogey
 	end
 	
-	local train = bogey:GetNWEntity("TrainEntity")
+	local train = bogey:GetNW2Entity("TrainEntity")
 	if not IsValid(train) then return end
 	--Don't update train wires when there's no parent train 
 	
@@ -1051,7 +1051,7 @@ function ENT:OnBogeyConnect(bogey,isfront)
 		self.RearCoupledBogeyDisconnect = false
 	end
 	
-	local train = bogey:GetNWEntity("TrainEntity")
+	local train = bogey:GetNW2Entity("TrainEntity")
 	if not IsValid(train) then return end
 	--Don't update train wires when there's no parent train 
 	
@@ -1069,13 +1069,13 @@ end
 
 function ENT:UpdateCoupledTrains()
 	if self.FrontCoupledBogey then
-		self.FrontTrain = self.FrontCoupledBogey:GetNWEntity("TrainEntity")
+		self.FrontTrain = self.FrontCoupledBogey:GetNW2Entity("TrainEntity")
 	else
 		self.FrontTrain = nil
 	end
 	
 	if self.RearCoupledBogey then
-		self.RearTrain = self.RearCoupledBogey:GetNWEntity("TrainEntity")
+		self.RearTrain = self.RearCoupledBogey:GetNW2Entity("TrainEntity")
 	else
 		self.RearTrain = nil
 	end
@@ -1100,9 +1100,9 @@ function ENT:CreateBogey(pos,ang,forward,type)
 	self.SquealSound = self.SquealSound or math.floor(4*math.random())
 	self.SquealSensitivity = self.SquealSensitivity or math.random()
 	bogey.SquealSensitivity = self.SquealSensitivity
-	bogey:SetNWInt("SquealSound",self.SquealSound)
-	bogey:SetNWBool("IsForwardBogey", forward)
-	bogey:SetNWEntity("TrainEntity", self)
+	bogey:SetNW2Int("SquealSound",self.SquealSound)
+	bogey:SetNW2Bool("IsForwardBogey", forward)
+	bogey:SetNW2Entity("TrainEntity", self)
 
 	-- Constraint bogey to the train
 	if self.NoPhysics then
@@ -1143,9 +1143,9 @@ function ENT:CreateSeatEntity(seat_info)
 	end
 
 	-- Set some shared information about the seat
-	self:SetNWEntity("seat_"..seat_info.type,seat)
-	seat:SetNWString("SeatType", seat_info.type)
-	seat:SetNWEntity("TrainEntity", self)
+	self:SetNW2Entity("seat_"..seat_info.type,seat)
+	seat:SetNW2String("SeatType", seat_info.type)
+	seat:SetNW2Entity("TrainEntity", self)
 	seat_info.entity = seat
 
 	-- Constrain seat to this object
@@ -1596,7 +1596,7 @@ function ENT:Think()
 	
 	-- Apply mass of passengers
 	if self.NormalMass then
-		self:GetPhysicsObject():SetMass(self.NormalMass + 80*self:GetNWFloat("PassengerCount"))
+		self:GetPhysicsObject():SetMass(self.NormalMass + 80*self:GetNW2Float("PassengerCount"))
 	end
 	
 	-- Hack for VAH switch on non-supported maps so you don't have to hold space all the time
@@ -1742,7 +1742,7 @@ function ENT:Think()
 	end
 	self.OldSpeed = self.Speed]]
 	-- Go to next think
-	self:SetNWFloat("Accel",math.Round((self.OldSpeed or 0) - (self.Speed or 0)*(self.SpeedSign or 0),2))
+	self:SetNW2Float("Accel",math.Round((self.OldSpeed or 0) - (self.Speed or 0)*(self.SpeedSign or 0),2))
 	self.OldSpeed = (self.Speed or 0)*(self.SpeedSign or 0)
 	self:NextThink(CurTime()+0.05)
 	return true
@@ -1915,12 +1915,12 @@ net.Receive("metrostroi-cabin-button", function(len, ply)
 
 	if seat and IsValid(seat) and not outside then 
 		-- Player currently driving
-		train = seat:GetNWEntity("TrainEntity")
+		train = seat:GetNW2Entity("TrainEntity")
 		if (not train) or (not train:IsValid()) then return end
 		if (seat != train.DriverSeat) and (seat != train.InstructorsSeat) and (train.CPPICanPhysgun and not train:CPPICanPhysgun(ply)) and not button:find("Door") then return end
 	else
 		-- Player not driving, check recent train
-		train = ply.lastVehicleDriven and ply.lastVehicleDriven:GetNWEntity("TrainEntity") or NULL
+		train = IsValid(ply.lastVehicleDriven) and ply.lastVehicleDriven:GetNW2Entity("TrainEntity") or NULL
 		if outside then
 			local trace = util.TraceLine({
 				start = ply:EyePos(),
@@ -1949,12 +1949,12 @@ net.Receive("metrostroi-panel-touch", function(len, ply)
 
 	if seat and IsValid(seat) and not outside then 
 		-- Player currently driving
-		train = seat:GetNWEntity("TrainEntity")
+		train = seat:GetNW2Entity("TrainEntity")
 		if (not train) or (not train:IsValid()) then return end
 		if (seat != train.DriverSeat) and (seat != train.InstructorsSeat) and not train:CPPICanPhysgun(ply) then return end
 	else
 		-- Player not driving, check recent train
-		train = ply.lastVehicleDriven and ply.lastVehicleDriven:GetNWEntity("TrainEntity") or NULL
+		train = ply.lastVehicleDriven and ply.lastVehicleDriven:GetNW2Entity("TrainEntity") or NULL
 		if outside then
 			local trace = util.TraceLine({
 				start = ply:EyePos(),
@@ -1976,7 +1976,7 @@ end)
 -- Denies entry if player recently sat in the same train seat
 -- This prevents getting stuck in seats when trying to exit
 local function CanPlayerEnter(ply,vec,role)
-	local train = vec:GetNWEntity("TrainEntity")
+	local train = vec:GetNW2Entity("TrainEntity")
 	
 	if IsValid(train) and IsValid(ply.lastVehicleDriven) and ply.lastVehicleDriven.lastDriverTime != nil then
 		if CurTime() - ply.lastVehicleDriven.lastDriverTime < 1 then return false end
@@ -1989,11 +1989,11 @@ local function HandleExitingPlayer(ply, vehicle)
 	vehicle.lastDriverTime = CurTime()
 	ply.lastVehicleDriven = vehicle
 
-	local train = vehicle:GetNWEntity("TrainEntity")
+	local train = vehicle:GetNW2Entity("TrainEntity")
 	if IsValid(train) then
 		
 		-- Move exiting player
-		local seattype = vehicle:GetNWString("SeatType")
+		local seattype = vehicle:GetNW2String("SeatType")
 		local offset 
 		
 		if (seattype == "driver") then

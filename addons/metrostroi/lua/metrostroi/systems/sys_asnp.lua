@@ -150,7 +150,7 @@ end
 TRAIN_SYSTEM.LoadSeq = "/-\\|"
 function TRAIN_SYSTEM:ClientThink()
 
-	local State = self.Train:GetNWInt("Announcer:State",-1)
+	local State = self.Train:GetNW2Int("Announcer:State",-1)
 	self:STR1(true)
 	
 	if State == -2 then
@@ -167,7 +167,7 @@ function TRAIN_SYSTEM:ClientThink()
 	
 	if State == 1 then
 		self:STR1("Welcome")
-		if self.Train:GetNWBool("BPSNBuzzType",false) then
+		if self.Train:GetNW2Bool("BPSNBuzzType",false) then
 			self:STR1("    pnm    ",true)
 		else
 			self:STR1("    riu    ",true)
@@ -182,8 +182,8 @@ function TRAIN_SYSTEM:ClientThink()
 		return
 	end
 	if State == 2 then
-		local RouteNumber = self.Train:GetNWString("Announcer:RouteNumber","00")
-		local Pos = self.Train:GetNWInt("Announcer:State2Pos",1)
+		local RouteNumber = self.Train:GetNW2String("Announcer:RouteNumber","00")
+		local Pos = self.Train:GetNW2Int("Announcer:State2Pos",1)
 		self:STR1("enter route number: ")
 		if Pos == 1 then
 			self:STR1("_",true) 
@@ -205,19 +205,19 @@ function TRAIN_SYSTEM:ClientThink()
 			self:STR1(" digit: \"menu\"",true)
 		end
 	end
-	if State > 2 and not Metrostroi.EndStations[self.Train:GetNWInt("Announcer:Line",1)] then
+	if State > 2 and not Metrostroi.EndStations[self.Train:GetNW2Int("Announcer:Line",1)] then
 		self:STR1("Client error")
 		self:STR1("EndStations")
 		return
 	end
-	if State > 2 and not Metrostroi.WorkingStations[self.Train:GetNWInt("Announcer:Line",1)] then
+	if State > 2 and not Metrostroi.WorkingStations[self.Train:GetNW2Int("Announcer:Line",1)] then
 		self:STR1("Client error")
 		self:STR1("WorkingStations")
 		return
 	end
 		
 	if State == 3 then
-		local Line = self.Train:GetNWInt("Announcer:Line",1)
+		local Line = self.Train:GetNW2Int("Announcer:Line",1)
 		local St = Metrostroi.EndStations[Line][1]
 		local En = Metrostroi.EndStations[Line][#Metrostroi.EndStations[Line]]
 		self:STR1("choose route")
@@ -239,40 +239,48 @@ function TRAIN_SYSTEM:ClientThink()
 	end
 
 	if State == 4 then
-		local Line = self.Train:GetNWInt("Announcer:Line",1)
-		local StSt = self.Train:GetNWInt("Announcer:FirstStation",1)
+		local Line = self.Train:GetNW2Int("Announcer:Line",1)
+		local StSt = self.Train:GetNW2Int("Announcer:FirstStation",1)
 		local St =Metrostroi.EndStations[Line][StSt]
 		self:STR1("Choose start station")
-		self:STR1(St)
-		local tim = CurTime()%4.5
-		self:STR1(":",true)
-		self:DisplayStation(St,true)
+		if not St then
+			self:STR1("Error, restart ASNP")
+		else
+			self:STR1(St )
+			local tim = CurTime()%4.5
+			self:STR1(":",true)
+			self:DisplayStation(St,true)
+		end
 	end
 
 	if State == 5 then
-		local Line = self.Train:GetNWInt("Announcer:Line",1)
-		local StSt = self.Train:GetNWInt("Announcer:LastStation",1)
+		local Line = self.Train:GetNW2Int("Announcer:Line",1)
+		local StSt = self.Train:GetNW2Int("Announcer:LastStation",1)
 		local St =Metrostroi.EndStations[Line][StSt]
 		self:STR1("Choose end station")
-		self:STR1(St)
-		local tim = CurTime()%4.5
-		self:STR1(":",true)
-		self:DisplayStation(St,true)
+		if not St then
+			self:STR1("Error, restart ASNP")
+		else
+			self:STR1(St)
+			local tim = CurTime()%4.5
+			self:STR1(":",true)
+			self:DisplayStation(St,true)
+		end
 	end
 
 	if State == 6 then
-		local Style = self.Train:GetNWInt("Announcer:Style",1)
+		local Style = self.Train:GetNW2Int("Announcer:Style",1)
 		self:STR1("Choose style")
 		self:STR1(Metrostroi.PlayingStyles[Style])
 	end
 
 	if State == 7 then
-		local Line = self.Train:GetNWInt("Announcer:Line",1)
-		local StStF = self.Train:GetNWInt("Announcer:FirstStation",1)
-		local StStL = self.Train:GetNWInt("Announcer:LastStation",1)
+		local Line = self.Train:GetNW2Int("Announcer:Line",1)
+		local StStF = self.Train:GetNW2Int("Announcer:FirstStation",1)
+		local StStL = self.Train:GetNW2Int("Announcer:LastStation",1)
 		local StF =Metrostroi.EndStations[Line][StStF]
 		local StL =Metrostroi.EndStations[Line][StStL]
-		local Style = self.Train:GetNWInt("Announcer:Style",1)
+		local Style = self.Train:GetNW2Int("Announcer:Style",1)
 		self:STR1("Check settings")
 		local tim = CurTime()%6
 		if tim < 1.5 then
@@ -294,14 +302,14 @@ function TRAIN_SYSTEM:ClientThink()
 		self.End = false
 	end
 	if State == 8 then
-		local Depeat = self.Train:GetNWBool("Announcer:Depeat",false)
+		local Depeat = self.Train:GetNW2Bool("Announcer:Depeat",false)
 	
-		local RouteNumber = self.Train:GetNWString("Announcer:RouteNumber","00")
+		local RouteNumber = self.Train:GetNW2String("Announcer:RouteNumber","00")
 
-		local Line = self.Train:GetNWInt("Announcer:Line",1)
-		local StF = self.Train:GetNWInt("Announcer:FirstStationW",1)
-		local Stl = self.Train:GetNWInt("Announcer:LastStationW",1)
-		local StC = self.Train:GetNWInt("Announcer:CurrentStation",2)
+		local Line = self.Train:GetNW2Int("Announcer:Line",1)
+		local StF = self.Train:GetNW2Int("Announcer:FirstStationW",1)
+		local Stl = self.Train:GetNW2Int("Announcer:LastStationW",1)
+		local StC = self.Train:GetNW2Int("Announcer:CurrentStation",2)
 		
 		local add = Stl > StF and 1 or -1
 		local St =Metrostroi.WorkingStations[Line][StC]
@@ -314,13 +322,13 @@ function TRAIN_SYSTEM:ClientThink()
 		--self.Right = Metrostroi.AnnouncerData[St][2] 
 		--if self.Right then self:STR1("*R",true) else self:STR1("*L",true) end
 		
-		if self.Train:GetNWInt("Announcer:Locked",0) > 0 and self.Train:GetNWInt("Announcer:Locked",0) ~= 2 then
+		if self.Train:GetNW2Int("Announcer:Locked",0) > 0 and self.Train:GetNW2Int("Announcer:Locked",0) ~= 2 then
 			self:STR1("*L",true)
 		else
 			self:STR1(" L",true)
 		end
 
-		if not self.Train:GetNWBool("Announcer:Playing1",false) then
+		if not self.Train:GetNW2Bool("Announcer:Playing1",false) then
 			if add > 0 then
 				self:STR1("I  ")
 			else
@@ -328,7 +336,7 @@ function TRAIN_SYSTEM:ClientThink()
 			end
 			self:STR1(string.format("%02d ",RouteNumber),true)
 		end
-		if self.Train:GetNWBool("Announcer:Playing1",false) then
+		if self.Train:GetNW2Bool("Announcer:Playing1",false) then
 			self:STR1("<<<   Goes Announce   >>>")
 			--self:DisplayStation(St,true,23)
 		elseif add > 0 and StC >= Stl or add < 0 and StC <= Stl then
@@ -340,11 +348,11 @@ function TRAIN_SYSTEM:ClientThink()
 		end
 		self:STR1(string.rep(" ",23-#self.STR1r[self.STR1x-1]),true)
 		if add > 0 and StC < StL or add < 0 and StC > StL then
-			if not self.Train:GetNWBool("Announcer:Playing1",false) then
+			if not self.Train:GetNW2Bool("Announcer:Playing1",false) then
 				--if self.Right then self:STR1("R",true) else self:STR1("L",true) end
 			--else
 				--if Metrostroi.AnnouncerData[StL][2] then self:STR1("*R",true) else self:STR1("*L",true) end
-				if self.Train:GetNWInt("Announcer:Locked",0) > 1 then
+				if self.Train:GetNW2Int("Announcer:Locked",0) > 1 then
 					self:STR1("*R",true)
 				else
 					self:STR1(" R",true)
@@ -354,7 +362,7 @@ function TRAIN_SYSTEM:ClientThink()
 	end
 
 	if State == 9 then
-		local Choosed = self.Train:GetNWInt("Announcer:Choosed",0)
+		local Choosed = self.Train:GetNW2Int("Announcer:Choosed",0)
 		if Choosed == 0 then
 			self:STR1(">Back")
 			self:STR1(" Swap paths")
@@ -380,7 +388,7 @@ function TRAIN_SYSTEM:ReloadSigns()
 
 	if self.Train.SignsList[StL] then
 		self.Train.SignsIndex = self.Train.SignsList[StL] or 1
-		if self.Train.SignsList[self.Train.SignsIndex] then self.Train:SetNWString("FrontText",self.Train.SignsList[self.Train.SignsIndex][2]) end
+		if self.Train.SignsList[self.Train.SignsIndex] then self.Train:SetNW2String("FrontText",self.Train.SignsList[self.Train.SignsIndex][2]) end
 	end
 
 	local StF= Metrostroi.EndStations[self.Line][self.FirstStation]
@@ -389,7 +397,7 @@ function TRAIN_SYSTEM:ReloadSigns()
 	LastTrain:PrepareSigns()
 	if LastTrain.SignsList[StF] then
 		LastTrain.SignsIndex = self.Train.SignsList[StF] or 1
-		if self.Train.SignsList[self.Train.SignsIndex] then LastTrain:SetNWString("FrontText",self.Train.SignsList[self.Train.SignsIndex][2]) end
+		if self.Train.SignsList[self.Train.SignsIndex] then LastTrain:SetNW2String("FrontText",self.Train.SignsList[self.Train.SignsIndex][2]) end
 	end
 end
 
@@ -894,40 +902,40 @@ function TRAIN_SYSTEM:Think()
 			end
 		end
 	end
-	self.Train:SetNWInt("Announcer:State",self.State)
-	self.Train:SetNWInt("Announcer:Line",self.Line)
-	self.Train:SetNWInt("Announcer:FirstStation",self.FirstStation)
-	self.Train:SetNWInt("Announcer:LastStation",self.LastStation)
-	self.Train:SetNWString("Announcer:RouteNumber",self.RouteNumber)
+	self.Train:SetNW2Int("Announcer:State",self.State)
+	self.Train:SetNW2Int("Announcer:Line",self.Line)
+	self.Train:SetNW2Int("Announcer:FirstStation",self.FirstStation)
+	self.Train:SetNW2Int("Announcer:LastStation",self.LastStation)
+	self.Train:SetNW2String("Announcer:RouteNumber",self.RouteNumber)
 	if self.State == 2 then
-		self.Train:SetNWInt("Announcer:State2Pos",self.State2Pos)
+		self.Train:SetNW2Int("Announcer:State2Pos",self.State2Pos)
 	end
 	if self.State == 6 then
-		self.Train:SetNWString("Announcer:Style",self.Style)
+		self.Train:SetNW2String("Announcer:Style",self.Style)
 	end
 	if self.State == 8 then
-		self.Train:SetNWInt("Announcer:FirstStationW",self.FirstStationW)
-		self.Train:SetNWInt("Announcer:LastStationW",self.LastStationW)
-		self.Train:SetNWString("Announcer:CurrentStation",self.CurrentStation)
-		self.Train:SetNWBool("Announcer:Depeat",self.Depeat)
+		self.Train:SetNW2Int("Announcer:FirstStationW",self.FirstStationW)
+		self.Train:SetNW2Int("Announcer:LastStationW",self.LastStationW)
+		self.Train:SetNW2String("Announcer:CurrentStation",self.CurrentStation)
+		self.Train:SetNW2Bool("Announcer:Depeat",self.Depeat)
 		if self.Train.ASNP31.Value == 1 then
 			if self.Train.ASNP32.Value == 1 then
-				self.Train:SetNWInt("Announcer:Locked",3)
+				self.Train:SetNW2Int("Announcer:Locked",3)
 			else
-				self.Train:SetNWInt("Announcer:Locked",1)
+				self.Train:SetNW2Int("Announcer:Locked",1)
 			end
 		elseif self.Train.ASNP32.Value == 1 then
-			self.Train:SetNWInt("Announcer:Locked",2)
+			self.Train:SetNW2Int("Announcer:Locked",2)
 		else
-			self.Train:SetNWInt("Announcer:Locked",0)
+			self.Train:SetNW2Int("Announcer:Locked",0)
 		end
 		
 	end
 	if self.State == 9 then
-		self.Train:SetNWInt("Announcer:Choosed",self.Choosed)
+		self.Train:SetNW2Int("Announcer:Choosed",self.Choosed)
 	end
-	self.Train:SetNWBool("Announcer:Playing", self.Train.Announcer.ScheduleAnnouncement > 2)
-	self.Train:SetNWBool("Announcer:Playing1", #self.Train.Announcer.Schedule > 0)
+	self.Train:SetNW2Bool("Announcer:Playing", self.Train.Announcer.ScheduleAnnouncement > 2)
+	self.Train:SetNW2Bool("Announcer:Playing1", #self.Train.Announcer.Schedule > 0)
 	if self.FirstStation and self.Line and self.FirstStationW ~= self.FirstStation then
 		self.FirstStationW = Metrostroi.WorkingStations[self.Line][Metrostroi.EndStations[self.Line][self.FirstStation]]
 	end

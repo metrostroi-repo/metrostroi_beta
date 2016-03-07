@@ -443,7 +443,6 @@ function TRAIN_SYSTEM:Think(dT)
 	-- Simulate cross-feed between different wagons
 	self:UpdatePressures(Train,dT)
 	
-	
 	----------------------------------------------------------------------------
 	-- Simulate compressor operation and train line depletion
 	self.Compressor = Train.KK.Value * ((not Train.Electric or Train.Electric.Power750V > 550) and 1 or 0)
@@ -600,11 +599,11 @@ function TRAIN_SYSTEM:Think(dT)
 
 	----------------------------------------------------------------------------	
 	-- FIXME
-	Train:SetNWBool("FbI",Train.FrontBrakeLineIsolation.Value ~= 0)
-	Train:SetNWBool("RbI",Train.RearBrakeLineIsolation.Value ~= 0)
-	Train:SetNWBool("FtI",Train.FrontTrainLineIsolation.Value ~= 0)
-	Train:SetNWBool("RtI",Train.RearTrainLineIsolation.Value ~= 0)
-	Train:SetNWBool("AD",Train.AirDistributorDisconnect.Value == 0)
+	Train:SetNW2Bool("FbI",Train.FrontBrakeLineIsolation.Value ~= 0)
+	Train:SetNW2Bool("RbI",Train.RearBrakeLineIsolation.Value ~= 0)
+	Train:SetNW2Bool("FtI",Train.FrontTrainLineIsolation.Value ~= 0)
+	Train:SetNW2Bool("RtI",Train.RearTrainLineIsolation.Value ~= 0)
+	Train:SetNW2Bool("AD",Train.AirDistributorDisconnect.Value == 0)
 	
 
 	local ValveType = self.ValveType > 1

@@ -404,9 +404,9 @@ ENT.FrontDoor = 0
 --------------------------------------------------------------------------------
 
 function ENT:UpdateTextures()
-	local texture = Metrostroi.Skins["train"][self:GetNWString("texture")]
-	local passtexture = Metrostroi.Skins["pass"][self:GetNWString("passtexture")]
-	local cabintexture = Metrostroi.Skins["cab"][self:GetNWString("cabtexture")]
+	local texture = Metrostroi.Skins["train"][self:GetNW2String("texture")]
+	local passtexture = Metrostroi.Skins["pass"][self:GetNW2String("passtexture")]
+	local cabintexture = Metrostroi.Skins["cab"][self:GetNW2String("cabtexture")]
 	for _,self in pairs(self.ClientEnts) do
 		if not IsValid(self) then continue end
 		for k,v in pairs(self:GetMaterials()) do
@@ -427,16 +427,16 @@ end
 --------------------------------------------------------------------------------
 function ENT:Think()
 	self.BaseClass.Think(self)
-	if self.Texture ~= self:GetNWString("texture") then
-		self.Texture = self:GetNWString("texture")
+	if self.Texture ~= self:GetNW2String("texture") then
+		self.Texture = self:GetNW2String("texture")
 		self:UpdateTextures()
 	end
-	if self.PassTexture ~= self:GetNWString("passtexture") then
-		self.PassTexture = self:GetNWString("passtexture")
+	if self.PassTexture ~= self:GetNW2String("passtexture") then
+		self.PassTexture = self:GetNW2String("passtexture")
 		self:UpdateTextures()
 	end
-	if self.CabinTexture ~= self:GetNWString("cabtexture") then
-		self.CabinTexture = self:GetNWString("cabtexture")
+	if self.CabinTexture ~= self:GetNW2String("cabtexture") then
+		self.CabinTexture = self:GetNW2String("cabtexture")
 		self:UpdateTextures()
 	end
 	
@@ -475,8 +475,8 @@ function ENT:Think()
 	self:Animate("KRP",				self:GetPackedBool(113) and 1 or 0, 0,1, 16, false)	
 	self:Animate("BPSNon",			self:GetPackedBool(59) and 1 or 0, 	0,1, 16, false)
 
-	if self.LampType ~= self:GetNWInt("LampType",1) then
-		self.LampType = self:GetNWInt("LampType",1)
+	if self.LampType ~= self:GetNW2Int("LampType",1) then
+		self.LampType = self:GetNW2Int("LampType",1)
 		for i = 1,25 do
 			self:ShowHide("lamp1_"..i,self.LampType == 1)
 			if i < 14 then
@@ -498,7 +498,7 @@ function ENT:Think()
 			end
 		end
 	end
-	local accel = self:GetNWFloat("Accel")
+	local accel = self:GetNW2Float("Accel")
 	--print(accel)
 	--print(accel)
 	--if self:GetPackedBool(157) and not self.Door1 then self.Door1 = 0.99 end
@@ -520,10 +520,10 @@ function ENT:Think()
 	self:Animate("door1",	self:GetPackedBool(157) and (self.Door1 or 0.99) or 0,0,0.54, 1024, 1)
 	self:Animate("door2",	self:GetPackedBool(156) and (self.Door2 or 0.99) or 0,0,0.51, 1024, 1)
 
-	self:Animate("FrontBrake", self:GetNWBool("FbI") and 0 or 1,0,0.35, 3, false)
-	self:Animate("FrontTrain",	self:GetNWBool("FtI") and 0 or 1,0,0.35, 3, false)
-	self:Animate("RearBrake",	self:GetNWBool("RbI") and 1 or 0,0,0.35, 3, false)
-	self:Animate("RearTrain",	self:GetNWBool("RtI") and 1 or 0,0,0.35, 3, false)
+	self:Animate("FrontBrake", self:GetNW2Bool("FbI") and 0 or 1,0,0.35, 3, false)
+	self:Animate("FrontTrain",	self:GetNW2Bool("FtI") and 0 or 1,0,0.35, 3, false)
+	self:Animate("RearBrake",	self:GetNW2Bool("RbI") and 1 or 0,0,0.35, 3, false)
+	self:Animate("RearTrain",	self:GetNW2Bool("RtI") and 1 or 0,0,0.35, 3, false)
 	self:Animate("ParkingBrake",	self:GetPackedBool(160) and 1 or 0,0,0.35, 3, false)
 	
 	-- Animate AV switches
@@ -633,7 +633,7 @@ function ENT:Think()
 	end
 	
 	-- BPSN sound
-	self.BPSNType = self:GetNWInt("BPSNType",7)
+	self.BPSNType = self:GetNW2Int("BPSNType",7)
 	if not self.OldBPSNType then self.OldBPSNType = self.BPSNType end
 	if self.BPSNType ~= self.OldBPSNType then
 		if self.OldBPSNType ~= 7 then
@@ -690,16 +690,16 @@ end
 
 function ENT:DrawPost()
 	self:DrawOnPanel("FrontPneumatic",function()
-		draw.DrawText(self:GetNWBool("FbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
-		draw.DrawText(self:GetNWBool("FtI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("FbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("FtI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
 		draw.DrawText(self:GetPackedBool(160) and "Brake" or "Released","Trebuchet24",950,30,Color(0,0,0,255))
 	end)
 	self:DrawOnPanel("RearPneumatic",function()
-		draw.DrawText(self:GetNWBool("RtI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
-		draw.DrawText(self:GetNWBool("RbI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("RtI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("RbI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
 	end)
 	self:DrawOnPanel("AirDistributor",function()
-		draw.DrawText(self:GetNWBool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
 	end)
 	self:DrawOnPanel("AV_Left",function()
 		draw.DrawText("ВП","Trebuchet24",180,100,Color(0,0,0,255))

@@ -333,11 +333,11 @@ function ENT:Initialize()
 	if self.KVPType == 1 then self.KVPType = 0 end
 	-- BPSN type
 	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*7+0.5)
-	self:SetNWInt("BPSNType",self.BPSNType)
-	self:SetNWInt("KVPType",self.KVPType)
+	self:SetNW2Int("BPSNType",self.BPSNType)
+	self:SetNW2Int("KVPType",self.KVPType)
 
 	self.Blok = 1
-	self:SetNWInt("Blok",1)
+	self:SetNW2Int("Blok",1)
 
 	self.RearDoor = false
 	self.FrontDoor = false
@@ -389,13 +389,13 @@ function ENT:UpdateTextures()
 			self:SetSubMaterial(k-1,texture.textures[tex])
 		end
 	end
-	self:SetNWInt("Blok",(self.Blok or 1))
-	self:SetNWBool("Breakers",(self.Breakers or 0) > 0)
-	self:SetNWInt("LampType",(self.LampType or 1))
-	self:SetNWBool("BPSNBuzzType",self.PNM)
-	self:SetNWString("texture",self.Texture)
-	self:SetNWString("passtexture",self.PassTexture)
-	self:SetNWString("cabtexture",self.CabTexture)
+	self:SetNW2Int("Blok",(self.Blok or 1))
+	self:SetNW2Bool("Breakers",(self.Breakers or 0) > 0)
+	self:SetNW2Int("LampType",(self.LampType or 1))
+	self:SetNW2Bool("BPSNBuzzType",self.PNM)
+	self:SetNW2String("texture",self.Texture)
+	self:SetNW2String("passtexture",self.PassTexture)
+	self:SetNW2String("cabtexture",self.CabTexture)
 end
 function ENT:Think()
 	self.ExtraSeat1:SetPos(Vector(420,-40,-28+1))
@@ -939,8 +939,8 @@ function ENT:Think()
 	end
 	
 	-- RUT test
-	--print(self:GetNWFloat("PassengerCount"))
-	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNWFloat("PassengerCount")/300)))
+	--print(self:GetNW2Float("PassengerCount"))
+	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNW2Float("PassengerCount")/300)))
 	if math.abs(self:GetAngles().pitch) > 2.5 then weightRatio = weightRatio + 1.00 end
 	self.YAR_13A:TriggerInput("WeightLoadRatio",math.max(0,math.min(2.50,weightRatio)))
 	self.YAR_27:TriggerInput("WeightLoadRatio",math.max(0,math.min(2.50,weightRatio)))
@@ -1000,8 +1000,8 @@ function ENT:Think()
 		--print(Format("Train Wire 18 R=%.3f Ohm",RTW18)) --self:GetTrainWire18Resistance()))
 	end
 	-- Temporary hacks
-	--self:SetNWFloat("V",self.Speed)
-	--self:SetNWFloat("A",self.Acceleration)
+	--self:SetNW2Float("V",self.Speed)
+	--self:SetNW2Float("A",self.Acceleration)
 	
 	--print(self.Electric.RPSignalResistor)
 
@@ -1131,14 +1131,14 @@ function ENT:OnButtonPress(button,state)
 		self.SignsIndex = self.SignsIndex + 1
 		if self.SignsIndex > #self.SignsList then self.SignsIndex = 1 end
 		
-		self:SetNWString("FrontText",self.SignsList[self.SignsIndex][2])
+		self:SetNW2String("FrontText",self.SignsList[self.SignsIndex][2])
 	end
 	if button == "PrevSign" then
 		self:PrepareSigns()
 		self.SignsIndex = self.SignsIndex - 1
 		if self.SignsIndex < 1 then self.SignsIndex = #self.SignsList end
 		
-		self:SetNWString("FrontText",self.SignsList[self.SignsIndex][2])
+		self:SetNW2String("FrontText",self.SignsList[self.SignsIndex][2])
 	end
 
 	if button == "Num1P" then
@@ -1147,11 +1147,11 @@ function ENT:OnButtonPress(button,state)
 		num = num + 1
 		if num > 9 then num = 0 end
 		self.RouteNumber = string.SetChar(self.RouteNumber,2, num)
-		self:SetNWString("RouteNumber",self.RouteNumber)
+		self:SetNW2String("RouteNumber",self.RouteNumber)
 		local trn = self.WagonList[#self.WagonList]
 		if IsValid(trn) and trn ~= self then
 			trn.RouteNumber = self.RouteNumber
-			trn:SetNWString("RouteNumber",self.RouteNumber)
+			trn:SetNW2String("RouteNumber",self.RouteNumber)
 		end
 			
 	end
@@ -1161,11 +1161,11 @@ function ENT:OnButtonPress(button,state)
 		num = num - 1
 		if num < 0 then num = 9 end
 		self.RouteNumber = string.SetChar(self.RouteNumber,2, num)
-		self:SetNWString("RouteNumber",self.RouteNumber)
+		self:SetNW2String("RouteNumber",self.RouteNumber)
 		local trn = self.WagonList[#self.WagonList]
 		if IsValid(trn) and trn ~= self then
 			trn.RouteNumber = self.RouteNumber
-			trn:SetNWString("RouteNumber",self.RouteNumber)
+			trn:SetNW2String("RouteNumber",self.RouteNumber)
 		end
 	end
 	if button == "Num2P" then
@@ -1174,11 +1174,11 @@ function ENT:OnButtonPress(button,state)
 		num = num + 1
 		if num > 9 then num = 0 end
 		self.RouteNumber = string.SetChar(self.RouteNumber,1, num)
-		self:SetNWString("RouteNumber",self.RouteNumber)
+		self:SetNW2String("RouteNumber",self.RouteNumber)
 		local trn = self.WagonList[#self.WagonList]
 		if IsValid(trn) and trn ~= self then
 			trn.RouteNumber = self.RouteNumber
-			trn:SetNWString("RouteNumber",self.RouteNumber)
+			trn:SetNW2String("RouteNumber",self.RouteNumber)
 		end
 	end
 	if button == "Num2M" then
@@ -1187,20 +1187,20 @@ function ENT:OnButtonPress(button,state)
 		num = num - 1
 		if num < 0 then num = 9 end
 		self.RouteNumber = string.SetChar(self.RouteNumber,1, num)
-		self:SetNWString("RouteNumber",self.RouteNumber)
+		self:SetNW2String("RouteNumber",self.RouteNumber)
 		local trn = self.WagonList[#self.WagonList]
 		if IsValid(trn) and trn ~= self then
 			trn.RouteNumber = self.RouteNumber
-			trn:SetNWString("RouteNumber",self.RouteNumber)
+			trn:SetNW2String("RouteNumber",self.RouteNumber)
 		end
 	end
 	if button == "RouteNumberUpdate" then
 		self.RouteNumber = #state == 0 and "00" or #state == 1 and "0"..state or state
-		self:SetNWString("RouteNumber",self.RouteNumber)
+		self:SetNW2String("RouteNumber",self.RouteNumber)
 		local trn = self.WagonList[#self.WagonList]
 		if IsValid(trn) and trn ~= self then
 			trn.RouteNumber = self.RouteNumber
-			trn:SetNWString("RouteNumber",self.RouteNumber)
+			trn:SetNW2String("RouteNumber",self.RouteNumber)
 		end
 	end
 

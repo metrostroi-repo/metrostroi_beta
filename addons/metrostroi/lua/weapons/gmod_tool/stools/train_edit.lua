@@ -42,7 +42,7 @@ function TOOL:LeftClick(trace)
 	--train:SetSkin(self:GetClientNumber("skin"))
 	train.LED = self:GetClientNumber("led") > 0
 	train.ARSType = self:GetClientNumber("ars")
-	train:SetNWInt("ARSType",train.ARSType)
+	train:SetNW2Int("ARSType",train.ARSType)
 	train.LampType = self:GetClientNumber("lamp") 
 	train.MaskType = self:GetClientNumber("mask") 
 	train.SeatType = self:GetClientNumber("seat") 
@@ -51,11 +51,11 @@ function TOOL:LeftClick(trace)
 	train.BortLampType = self:GetClientNumber("bort") 
 	train.BPSNType= self:GetClientNumber("bpsn")
 	train.Breakers= self:GetClientNumber("breakers")
-	train:SetNWBool("Breakers",(train.Breakers or 1) > 0)
+	train:SetNW2Bool("Breakers",(train.Breakers or 1) > 0)
 	train.OldKVPos = self:GetClientNumber("oldkvpos") > 0
 	train.Adverts = self:GetClientNumber("adv")
-	--train:SetNWInt("ARSType",train.ARSType)
-	train:SetNWInt("BPSNType",train.BPSNType+1)
+	--train:SetNW2Int("ARSType",train.ARSType)
+	train:SetNW2Int("BPSNType",train.BPSNType+1)
 	--if self:GetClientNumber("kvsnd") > 0 then
 	for k,v in pairs(train.SoundNames) do
 		if type(v) ~= "string" then continue end
@@ -63,7 +63,7 @@ function TOOL:LeftClick(trace)
 		if k:find("ezh") then continue end
 		train.SoundNames[k] = string.gsub(v,"kv%d","kv"..self:GetClientNumber("kvsnd"))
 		train.NewKV = self:GetClientNumber("kvsnd") > 1
-		train:SetNWBool("NewKV",train.NewKV)
+		train:SetNW2Bool("NewKV",train.NewKV)
 	end
 	--else
 		--for k,v in pairs(train.SoundNames) do

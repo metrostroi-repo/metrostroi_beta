@@ -62,7 +62,7 @@ function ENT:PostEntityPaste(ply,ent,createdEntities)
 			constraint.Weld(self,self.Wheels,0,0,0,1,0)
 		end
 		if CPPI then self.Wheels:CPPISetOwner(self:CPPIGetOwner()) end
-		self.Wheels:SetNWEntity("TrainBogey",self)
+		self.Wheels:SetNW2Entity("TrainBogey",self)
 	end
 
 end
@@ -142,8 +142,8 @@ function ENT:InitializeWheels()
 		else
 			constraint.Weld(self,wheels,0,0,0,1,0)
 		end
-		if CPPI then wheels:CPPISetOwner(self:CPPIGetOwner() or self:GetNWEntity("TrainEntity"):GetOwner()) end
-		wheels:SetNWEntity("TrainBogey",self)
+		if CPPI then wheels:CPPISetOwner(self:CPPIGetOwner() or self:GetNW2Entity("TrainEntity"):GetOwner()) end
+		wheels:SetNW2Entity("TrainBogey",self)
 		self.Wheels = wheels
 	end
 end
@@ -264,8 +264,8 @@ function ENT:Use(ply)
 end
 
 function ENT:ConnectDisconnect(status)
-	local isfront = self:GetNWBool("IsForwardBogey")
-	local train = self:GetNWEntity("TrainEntity")
+	local isfront = self:GetNW2Bool("IsForwardBogey")
+	local train = self:GetNW2Entity("TrainEntity")
 	if IsValid(train) then
 		if status ~= nil then
 			if status then train:OnBogeyConnect(self, isfront) else train:OnBogeyDisconnect(self, isfront) end
@@ -285,8 +285,8 @@ function ENT:ConnectDisconnect(status)
 end
 
 function ENT:GetConnectDisconnect()
-	local isfront = self:GetNWBool("IsForwardBogey")
-	local train = self:GetNWEntity("TrainEntity") 
+	local isfront = self:GetNW2Bool("IsForwardBogey")
+	local train = self:GetNW2Entity("TrainEntity") 
 	if IsValid(train) then
 		if (train.FrontCoupledBogeyDisconnect and isfront) or (train.RearCoupledBogeyDisconnect and not isfront) then
 			return false
@@ -326,8 +326,8 @@ function ENT:OnCouple(ent)
 	self.CoupledBogey = ent
 	
 	--Call OnCouple on our parent train as well
-	local parent = self:GetNWEntity("TrainEntity")
-	local isforward = self:GetNWBool("IsForwardBogey")
+	local parent = self:GetNW2Entity("TrainEntity")
+	local isforward = self:GetNW2Bool("IsForwardBogey")
 	
 	if IsValid(parent) then
 		parent:OnCouple(ent,isforward)
@@ -336,8 +336,8 @@ end
 
 function ENT:OnDecouple()
 	--Call OnDecouple on our parent train as well
-	local parent = self:GetNWEntity("TrainEntity")
-	local isforward = self:GetNWBool("IsForwardBogey")
+	local parent = self:GetNW2Entity("TrainEntity")
+	local isforward = self:GetNW2Bool("IsForwardBogey")
 	
 	if IsValid(parent) then
 		parent:OnDecouple(isforward)
@@ -350,11 +350,11 @@ function ENT:Think()
 	-- Re-initialize wheels
 	if (not self.Wheels) or
 		(not self.Wheels:IsValid()) or
-		(self.Wheels:GetNWEntity("TrainBogey") ~= self) then
+		(self.Wheels:GetNW2Entity("TrainBogey") ~= self) then
 		self:InitializeWheels()
 		
-		if IsValid(self:GetNWEntity("TrainEntity")) then
-			constraint.NoCollide(self.Wheels,self:GetNWEntity("TrainEntity"),0,0)
+		if IsValid(self:GetNW2Entity("TrainEntity")) then
+			constraint.NoCollide(self.Wheels,self:GetNW2Entity("TrainEntity"),0,0)
 		end
 	end
  
@@ -364,7 +364,7 @@ function ENT:Think()
 	self.PrevTime = CurTime()
 	self.Angle = self.Wheels.Angle
 
-	self:SetNWEntity("TrainWheels",self.Wheels)
+	self:SetNW2Entity("TrainWheels",self.Wheels)
 
 	-- Skip physics related stuff
 	if (not (self.Wheels and self.Wheels:IsValid() and self.Wheels:GetPhysicsObject():IsValid()))

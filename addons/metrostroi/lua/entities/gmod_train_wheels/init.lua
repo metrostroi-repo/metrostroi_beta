@@ -18,6 +18,7 @@ function ENT:Initialize()
 		self:SetSolid(SOLID_VPHYSICS)
 	end
 	self.Meters = 0
+	self.Angle = 0
 end
 
 function ENT:Think(dT)
@@ -25,7 +26,8 @@ function ENT:Think(dT)
 	self.PrevTime = self.PrevTime or CurTime()
 	self.dT = (CurTime() - self.PrevTime)
 	self.PrevTime = CurTime()
-	local Bogey = self:GetNWEntity("TrainBogey")
+	local Bogey = self:GetNW2Entity("TrainBogey")
+
 	--if not IsValid(Bogey) then return end
 	--self.Meters = self.Meters + self.dT * Bogey.Speed * Bogey.SpeedSign
 	

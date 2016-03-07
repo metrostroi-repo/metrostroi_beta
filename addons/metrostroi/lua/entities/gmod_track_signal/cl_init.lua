@@ -178,8 +178,8 @@ function ENT:Think()
 	local ID2 = 0
 	-- Create new clientside models
 	if not self.ARSOnly then
-		self.Sig = self:GetNWString("Signal")
-		self.Num = self:GetNWString("Number",nil)
+		self.Sig = self:GetNW2String("Signal")
+		self.Num = self:GetNW2String("Number",nil)
 		if self.OldSig ~= self.Sig then
 			self.NextSignalWork = CurTime() + 0.7
 		end

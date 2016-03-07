@@ -154,14 +154,14 @@ function TRAIN_SYSTEM:ReloadSigns()
 	self.Train:PrepareSigns()
 	if self.Train.SignsList[tonumber(self.LastStation)] then
 		self.Train.SignsIndex = self.Train.SignsList[tonumber(self.LastStation)] or 1
-		if self.Train.SignsList[self.Train.SignsIndex] then self.Train:SetNWString("FrontText",self.Train.SignsList[self.Train.SignsIndex][2]) end
+		if self.Train.SignsList[self.Train.SignsIndex] then self.Train:SetNW2String("FrontText",self.Train.SignsList[self.Train.SignsIndex][2]) end
 	end
 	if #self.Train.WagonList > 1 then
 		local LastTrain = self.Train.WagonList[#self.Train.WagonList]
 		LastTrain:PrepareSigns()
 		if LastTrain.SignsList[tonumber(self.FirstStation)] then
 			LastTrain.SignsIndex = self.Train.SignsList[tonumber(self.FirstStation)] or 1
-			if self.Train.SignsList[self.Train.SignsIndex] then LastTrain:SetNWString("FrontText",self.Train.SignsList[self.Train.SignsIndex][2]) end
+			if self.Train.SignsList[self.Train.SignsIndex] then LastTrain:SetNW2String("FrontText",self.Train.SignsList[self.Train.SignsIndex][2]) end
 		end
 	end
 end

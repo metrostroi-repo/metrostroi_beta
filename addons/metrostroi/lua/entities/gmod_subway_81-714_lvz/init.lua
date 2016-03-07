@@ -191,7 +191,7 @@ function ENT:Initialize()
 	
 	-- BPSN type
 	self.BPSNType = self.BPSNType or 2+math.floor(Metrostroi.PeriodRandomNumber()*7+0.5)
-	self:SetNWInt("BPSNType",self.BPSNType)
+	self:SetNW2Int("BPSNType",self.BPSNType)
 	self.OldTexture = 0
 	
 	self.LampsBlink = {}
@@ -233,10 +233,10 @@ function ENT:UpdateTextures()
 			self:SetSubMaterial(k-1,texture.textures[tex])
 		end
 	end
-	self:SetNWInt("LampType",(self.LampType or 1))
-	self:SetNWBool("BPSNBuzzType",self.PNM)
-	self:SetNWString("texture",self.Texture)
-	self:SetNWString("passtexture",self.PassTexture)
+	self:SetNW2Int("LampType",(self.LampType or 1))
+	self:SetNW2Bool("BPSNBuzzType",self.PNM)
+	self:SetNW2String("texture",self.Texture)
+	self:SetNW2String("passtexture",self.PassTexture)
 end
 
 function ENT:CreateJointSound(sndnum)
@@ -414,7 +414,7 @@ function ENT:Think()
 	self:SetPackedRatio(10,(self.VB.Value * self.Battery.Voltage) / 120.0)
 	
 	-- RUT test
-	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNWFloat("PassengerCount",0)/300)))
+	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNW2Float("PassengerCount",0)/300)))
 	if math.abs(self:GetAngles().pitch) > 2.5 then weightRatio = weightRatio + 1.00 end
 	self.YAR_13A:TriggerInput("WeightLoadRatio",math.max(0,math.min(2.50,weightRatio)))
 	-- Exchange some parameters between engines, pneumatic system, and real world

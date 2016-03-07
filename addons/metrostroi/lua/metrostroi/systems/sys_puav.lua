@@ -69,7 +69,7 @@ if CLIENT then
 	function TRAIN_SYSTEM:PUAV1(train)
 		--self:DrawDigit(2.3+9.8*0,	4, 8, 0.0625, 0.056)
 		--self:DrawDigit(2.3+9.8*1,	4, 8, 0.0625, 0.056)
-		if self:GetNWInt("PUAV:Choose",0) == 0 then
+		if self:GetNW2Int("PUAV:Choose",0) == 0 then
 			local time = os.date("!%H%M",os.time())--)os.date("%h",os_time)
 			self:DrawDigit(2.3+9.8*2,	4, tonumber(time[1]), 0.0625, 0.056)
 			self:DrawDigit(2.3+9.8*3,	4, tonumber(time[2]), 0.0625, 0.056)
@@ -79,15 +79,15 @@ if CLIENT then
 				surface.DrawRect(39,15,1,1)
 			end
 			self:DrawDigit(2.3+9.8*5,	4, tonumber(time[4]), 0.0625, 0.056)
-		elseif self:GetNWInt("PUAV:Choose",0) == 1 then
-			self:DrawDigit(2.3+9.8*0,	4, self:GetNWInt("PUAV:Line",1), 0.0625, 0.056)
-		elseif self:GetNWInt("PUAV:Choose",0) == 2 then
-			local st = tostring(self:GetNWInt("PUAV:FirstStation",111))
+		elseif self:GetNW2Int("PUAV:Choose",0) == 1 then
+			self:DrawDigit(2.3+9.8*0,	4, self:GetNW2Int("PUAV:Line",1), 0.0625, 0.056)
+		elseif self:GetNW2Int("PUAV:Choose",0) == 2 then
+			local st = tostring(self:GetNW2Int("PUAV:FirstStation",111))
 			self:DrawDigit(2.3+9.8*3,	4 ,tonumber(st[1]), 0.0625, 0.056)
 			self:DrawDigit(2.3+9.8*4,	4 ,tonumber(st[2]), 0.0625, 0.056)
 			self:DrawDigit(2.3+9.8*5,	4 ,tonumber(st[3]), 0.0625, 0.056)
-		elseif self:GetNWInt("PUAV:Choose",0) == 3 then
-			local st = tostring(self:GetNWInt("PUAV:LastStation",111))
+		elseif self:GetNW2Int("PUAV:Choose",0) == 3 then
+			local st = tostring(self:GetNW2Int("PUAV:LastStation",111))
 			self:DrawDigit(2.3+9.8*3,	4 ,tonumber(st[1]), 0.0625, 0.056)
 			self:DrawDigit(2.3+9.8*4,	4 ,tonumber(st[2]), 0.0625, 0.056)
 			self:DrawDigit(2.3+9.8*5,	4 ,tonumber(st[3]), 0.0625, 0.056)
@@ -325,10 +325,10 @@ function TRAIN_SYSTEM:Think(dT)
 		self.TimeOverride = nil
 		--print(1)
 		self.Time = CurTime()
-		Train:SetNWInt("PUAV:Choose",self.Choose)
-		Train:SetNWInt("PUAV:LastStation",self.LastStation or 1)
-		Train:SetNWInt("PUAV:FirstStation",self.FirstStation or 1)
-		Train:SetNWInt("PUAV:Line",self.Line or 1)
+		Train:SetNW2Int("PUAV:Choose",self.Choose)
+		Train:SetNW2Int("PUAV:LastStation",self.LastStation or 1)
+		Train:SetNW2Int("PUAV:FirstStation",self.FirstStation or 1)
+		Train:SetNW2Int("PUAV:Line",self.Line or 1)
 	end
 	self.RouteNumber = string.gsub(Train.RouteNumber or "","^(0+)","")
 	self.Line = Train.UPO.Line

@@ -133,7 +133,7 @@ end
 function Player:GetTrain()
 	local seat = self:GetVehicle()
 	if seat then 
-		return seat:GetNWEntity("TrainEntity")
+		return seat:GetNW2Entity("TrainEntity")
 	end
 end
 
@@ -246,17 +246,17 @@ concommand.Add("metrostroi_schedule", function(ply, _, args)
 
 		train.Schedule = Metrostroi.GenerateSchedule("Line"..line.."_Platform"..path,starts,ends)
 		if train.Schedule then
-			train:SetNWInt("_schedule_id",train.Schedule.ScheduleID)
-			train:SetNWInt("_schedule_duration",train.Schedule.Duration)
-			train:SetNWInt("_schedule_interval",train.Schedule.Interval)
-			train:SetNWInt("_schedule_N",#train.Schedule)
-			train:SetNWInt("_schedule_path",path)
+			train:SetNW2Int("_schedule_id",train.Schedule.ScheduleID)
+			train:SetNW2Int("_schedule_duration",train.Schedule.Duration)
+			train:SetNW2Int("_schedule_interval",train.Schedule.Interval)
+			train:SetNW2Int("_schedule_N",#train.Schedule)
+			train:SetNW2Int("_schedule_path",path)
 			for k,v in ipairs(train.Schedule) do
-				train:SetNWInt("_schedule_"..k.."_1",v[1])
-				train:SetNWInt("_schedule_"..k.."_2",v[2])
-				train:SetNWInt("_schedule_"..k.."_3",v[3])
-				train:SetNWInt("_schedule_"..k.."_4",v[4])
-				train:SetNWString("_schedule_"..k.."_5",Metrostroi.StationNames[v[1]] or v[1])
+				train:SetNW2Int("_schedule_"..k.."_1",v[1])
+				train:SetNW2Int("_schedule_"..k.."_2",v[2])
+				train:SetNW2Int("_schedule_"..k.."_3",v[3])
+				train:SetNW2Int("_schedule_"..k.."_4",v[4])
+				train:SetNW2String("_schedule_"..k.."_5",Metrostroi.StationNames[v[1]] or v[1])
 			end
 		end
 	end

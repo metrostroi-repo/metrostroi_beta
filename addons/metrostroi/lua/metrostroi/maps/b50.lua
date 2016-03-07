@@ -42,18 +42,7 @@ Metrostroi.WorkingStations = {
 	{108,109,110,111,112,113,114,115,116,117,118,119,121,122,123},
 	{108,109,110,111,112,113,114,115,116,117,118,119,121,122,321,322},
 }
-for k, v in pairs(Metrostroi.WorkingStations) do
-	for k1, v1 in pairs(v) do
-		Metrostroi.WorkingStations[k][v1] = k1
-	end
-end
-
 Metrostroi.EndStations = {
 	{108,111,114,121,123},
 	{108,111,114,121,322},
 }
-for k, v in pairs(Metrostroi.EndStations) do
-	for k1, v1 in pairs(v) do
-		Metrostroi.EndStations[k][v1] = k1
-	end
-end

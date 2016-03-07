@@ -468,7 +468,7 @@ end
 function SWEP:DrawHUD()
 	--draw.SimpleText("Choose mode:","Trebuchet24",ScrW()/2, ScrH()-70,color_white,1)
 	--draw.RoundedBox(3, ScrW()/2 - 180/2, ScrH()-40, 180, 30, Color(25,25,25,255))
-	if self:GetNWInt("Type") == 1 then
-		draw.SimpleText("EKK "..(self:GetNWBool("EKK") and "Connected" or "Disconnected"),"Trebuchet24",ScrW()/2, ScrH()-40,color_white,1)
+	if self:GetNW2Int("Type") == 1 then
+		draw.SimpleText("EKK "..(self:GetNW2Bool("EKK") and "Connected" or "Disconnected"),"Trebuchet24",ScrW()/2, ScrH()-40,color_white,1)
 	end
 end

@@ -178,10 +178,10 @@ function TOOL:UpdateGhost(pl, ent)
 	local pos,ang
 	if SERVER then
 		pos, ang = UpdateGhostPos(pl)
-		self:GetOwner():SetNWVector("metrostroi_train_spawner_pos",pos)
-		self:GetOwner():SetNWAngle("metrostroi_train_spawner_angle",ang + Angle(0,self.Rev and 180 or 0,0))
+		self:GetOwner():SetNW2Vector("metrostroi_train_spawner_pos",pos)
+		self:GetOwner():SetNW2Angle("metrostroi_train_spawner_angle",ang + Angle(0,self.Rev and 180 or 0,0))
 	else
-		pos, ang = self:GetOwner():GetNWVector("metrostroi_train_spawner_pos"), self:GetOwner():GetNWAngle("metrostroi_train_spawner_angle")
+		pos, ang = self:GetOwner():GetNW2Vector("metrostroi_train_spawner_pos"), self:GetOwner():GetNW2Angle("metrostroi_train_spawner_angle")
 	end
 	if not ent then return end
 	if self.tbl.Train == 4 then
@@ -295,6 +295,7 @@ function TOOL:SetSettings(ent, ply, i,inth)
 			if ent.SubwayTrain.Manufacturer == "MVM" then
 				ent.ARSType = self.tbl.ARS
 				ent.MaskType = self.tbl.Mask
+				ent:SetNW2Int("ARSType", ent.ARSType)
 			else
 				ent.Blok = self.tbl.Blok
 				ent.MaskType = self.tbl.PiterMsk
@@ -302,10 +303,8 @@ function TOOL:SetSettings(ent, ply, i,inth)
 			ent.Pneumatic.ValveType = self.tbl.Cran
 		end
 		ent.Pneumatic.TrainLinePressure = self.tbl.NM
-		
-		ent:SetNWInt("ARSType", ent.ARSType)
 		ent.BPSNType = self.tbl.BPSN+1
-		ent:SetNWInt("BPSNType",ent.BPSNType)
+		ent:SetNW2Int("BPSNType",ent.BPSNType)
 		for k,v in pairs(Switches) do
 			if (i == 1 or i == self.tbl.WagNum or !self.int) and v ~= "A5"  then ent:TriggerInput(v.."Set", self.tbl.Switches > 0 and (math.random() > math.random(0.1,0.4) or self.tbl.SwitchesR == 0)) end
 		end
@@ -335,7 +334,7 @@ function TOOL:SetSettings(ent, ply, i,inth)
 		ent.LED = self.tbl.LED > 0
 		ent.Breakers= self.tbl.Breakers
 		ent.PNM= self.tbl.PNM > 0
-		ent:SetNWBool("Breakers",(ent.Breakers or 1) > 0)
+		ent:SetNW2Bool("Breakers",(ent.Breakers or 1) > 0)
 		ent:TriggerInput("VBSet", self.tbl.Battery)
 		ent:TriggerInput("GVSet", self.tbl.GV)
 		ent:TriggerInput("ParkingBrakeSet", self.tbl.PB)
@@ -346,7 +345,7 @@ function TOOL:SetSettings(ent, ply, i,inth)
 			if k:find("ezh") then continue end
 			ent.SoundNames[k] = string.gsub(v,"kv%d","kv"..self:GetClientNumber("kvsnd"))
 			ent.NewKV = self:GetClientNumber("kvsnd") > 1
-			ent:SetNWBool("NewKV",ent.NewKV)
+			ent:SetNW2Bool("NewKV",ent.NewKV)
 		end
 		ent.OldKVPos = self.tbl.OldKVPos > 0
 		if ent.Horn then ent.Horn:TriggerInput("NewType",self.tbl.Horn) end

@@ -100,7 +100,7 @@ function ENT:Think()
 	end
 	if self.TrackPosition then
 		--PrintTable(self.TrackPosition.node1)
-		self:SetNWString("ID",self.TrackPosition.path.id.."/"..self.TrackPosition.node1.id)
+		self:SetNW2String("ID",self.TrackPosition.path.id.."/"..self.TrackPosition.node1.id)
 	end
 	return true
 end

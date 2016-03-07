@@ -6,8 +6,8 @@ function ENT:Initialize()
 end
 
 --[[function ENT:MakeStationSign(rus_name,eng_name)
-	self:SetNWString("Type","station_sign")
-	self:SetNWInt("Style",2)
-	self:SetNWString("RusName",rus_name)
-	self:SetNWString("EngName",eng_name)
+	self:SetNW2String("Type","station_sign")
+	self:SetNW2Int("Style",2)
+	self:SetNW2String("RusName",rus_name)
+	self:SetNW2String("EngName",eng_name)
 end]]--

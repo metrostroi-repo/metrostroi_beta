@@ -241,16 +241,16 @@ hook.Add("PostDrawOpaqueRenderables", "metrostroi-draw-stopmarker",function()
 	-- Get seat and train
 	local seat = LocalPlayer():GetVehicle()
 	if not seat then return end
-	local train = seat:GetNWEntity("TrainEntity")
+	local train = seat:GetNW2Entity("TrainEntity")
 	if not IsValid(train) then return end
 
 	-- Calculate acceleration
-	local V = train:GetNWFloat("V",train:GetVelocity():Length()*0.01905)*0.277778
+	local V = train:GetNW2Float("V",train:GetVelocity():Length()*0.01905)*0.277778
 	local newA = (V - prevV)/dT
 	prevV = V
 
 	-- Calculate marker position
-	A = train:GetNWFloat("A",A + (newA - A)*1.0*dT)
+	A = train:GetNW2Float("A",A + (newA - A)*1.0*dT)
 	local T1 = math.abs(V/(A+1e-8))
 	local T2 = math.abs(V/(1.2+1e-8))
 	local D1 = T1*V + (T1^2)*A/2

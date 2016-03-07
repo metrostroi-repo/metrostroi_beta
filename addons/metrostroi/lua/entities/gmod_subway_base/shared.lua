@@ -28,7 +28,7 @@ function ENT:GetStandingArea()
 end
 
 function ENT:BoardPassengers(delta)
-	self:SetNWFloat("PassengerCount", math.max(0,math.min(self:PassengerCapacity(),self:GetNWFloat("PassengerCount") + delta)))
+	self:SetNW2Float("PassengerCount", math.max(0,math.min(self:PassengerCapacity(),self:GetNW2Float("PassengerCount") + delta)))
 end
 
 
@@ -431,7 +431,7 @@ function ENT:SetSoundState(sound,volume,pitch,timeout,range)
 				local ent_nwID
 				if self.SoundPositions[sound] == "cabin" then ent_nwID = "seat_driver" end
 				
-				local ent = self:GetNWEntity(ent_nwID)
+				local ent = self:GetNW2Entity(ent_nwID)
 				if IsValid(ent) then
 					self.Sounds[sound] = CreateSound(ent, Sound(name))
 				else
@@ -486,12 +486,12 @@ function ENT:PlayOnce(soundid,location,range,pitch,randoff)
 	if not location then
 		self:EmitSound(sound, 100*(range or default_range), pitch or (not randoff) and  math.random(95,105) or nil)
 	elseif (location == true) or (location == "cabin") then
-		if CLIENT then self.DriverSeat = self:GetNWEntity("seat_driver") end				
+		if CLIENT then self.DriverSeat = self:GetNW2Entity("seat_driver") end				
 		if IsValid(self.DriverSeat) then
 			self.DriverSeat:EmitSound(sound, 100*(range or default_range),pitch or (not randoff) and  math.random(95,105) or nil)
 		end
 	elseif (location == true) or (location == "instructor") then
-		if CLIENT then self.InstructorsSeat = self:GetNWEntity("seat_instructor") end				
+		if CLIENT then self.InstructorsSeat = self:GetNW2Entity("seat_instructor") end				
 		if IsValid(self.InstructorsSeat) then
 			self.InstructorsSeat:EmitSound(sound, 100*(range or default_range),pitch or (not randoff) and  math.random(95,105) or nil)
 		end
@@ -587,11 +587,11 @@ end
 function ENT:SetPackedRatio(idx,value)
 	local idx = type(idx) == "number" and 999-idx or idx
 	if self._NetData[2][idx] ~= nil and self._NetData[2][idx] == math.floor(value*100) then return end
-	self:SetNWInt(idx,math.floor(value*500))
+	self:SetNW2Int(idx,math.floor(value*500))
 end
 
 function ENT:GetPackedRatio(idx)
-	return self:GetNWInt(type(idx) == "number" and 999-idx or idx)/500
+	return self:GetNW2Int(type(idx) == "number" and 999-idx or idx)/500
 end
 
 --------------------------------------------------------------------------------
@@ -599,9 +599,9 @@ end
 --------------------------------------------------------------------------------
 function ENT:SetPackedBool(idx,value)
 	if self._NetData[1][idx] ~= nil and self._NetData[1][idx] == value then return end
-	self:SetNWBool(idx,value)
+	self:SetNW2Bool(idx,value)
 end
 
 function ENT:GetPackedBool(idx)
-	return self:GetNWBool(idx)
+	return self:GetNW2Bool(idx)
 end

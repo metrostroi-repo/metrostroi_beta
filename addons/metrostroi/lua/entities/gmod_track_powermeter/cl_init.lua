@@ -3,8 +3,8 @@ include("shared.lua")
 function ENT:Draw()
 	self:DrawModel()
 	
-	--self:SetNWFloat("Total",Metrostroi.TotalkWh)
-	--self:SetNWFloat("Rate",Metrostroi.TotalRateWatts)
+	--self:SetNW2Float("Total",Metrostroi.TotalkWh)
+	--self:SetNW2Float("Rate",Metrostroi.TotalRateWatts)
 
 	local pos = self:LocalToWorld(Vector(4.6,-5.5,14))
 	local ang = self:LocalToWorldAngles(Angle(0,90,90))
@@ -35,8 +35,8 @@ function ENT:Draw()
 		
 		--Metrostroi.DrawClockDigit(56+170,48,2.0,0)
 
-		--[[local T0 = self:GetNWFloat("T0",os.time())+1396011937
-		local T1 = self:GetNWFloat("T1",CurTime())
+		--[[local T0 = self:GetNW2Float("T0",os.time())+1396011937
+		local T1 = self:GetNW2Float("T1",CurTime())
 		local dT = (os.time()-T0 + (CurTime() % 1.0)) - (CurTime()-T1)
 		
 		local digits = { 1,2,3,4,5,6 }

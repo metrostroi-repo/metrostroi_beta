@@ -156,8 +156,8 @@ function ENT:UpdateTextures()
 		end
 		
 	end
-	self:SetNWString("texture",self.Texture)
-	self:SetNWString("passtexture",self.PassTexture)
+	self:SetNW2String("texture",self.Texture)
+	self:SetNW2String("passtexture",self.PassTexture)
 end
 
 --------------------------------------------------------------------------------
@@ -180,7 +180,7 @@ function ENT:Think()
 					self:SetSubMaterial(k-1,"")
 				end
 			end
-			self:SetNWString("texture",self.Texture)
+			self:SetNW2String("texture",self.Texture)
 		end
 	end
 	local retVal = self.BaseClass.Think(self)
@@ -279,7 +279,7 @@ function ENT:Think()
 	--self:SetPackedRatio(10,(self.Panel["V1"] * self.Battery.Voltage) / 100.0)
 
 	-- RUT test
-	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNWFloat("PassengerCount")/300)))
+	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNW2Float("PassengerCount")/300)))
 	if math.abs(self:GetAngles().pitch) > 2.5 then weightRatio = weightRatio + 1.00 end
 	self.YAR_13A:TriggerInput("WeightLoadRatio",math.max(0,math.min(2.50,weightRatio)))
 	
