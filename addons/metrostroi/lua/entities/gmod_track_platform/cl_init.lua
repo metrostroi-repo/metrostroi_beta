@@ -121,7 +121,7 @@ function ENT:PopulatePlatform(platformStart,platformEnd,stationCenter)
 		while iterations <= 16 do
 			-- Generate random constants
 			local a = -1
-			while (a < 0) or (a > 1) do a = gauss_random(self:GetNWFloat("X0"),self:GetNWFloat("Sigma")) end
+			while (a < 0) or (a > 1) do a = gauss_random(self:GetNW2Float("X0"),self:GetNW2Float("Sigma")) end
 			local b = math.abs(gauss_random(0.00,0.20))
 		
 			-- Create random position
@@ -156,7 +156,7 @@ function ENT:Think()
 	--self.TestSound:Stop()
 	--self.TestSound:Play()
 	--self.TestSound:ChangeVolume(0.7)
-	if self:GetNWBool("MustPlayAnnounces") then
+	if self:GetNW2Bool("MustPlayAnnounces") then
 		self.PassengerSounds:SetSoundLevel(105)
 		self.PassengerSounds:Play()
 		self.PassengerSounds:SetSoundLevel(105)
@@ -166,7 +166,7 @@ function ENT:Think()
 			self.PassengerSounds:Stop()
 		end
 	end
-	if self:GetNWBool("MustPlaySpooky") then
+	if self:GetNW2Bool("MustPlaySpooky") then
 		self.NonPassengerSounds:SetSoundLevel(105)
 		self.NonPassengerSounds:Play()
 		self.NonPassengerSounds:SetSoundLevel(105)
@@ -181,9 +181,9 @@ function ENT:Think()
 	self.PrevTime = CurTime()
 	
 	-- Platform parameters
-	local platformStart = self:GetNWVector("PlatformStart")
-	local platformEnd = self:GetNWVector("PlatformEnd")
-	local stationCenter = self:GetNWVector("StationCenter")
+	local platformStart = self:GetNW2Vector("PlatformStart")
+	local platformEnd = self:GetNW2Vector("PlatformEnd")
+	local stationCenter = self:GetNW2Vector("StationCenter")
 	
 	-- Platforms with tracks in middle
 	local dot = (stationCenter - platformStart):Cross(platformEnd - platformStart)
@@ -194,7 +194,7 @@ function ENT:Think()
 	
 	-- If platform is defined and pool is not
 	--print(entStart,entEnd,self.Pool)
-	local dataReady = (self:GetNWFloat("X0",-1) >= 0) and (self:GetNWFloat("Sigma",-1) > 0)
+	local dataReady = (self:GetNW2Float("X0",-1) >= 0) and (self:GetNW2Float("Sigma",-1) > 0)
 	local poolReady = (self.Pool) and (#self.Pool == self:PoolSize())
 	if (not poolReady) and (stationCenter:Length() > 0.0) then
 		self:PopulatePlatform(platformStart,platformEnd,stationCenter)
@@ -204,8 +204,8 @@ function ENT:Think()
 	if (CurTime() - (self.ModelCheckTimer or 0) > 1.0) and poolReady then
 		self.ModelCheckTimer = CurTime()
 		
-		local WindowStart = self:GetNWInt("WindowStart")
-		local WindowEnd = self:GetNWInt("WindowEnd")
+		local WindowStart = self:GetNW2Int("WindowStart")
+		local WindowEnd = self:GetNW2Int("WindowEnd")
 		for i=1,self:PoolSize() do
 			local in_bounds = false
 			if WindowStart <= WindowEnd then in_bounds = (i >= WindowStart) and (i < WindowEnd) end
@@ -223,11 +223,11 @@ function ENT:Think()
 				-- Model found that is not in window
 				if self.ClientModels[i] then
 					-- Get nearest door
-					local count = self:GetNWInt("TrainDoorCount",0)
+					local count = self:GetNW2Int("TrainDoorCount",0)
 					local distance = 1e9
 					local target = Vector(0,0,0)
 					for j=1,count do
-						local vec = self:GetNWVector("TrainDoor"..j,Vector(0,0,0))
+						local vec = self:GetNW2Vector("TrainDoor"..j,Vector(0,0,0))
 						local d = vec:Distance(self.ClientModels[i]:GetPos())
 						if d < distance then
 							target = vec
@@ -246,12 +246,12 @@ function ENT:Think()
 	end
 	
 	-- Add models for cleanup of people who left trains
-	self.PassengersLeft = self.PassengersLeft or self:GetNWInt("PassengersLeft")
-	while poolReady and (self.PassengersLeft < self:GetNWInt("PassengersLeft")) do
+	self.PassengersLeft = self.PassengersLeft or self:GetNW2Int("PassengersLeft")
+	while poolReady and (self.PassengersLeft < self:GetNW2Int("PassengersLeft")) do
 		-- Get random door
-		local count = self:GetNWInt("TrainDoorCount",0)
+		local count = self:GetNW2Int("TrainDoorCount",0)
 		local i = math.max(1,math.min(count,1+math.floor((count-1)*math.random() + 0.5)))
-		local pos = self:GetNWVector("TrainDoor"..i,Vector(0,0,0))
+		local pos = self:GetNW2Vector("TrainDoor"..i,Vector(0,0,0))
 		pos.z = self:GetPos().z
 		
 		-- Create clientside model
@@ -319,11 +319,11 @@ function ENT:Think()
 		
 		
 		-- Check if door can be reached at all (it still exists)
-		local count = self:GetNWInt("TrainDoorCount",0)
+		local count = self:GetNW2Int("TrainDoorCount",0)
 		local distance = 1e9
 		local new_target = target
 		for j=1,count do
-			local vec = self:GetNWVector("TrainDoor"..j,Vector(0,0,0))
+			local vec = self:GetNW2Vector("TrainDoor"..j,Vector(0,0,0))
 			local d = vec:Distance(v.target)
 			if d < distance then
 				new_target = vec

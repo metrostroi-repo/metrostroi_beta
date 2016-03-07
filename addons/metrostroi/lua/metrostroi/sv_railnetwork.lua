@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 if not Metrostroi.Paths then
 	-- Definition of paths used in runtime
-	Metrostroi.Paths = {}			
+	Metrostroi.Paths = {}
 	-- Spatial lookup for nodes
 	Metrostroi.SpatialLookup = {}
 	
@@ -415,7 +415,7 @@ function Metrostroi.ScanTrack(itype,node,func,x,dir,checked,startx,train)
 			local isolating = false
 			if IsValid(v) then
 				if itype == "light" then
-					isolating = (v.TrackDir == dir and not v.Routes[v.Route or 1].Repeater) or (v.TrackDir == dir and v.Routes[v.Route or 1].Repeater and tonumber(v.RouteNumber) == 9) or (tonumber(v.RouteNumber) ~= nil and v.Routes[v.Route or 1].Repeater)
+					isolating = ((v.TrackDir == dir and not v.Routes[v.Route or 1].Repeater) or (v.TrackDir == dir and v.Routes[v.Route or 1].Repeater and tonumber(v.RouteNumber) == 9) or (tonumber(v.RouteNumber) ~= nil and v.Routes[v.Route or 1].Repeater)) and not v.PassOcc
 				end
 				if itype == "ars" then
 					isolating = v.TrackDir == dir
@@ -764,7 +764,7 @@ function Metrostroi.UpdateTrainPositions()
 		end
 	end
 end
-timer.Create("Metrostroi_TrainPositionTimer",0.50,0,Metrostroi.UpdateTrainPositions)
+timer.Create("Metrostroi_TrainPositionTimer",0.1,0,Metrostroi.UpdateTrainPositions)
 
 
 --------------------------------------------------------------------------------
@@ -811,42 +811,47 @@ end
 --------------------------------------------------------------------------------
 function Metrostroi.GetTravelTime(src,dest)
 	-- Determine direction of travel
-	assert(src.path == dest.path)
+	--assert(src.path == dest.path)
 	local direction = src.x < dest.x
 	
 	-- Accumulate travel time
 	local travel_time = 0
 	local travel_dist = 0
 	local travel_speed = 20
-	local node = src
-	while (node) and (node ~= dest) do
-		local ars_speed
-		local ars_joint = Metrostroi.GetARSJoint(node,node.x+0.01,true)
-		if ars_joint then
-			--print(ars_joint.Name)
-			local ARSLimit = ars_joint:GetMaxARS()
-			--print(ARSLimit)
-			if ARSLimit >= 4  then
-				ars_speed = ARSLimit*10
+	local iter = 0
+	function scan(node,path)
+		while (node) and (node ~= dest) do
+			local ars_speed
+			local ars_joint = Metrostroi.GetARSJoint(node,node.x+0.01,path or true)
+			if ars_joint then
+				--print(ars_joint.Name)
+				local ARSLimit = ars_joint:GetMaxARS()
+				--print(ARSLimit)
+				if ARSLimit >= 4  then
+					ars_speed = ARSLimit*10
+				end
+				--print(ars_speed)
 			end
-			--print(ars_speed)
-		end
-		if ars_speed then travel_speed = ars_speed end
-		--print(Format("[%03d] %.2f m   V = %02d km/h",node.id,node.length,ars_speed or 0))
-		
-		-- Assume 70% of travel speed
-		local speed = travel_speed * 0.82
+			if ars_speed then travel_speed = ars_speed end
+			--print(Format("[%03d] %.2f m   V = %02d km/h",node.id,node.length,ars_speed or 0))
+			
+			-- Assume 70% of travel speed
+			local speed = travel_speed * 0.82
 
-		-- Add to travel time
-		travel_dist = travel_dist + node.length
-		travel_time = travel_time + (node.length / (speed/3.6))
-		node = node.next
+			-- Add to travel time
+			travel_dist = travel_dist + node.length
+			travel_time = travel_time + (node.length / (speed/3.6))
+			node = node.next
+			if src.path == dest.path and node.branches and node.branches[1][2].path == src.path then scan(node,src.x > node.branches[1][2].x) end
+			if src.path == dest.path and node.branches and  node.branches[2] and node.branches[2][2].path == src.path then scan(node,src.x > node.branches[1][1].x) end
+			assert(iter < 10000, "OH SHI~")
+			iter = iter + 1
+		end
 	end
+	scan(src)
 	
 	return travel_time,travel_dist
 end
-
-
 
 
 --------------------------------------------------------------------------------
@@ -935,11 +940,16 @@ function Metrostroi.Load(name,keep_signs)
 	
 	-- Find places where tracks link up together
 	for pathID,path in pairs(Metrostroi.Paths) do
+		if #path == 0 then break end
 		-- Find position of end nodes
 		local node1,node2 = path[1],path[#path]
-		local pos1 = Metrostroi.GetPositionOnTrack(node1.pos,nil,{ ignore_path = path })
-		local pos2 = Metrostroi.GetPositionOnTrack(node2.pos,nil,{ ignore_path = path })
-		
+		local ignore_path = path
+		if game.GetMap():find("orange") and node1.path.id == 1 then
+			ignore_path = nil
+			--print(node1)
+		end
+		local pos1 = Metrostroi.GetPositionOnTrack(node1.pos,nil,{ ignore_path = ignore_path })
+		local pos2 = Metrostroi.GetPositionOnTrack(node2.pos,nil,{ ignore_path = ignore_path })
 		-- Create connection
 		local join1,join2
 		if pos1[1] then join1 = pos1[1].node1 end
@@ -1014,6 +1024,8 @@ function Metrostroi.Load(name,keep_signs)
 						ent.Left = v.Left
 						ent.Approve0 = v.Approve0
 						ent.Depot = v.Depot
+						ent.NonAutoStop = v.NonAutoStop
+						ent.PassOcc = v.PassOcc
 						ent.Lenses = string.Explode("-",ent.LensesStr)
 						ent.InS = nil
 						for i = 1,#ent.Lenses do
@@ -1092,6 +1104,8 @@ function Metrostroi.Save(name)
 				Approve0 = v.Approve0,
 				Depot = v.Depot,
 				Left = v.Left,
+				AutoStop = v.AutoStop,
+				PassOcc = v.PassOcc,
 			})
 		end
 	end

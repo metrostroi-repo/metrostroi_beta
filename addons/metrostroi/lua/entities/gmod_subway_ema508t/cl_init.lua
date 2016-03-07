@@ -154,9 +154,43 @@ ENT.RearDoor = 0
 ENT.PassengerDoor = 0
 ENT.CabinDoor = 0
 --------------------------------------------------------------------------------
+
+function ENT:UpdateTextures()
+	local texture = Metrostroi.Skins["train"][self:GetNW2String("texture")]
+	local passtexture = Metrostroi.Skins["pass"][self:GetNW2String("passtexture")]
+	local cabintexture = Metrostroi.Skins["cab"][self:GetNW2String("cabtexture")]
+	for _,self in pairs(self.ClientEnts) do
+		if not IsValid(self) then continue end
+		for k,v in pairs(self:GetMaterials()) do
+			local tex = string.Explode("/",v)
+			tex = tex[#tex]
+			if cabintexture and cabintexture.textures[tex] then
+				self:SetSubMaterial(k-1,cabintexture.textures[tex])
+			end
+			if passtexture and passtexture.textures[tex] then
+				self:SetSubMaterial(k-1,passtexture.textures[tex])
+			end
+			if texture and texture.textures[tex] then
+				self:SetSubMaterial(k-1,texture.textures[tex])
+			end
+		end
+	end
+end
+--------------------------------------------------------------------------------
 function ENT:Think()
-	if not self.Animate then self.BaseClass = baseclass.Get("gmod_subway_base") end
 	self.BaseClass.Think(self)
+	if self.Texture ~= self:GetNW2String("texture") then
+		self.Texture = self:GetNW2String("texture")
+		self:UpdateTextures()
+	end
+	if self.PassTexture ~= self:GetNW2String("passtexture") then
+		self.PassTexture = self:GetNW2String("passtexture")
+		self:UpdateTextures()
+	end
+	if self.CabinTexture ~= self:GetNW2String("cabtexture") then
+		self.CabinTexture = self:GetNW2String("cabtexture")
+		self:UpdateTextures()
+	end
 
 	if self.RearDoor < 90 and self:GetPackedBool(156) or self.RearDoor > 0 and not self:GetPackedBool(156) then
 		local RearDoorData = self.ClientProps["door2"]
@@ -208,22 +242,6 @@ function ENT:Think()
 	self:Animate("gv_wrench",	(self:GetPackedBool(5) and 1 or 0), 	0,0.51, 128,  1,false)
 	self:ShowHide("gv_wrench",	CurTime() < self.ResetTime)
 
-	self.TextureTime = self.TextureTime or CurTime()
-	if (CurTime() - self.TextureTime) > 5.0 and self:GetNWString("texture",nil) then
-		--print(1)
-		self.TextureTime = CurTime()
-		for tex,ent in pairs(self.ClientEnts) do
-			if tex:find("door") then
-				for k,v in pairs(ent:GetMaterials()) do
-					if v:find("ewagon") then
-						ent:SetSubMaterial(k-1,self:GetNWString("texture"))
-					else
-						ent:SetSubMaterial(k-1,"")
-					end
-				end
-			end
-		end
-	end
 	-- Animate doors
 	for i=0,3 do
 		for k=0,1 do
@@ -252,28 +270,36 @@ function ENT:Think()
 	self.BrakeLineRamp1 = self.BrakeLineRamp1 or 0
 
 	if (brakeLinedPdT > -0.001)
-	then self.BrakeLineRamp1 = self.BrakeLineRamp1 + 2.0*(0-self.BrakeLineRamp1)*dT
-	else self.BrakeLineRamp1 = self.BrakeLineRamp1 + 2.0*((-0.4*brakeLinedPdT)-self.BrakeLineRamp1)*dT
+	then self.BrakeLineRamp1 = self.BrakeLineRamp1 + 4.0*(0-self.BrakeLineRamp1)*dT
+	else self.BrakeLineRamp1 = self.BrakeLineRamp1 + 4.0*((-0.6*brakeLinedPdT)-self.BrakeLineRamp1)*dT
 	end
-	self:SetSoundState("release2_w",self.BrakeLineRamp1*0.75,1.0)
+	self.BrakeLineRamp1 = math.Clamp(self.BrakeLineRamp1,0,1)
+	self:SetSoundState("release2_w",self.BrakeLineRamp1^1.65,1.0)
 
 	self.BrakeLineRamp2 = self.BrakeLineRamp2 or 0
 	if (brakeLinedPdT < 0.001)
-	then self.BrakeLineRamp2 = self.BrakeLineRamp2 + 2.0*(0-self.BrakeLineRamp2)*dT
-	else self.BrakeLineRamp2 = self.BrakeLineRamp2 + 2.0*(0.02*brakeLinedPdT-self.BrakeLineRamp2)*dT
+	then self.BrakeLineRamp2 = self.BrakeLineRamp2 + 4.0*(0-self.BrakeLineRamp2)*dT
+	else self.BrakeLineRamp2 = self.BrakeLineRamp2 + 8.0*(0.1*brakeLinedPdT-self.BrakeLineRamp2)*dT
 	end
-	self:SetSoundState("release3_w",self.BrakeLineRamp2,1.0)
+	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
+	self:SetSoundState("release3_w",self.BrakeLineRamp2 + math.max(0,self.BrakeLineRamp1/2-0.15),1.0)
+	
+	self:SetSoundState("cran1_w",math.min(1,self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),1.0)
 
 	-- Compressor
 	local state = self:GetPackedBool(20)
 	self.PreviousCompressorState = self.PreviousCompressorState or false
 	if self.PreviousCompressorState ~= state then
 		self.PreviousCompressorState = state
-		if not state then
-			self:PlayOnce("compressor_end",nil,0.75)		
+		if 	state then
+			self:SetSoundState("compressor_ezh",1,1)
+		else
+			self:SetSoundState("compressor_ezh",0,1)
+			self:SetSoundState("compressor_ezh_end",0,1)
+			self:SetSoundState("compressor_ezh_end",1,1)
+			--self:PlayOnce("compressor_e_end",nil,1,nil,true)
 		end
 	end
-	self:SetSoundState("compressor",state and 1 or 0,1)
 	
 	-- RK rotation
 	if self:GetPackedBool(112) then self.RKTimer = CurTime() end
@@ -282,10 +308,11 @@ function ENT:Think()
 	if self.PreviousRKState ~= state then
 		self.PreviousRKState = state
 		if state then
-			self:SetSoundState("rk_spin",0.67,1)
+			self:SetSoundState("rk_spin",0.7,1,nil,0.75)
 		else
-			self:SetSoundState("rk_spin",0,0)
-			self:PlayOnce("rk_stop",nil,0.67)		
+			self:SetSoundState("rk_spin",0,0,nil,0.75)
+			self:SetSoundState("rk_stop",0,1,nil,0.75)
+			self:SetSoundState("rk_stop",0.7,1,nil,0.75)
 		end
 	end
 	
@@ -299,20 +326,20 @@ end
 
 function ENT:DrawPost()
 	self:DrawOnPanel("FrontPneumatic",function()
-		draw.DrawText(self:GetNWBool("FbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
-		draw.DrawText(self:GetNWBool("FtI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("FbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("FtI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
 		draw.DrawText(self:GetPackedBool(160) and "Brake" or "Released","Trebuchet24",950,30,Color(0,0,0,255))
 	end)
 	self:DrawOnPanel("RearPneumatic",function()
-		draw.DrawText(self:GetNWBool("RbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
-		draw.DrawText(self:GetNWBool("RtI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("RbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("RtI") and "Isolated" or "Open","Trebuchet24",650,30,Color(0,0,0,255))
 	end)
 	self:DrawOnPanel("AirDistributor",function()
-		draw.DrawText(self:GetNWBool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
 	end)
 	
 	self:DrawOnPanel("AirDistributor",function()
-		draw.DrawText(self:GetNWBool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
+		draw.DrawText(self:GetNW2Bool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
 	end)
 	-- Draw train numbers
 	local dc = render.GetLightColor(self:GetPos())

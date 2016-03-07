@@ -1,16 +1,20 @@
 TOOL.AddToMenu = false
 TOOL.ClientConVar["train"] = 1
 TOOL.ClientConVar["wagnum"] = 3
-TOOL.ClientConVar["texture"] = 1
-TOOL.ClientConVar["passtexture"] = 1
+TOOL.ClientConVar["lighter"] = 0
+TOOL.ClientConVar["texture"] = ""
+TOOL.ClientConVar["passtexture"] = ""
+TOOL.ClientConVar["cabtexture"] = ""
+TOOL.ClientConVar["adv"] = 1
 TOOL.ClientConVar["ars"] = 1
 TOOL.ClientConVar["skin"] = 1
 TOOL.ClientConVar["cran"] = 1
 TOOL.ClientConVar["prom"] = 1
 TOOL.ClientConVar["mask"] = 1
+TOOL.ClientConVar["pitermsk"] = 1
 TOOL.ClientConVar["bpsn"] = 2
 TOOL.ClientConVar["led"] = 0
-TOOL.ClientConVar["oldkv"] = 0
+TOOL.ClientConVar["kvsnd"] = 1
 TOOL.ClientConVar["oldkvpos"] = 0
 TOOL.ClientConVar["horn"] = 0
 TOOL.ClientConVar["nm"] = 8.2
@@ -26,10 +30,12 @@ TOOL.ClientConVar["oldw"] = ""
 TOOL.ClientConVar["seat"] = 1
 TOOL.ClientConVar["hand"] = 1
 TOOL.ClientConVar["mvm"] = 1
-TOOL.ClientConVar["bort"] = 0
+TOOL.ClientConVar["bort"] = 1
 TOOL.ClientConVar["lamp"] = 1
 TOOL.ClientConVar["breakers"] = 0
-local Trains = {{"81-717_new","81-714_new"},{"Ezh3","Ema508T"},{"81-7036","81-7037"}}
+TOOL.ClientConVar["blok"] = 1
+TOOL.ClientConVar["pnm"] = 0
+local Trains = {{"81-717_mvm","81-714_mvm"},{"81-717_lvz","81-714_lvz"},{"E","E"},{"Ema","Em"},{"Ezh3","Ema508T"},{"81-7036","81-7037"}}
 local Switches = {	"A61","A55","A54","A56","A27","A21","A10","A53","A43","A45","A42","A41",
 					"VU","A64","A63","A50","A51","A23","A14","A1","A2","A3","A17",
 					"A62","A29","A5","A6","A8","A20","A25","A22","A30","A39","A44","A80"
@@ -91,13 +97,17 @@ local function Trace(ply,tr)
 end
 
 function TOOL:GetCurrentModel(trNum,head,pr)
-	if trNum == 1 then
+	if trNum == 1 or trNum == 2 then
 		if not pr then
 			return "models/metrostroi_train/81/81-717.mdl"
 		else
 			return "models/metrostroi/81/81-714.mdl"
 		end
-	elseif trNum == 2 then
+	elseif trNum == 3 then
+			return "models/metrostroi_train/e/e.mdl"
+	elseif trNum == 4 then
+			return "models/metrostroi_train/em/em.mdl"
+	elseif trNum == 5 then
 			return "models/metrostroi/e/"..(pr and "ema508t" or "em508")..".mdl"
 	else
 		return "models/metrostroi/81/81-703"..(pr and 7 or 6)..".mdl"
@@ -108,20 +118,24 @@ function TOOL:GetConvar()
 	local tbl = {}
 	tbl.Train = self:GetClientNumber("train")
 	tbl.WagNum = self:GetClientNumber("wagnum")
-	tbl.Texture = self:GetClientNumber("texture")
-	tbl.PassTexture = self:GetClientNumber("passtexture")
+	tbl.Texture = self:GetClientInfo("texture")
+	tbl.PassTexture = self:GetClientInfo("passtexture")
+	tbl.CabTexture = self:GetClientInfo("cabtexture")
+	tbl.Adv = self:GetClientNumber("adv")
 	tbl.ARS = self:GetClientNumber("ars")
 	tbl.Skin = self:GetClientNumber("skin")
 	tbl.Cran = self:GetClientNumber("cran")
 	tbl.Prom = self:GetClientNumber("prom")
 	tbl.Mask = self:GetClientNumber("mask")
+	tbl.PiterMsk = self:GetClientNumber("pitermsk")
 	tbl.LED = self:GetClientNumber("led")
 	tbl.Horn = self:GetClientNumber("horn")
-	tbl.OldKV = self:GetClientNumber("oldkv")
+	tbl.KVSnd = math.max(1,self:GetClientNumber("kvsnd"))
 	tbl.OldKVPos = self:GetClientNumber("oldkvpos")
 	tbl.BPSN = self:GetClientNumber("bpsn")
 	tbl.NM = self:GetClientNumber("nm")
 	tbl.Battery = self:GetClientNumber("battery")
+	tbl.Lighter = self:GetClientNumber("lighter")
 	tbl.Switches = self:GetClientNumber("switches")
 	tbl.SwitchesR = self:GetClientNumber("switchesr")
 	tbl.DoorsL = self:GetClientNumber("doorsl")
@@ -134,6 +148,8 @@ function TOOL:GetConvar()
 	tbl.Seat = self:GetClientNumber("seat")
 	tbl.Lamp = self:GetClientNumber("lamp")
 	tbl.Breakers = self:GetClientNumber("breakers")
+	tbl.Blok = self:GetClientNumber("blok")
+	tbl.PNM = self:GetClientNumber("pnm")
 	return tbl
 end
 
@@ -162,13 +178,14 @@ function TOOL:UpdateGhost(pl, ent)
 	local pos,ang
 	if SERVER then
 		pos, ang = UpdateGhostPos(pl)
-		self:GetOwner():SetNWVector("metrostroi_train_spawner_pos",pos)
-		self:GetOwner():SetNWAngle("metrostroi_train_spawner_angle",ang + Angle(0,self.Rev and 180 or 0,0))
+		self:GetOwner():SetNW2Vector("metrostroi_train_spawner_pos",pos)
+		self:GetOwner():SetNW2Angle("metrostroi_train_spawner_angle",ang + Angle(0,self.Rev and 180 or 0,0))
 	else
-		pos, ang = self:GetOwner():GetNWVector("metrostroi_train_spawner_pos"), self:GetOwner():GetNWAngle("metrostroi_train_spawner_angle")
+		pos, ang = self:GetOwner():GetNW2Vector("metrostroi_train_spawner_pos"), self:GetOwner():GetNW2Angle("metrostroi_train_spawner_angle")
 	end
 	if not ent then return end
-	if self.tbl.Train == 2 then
+	if self.tbl.Train == 4 then
+	--[[
 		local path = Metrostroi.Skins["ezh3"][self.tbl.Texture].path
 		if path == "RND" then path = Metrostroi.Skins["ezh3"][math.random(1,#Metrostroi.Skins["ezh3"])].path end
 		for k,v in pairs(ent:GetMaterials()) do
@@ -178,17 +195,19 @@ function TOOL:UpdateGhost(pl, ent)
 				ent:SetSubMaterial(k-1,"")
 			end
 		end
+		]]
 	else
 		--ent:SetSkin(self.tbl.Paint == 1 and math.random(0,2) or self.tbl.Paint-2)
-		ent:SetBodygroup(1,(self.tbl.ARSType or 1)-1)
-		ent:SetBodygroup(2,(self.tbl.LampType or 1)-1)
-		ent:SetBodygroup(3,(self.tbl.MaskType or 1)-1)
-		ent:SetBodygroup(4,(self.tbl.SeatType or 1)-1)
-		ent:SetBodygroup(5,(self.tbl.HandRail or 1)-1)
-		ent:SetBodygroup(6,(self.tbl.MVM and ((self.tbl.Mask > 2 and self.tbl.Mask ~= 6) and 1 or 0) or 2))
-		ent:SetBodygroup(7,(self.tbl.BortLampType or 1)-1)
+		ent:SetBodygroup(1,(self.tbl.ARS or 1)-1)
+		ent:SetBodygroup(2,(self.tbl.Lamp or 1)-1)
+		ent:SetBodygroup(3,(self.tbl.Mask or 1)-1)
+		ent:SetBodygroup(4,(self.tbl.Seat or 1)-1)
+		ent:SetBodygroup(5,(self.tbl.Hand or 1)-1)
+		ent:SetBodygroup(6,(self.tbl.MVM > 0 and ((self.tbl.Mask > 2 and self.tbl.Mask ~= 6) and 1 or 0) or 2))
+		ent:SetBodygroup(7,(self.tbl.Bort or 1)-1)
 		ent:SetBodygroup(9,(self.tbl.Breakers or 0))
-		ent:SetBodygroup(14,self.tbl.ARSType == 3 and 1 or 0)
+		ent:SetBodygroup(14,self.tbl.ARS == 3 and 1 or 0)
+		--[[
 		for k,v in pairs(ent:GetMaterials()) do
 			if v == "models/metrostroi_train/81/b01a" then
 				ent:SetSubMaterial(k-1,Metrostroi.Skins["717"][self.tbl.Texture].path)
@@ -200,6 +219,7 @@ function TOOL:UpdateGhost(pl, ent)
 				ent:SetSubMaterial(k-1,"")
 			end
 		end
+		]]
 		--ent:SetSkin(self.tbl.Paint-1)
 	end
 	ent:SetColor(self.Rev and Color(255	,255,0) or Color(255,255,255))
@@ -260,8 +280,7 @@ function TOOL:Spawn(ply, tr, clname, i)
 	self.rot = rot
 	return ent
 end
-
-function TOOL:SetSettings(ent, ply, i)
+function TOOL:SetSettings(ent, ply, i,inth)
 	local rot = false
 	if i > 1 then
 		rot = i == self.tbl.WagNum and true or math.random() > 0.5
@@ -270,32 +289,24 @@ function TOOL:SetSettings(ent, ply, i)
 		undo.AddEntity(ent)
 		undo.SetPlayer(ply)
 	undo.Finish()
-	
-	if not ent:GetClass():find("1-703") then
-		if not ent:GetClass():find("81") then
-			local path = Metrostroi.Skins["ezh3"][self.tbl.Texture].path
-			if path == "RND" then
-				path = Metrostroi.Skins["ezh3"][math.random(1,#Metrostroi.Skins["ezh3"])].path
-			end
-			ent.Texture = path
-			--ent:SetSkin(self.tbl.Paint == 1 and math.random(0,2) or self.tbl.Paint-2)
-		else
-			ent.Texture = Metrostroi.Skins["717"][self.tbl.Texture].path
-			local path = Metrostroi.Skins["717_pass"][self.tbl.PassTexture].path
-			if path == "RND" then
-				path = Metrostroi.Skins["717_pass"][math.random(1,#Metrostroi.Skins["717_pass"])].path
-			end
-			ent.PassTexture = path
+	if ent.SubwayTrain.Name ~= "81-7036" then
+		if ent.SubwayTrain.Type == "81" then
 			--ent:SetSkin(self.tbl.Paint-1)
+			if ent.SubwayTrain.Manufacturer == "MVM" then
+				ent.ARSType = self.tbl.ARS
+				ent.MaskType = self.tbl.Mask
+				ent:SetNW2Int("ARSType", ent.ARSType)
+			else
+				ent.Blok = self.tbl.Blok
+				ent.MaskType = self.tbl.PiterMsk
+			end
+			ent.Pneumatic.ValveType = self.tbl.Cran
 		end
-		ent.Pneumatic.ValveType = self.tbl.Cran
 		ent.Pneumatic.TrainLinePressure = self.tbl.NM
-		ent.ARSType = self.tbl.ARS
-		ent:SetNWInt("ARSType", ent.ARSType)
 		ent.BPSNType = self.tbl.BPSN+1
-		ent:SetNWInt("BPSNType",ent.BPSNType)
+		ent:SetNW2Int("BPSNType",ent.BPSNType)
 		for k,v in pairs(Switches) do
-			if i == 1 or i == self.tbl.WagNum or !self.int  then ent:TriggerInput(v.."Set", self.tbl.Switches > 0 and (math.random() > math.random(0.1,0.4) or self.tbl.SwitchesR == 0)) end
+			if (i == 1 or i == self.tbl.WagNum or !self.int) and v ~= "A5"  then ent:TriggerInput(v.."Set", self.tbl.Switches > 0 and (math.random() > math.random(0.1,0.4) or self.tbl.SwitchesR == 0)) end
 		end
 		local rot = (self.fent:GetAngles().yaw - ent:GetAngles().yaw) ~= 0
 		--local rot = 
@@ -308,34 +319,66 @@ function TOOL:SetSettings(ent, ply, i)
 		end
 		if i > 1 and i < self.tbl.WagNum then
 			ent.Pneumatic.UAVA = true
-			ent.UAVA:TriggerInput("Set",1)
-			ent:TriggerInput("A5Set",1)
+			--ent.UAVA:TriggerInput("Set",1)
+			--ent:TriggerInput("A5Set",1)
 		else
-			ent:TriggerInput("A5Set",0)
+			--ent:TriggerInput("A5Set",0)
 		end
+		ent.Lighter = self.tbl.Lighter
 		ent.LampType = self.tbl.Lamp
-		ent.MaskType = self.tbl.Mask
 		ent.SeatType = self.tbl.Seat
 		ent.HandRail = self.tbl.Hand
+		ent.Adverts = self.tbl.Adv
 		ent.MVM = self.tbl.MVM > 0
 		ent.BortLampType = self.tbl.Bort
 		ent.LED = self.tbl.LED > 0
 		ent.Breakers= self.tbl.Breakers
-		ent:SetNWBool("Breakers",(ent.Breakers or 1) > 0)
+		ent.PNM= self.tbl.PNM > 0
+		ent:SetNW2Bool("Breakers",(ent.Breakers or 1) > 0)
 		ent:TriggerInput("VBSet", self.tbl.Battery)
 		ent:TriggerInput("GVSet", self.tbl.GV)
 		ent:TriggerInput("ParkingBrakeSet", self.tbl.PB)
 		ent:TriggerInput("ParkingBrakeSignSet", self.tbl.PB)
-		if self.tbl.OldKV > 0 then
-			for k,v in pairs(ent.SoundNames) do
-				if type(v) ~= "string" then continue end
-				if not v:find("kv_") then continue end
-				if v:find("ezh") then continue end
-				ent.SoundNames[k] = string.Replace(v,"/new","")
-			end
+		for k,v in pairs(ent.SoundNames) do
+			if type(v) ~= "string" then continue end
+			if not k:find("kv_") then continue end
+			if k:find("ezh") then continue end
+			ent.SoundNames[k] = string.gsub(v,"kv%d","kv"..self:GetClientNumber("kvsnd"))
+			ent.NewKV = self:GetClientNumber("kvsnd") > 1
+			ent:SetNW2Bool("NewKV",ent.NewKV)
 		end
 		ent.OldKVPos = self.tbl.OldKVPos > 0
 		if ent.Horn then ent.Horn:TriggerInput("NewType",self.tbl.Horn) end
+		if ent.A45 then
+			ent.A45:TriggerInput("Set",0)
+			--ent.A5:TriggerInput("Block",0)
+			--ent.A5:TriggerInput("Set",0)
+			--ent.A5:TriggerInput("Block",1)
+		end
+		if inth and ent.UAVA  then
+			ent.UAVA:TriggerInput("Set",1)
+			if not self.Plombs or not self.Plombs.VU then
+				ent.VU:TriggerInput("Set",0)
+				ent.VU:TriggerInput("Block",1)
+			end
+		end
+	end
+	
+	if ent.UpdateTextures then
+		local tex = Metrostroi.Skins["train"][self.tbl.Texture]
+		local ptex = Metrostroi.Skins["pass"][self.tbl.PassTexture]
+		local ctex = Metrostroi.Skins["cab"][self.tbl.CabTexture]
+		if tex and (ent:GetClass() == "gmod_subway_"..tex.typ  or Metrostroi.NameConverter[tex.typ] and ent:GetClass()  == "gmod_subway_"..Metrostroi.NameConverter[tex.typ]) then
+			ent.Texture = self.tbl.Texture
+		end
+		if ptex and (ent:GetClass() == "gmod_subway_"..ptex.typ  or Metrostroi.NameConverter[ptex.typ] and ent:GetClass()  == "gmod_subway_"..Metrostroi.NameConverter[ptex.typ]) then
+			ent.PassTexture = self.tbl.PassTexture
+		end
+		if ctex and (ent:GetClass() == "gmod_subway_"..ctex.typ  or Metrostroi.NameConverter[ctex.typ] and ent:GetClass()  == "gmod_subway_"..Metrostroi.NameConverter[ctex.typ]) then
+			ent.CabTexture = self.tbl.CabTexture
+		end
+	
+		ent:UpdateTextures()
 	end
 end
 
@@ -347,7 +390,7 @@ function TOOL:SpawnWagon(trace)
 		local ent = self:Spawn(ply, trace, "gmod_subway_"..Trains[self.tbl.Train][i>1 and i<self.tbl.WagNum and self.int and 2 or 1]:lower(), i)
 		self.fent = i == 1 and ent or self.fent
 		if ent and ent:IsValid() then
-			self:SetSettings(ent,ply,i)
+			self:SetSettings(ent,ply,i,i>1 and i<self.tbl.WagNum)
 		end
 		self.oldent = ent
 	end

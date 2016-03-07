@@ -11,6 +11,7 @@ local function AdminPanel(panel)
 	
 end
 
+
 -- Build regular client panel
 local function ClientPanel(panel)
 	AddBox(panel,"metrostroi_drawdebug","Draw debugging info")

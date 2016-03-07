@@ -129,8 +129,8 @@ end
 
 
 
-function Metrostroi.PositionFromPanel(panel,button_id_or_vec,z)
-	local self = ENT
+function Metrostroi.PositionFromPanel(panel,button_id_or_vec,z,train)
+	local self = train or ENT
 	local panel = self.ButtonMap[panel]
 	if not panel then return Vector(0,0,0) end
 	if not panel.buttons then return Vector(0,0,0) end
@@ -145,7 +145,7 @@ function Metrostroi.PositionFromPanel(panel,button_id_or_vec,z)
 				break
 			end
 		end
-		vec = Vector(button.x,button.y,z or 0)
+		vec = Vector(button.x + (button.radius and 0 or (button.w or 0)/2),button.y + (button.radius and 0 or (button.h or 0)/2),z or 0)
 	else
 		vec = button_id_or_vec
 	end
@@ -156,8 +156,8 @@ function Metrostroi.PositionFromPanel(panel,button_id_or_vec,z)
 	return panel.pos + vec * panel.scale
 end
 
-function Metrostroi.AngleFromPanel(panel,ang)
-	local self = ENT
+function Metrostroi.AngleFromPanel(panel,ang,train)
+	local self = train or ENT
 	local panel = self.ButtonMap[panel]
 	if not panel then return Vector(0,0,0) end
 	local true_ang = panel.ang + Angle(0,0,0)
@@ -172,8 +172,32 @@ function Metrostroi.ClientPropForButton(prop_name,config)
 		pos = Metrostroi.PositionFromPanel(config.panel,config.pos or config.button,(config.z or 0.2)),
 		ang = Metrostroi.AngleFromPanel(config.panel,config.ang),
 		color = config.color,
+		skin = config.skin or 0,
+		config = config,
 	}
-	if self.ButtonMap[config.panel] then
+	if self.ButtonMap[config.panel] and not config.ignorepanel and config.propname == nil then
+		for k,v in pairs(self.ButtonMap[config.panel].buttons) do
+			if v.ID == config.button then
+				v.PropName = prop_name
+				break
+			end
+		end
+		if not self.ButtonMap[config.panel].props then self.ButtonMap[config.panel].props = {} end
+		table.insert(self.ButtonMap[config.panel].props,prop_name)
+	end
+end
+
+function Metrostroi.TempoaryClientPropForButton(train,prop_name,config)
+	local self = train
+	self.ClientPropsOv[prop_name] = {
+		model = config.model or "models/metrostroi/81-717/button07.mdl",
+		pos = Metrostroi.PositionFromPanel(config.panel,config.pos or config.button,(config.z or 0.2),train),
+		ang = Metrostroi.AngleFromPanel(config.panel,config.ang,train),
+		color = config.color,
+		skin = config.skin or 0,
+		config = config,
+	}
+	if self.ButtonMap[config.panel] and not config.ignorepanel then
 		for k,v in pairs(self.ButtonMap[config.panel].buttons) do
 			if v.ID == config.button then
 				v.PropName = prop_name
@@ -217,16 +241,16 @@ hook.Add("PostDrawOpaqueRenderables", "metrostroi-draw-stopmarker",function()
 	-- Get seat and train
 	local seat = LocalPlayer():GetVehicle()
 	if not seat then return end
-	local train = seat:GetNWEntity("TrainEntity")
+	local train = seat:GetNW2Entity("TrainEntity")
 	if not IsValid(train) then return end
 
 	-- Calculate acceleration
-	local V = train:GetNWFloat("V",train:GetVelocity():Length()*0.01905)*0.277778
+	local V = train:GetNW2Float("V",train:GetVelocity():Length()*0.01905)*0.277778
 	local newA = (V - prevV)/dT
 	prevV = V
 
 	-- Calculate marker position
-	A = train:GetNWFloat("A",A + (newA - A)*1.0*dT)
+	A = train:GetNW2Float("A",A + (newA - A)*1.0*dT)
 	local T1 = math.abs(V/(A+1e-8))
 	local T2 = math.abs(V/(1.2+1e-8))
 	local D1 = T1*V + (T1^2)*A/2

@@ -13,7 +13,7 @@ if SERVER then util.AddNetworkString "metrostroi-stool-signalling" end
 local Types = {"Signal","Sign",[0] = "Choose type"}
 local TypesOfSignal = {"Inside","Outside big","Outside small"}
 local TypesOfSign = {"NF","40","60","70","80","Station border","C(horn) Street","STOP Street","Dangerous","Deadlock","Stop marker","!(stop)","T","T Start","T End","T Sbor(engage)","Engines off","Engines on","C(horn)","Stop rail T","Stop rail","Left doors"}
-local RouteTypes = {"Auto", "Manual","Repeater"}
+local RouteTypes = {"Auto", "Manual","Repeater","Emerg"}
 local Type = 0
 local RouteType = 1
 local Signal-- = {}
@@ -54,6 +54,8 @@ function TOOL:SpawnSignal(ply,trace,param)
 		Signal.Approve0 = ent.Approve0
 		Signal.Depot = ent.Depot
 		Signal.ARSOnly = ent.ARSOnly
+		Signal.NonAutoStop = ent.NonAutoStop
+		Signal.PassOcc = ent.PassOcc
 		Signal.Routes = ent.Routes
 		Signal.Left = ent.Left
 		net.Start("metrostroi-stool-signalling")
@@ -65,7 +67,7 @@ function TOOL:SpawnSignal(ply,trace,param)
 		if IsValid(ent) then
 			if param ~= 2 then 
 				ent:SetPos(tr.centerpos - tr.up * 9.5)
-				ent:SetAngles((-tr.right):Angle() + Angle(0,(Signal.ARSOnly and Signal.Left) and 180 or 0,0))
+				ent:SetAngles((-tr.right):Angle() + Angle(0,Signal.Left and 180 or 0,0))
 			end
 			if not found then ent:Spawn() end
 			ent.SignalType = Signal.Type-1
@@ -75,10 +77,12 @@ function TOOL:SpawnSignal(ply,trace,param)
 			ent.RouteNumber =	Signal.RouteNumber
 			ent.IsolateSwitches = Signal.IsolateSwitches
 			ent.Approve0 = Signal.Approve0
+			ent.NonAutoStop = Signal.NonAutoStop
 			ent.Depot = Signal.Depot
 			ent.Routes = Signal.Routes
-			ent.Left = Signal.ARSOnly and Signal.Left
+			ent.Left = Signal.Left
 			ent.Lenses = string.Explode("-",ent.LensesStr)
+			ent.PassOcc = Signal.PassOcc
 			ent.InS = nil
 			ent:SendUpdate()
 			for i = 1,#ent.Lenses do
@@ -363,7 +367,7 @@ function TOOL:BuildCPanelCustom()
 					Signal.Lenses = self:GetValue()
 					tool:SendSettings()
 				end
-		else
+		end
 			local VLeftC = CPanel:CheckBox("Left side")
 					VLeftC:SetTooltip("Left side")
 					VLeftC:SetValue(Signal.Left or false)
@@ -371,7 +375,6 @@ function TOOL:BuildCPanelCustom()
 						Signal.Left = self:GetChecked()
 						tool:SendSettings()
 					end
-		end
 		local VRouT,VRouN = CPanel:TextEntry("Route number:")
 				VRouT:SetTooltip("Route number. Can be empty. One digit or D.\nFor example:D")
 				VRouT:SetValue(Signal.RouteNumber or "")
@@ -404,6 +407,13 @@ function TOOL:BuildCPanelCustom()
 					Signal.Approve0 = self:GetChecked()
 					tool:SendSettings()
 				end
+		local VAuStC = CPanel:CheckBox("Autostop")
+				VAuStC:SetTooltip("Is autostop present or no?")
+				VAuStC:SetValue(Signal.NonAutoStop or true)
+				function VAuStC:OnChange()
+					Signal.NonAutoStop = not self:GetChecked()
+					tool:SendSettings()
+				end
 		local VDepC = CPanel:CheckBox("Depot signal")
 				VDepC:SetTooltip("Is signal go to depot?")
 				VDepC:SetValue(Signal.Depot or false)
@@ -419,13 +429,23 @@ function TOOL:BuildCPanelCustom()
 					tool:SendSettings()
 					tool:BuildCPanelCustom()
 				end
+		local VPassOccC = CPanel:CheckBox("Pass occupation singal")
+				VPassOccC:SetTooltip("Pass occupation singal")
+				VPassOccC:SetValue(Signal.PassOcc or false)
+				function VPassOccC:OnChange()
+					Signal.PassOcc = self:GetChecked()
+					tool:SendSettings()
+					tool:BuildCPanelCustom()
+				end
+				
 		for i = 1,(Signal.Routes and #Signal.Routes or 0) do
 			local CollCat = vgui.Create("DForm")
-			CollCat:SetLabel(RouteTypes[Signal.Routes[i].Manual and 2 or Signal.Routes[i].Repeater and 3 or 1])
+			local rou = Signal.Routes[i].Manual and 2 or Signal.Routes[i].Repeater and 3 or Signal.Routes[i].Emer and 4 or 1
+			CollCat:SetLabel(RouteTypes[rou])
 			CollCat:SetExpanded(1)
 				local VTypeOfRouteI = vgui.Create("DComboBox")
 					--VType:SetValue("Choose type")
-					VTypeOfRouteI:ChooseOption(RouteTypes[Signal.Routes[i].Manual and 2 or Signal.Routes[i].Repeater and 3 or 1],Signal.Routes[i].Manual and 2 or Signal.Routes[i].Repeater and 3 or 1)
+					VTypeOfRouteI:ChooseOption(RouteTypes[rou],rou)
 					for i1 = 1,#RouteTypes do
 						VTypeOfRouteI:AddChoice(RouteTypes[i1])
 					end
@@ -433,6 +453,7 @@ function TOOL:BuildCPanelCustom()
 						VTypeOfRouteI:SetValue(name)
 						Signal.Routes[i].Manual = index == 2
 						Signal.Routes[i].Repeater = index == 3
+						Signal.Routes[i].Emer = index == 4
 						tool:SendSettings()
 						self:BuildCPanelCustom()
 					end
@@ -510,7 +531,7 @@ function TOOL:BuildCPanelCustom()
 		local VAddR = CPanel:Button("Add route")
 		VAddR.DoClick = function()
 			if not Signal.Routes then Signal.Routes = {} end
-			table.insert(Signal.Routes,{Manual = RouteType==2, Repeater = RouteType == 3, RouteName = ""})
+			table.insert(Signal.Routes,{Manual = RouteType==2, Repeater = RouteType == 3, Emer = RouteType == 4, RouteName = ""})
 			tool:SendSettings()
 			self:BuildCPanelCustom()
 		end

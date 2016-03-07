@@ -4,13 +4,21 @@ include("shared.lua")
 
 
 
---------------------------------------------------------------------------------
+---------------------------------------------------
+-- Defined train information                      
+-- Types of wagon(for wagon limit system):
+-- 0 = Head or intherim                           
+-- 1 = Only head                                     
+-- 2 = Only intherim                                
+---------------------------------------------------
+ENT.SubwayTrain = {
+	Type = "Tatra",
+	Name = "Tatra T3",
+	WagType = 0,
+	Manufacturer = "ChKD",
+}
+
 function ENT:Initialize()
-	-- Defined train information
-	self.SubwayTrain = {
-		Type = "Tatra",
-		Name = "Tatra T3",
-	}
 
 	-- Set model and initialize
 	self:SetModel("models/metrostroi/tatra_t3/tatra_t3.mdl")

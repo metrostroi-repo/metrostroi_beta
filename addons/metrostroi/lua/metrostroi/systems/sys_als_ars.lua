@@ -25,8 +25,8 @@ if CreateConVar then
 end
 
 function TRAIN_SYSTEM:Initialize()
-	self.Train:LoadSystem("UOS","Relay","Switch")
-	self.Train:LoadSystem("BPS","Relay","Switch",{ normally_closed = true })
+	self.Train:LoadSystem("UOS","Relay","Switch", {paketnik = true})
+	self.Train:LoadSystem("BPS","Relay","Switch",{ paketnik = true,normally_closed = true })
 	-- ALS state
 	self.Signal80 = false
 	self.Signal70 = false
@@ -69,14 +69,6 @@ function TRAIN_SYSTEM:Initialize()
 	-- Lamps
 	---self.LKT = false
 	self.LVD = false
-
-	 if not TURBOSTROI then
-		self.Train:SetNWString("CustomStr6" ,"BCCD")
-		self.Train:SetNWString("CustomStr10","Disable auto opening doors")
-		self.Train:SetNWString("CustomStr11","Autodrive")
-		self.Train:SetNWString("CustomStr13","Auto")
-		self.Train:SetNWString("CustomStr12","Announcer")
-	end
 end
 
 function TRAIN_SYSTEM:Outputs()
@@ -308,13 +300,13 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		--Train.RPB:TriggerInput("Set",1)
 		--print(Train.UOS:TriggerInput("Check"))
 		-- Check absolute stop
-		if self.RealNoFreq and (not self.PrevNoFreq) then
+		if self.RealNoFreq and (not self.PrevNoFreq) and Train:ReadTrainWire(6) < 1 then
 			self.IgnorePedal = true
 		end
 		self.PrevNoFreq = self.RealNoFreq
 		-- Check overspeed
 		if self.Overspeed and not self.ARSBrake then
-			--self.ElectricBrake = true
+			self.ElectricBrake = true
 			self.ARSBrake = true
 			self.PneumaticBrake1 = true
 			self.PV1Timer = CurTime() - (self.SpeedLimit <= 20 and 2 or 0)
@@ -330,30 +322,35 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 			self.PneumaticBrake2 = false
 		end
 		-- Check use of valve #1 during overspeed
-		self.PV1Timer = self.PV1Timer or -1e9
-		if ((CurTime() - self.PV1Timer) >= 1) then 
-			--print(CurTime() - self.PV1Timer)
+		--self.PV1Timer = self.PV1Timer or -1e9
+		if self.PV1Timer and ((CurTime() - self.PV1Timer) >= 1) then 
 			if self.Overspeed then
-				self.PneumaticBrake1 = false
 				self.ElectricBrake = true
+				self.PneumaticBrake2 = true
+			else
+				self.PneumaticBrake1 = false
 			end
+			self.PV1Timer = nil
 		end
 		if self.ARSBrake and self.ElectricBrake and self.Speed < 0.25 then
 			self.PneumaticBrake2 = true
 		end
-			
 		-- Parking brake limit
 		triggerSpeed = 5
-		if not self.RealNoFreq and self.Speed < triggerSpeed and self.TW1Timer and (CurTime() - self.TW1Timer) > 7 and not self.PneumaticBrake1 and not self.PneumaticBrake2 then
- 			self.PneumaticBrake1 = true
-			if self.Speed > 0.25 then
-				self.AntiRolling = true
+		if self.Speed < triggerSpeed and self.TW1Timer and (CurTime() - self.TW1Timer) > 7 and not self.PneumaticBrake1 and	not self.PneumaticBrake2 then
+			if (not self.RealNoFreq and (not self.Train.SubwayTrain or self.Train.SubwayTrain.Type ~= "E" or (self.Train.SubwayTrain.Type == "E" and not self.KVT))) then
+				self.PneumaticBrake1 = true
+				if self.Speed > 0.25 then
+					self.AntiRolling = true
+				end
+			else
+				self.TW1Timer =  CurTime()
 			end
 		end
-		if self.AntiRolling and Train:ReadTrainWire(1) == 0 and Train.RRP and Train.RRP.Value == 0 and not Train.Pneumatic.EmergencyValveEPK then
-			Train.Pneumatic.EmergencyValveEPK = true
-			RunConsoleCommand("say","EPV braking (Driver don't reach 5km\\h in 7 sec')",Train:GetDriverName())
-		end
+		--if self.AntiRolling and Train:ReadTrainWire(1) == 0 and Train.RRP and Train.RRP.Value == 0 and not Train.Pneumatic.EmergencyValveEPK then
+			--Train.Pneumatic.EmergencyValveEPK = true
+			--RunConsoleCommand("say","EPV braking (Driver don't reach 5km\\h in 7 sec')",Train:GetDriverName())
+		--end
 		if self.Speed > triggerSpeed and self.TW1Timer then
 			self.TW1Timer = nil
 		end
@@ -366,7 +363,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		end
 		]]
 		--BPS Logic
-		local BPSWorking = (Train.BPS ~= nil and Train.BPS.Value > 0.5) and not KRUEnabled and Train:GetAngles().pitch < -1
+		local BPSWorking = false and (Train.BPS ~= nil and Train.BPS.Value > 0.5) and not KRUEnabled and Train:GetAngles().pitch < -1
 		if not BPSWorking then
 			self.StoppedOnSlopeByRP = false
 			self.BPSActive = false
@@ -440,8 +437,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 			+ ((self.SpeedLimit < 20 and not self.KVT or self.Speed > 20 and self.SpeedLimit < 20) and 1 or 0)
 			+ (self.BPSActive and 1 or 0)
 			+ (self.AntiRolling and 1 or 0)
-			+ (1 - ((EPKActivated and 1 or 0) or 1))
-
+			--+ (1 - ((EPKActivated and 1 or 0) or 1))
 		---self.LKT = (self["33G"] > 0.5) or (self["29"] > 0.5) or (Train:ReadTrainWire(35) > 0)
 		self.LVD = self.LVD or self["33D"] < 0.5
 		if Train:ReadTrainWire(6) < 1 and self["33D"] > 0.5  then  self.LVD = false end
@@ -464,6 +460,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 				Train.Pneumatic.EmergencyValveEPK = true
 
 				RunConsoleCommand("say","EPV braking (LKT off when stopped)",Train:GetDriverName())
+				self.BeOffARS = nil
 			end
 		else
 			self.EPKTimer2 = nil
@@ -478,7 +475,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		self.PneumaticBrake2 = true
 		self.ARSBrake = true
 		self["33D"] = 0
-		self["33Zh"] = 0
+		self["33Zh"] = 1
 		self["8"] = KRUEnabled and (1-Train.RPB.Value) or 0
 		self["33G"] = 0
 		self["2"] = 0
@@ -488,6 +485,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		---self.LKT = false
 		self.LVD = false
 		self.Ring = false
+		self.AntiRolling = false
 	end
 	-- ARS signalling train wires
 	if EnableARS then
@@ -496,7 +494,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		self.Train:WriteTrainWire(21,0)
 	end
 	-- ARS anti-door-closing
-	if EnableARS then
+	if EnableARS and self.Train.SubwayTrain and self.Train.SubwayTrain.HaveASNP then
 		local SD = self.Train:ReadTrainWire(15)
 		if (SD < 1.0) and (self.Speed > 6.0) then
 			self["31"] = CurTime()%(1/10)*10
@@ -554,17 +552,17 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		-- Default trigger
 		if (distance > 120) and (distance < 210) and (not skip_station) then self.UPPSArmed1 = true end
 		if self.UPPSArmed1 and (distance < 120) and Train.VB.Value == 1.0 then
-			Train:PlayOnce("upps","cabin",0.55,100.0)
+			Train:PlayOnce("upps","cabin",0.6,nil,true)
 			self.UPPSArmed1 = false
 		end
 
 		-- KV trigger
 		if Train.KV and (Train.KV.ReverserPosition == 0.0) then
 			self.UPPSArmed2 = true
-			self.UPPSTimer2 = CurTime() + 1
+			self.UPPSTimer2 = CurTime() + 10
 		end
 		if self.UPPSArmed2 and Train.KV and (Train.KV.ReverserPosition == 1.0) and Train.VB.Value == 1.0 and self.UPPSTimer2 and (CurTime() > self.UPPSTimer2) then
-			Train:PlayOnce("upps","cabin",0.55,100.0)
+			Train:PlayOnce("upps","cabin",0.6,nil,true)
 			self.UPPSArmed2 = false
 		end
 	elseif self.UPPSBraking then
@@ -579,7 +577,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 	end
 	-- RC1 operation
 	if self.Train.RC1 and (self.Train.RC1.Value == 0) then
-		local KAH = (Train.KAH ~= nil and Train.KAH.Value > 0.5) and 1 or 0
+		local KAH = (Train.KAH == nil or Train.KAH.Value > 0.5) and 1 or 0
 		self["33D"] = KAH
 		self["33G"] = 0                
 		self["33Zh"] = 1--KAH
@@ -598,255 +596,8 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 			self["8"] = (self.Speed + 0.5 > 35) and 1 or KRUEnabled and (1-Train.RPB.Value) or 0
 		end
 	else
-		if (not EPKActivated) then
+		if (not EPKActivated and (not self.Train.TormAT or self.Train.TormAT.Value == 0.0)) then
 			self["33D"] = 0
-			self["33Zh"] = 0
-		end
-	end
-end
-
-function TRAIN_SYSTEM:PiterARS(EnableARS,KRUEnabled,BPSWorking,EPKActivated,dT)
-	local Train = self.Train
-	if self.SpeedLimit > 20 then self.SpeedLimit = self.SpeedLimit - 2 end
-	if EnableARS then
-		if self.ElectricBrake1 and self.ARSBrake and not (self.RealNoFreq and not self.KVT and not self.ARSBrake) then
-			if self.EPKTimer4 == nil then self.EPKTimer4 = CurTime() + 5 end
-		else
-			self.EPKTimer4 = nil
-		end
-
-		if self.RealNoFreq and (not self.PrevNoFreq) and Train:ReadTrainWire(6) < 1 then
-			self.IgnorePedal = true
-		end
-		self.PrevNoFreq = self.RealNoFreq
-		-- Check overspeed
-		if self.SpeedLimit > 20 then
-			--if self.Speed >= self.SpeedLimit - 1 and not self.ARSBrake then
-				--self.ElectricBrake1 = true
-			--end
-			if self.Speed >= self.SpeedLimit + 1 then
-				 if Train:ReadTrainWire(6) == 0 then
-					self.ElectricBrake = true
-					self.PneumaticBrake1 = true
-				end
-				self.ElectricBrake1 = true
-				self.ARSBrake = true
-			end
-		end
-		if self.Overspeed then
-			self.ARSBrake = true
-			self.ElectricBrake1 = true
-			self.ElectricBrake = true
-			self.PneumaticBrake1 = true
-		end
-		-- Check cancel of overspeed command
-		if not self.Overspeed and not self.ElectricBrake1 then
-			self.PneumaticBrake1 = false
-		end
-		if (self.KVT or not self.EPKTimer4) and (self.Speed < self.SpeedLimit - 1 and self.SpeedLimit > 20 or self.SpeedLimit < 20 and not self.Overspeed) then
-			self.ElectricBrake = false
-			self.ElectricBrake1 = false
-			self.ARSBrake = false
-			self.PneumaticBrake1 = false
-			self.PneumaticBrake2 = false
-		end
-		if self.Speed < self.SpeedLimit - 1 and self.ARSBrake and not self.ElectricBrake then
-			self.ARSBrake = false
-			self.ElectricBrake1 = false
-		end
-		--print(Train:GetPackedBool(131))
-		-- Check use of valve #1 during overspeed
-		if self.ARSBrake and self.ElectricBrake1 and self.Speed < 0.25 then
-			self.PneumaticBrake2 = true
-		end
-			
-		if self.Speed < 0.25 then 
- 			self.PneumaticBrake1 = true
-		end
-		-- Parking brake limit
-		local BPSWorking = (Train.BPS ~= nil and Train.BPS.Value > 0.5) and Train:ReadTrainWire(5) > 0 and not Train["PA-KSD"].Nakat
-		if BPSWorking then
-			if self.Nakat ~= nil then
-				self.PneumaticBrake1 = true
-				self.AntiRolling = self.Nakat and true or nil
-				self.Nakat = nil
-			end
-			if self.Speed*Train.SpeedSign < -0.5 then
-				if not self.Meters then self.Meters = 0 end
-				self.Meters = self.Meters + self.Speed/3600*1000*dT
-				if self.Meters > 0.5 + (Train:ReadTrainWire(1) > 0 and 2.5 or 0) then
-					self.AntiRolling = true
-				end
-			else
-				if Train.KV.ControllerPosition <= 0 and self.AntiRolling then
-					self.AntiRolling = false
-				end
-				if Train.KV.ControllerPosition > 0 and self.AntiRolling == false then
-					self.AntiRolling = nil
-				end
-				self.Meters = nil
-			end
-		else
-			self.AntiRolling = nil
-			if Train["PA-KSD"].Nakat then self.PneumaticBrake1 = false end
-		end
-		--if BPSWorking and EPKActivated and not Train["PA-KSD"].Stancionniy and Train:ReadTrainWire(5) > 0 and self.Speed*self.Train.SpeedSign <  -5 and not Train.Pneumatic.EmergencyValveEPK then
-			--Train.Pneumatic.EmergencyValveEPK = true
-			--RunConsoleCommand("say","EPV braking (Driver rolling back)",Train:GetDriverName())
-		--end
-
-		--BPS Logic
-		if not BPSWorking then
-			self.StoppedOnSlopeByRP = false
-			self.BPSActive = false
-		end
-		if (Train.BPS == nil or Train.BPS.Value < 0.5) then self.AntiRolling = false end
-		-- Check cancel pneumatic brake 1 command
-		if ((Train:ReadTrainWire(1) > 0) or (Train.RRP and Train.RRP.Value > 0 and not self.ElectricBrake1)) then
-			if (Train:ReadTrainWire(1) > 0 or (Train.RRP and Train.RRP.Value > 0 and not self.ElectricBrake1)) and self.PneumaticBrake1 and not self.Overspeed then
-				self.PneumaticBrake1 = false
-			end
-		end
-		if self.Signal0 and not self.RealNoFreq and not self.Signal40 and not self.Signal60 and not self.Signal70 and not self.Signal80 then
-			if self.Special then Train["PA-KSD"].VRD = true end
-			if not self.NonVRD and not Train["PA-KSD"].VRD then
-				self.VRDTimer = nil
-			end
-				
-			self.NonVRD = not Train["PA-KSD"].VRD
-			if self.NonVRD then
-				if self.VRDTimer and CurTime() - self.VRDTimer > 0 then
-					self.VRDTimer = false
-				elseif self.VRDTimer ~= false then
-					if not self.VRDTimer and self.KVT then self.VRDTimer = CurTime() + 1 end
-					if self.VRDTimer and not self.KVT then self.VRDTimer = nil end
-				end
-			end
-		else
-			if self.NonVRD then self.NonVRD = false end
-			self.VRDTimer = false
-		end
-
-		if (self.Train:ReadTrainWire(15) < 1.0) and (self.Speed < 1.0) and not Train["PA-KSD"].KD then
-			self.KD = true
-		end
-		if Train["PA-KSD"].KD or self.Train:ReadTrainWire(15) > 0.0 then
-			self.KD = false
-		end
-		-- Door close cancel pneumatic brake 1 command trigger
-		if (Train:GetSkin() == 1) and (Train.KD) and Train.SubwayTrain.Name:sub(1,-2) == "81-71" then
-			-- Prepare
-			if (Train.KD.Value == 0) then
-				self.KDReadyToRelease = true
-			end
-			if (Train.KD.Value == 1) and (self.KDReadyToRelease == true) then
-				self.KDReadyToRelease = false
-				self.PneumaticBrake1 = false
-			end
-		end
-		-- ARS signals
-		local Ebrake, Abrake, NFBrake, Pbrake1,Pbrake2 =
-			((self.ElectricBrake) and 1 or 0),
-			((self.ARSBrake)  and 1 or 0),
-			((self.SpeedLimit < 20 and not self.KVT and not self.ARSBrake) and 1 or 0),
-			(self.PneumaticBrake1 and 1 or 0),
-			(self.PneumaticBrake2 and 1 or 0)
-		-- Apply ARS system commands
-		self["33D"] = (1 - Abrake) *(1-NFBrake)*((self.KD or self.NonVRD or self.VRDTimer ~= false or self.ElectricBrake1 or self.AntiRolling ~= nil) and 0 or 1) --*(2 - Pbrake2)
-		self["33G"] = Ebrake + NFBrake + ((self.NonVRD or self.VRDTimer ~= false) and 1 or 0)
-		self["33Zh"] = (1 - Abrake)*(1-NFBrake)*((self.KD or self.NonVRD or self.VRDTimer ~= false or self.ElectricBrake1 or self.AntiRolling ~= nil) and 0 or 1)--*(2 - Pbrake2)
-		--print(self["33Zh"])
-		self["2"] = Ebrake + NFBrake + ((self.NonVRD or self.VRDTimer ~= false) and 1 or 0)
-		self["20"] = Ebrake + NFBrake + ((self.NonVRD or self.VRDTimer ~= false) and 1 or 0)
-		self["29"] = Pbrake1-- + (self.BPSActive and 1 or 0)
-		--print(Train.Speed)
-		--if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then print(self.SpeedLimit,self.self.SpeedLimit <= 20 and not self.KVT) end
-		--if StPetersburg then print(self.Train:EntIndex()) end
-		self["8"] = Pbrake2
-			+ (KRUEnabled and 1 or 0)*Ebrake
-			+ ((self.SpeedLimit < 20 and not self.KVT or self.Speed > 20 and self.SpeedLimit < 20) and 1 or 0)
-			+ (self.BPSActive and 1 or 0)
-			+ (self.AntiRolling ~= nil and 1 or 0)
-			+ (1 - ((EPKActivated and 1 or 0) or 1))
-
-		---self.LKT = (self["33G"] > 0.5) or (self["29"] > 0.5) or (Train:ReadTrainWire(35) > 0)
-		self.LVD = self.LVD or self["33D"] < 0.5
-		if Train:ReadTrainWire(6) < 1 and self["33D"] > 0.5  then  self.LVD = false end
-		self.Ring = ((self["33D"] < 0.5 and ((NFBrake < 1 and self.EPKTimer4 ~= nil and self.EPKTimer4 ~= false) or self.VRDTimer ~= false)) or self.KSZD)
-		if self.ElectricBrake or self.PneumaticBrake2 then
-			if not self.LKT and not self.EPKTimer then
-				self.EPKTimer = CurTime() + ((10 <= self.Speed and self.Speed <= 30) and 5.5 or 3.3)
-			elseif self.LKT then
-				self.EPKTimer = nil
-			end
-		else
-			self.EPKTimer = nil
-		end
-		if self.KVT and self.EPKTimer4 then self.EPKTimer4 = false end
-		if EPKActivated and not self.LKT and self.Speed < 0.05 and Train:ReadTrainWire(1) == 0 and not Train["PA-KSD"].Nakat then -- or (self.AntiRolling ~= nil and Train:ReadTrainWire(1) > 0) then
-			if not self.EPKTimer2 then
-				self.EPKTimer2 = CurTime()+1
-			end
-			if self.EPKTimer2 and CurTime() - self.EPKTimer2 > 0 and not Train.Pneumatic.EmergencyValveEPK then
-				Train.Pneumatic.EmergencyValveEPK = true
-
-				RunConsoleCommand("say","EPV braking (LKT off when stopped)",Train:GetDriverName())
-			end
-		else
-			self.EPKTimer2 = nil
-		end	else
-		if (Train.RPB) and not self.AttentionPedal then
-			--Train.RPB:TriggerInput("Open",1)
-		end
-		self.AntiRolling = nil
-		self.ElectricBrake1 = true
-		self.ElectricBrake = true
-		self.PneumaticBrake1 = false
-		self.PneumaticBrake2 = true
-		self.ARSBrake = true
-		self["33D"] = 0
-		self["33Zh"] = 0
-		self["8"] = KRUEnabled and (1-Train.RPB.Value) or 0
-		self["33G"] = 0
-		self["2"] = 0
-		self["20"] = 0
-		self["29"] = 0
-
-		---self.LKT = false
-		self.LVD = false
-		self.Ring = false
-	end
-	-- ARS signalling train wires
-	if EnableARS then
-		self.Train:WriteTrainWire(21,self.LVD and 1 or 0)-----self.LKT and 1 or 0)
-	else--if not EnableUOS then
-		self.Train:WriteTrainWire(21,0)
-	end
-	-- RC1 operation
-	if self.Train.RC1 and (self.Train.RC1.Value == 0) then
-		if not Train["PA-KSD"].UOS then 
-			Train["PA-KSD"].UOS = true
-		end
-		local KAH = (Train.KAH ~= nil and Train.KAH.Value > 0.5) and 1 or 0
-		--self["33D"] = 1
-		self["33G"] = 0                
-		self["33Zh"] = 1--KAH
-		--
-		self["2"] = 0
-		self["20"] = 0
-		self["29"] = 0
-		--
-		self["31"] = 0
-		self["32"] = 0
-		--self["8"] = KRUEnabled and (1-Train.RPB.Value) or 0
-		self["33D"] = (self.Speed + 0.5 > 35) and 0 or 1
-		--self["33G"] = (self.Speed + 0.5 > 35) and 1 or KRUEnabled and (1-Train.RPB.Value) or 0
-		--self["33Zh"] = 1--(self.Speed + 0.5 > 40) and 0 or KAH
-		self["8"] = (self.Speed + 0.5 > 35) and 1 or KRUEnabled and (1-Train.RPB.Value) or 0
-	else
-		if (not EPKActivated) then
-			self["33D"] = 0
-			self["33Zh"] = 1
 		end
 	end
 end
@@ -857,7 +608,8 @@ function TRAIN_SYSTEM:Think(dT)
 	self.LKT = true
 	for i,train in ipairs(Train.WagonList) do
 		--print(i,train.RKTT.Value,self["33G"],train.DKPT.Value)
-		if (train.RKTT and train.RKTT.Value < 0.5 and train.DKPT.Value < 0.5 and self["33G"] > 0) or (train.DKPT and train.DKPT.Value < 0.5 and self["33G"] == 0) then
+		--if (train.RKTT and train.RKTT.Value < 0.5 and train.DKPT.Value < 0.5 and self["33G"] > 0) or (train.DKPT and train.DKPT.Value < 0.5 and self["33G"] == 0) then
+		if (train.RKTT and train.RKTT.Value < 0.5 and train.DKPT.Value < 0.5) then-- or (train.DKPT and train.DKPT.Value < 0.5) then
 			self.LKT = false
 		end
 	end
@@ -868,24 +620,19 @@ function TRAIN_SYSTEM:Think(dT)
 
 	-- ALS, ARS state
 	local KRUEnabled =  Train.KRU and Train.KRU.Position > 0
-	local StPetersburg = Train.VPA and Train.ARSType and Train.ARSType ==  3
 	local EnableARS = (OverrideState or (Train.VB.Value == 1.0) and (Train.KV.ReverserPosition ~= 0.0 or KRUEnabled))
 	if Train.A42 and Train.A42.Value == 0.0 then EnableARS = false end
-	local EnableALS = OverrideState or (Train.VB.Value == 1.0) and Train.A43.Value == 1.0 
+	local EnableALS = OverrideState or (Train.VB.Value == 1.0) and (not Train.A43 or Train.A43.Value == 1.0)
 	local EnableUOS = OverrideState or (Train.VB.Value == 1.0) and ((Train.KV.ReverserPosition ~= 0.0) or KRUEnabled)
 	--if self.Train.ARSType == 3 and self.Train:EntIndex() ~= 3472 then self.Train.ARSType = 1 end
-	if not OverrideState and StPetersburg then
-		EnableARS = EnableARS and Train.ARS.Value == 1 and (self.Train["PA-KSD"].State > 0 or self.Train["PA-KSD"].State == -1)
-		EnableALS = EnableALS and Train.VPA.Value == 1 and (self.Train["PA-KSD"].State > 0 or self.Train["PA-KSD"].State == -1)
-		EnableUOS = false--Train["PA-KSD"].UOS--EnableUOS and Train["PA-KSD"].UOS
-	elseif not OverrideState then
+	if not OverrideState then
 		EnableARS = EnableARS and Train.ARS.Value == 1.0
 		EnableALS = EnableALS and Train.ALS.Value == 1.0
 		EnableUOS = EnableUOS and Train.UOS.Value == 1.0
 	end
 	self.EnableARS = EnableARS
 	self.EnableALS = EnableALS
-	local EPKActivated = Train.EPK and (Train.EPK.Value > 0.5 and Train.DriverValveDisconnect.Value > 0.5) 
+	local EPKActivated = Train.EPK and Train.EPK.Value > 0.5 and (Train.Pneumatic.ValveType == 2 and Train.DriverValveDisconnect.Value > 0.5 or Train.DriverValveBLDisconnect.Value > 0.5)
 	-- Pedal state
 	--if (Train.PB) and Train.PB.Value > 0.5 then self.AttentionPedal = true end
 	--if (Train.PB) and Train.PB.Value <  0.5 then self.AttentionPedal = false end
@@ -940,7 +687,7 @@ function TRAIN_SYSTEM:Think(dT)
 						if not Train.Pneumatic.UAVA then
 							RunConsoleCommand("say","Autostop braking",Train:GetDriverName(),arsback.Name)
 						end
-						if Train.A5.Value < 1 then
+						if Train.A5 and Train.A5.Value < 1 then
 							RunConsoleCommand("say","Passed stop signal",Train:GetDriverName(),arsback.Name)
 						end
 					end
@@ -956,13 +703,11 @@ function TRAIN_SYSTEM:Think(dT)
 				end
 			end
 
-			if Train:ReadTrainWire(5) < 1 then
-				for i = #Train.WagonList,1,-1 do
-					if Train.WagonList[i].ALS_ARS and Train.WagonList[i].ALS_ARS.EnableALS then
-						ars = Train.WagonList[i].ALS_ARS.Signal
-						break
-					end
-				end
+			if not OverrideState and Train:ReadTrainWire(5) < 1 then
+				ars = nil
+				self.RealNoFreq = true
+				self.NoFreq = true
+				self.CheckedNF = 2
 			end
 		
 			if IsValid(ars) then
@@ -1024,15 +769,11 @@ function TRAIN_SYSTEM:Think(dT)
 		if self.Signal80 then Vlimit = 80 end
 
 		self.Overspeed = false
-		if StPetersburg and self.Train["PA-KSD"].VRD and not self.Signal0 and not self.RealNoFreq then
-			self.Train["PA-KSD"].VRD = false
-		end
 		if self.AttentionPedal then
 			Vlimit = 0
 		end
 		if (    self.KVT) and (Vlimit ~= 0) and (V > Vlimit) then self.Overspeed = true end
 		if (    self.KVT) and (Vlimit == 0) and (V > 20) then self.Overspeed = true end
-		if StPetersburg then Vlimit = Vlimit + 2 end
 		if (not self.KVT) and (V > Vlimit) and (V > (self.RealNoFreq and 0 or 3)) then self.Overspeed = true end
 		--if (    self.KVT) and (Vlimit == 0) and self.Train.ARSType and self.Train.ARSType == 3 and not self.Train["PA-KSD"].VRD then self.Overspeed = true end
 		--self.Ring = self.Overspeed and (self.Speed > 5)
@@ -1083,12 +824,17 @@ function TRAIN_SYSTEM:Think(dT)
 	end
 
 	if EPKActivated then
+		if self.BeOffARS and EnableARS then
+			Train.Pneumatic.EmergencyValveEPK = false
+		end
 		if (self.EPKOffARS or self.EPKTimer3) and not Train.Pneumatic.EmergencyValveEPK then
 			Train.Pneumatic.EmergencyValveEPK = true
 			if self.EPKOffARS then
 				RunConsoleCommand("say","EPV braking (Was the emergency brake)",Train:GetDriverName())
+				self.BeOffARS = nil
 			else
 				RunConsoleCommand("say","EPV braking (3 sec has not passed)",Train:GetDriverName())
+				self.BeOffARS = nil
 			end
 		end
 		self.EPKTimer3 = nil
@@ -1098,14 +844,11 @@ function TRAIN_SYSTEM:Think(dT)
 			Train.Pneumatic.EmergencyValveEPK = true
 			if not EnableARS then
 				RunConsoleCommand("say","EPV braking (ARS disabled)",Train:GetDriverName())
+				self.BeOffARS = true
 			else
 				RunConsoleCommand("say","EPV braking (LKT not light-up on ARS stopping)",Train:GetDriverName())
+				self.BeOffARS = nil
 			end
-		end
-		if self.EPKTimer4 and self.EPKTimer4 < CurTime() and not Train.Pneumatic.EmergencyValveEPK then
-			Train.Pneumatic.EmergencyValveEPK = true
-			RunConsoleCommand("say","EPV braking (Braking 5 second)",Train:GetDriverName())
-			self.EPKTimer4 = nil
 		end
 	else
 		--[[if EnableARS and self.EPKOffARS == nil then
@@ -1119,7 +862,7 @@ function TRAIN_SYSTEM:Think(dT)
 		if Train.Pneumatic and Train.Pneumatic.EmergencyValveEPK then
 			Train.Pneumatic.EmergencyValveEPK = false
 		end
-		if not StPetersburg or Train.KV.ReverserPosition == 0.0 then
+		if Train.KV and Train.KV.ReverserPosition == 0.0 then
 			self.AntiRolling = false
 		end
 		if not EnableARS then
@@ -1138,7 +881,6 @@ function TRAIN_SYSTEM:Think(dT)
 	-- 81-717 autodrive/autostop
 	if (Train.Pneumatic and Train.Pneumatic.EmergencyValve) or self.UAVAContacts then
 		self["33D"] = 0
-		self["33Zh"] = 1
 	end
 
 	-- 81-717 special VZ1 button

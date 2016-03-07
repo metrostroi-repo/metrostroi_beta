@@ -38,7 +38,7 @@ end
 function TRAIN_SYSTEM:Think()
 	-- Require 54 volts
 	if self.Train.Battery and (self.Train.Battery.Voltage < 54) then return end
-	if not self.Power or self.Train.ARSMode == 3 then return end
+	if not self.Power then return end --or self.Train.ARSType == 3 then return end
 	--self.Train:PlayOnce("dura2","cabin",0.4,100)
 	-- Check ARS signals
 	self.Timer = self.Timer or CurTime()
@@ -70,10 +70,10 @@ function TRAIN_SYSTEM:Think()
 				Alt2 = Alt2 or (switch:GetChannel() == 2 and switch:GetSignal() > 0)
 				no_switches = false
 				if self.SelectAlternate == true then
-					switch:SendSignal(getSignal("alt",1),1)
+					if self.Channel == 1 then switch:SendSignal(getSignal("alt",1),1) end
 					if self.Channel == 2 then switch:SendSignal(getSignal("alt",2),2) end
 				elseif self.SelectAlternate == false then
-					switch:SendSignal(getSignal("main",1),1)
+					if self.Channel == 1 then switch:SendSignal(getSignal("main",1),1) end
 					if self.Channel == 2 then switch:SendSignal(getSignal("main",2),2) end
 				end
 				signal = math.max(signal,switch:GetSignal())

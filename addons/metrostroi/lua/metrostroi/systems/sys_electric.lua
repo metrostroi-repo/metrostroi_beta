@@ -63,7 +63,9 @@ function TRAIN_SYSTEM:Initialize()
 	-- Need many iterations for engine simulation to converge
 	self.SubIterations = 16
 	-- Главный выключатель
+	
 	self.Train:LoadSystem("GV","Relay","GV_10ZH")
+	self.Train:LoadSystem("ENDis","Relay","Switch")
 	
 	-- Thyristor contrller
 	if self.ThyristorController then
@@ -210,6 +212,76 @@ function TRAIN_SYSTEM:SolveInternalCircuits(Train,dT)
 		else
 			Train.InternalCircuits.SolveEma508(Train,self.Triggers)
 		end
+	end
+	if (self.TrainSolver == "E")   then
+		local KSH1,KSH2 = 0,0
+		local SDRK_Shunt = 1.0
+		self.Triggers = { -- FIXME
+			--["KSH1"]		= function(V) KSH1 = KSH1 + V end,
+			--["KSH2"]		= function(V) KSH2 = KSH2 + V end,
+			--["KSB1"]		= function(V) Train.KSB1:TriggerInput("Set",V) KSH1 = KSH1 + V end,
+			--["KSB2"]		= function(V) Train.KSB2:TriggerInput("Set",V) KSH2 = KSH2 + V end,
+			["KPP"]			= function(V) Train.KPP:TriggerInput("Close",V) end,
+
+			["RPvozvrat"]	= function(V) Train.RPvozvrat:TriggerInput("Open",V) end,
+			["RRTuderzh"]	= function(V) Train.RRTuderzh = V end,
+			["RRTpod"]		= function(V) Train.RRTpod = V end,
+			["RUTpod"]		= function(V) Train.RUTpod = V end,
+			
+			["SDPP"]		= function(V) Train.PositionSwitch:TriggerInput("MotorState",-1.0 + 2.0*math.max(0,V)) end,
+			["SDRK_Shunt"]	= function(V) SDRK_Shunt = V end,
+			["SDRK_Coil"]	= function(V) Train.RheostatController:TriggerInput("MotorCoilState",SDRK_Shunt*math.min(1,math.max(0,V))*(-1.0 + 2.0*Train.RR.Value)) end,
+			["SDRK"]		= function(V) Train.RheostatController:TriggerInput("MotorState",V) end,
+			
+			["XR3.2"]		= function(V) Train.PowerSupply:TriggerInput("XR3.2",V) end,
+			["XR3.3"]		= function(V) Train.PowerSupply:TriggerInput("XR3.3",V) end,
+			["XR3.4"]		= function(V) end, --Train.PowerSupply:TriggerInput("XR3.4",V) end,
+			["XR3.6"]		= function(V) end, --Train.PowerSupply:TriggerInput("XR3.6",V) end,
+			["XR3.7"]		= function(V) end, --Train.PowerSupply:TriggerInput("XR3.7",V) end,
+			["XT3.1"]		= function(V) Train.PowerSupply:TriggerInput("XT3.1",Train.Battery.Voltage*V) end,
+			
+			["ReverserForward"]		= function(V) Train.RKR:TriggerInput("Open",V) end,
+			["ReverserBackward"]	= function(V) Train.RKR:TriggerInput("Close",V) end,
+		}
+		--local S = Train.InternalCircuits.SolveEzh3(Train,self.Triggers)
+		--Train.KSH1:TriggerInput("Set",KSH1)
+		--Train.KSH2:TriggerInput("Set",KSH2)
+		Train.InternalCircuits.SolveE(Train,self.Triggers)
+	end
+	if (self.TrainSolver == "81_704")   then
+		local KSH1,KSH2 = 0,0
+		local SDRK_Shunt = 1.0
+		self.Triggers = { -- FIXME
+			--["KSH1"]		= function(V) KSH1 = KSH1 + V end,
+			--["KSH2"]		= function(V) KSH2 = KSH2 + V end,
+			--["KSB1"]		= function(V) Train.KSB1:TriggerInput("Set",V) KSH1 = KSH1 + V end,
+			--["KSB2"]		= function(V) Train.KSB2:TriggerInput("Set",V) KSH2 = KSH2 + V end,
+			["KPP"]			= function(V) Train.KPP:TriggerInput("Close",V) end,
+
+			["RPvozvrat"]	= function(V) Train.RPvozvrat:TriggerInput("Open",V) end,
+			["RRTuderzh"]	= function(V) Train.RRTuderzh = V end,
+			["RRTpod"]		= function(V) Train.RRTpod = V end,
+			["RUTpod"]		= function(V) Train.RUTpod = V end,
+			
+			["SDPP"]		= function(V) Train.PositionSwitch:TriggerInput("MotorState",-1.0 + 2.0*math.max(0,V)) end,
+			["SDRK_Shunt"]	= function(V) SDRK_Shunt = V end,
+			["SDRK_Coil"]	= function(V) Train.RheostatController:TriggerInput("MotorCoilState",SDRK_Shunt*math.min(1,math.max(0,V))*(-1.0 + 2.0*Train.RR.Value)) end,
+			["SDRK"]		= function(V) Train.RheostatController:TriggerInput("MotorState",V) end,
+			
+			["XR3.2"]		= function(V) Train.PowerSupply:TriggerInput("XR3.2",V) end,
+			["XR3.3"]		= function(V) Train.PowerSupply:TriggerInput("XR3.3",V) end,
+			["XR3.4"]		= function(V) end, --Train.PowerSupply:TriggerInput("XR3.4",V) end,
+			["XR3.6"]		= function(V) end, --Train.PowerSupply:TriggerInput("XR3.6",V) end,
+			["XR3.7"]		= function(V) end, --Train.PowerSupply:TriggerInput("XR3.7",V) end,
+			["XT3.1"]		= function(V) Train.PowerSupply:TriggerInput("XT3.1",Train.Battery.Voltage*V) end,
+			
+			["ReverserForward"]		= function(V) Train.RKR:TriggerInput("Open",V) end,
+			["ReverserBackward"]	= function(V) Train.RKR:TriggerInput("Close",V) end,
+		}
+		--local S = Train.InternalCircuits.SolveEzh3(Train,self.Triggers)
+		--Train.KSH1:TriggerInput("Set",KSH1)
+		--Train.KSH2:TriggerInput("Set",KSH2)
+		Train.InternalCircuits.Solve81_704(Train,self.Triggers)
 	end
 end
 
@@ -443,7 +515,7 @@ function TRAIN_SYSTEM:SolvePS(Train)
 	-- Calculate total resistance of the entire series circuit
 	local Rtotal = self.Ranchor13 + self.Ranchor24 + self.Rstator13 + self.Rstator24 +
 		self.R1 + self.R2 + self.R3 + self.ExtraResistanceLK5
-	local CircuitClosed = (self.Power750V > 0) and 1 or 0
+	local CircuitClosed = (self.Power750V > 0  and Train.ENDis.Value < 0.5) and 1 or 0
 		
 	-- Calculate total current
 	self.Utotal = (self.Power750V - Train.Engines.E13 - Train.Engines.E24)*Train.LK1.Value
@@ -471,7 +543,7 @@ function TRAIN_SYSTEM:SolvePP(Train,inTransition)
 	local R1 = self.Ranchor13 + self.Rstator13 + self.R1 + extraR + self.ExtraResistanceLK5
 	local R2 = self.Ranchor24 + self.Rstator24 + self.R2 + extraR + self.ExtraResistanceLK5
 	local R3 = 0
-	local CircuitClosed = (self.Power750V > 0) and 1 or 0
+	local CircuitClosed = (self.Power750V > 0  and Train.ENDis.Value < 0.5) and 1 or 0
 	
 	-- Main circuit parameters
 	local V = self.Power750V*Train.LK1.Value

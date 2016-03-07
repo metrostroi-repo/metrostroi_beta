@@ -15,8 +15,8 @@ function ENT:Think()
 	self.Timeout = self.Timeout or 0
 	if (CurTime() - self.Timeout) > 60.0 then
 		self.Timeout = CurTime()
-		self:SetNWFloat("T0",os.time()-1396011937)
-		self:SetNWFloat("T1",CurTime())
+		self:SetNW2Float("T0",os.time()-1396011937)
+		self:SetNW2Float("T1",CurTime())
 	end
 
 	-- Check if train passes the sign

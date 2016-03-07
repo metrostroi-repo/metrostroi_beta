@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/metrostroi_train/81/k_window01"
+	"$model" "1"
+	"$model" "1"
+	"$alphatest" "1"
+	"$allowalphatocoverage" "1"
+}

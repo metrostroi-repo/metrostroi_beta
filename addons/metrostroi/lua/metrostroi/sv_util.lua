@@ -133,7 +133,7 @@ end
 function Player:GetTrain()
 	local seat = self:GetVehicle()
 	if seat then 
-		return seat:GetNWEntity("TrainEntity")
+		return seat:GetNW2Entity("TrainEntity")
 	end
 end
 
@@ -151,7 +151,7 @@ function Metrostroi.TrainCount(...)
 
 	local N = 0
 	for k,v in pairs(#classnames > 0 and classnames or Metrostroi.TrainClasses) do
-		if  v == "gmod_subway_base" then continue end
+		if not baseclass.Get(v).SubwayTrain then continue end
 		N = N + #ents.FindByClass(v)
 	end
 	return N
@@ -159,23 +159,18 @@ end
 
 function Metrostroi.TrainCountOnPlayer(ply ,...)
 	local classnames = {...}
+	local typ
+	if type(classnames[1]) == "number" then
+		typ = classnames[1]
+		classnames = {}
+	end
 	if CPPI then
 		local N = 0
-		if #classnames == 1 then
-			local ents = ents.FindByClass(classnames[1])
-			for k,v in pairs(ents) do
-				if ply == v:CPPIGetOwner() then
-					N = N + 1
-				end
-			end
-			return N
-		end
-			
 		for k,v in pairs(#classnames > 0 and classnames or Metrostroi.TrainClasses) do
-			if  v == "gmod_subway_base" then continue end
+			if not baseclass.Get(v).SubwayTrain then continue end
 			local ents = ents.FindByClass(v)
 			for k2,v2 in pairs(ents) do
-				if ply == v2:CPPIGetOwner() then
+				if ply == v2:CPPIGetOwner() and (not typ or v2.SubwayTrain.WagType == typ) then
 					N = N + 1
 				end
 			end
@@ -238,28 +233,30 @@ end)
 --------------------------------------------------------------------------------
 -- Simple hack to get a driving schedule
 --------------------------------------------------------------------------------
-concommand.Add("metrostroi_get_schedule", function(ply, _, args)
+concommand.Add("metrostroi_schedule", function(ply, _, args)
 	if not IsValid(ply) then return end
 	local train = ply:GetTrain()
 
 	local pos = Metrostroi.TrainPositions[train]
 	if pos and pos[1] then
-		local id = tonumber(args[1]) or pos[1].path.id
+		local line = tonumber(args[1])
+		local path = tonumber(args[2])
+		local starts = tonumber(args[3])
+		local ends = tonumber(args[4])
 
-		print("Generating schedule for user")
-		train.Schedule = Metrostroi.GenerateSchedule("Line1_Platform"..id)
+		train.Schedule = Metrostroi.GenerateSchedule("Line"..line.."_Platform"..path,starts,ends)
 		if train.Schedule then
-			train:SetNWInt("_schedule_id",train.Schedule.ScheduleID)
-			train:SetNWInt("_schedule_duration",train.Schedule.Duration)
-			train:SetNWInt("_schedule_interval",train.Schedule.Interval)
-			train:SetNWInt("_schedule_N",#train.Schedule)
-			train:SetNWInt("_schedule_path",id)
+			train:SetNW2Int("_schedule_id",train.Schedule.ScheduleID)
+			train:SetNW2Int("_schedule_duration",train.Schedule.Duration)
+			train:SetNW2Int("_schedule_interval",train.Schedule.Interval)
+			train:SetNW2Int("_schedule_N",#train.Schedule)
+			train:SetNW2Int("_schedule_path",path)
 			for k,v in ipairs(train.Schedule) do
-				train:SetNWInt("_schedule_"..k.."_1",v[1])
-				train:SetNWInt("_schedule_"..k.."_2",v[2])
-				train:SetNWInt("_schedule_"..k.."_3",v[3])
-				train:SetNWInt("_schedule_"..k.."_4",v[4])
-				train:SetNWString("_schedule_"..k.."_5",Metrostroi.StationNames[v[1]] or v[1])
+				train:SetNW2Int("_schedule_"..k.."_1",v[1])
+				train:SetNW2Int("_schedule_"..k.."_2",v[2])
+				train:SetNW2Int("_schedule_"..k.."_3",v[3])
+				train:SetNW2Int("_schedule_"..k.."_4",v[4])
+				train:SetNW2String("_schedule_"..k.."_5",Metrostroi.StationNames[v[1]] or v[1])
 			end
 		end
 	end

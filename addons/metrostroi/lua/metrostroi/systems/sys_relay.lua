@@ -72,8 +72,13 @@ function TRAIN_SYSTEM:Initialize(parameters,extra_parameters)
 
 	----------------------------------------------------------------------------
 	-- Relay parameters
-	FailSim.AddParameter(self,"CloseTime", 		{ value = parameters.close_time, precision = self.contactor and 0.35 or 0.10, min = 0.010, varies = true })
-	FailSim.AddParameter(self,"OpenTime", 		{ value = parameters.open_time, precision = self.contactor and 0.35 or 0.10, min = 0.010, varies = true })
+	if self.rvt then
+		FailSim.AddParameter(self,"CloseTime", 		{ value = parameters.close_time})
+		FailSim.AddParameter(self,"OpenTime", 		{ value = parameters.open_time})
+	else
+		FailSim.AddParameter(self,"CloseTime", 		{ value = parameters.close_time, precision = self.contactor and 0.35 or 0.10, min = 0.010, varies = true })
+		FailSim.AddParameter(self,"OpenTime", 		{ value = parameters.open_time, precision = self.contactor and 0.35 or 0.10, min = 0.010, varies = true })
+	end
 	-- Did relay short-circuit?
 	FailSim.AddParameter(self,"ShortCircuit",	{ value = 0.000, precision = 0.00 })
 	-- Was there a spurious trip?
@@ -132,7 +137,7 @@ function TRAIN_SYSTEM:Initialize(parameters,extra_parameters)
 end
 
 function TRAIN_SYSTEM:Inputs()
-	return { "Open","Close","Set","Toggle","Block","OpenBypass","Check"}
+	return { "Open","Close","Set","Toggle","Block","OpenBypass","Check","OpenTime","CloseTime"}
 end
 
 function TRAIN_SYSTEM:Outputs()
@@ -142,6 +147,21 @@ end
 function TRAIN_SYSTEM:TriggerInput(name,value)
 	-- Boolean values accepted
 	if type(value) == "boolean" then value = value and 1 or 0 end
+	if name == "OpenTime" then
+		self.open_time = value
+		FailSim.AddParameter(self,"OpenTime", 		{ value = self.open_time})
+	end
+	if name == "CloseTime" then
+		self.close_time = value
+		FailSim.AddParameter(self,"CloseTime", 		{ value = self.close_time})
+	end
+	if name == "Reset" then
+		if self.normally_closed then
+			self:TriggerInput("Set",1)
+		else
+			self:TriggerInput("Set",self.defaultvalue or 0.0)
+		end
+	end
 		--print(name)
 	if name == "Check" then
 		if not value then print(self.Name) end
@@ -164,7 +184,7 @@ function TRAIN_SYSTEM:TriggerInput(name,value)
 		return
 	end
 		
-	if self.Blocked > 0 and name ~= "Block" and (name == "Close" or self.rkr) then return end
+	if self.Blocked > 0 and name ~= "Block" and (name == "Close" and self.relay_type == "PK-162" or self.relay_type ~= "PK-162") then return end
 	
 	-- Open/close coils of the relay
 	if (name == "Block") then
@@ -172,6 +192,7 @@ function TRAIN_SYSTEM:TriggerInput(name,value)
 	elseif (name == "Close") and (value > self.trigger_level) and (self.Value ~= 1.0 or self.TargetValue ~= 1.0) then --(self.TargetValue ~= 1.0 and self.rpb))
 		if (not self.ChangeTime) and (self.TargetValue ~= 1.0) then
 			self.ChangeTime = self.Time + FailSim.Value(self,"CloseTime")
+			--if self.rvt then print(FailSim.Value(self,"CloseTime")) end
 		end
 		--if self.rpb and 
 		if self.Value == 1.0 then self.ChangeTime = nil end
@@ -244,19 +265,59 @@ function TRAIN_SYSTEM:Think(dT)
 		FailSim.Age(self,1)
 
 		-- Electropneumatic relays make this sound
-		if self.pneumatic and (self.Value == 0.0) then		self.Train:PlayOnce("pneumo_switch",nil,0.6)		end
-		if self.pneumatic and (self.Value == 1.0) then		self.Train:PlayOnce("pneumo_switch_on",nil,0.57)	end
+		--if self.pneumatic and (self.Value == 0.0) then		self.Train:PlayOnce("pneumo_switch",nil,0.6)		end
+		--if self.pneumatic and (self.Value ~= 0.0) then		self.Train:PlayOnce("pneumo_switch_on",nil,0.57)	end
+		if self.lk2 and (self.Value == 0.0) then		self.Train:PlayOnce("lk2_off",nil,0.7)		end
+		if self.lk2 and (self.Value ~= 0.0) then		self.Train:PlayOnce("lk2_on",nil,0.7)	end
+		if self.lk3 and (self.Value == 0.0) then		self.Train:PlayOnce("lk3_off",nil,0.7)		end
+		if self.lk3 and (self.Value ~= 0.0) then		self.Train:PlayOnce("lk3_on",nil,0.7)	end
 		if self.rkr then									self.Train:PlayOnce("pneumo_reverser",nil,0.9)		end
 		if self.in_cabin and (self.Value == 0.0) then		self.Train:PlayOnce("relay_open","cabin",0.6)		end
-		if self.in_cabin and (self.Value == 1.0) then		self.Train:PlayOnce("relay_close","cabin",0.6)		end
+		if self.in_cabin and (self.Value ~= 0.0) then		self.Train:PlayOnce("relay_close","cabin",0.6)		end
 		if self.in_cabin_alt and (self.Value == 0.0) then	self.Train:PlayOnce("relay_open","cabin",0.6)		end
-		if self.in_cabin_alt and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close2","cabin",0.6)		end
+		if self.in_cabin_alt and (self.Value ~= 0.0) then	self.Train:PlayOnce("relay_close2","cabin",0.6)		end
 		if self.in_cabin_alt2 and (self.Value == 0.0) then	self.Train:PlayOnce("relay_open","cabin",0.6)		end
-		if self.in_cabin_alt2 and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close3","cabin",0.6)		end
-		if self.in_cabin_alt2 and (self.Value == 0.0) then	self.Train:PlayOnce("relay_open","cabin",0.6)		end
-		if self.in_cabin_alt3 and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close4","cabin",0.6)		end
+		if self.in_cabin_alt2 and (self.Value ~= 0.0) then	self.Train:PlayOnce("relay_close3","cabin",0.6)		end
+		if self.in_cabin_alt3 and (self.Value == 0.0) then	self.Train:PlayOnce("relay_open","cabin",0.6)		end
+		if self.in_cabin_alt3 and (self.Value ~= 0.0) then	self.Train:PlayOnce("relay_close4","cabin",0.6)		end
 		if self.in_cabin_avu and (self.Value == 0.0) then	self.Train:PlayOnce("relay_open","cabin",0.7,70)	end
-		if self.in_cabin_avu and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close","cabin",0.7,70)	end
-		if self.in_cabin_alt4 and (self.Value == 1.0) then	self.Train:PlayOnce("relay_close5","cabin",0.6)		end
+		if self.in_cabin_avu and (self.Value ~= 0.0) then	self.Train:PlayOnce("relay_close","cabin",0.7,70)	end
+		if self.in_cabin_alt4 and (self.Value ~= 0.0) then	self.Train:PlayOnce("relay_close5","cabin",0.6)		end
+		if self.rvt and (self.Value == 0.0) then	self.Train:PlayOnce("rvt_open","cabin",0.6)		end
+		if self.rvt and (self.Value ~= 0.0) then	self.Train:PlayOnce("rvt_close","cabin",1)		end
+		if self.r1_5 and (self.Value == 0.0) then	self.Train:PlayOnce("r1_5_open","cabin",0.6)		end
+		if self.r1_5 and (self.Value ~= 0.0) then	self.Train:PlayOnce("r1_5_close","cabin",0.6)		end
+		if self.relay_type == "VA21-29" and (self.Value == 0.0) then	self.Train:PlayOnce("av_off","cabin")		end
+		if self.relay_type == "VA21-29" and (self.Value ~= 0.0) then	self.Train:PlayOnce("av_on","cabin")		end
+		if self.relay_type == "VB-11" and (self.Value == 0.0) then	self.Train:PlayOnce("vu22b_off","cabin")		end
+		if self.relay_type == "VB-11" and (self.Value ~= 0.0) then	self.Train:PlayOnce("vu22b_on","cabin")		end
+		if self.relay_type == "Switch" then
+			if self.Value ~= 0.0 and self.maxvalue ~= 2 or self.Value ~= 1.0 and self.maxvalue == 2 then
+				if self.av3 then self.Train:PlayOnce("vu22b_on","cabin") end
+				if self.button then self.Train:PlayOnce("button_press","cabin",0.51) end
+				if self.vud then self.Train:PlayOnce("vu22_on","cabin") end
+				if self.uava then self.Train:PlayOnce("uava_on","cabin") end
+				if self.pb then self.Train:PlayOnce("switch6","cabin") end
+				if self.programm then self.Train:PlayOnce("inf_on","cabin") end
+				if self.av then self.Train:PlayOnce("auto_on","cabin") end
+				if self.mainav then self.Train:PlayOnce("mainauto_on","cabin") end
+				if self.krishka then self.Train:PlayOnce("kr_close","cabin") end
+				if self.paketnik then self.Train:PlayOnce("pak_on","cabin") end 
+				if self.switch then self.Train:PlayOnce("switch_on","cabin") end
+			end
+			if self.Value == 0.0 and self.maxvalue ~= 2 or self.Value == 1.0 and self.maxvalue == 2 then
+				if self.av3 then self.Train:PlayOnce("vu22b_off","cabin") end
+				if self.button then self.Train:PlayOnce("button_release","cabin",0.56) end
+				if self.vud then self.Train:PlayOnce("vu22_off","cabin") end
+				if self.uava then self.Train:PlayOnce("uava_off","cabin") end
+				if self.pb then self.Train:PlayOnce("switch6_off","cabin") end
+				if self.programm then self.Train:PlayOnce("inf_off","cabin") end
+				if self.av then self.Train:PlayOnce("auto_off","cabin") end
+				if self.mainav then self.Train:PlayOnce("mainauto_off","cabin") end
+				if self.krishka then self.Train:PlayOnce("kr_open","cabin") end
+				if self.paketnik then self.Train:PlayOnce("pak_off","cabin") end 
+				if self.switch then self.Train:PlayOnce("switch_off","cabin") end
+			end
+		end
 	end
 end

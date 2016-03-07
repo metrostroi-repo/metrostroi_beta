@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/metrostroi_train/em/ema_pipes"
+	"$model" "1"
+	"$phong" "1"
+	"$bumpmap"				"models/metrostroi_train/em/ema_pipes_n"
+	"$phongexponenttexture"	"models/metrostroi_train/em/ema_pipes_phong"
+	"$phongboost"				10.0
+	"$phongfresnelranges"		"[0 0.5 1]"
+}

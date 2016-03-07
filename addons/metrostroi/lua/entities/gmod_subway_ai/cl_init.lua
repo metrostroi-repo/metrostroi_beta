@@ -48,7 +48,7 @@ end
 function ENT:Think()
 	self.BaseClass.Think(self)
 
-	local trainType = self:GetNWString("TrainType")
+	local trainType = self:GetNW2String("TrainType")
 	if trainType == "81-717" and not self.ClientProps["d1"] then
 		--self:Props81717()
 	end

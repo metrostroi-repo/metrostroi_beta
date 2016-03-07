@@ -4,13 +4,21 @@ include("shared.lua")
 
 ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 
---------------------------------------------------------------------------------
+---------------------------------------------------
+-- Defined train information                      
+-- Types of wagon(for wagon limit system):
+-- 0 = Head or intherim                           
+-- 1 = Only head                                     
+-- 2 = Only intherim                                
+---------------------------------------------------
+ENT.SubwayTrain = {
+	Type = "E",
+	Name = "Em508T",
+	Manufacturer = "MVM",
+	WagType = 2,
+}
+
 function ENT:Initialize()
-	-- Defined train information
-	self.SubwayTrain = {
-		Type = "E",
-		Name = "Ema508T",
-	}
 
 	-- Set model and initialize
 	self:SetModel("models/metrostroi/81/ema508t.mdl")
@@ -116,11 +124,50 @@ function ENT:Initialize()
 	end
 	self.RearDoor = false
 	self.FrontDoor = false
+	self:UpdateTextures()
 end
 
+function ENT:UpdateTextures()
+	local texture = Metrostroi.Skins["train"][self.Texture]
+	local passtexture = Metrostroi.Skins["pass"][self.PassTexture]
+
+	for k,v in pairs(self:GetMaterials()) do
+		self:SetSubMaterial(k-1,"")
+	end
+	for k,v in pairs(self:GetMaterials()) do
+		if v == "models/metrostroi_train/81/int02" then
+			if not Metrostroi.Skins["717_schemes"] or not Metrostroi.Skins["717_schemes"]["m"] then
+				self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"][""])
+			else
+				if not self.Adverts or self.Adverts ~= 4 then
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].adv)
+				else
+					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].clean)
+				end
+			end
+		end
+		local tex = string.Explode("/",v)
+		tex = tex[#tex]
+		if passtexture and passtexture.textures[tex] then
+			self:SetSubMaterial(k-1,passtexture.textures[tex])
+		end
+		if texture and texture.textures[tex] then
+			self:SetSubMaterial(k-1,texture.textures[tex])
+		end
+		
+	end
+	self:SetNW2String("texture",self.Texture)
+	self:SetNW2String("passtexture",self.PassTexture)
+end
 
 --------------------------------------------------------------------------------
 function ENT:Think()
+	if self.YAR_13A.Slope == 0 and self:GetAngles().pitch*self.SpeedSign <= -1 then
+		self.YAR_13A:TriggerInput("Slope",1)
+	end
+	if self.YAR_13A.Slope > 0 and self:GetAngles().pitch*self.SpeedSign > -1 then
+		self.YAR_13A:TriggerInput("Slope",0)
+	end
 	self.TextureTime = self.TextureTime or CurTime()
 	if (CurTime() - self.TextureTime) > 1.0 then
 		--print(1)
@@ -133,7 +180,7 @@ function ENT:Think()
 					self:SetSubMaterial(k-1,"")
 				end
 			end
-			self:SetNWString("texture",self.Texture)
+			self:SetNW2String("texture",self.Texture)
 		end
 	end
 	local retVal = self.BaseClass.Think(self)
@@ -225,14 +272,14 @@ function ENT:Think()
 	self:SetPackedRatio(8, math.abs(self.Electric.I24)/1000.0)	
 	--self:SetPackedRatio(9, self.Pneumatic.BrakeLinePressure_dPdT or 0)
 	if self.Pneumatic.TrainLineOpen then
-		self:SetPackedRatio(9, (self.Pneumatic.TrainLinePressure_dPdT or 0)*6)
+		self:SetPackedRatio(9, (-self.Pneumatic.TrainLinePressure_dPdT or 0)*6)
 	else
 		self:SetPackedRatio(9, self.Pneumatic.BrakeLinePressure_dPdT or 0)
 	end
 	--self:SetPackedRatio(10,(self.Panel["V1"] * self.Battery.Voltage) / 100.0)
 
 	-- RUT test
-	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNWFloat("PassengerCount")/300)))
+	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNW2Float("PassengerCount")/300)))
 	if math.abs(self:GetAngles().pitch) > 2.5 then weightRatio = weightRatio + 1.00 end
 	self.YAR_13A:TriggerInput("WeightLoadRatio",math.max(0,math.min(2.50,weightRatio)))
 	
@@ -308,8 +355,10 @@ function ENT:OnButtonPress(button)
 	end
 	if button == "FrontDoor" then
 		self.FrontDoor = not self.FrontDoor
+		if self.FrontDoor then self:PlayOnce("door_open_tor") else self:PlayOnce("door_close_tor") end
 	end
 	if button == "RearDoor" then
 		self.RearDoor = not self.RearDoor
+		if self.RearDoor then self:PlayOnce("door_open_tor") else self:PlayOnce("door_close_tor") end
 	end
 end

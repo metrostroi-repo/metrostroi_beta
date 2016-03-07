@@ -119,8 +119,8 @@ function ENT:Draw()
 		--surface.DrawRect(0, 0, 256, 320)
 
 		draw.Text({
-			text = self:GetNWString("Name","Error"),
-			font = "MetrostroiSubway_StationFont2",--..self:GetNWInt("Style",1),
+			text = self:GetNW2String("Name","Error"),
+			font = "MetrostroiSubway_StationFont2",--..self:GetNW2Int("Style",1),
 			pos = { 0, 0 },
 			xalign = TEXT_ALIGN_CENTER,
 			yalign = TEXT_ALIGN_CENTER,
@@ -132,41 +132,41 @@ function ENT:Draw()
 	cam.Start3D2D(pos, ang, 0.125)
 		draw.NoTexture()
 		
-		local N = self:GetNWInt("StationList#")
+		local N = self:GetNW2Int("StationList#")
 		local W = 320
 		local H = 64
 		local X = -N*W*0.5
 		self.LastColor = nil
 		for i=1,N do
 			local x = X+W*(i-1)
-			local ID = self:GetNWInt("StationList"..i.."[ID]")
-			local currentStation = (self:GetNWInt("ID") == ID)
+			local ID = self:GetNW2Int("StationList"..i.."[ID]")
+			local currentStation = (self:GetNW2Int("ID") == ID)
 			
-			local R1 = self:GetNWInt("StationList"..i.."[R]")
-			local G1 = self:GetNWInt("StationList"..i.."[G]")
-			local B1 = self:GetNWInt("StationList"..i.."[B]")
+			local R1 = self:GetNW2Int("StationList"..i.."[R]")
+			local G1 = self:GetNW2Int("StationList"..i.."[G]")
+			local B1 = self:GetNW2Int("StationList"..i.."[B]")
 			
 			self:DrawStation(x,0,ID,currentStation,R1,G1,B1,W,H,
-				self:GetNWString("StationList"..i.."[ID]"),
-				self:GetNWString("StationList"..i.."[Name1]"),
-				self:GetNWString("StationList"..i.."[Name2]"))
+				self:GetNW2String("StationList"..i.."[ID]"),
+				self:GetNW2String("StationList"..i.."[Name1]"),
+				self:GetNW2String("StationList"..i.."[Name2]"))
 				
 			-- Draw change
-			if self:GetNWInt("Change2") == tonumber(self:GetNWString("StationList"..i.."[ID]")) then
-				local Nc = self:GetNWInt("Change2List#")
-				local ChangeStation = self:GetNWInt("Change2ID")
+			if self:GetNW2Int("Change2") == tonumber(self:GetNW2String("StationList"..i.."[ID]")) then
+				local Nc = self:GetNW2Int("Change2List#")
+				local ChangeStation = self:GetNW2Int("Change2ID")
 				local N2 = 0
 				for j=1,Nc do
-					if self:GetNWInt("Change2List"..j.."[ID]") < ChangeStation then
+					if self:GetNW2Int("Change2List"..j.."[ID]") < ChangeStation then
 						N2 = N2 + 1
 					end
 				end
 				
 				for j=1,Nc do
-					local ID = self:GetNWInt("Change2List"..j.."[ID]")
-					local R2 = self:GetNWInt("Change2List"..j.."[R]")
-					local G2 = self:GetNWInt("Change2List"..j.."[G]")
-					local B2 = self:GetNWInt("Change2List"..j.."[B]")
+					local ID = self:GetNW2Int("Change2List"..j.."[ID]")
+					local R2 = self:GetNW2Int("Change2List"..j.."[R]")
+					local G2 = self:GetNW2Int("Change2List"..j.."[G]")
+					local B2 = self:GetNW2Int("Change2List"..j.."[B]")
 					
 					local H2 = H*0.85
 					local y = 0
@@ -176,9 +176,9 @@ function ENT:Draw()
 					end
 
 					self:DrawStation(x,y,ID,false,R2,G2,B2,W,H2,
-						self:GetNWString("Change2List"..j.."[ID]"),
-						self:GetNWString("Change2List"..j.."[Name1]"),
-						self:GetNWString("Change2List"..j.."[Name2]"))
+						self:GetNW2String("Change2List"..j.."[ID]"),
+						self:GetNW2String("Change2List"..j.."[Name1]"),
+						self:GetNW2String("Change2List"..j.."[Name2]"))
 				end
 			end
 		end

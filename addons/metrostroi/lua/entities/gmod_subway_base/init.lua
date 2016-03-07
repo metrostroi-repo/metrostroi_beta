@@ -70,9 +70,9 @@ function ENT:PostEntityPaste(ply,ent,createdEntities)
 			self.SquealSound = self.SquealSound or math.floor(4*math.random())
 			self.SquealSensitivity = self.SquealSensitivity or math.random()
 			v[1].SquealSensitivity = self.SquealSensitivity
-			v[1]:SetNWInt("SquealSound",self.SquealSound)
-			v[1]:SetNWBool("IsForwardBogey", k == 1)
-			v[1]:SetNWEntity("TrainEntity", self)
+			v[1]:SetNW2Int("SquealSound",self.SquealSound)
+			v[1]:SetNW2Bool("IsForwardBogey", k == 1)
+			v[1]:SetNW2Entity("TrainEntity", self)
 
 			-- Constraint bogey to the train
 			if self.NoPhysics then
@@ -107,7 +107,7 @@ function ENT:Initialize()
 	self:SetUseType(SIMPLE_USE)
 	
 	-- Possible number of train wires
-	self.TrainWireCount = self.TrainWireCount or 32
+	self.TrainWireCount = self.TrainWireCount or 36
 	-- Train wires
 	self:ResetTrainWires()
 	-- Systems defined in the train
@@ -265,7 +265,7 @@ function ENT:Initialize()
 	self.RightDoorsOpen = false
 	self.RightDoorsBlocked = false
 	self.RightDoorPositions = { Vector(0,0,0) }
-	--self:SetNWFloat("PassengerCount", 0)
+	--self:SetNW2Float("PassengerCount", 0)
 	
 	-- Get default train mass
 	if IsValid(self:GetPhysicsObject()) then
@@ -292,17 +292,6 @@ function ENT:Initialize()
 	]]
 	self.FailSim:TriggerInput("TrainWires",self.TrainWireCount)
 	self:UpdateWagonList()
-	self.Map = ""
-	local Map = game.GetMap() or ""
-	if Map:find("gm_metrostroi") and Map:find("lite") then
-		self.Map = "gm_metrostroi_lite"
-	elseif Map:find("gm_metrostroi") then
-		self.Map = "gm_metrostroi"
-	elseif Map:find("gm_mus_orange_line") and Map:find("long") then
-		self.Map = "gm_orange"
-	elseif Map:find("gm_mus_orange_line") then
-		self.Map = "gm_orange_lite"
-	end
 end
 
 -- Remove entity
@@ -529,11 +518,12 @@ function ENT:ReadCell(Address)
 		end
 
 		local pos = Metrostroi.TrainPositions[self]
-		if (Address >= 49160) and (Address <= 49165) and pos and pos[1] then
+		if (Address >= 49160) and (Address <= 49170) and pos and pos[1] then
 			pos = pos[1]
 
 			-- Get stations
 			local current,next,prev = 0,0,0
+			local cPlatID,nPlatID,pPlatID = 0,0,0
 			local x1,x2,x3 = 1e9,0,1e9
 			for stationID,stationData in pairs(Metrostroi.Stations) do
 				for platformID,platformData in pairs(stationData) do
@@ -541,12 +531,14 @@ function ENT:ReadCell(Address)
 						(platformData.x_start < pos.x) and 
 						(platformData.x_end > pos.x) then
 						current = stationID
+						cPlatID = platformID
 					end
 					if (platformData.node_start.path == pos.path) and 
 						(platformData.x_start > pos.x) then
 						if platformData.x_start < x1 then
 							x1 = platformData.x_start
 							next = stationID
+							nPlatID = platformID
 						end
 					end
 					if (platformData.node_start.path == pos.path) and 
@@ -554,6 +546,7 @@ function ENT:ReadCell(Address)
 						if platformData.x_start > x2 then
 							x2 = platformData.x_start
 							prev = stationID
+							pPlatID = platformID
 						end
 					end
 					if (platformData.node_start.path == pos.path) and 
@@ -561,16 +554,22 @@ function ENT:ReadCell(Address)
 						if platformData.x_end < x3 then
 							x3 = platformData.x_end
 							next = stationID
+							nPlatID = platformID
 						end
 					end
 				end
 			end
-
 			if Address == 49160 then return current end
 			if Address == 49161 then return next end
 			if Address == 49162 then return prev end
 			if Address == 49163 then return x1 - pos.x end
 			if Address == 49165 then return x3 - pos.x end
+			if Address == 49166 then return cPlatID end
+			if Address == 49167 then return nPlatID end
+			if Address == 49168 then return pPlatID end
+			
+			if Address == 49169 then return current > 0 and current or next end
+			if Address == 49170 then return cPlatID > 0 and cPlatID or nPlatID end
 		end
 		return 0
 	end
@@ -640,14 +639,14 @@ function ENT:WriteCell(Address, value)
 	if (Address >= 32768) and (Address < (32768+32*24)) then
 		local stringID = math.floor((Address-32768)/32)
 		local charID = (Address-32768)%32
-		local prevStr = self:GetNWString("CustomStr"..stringID)
+		local prevStr = self:GetNW2String("CustomStr"..stringID)
 		local newStr = ""
 		for i=0,31 do
 			local ch = string.byte(prevStr,i+1) or 32
 			if i == charID then ch = value end
 			newStr = newStr..(string.char(ch) or "?")
 		end
-		self:SetNWString("CustomStr"..stringID,newStr)		
+		self:SetNW2String("CustomStr"..stringID,newStr)		
 	end
 	if Address == 49164 then
 		if self.Announcer then
@@ -669,32 +668,64 @@ function ENT:WriteCell(Address, value)
 end
 
 
-
+function ENT:SpawnButton(model,pos,ang,min,max,soundtbl)
+	local ent = ents.Create("gmod_train_button")
+	ent:SetPos(self:LocalToWorld(pos))
+	ent:SetAngles(self:LocalToWorldAngles(ang ))
+	ent:SetParent(self)
+	ent.Owner = ply
+	ent.Model = model
+	ent.Sounds = soundtbl
+	ent:Spawn()
+	ent:Activate()
+	return ent
+end
+function ENT:SpawnSwitch(model,pos,ang,min,max,soundtbl)
+	local ent = ents.Create("gmod_train_swtich")
+	ent:SetPos(self:LocalToWorld(pos))
+	ent:SetAngles(self:LocalToWorldAngles(ang ))
+	ent:SetParent(self)
+	ent.Owner = ply
+	ent.Model = model
+	ent.Min = min
+	ent.Max = max
+	ent.Sounds = soundtbl
+	ent:Spawn()
+	ent:Activate()
+	return ent
+end
 Metrostroi.SignsTextures = {
 }
 Metrostroi.SignsTextures["gm_metrostroi_lite"] = {
-	[108] = {"models/metrostroi_train/signs/avtozavodskaya","Автозаводская"},
-	[111] = {"models/metrostroi_train/signs/oktyabrskyaya","Октябрьская"},
-	[114] = {"models/metrostroi_train/signs/vokzalnaya","Вокзальная"},
-	[121] = {"models/metrostroi_train/signs/minskaya","Минская"},
+	[108] = {"models/metrostroi_train/signs/b50/avtozavodskaya","Автозаводская"},
+	[111] = {"models/metrostroi_train/signs/b50/oktyabrskyaya","Октябрьская"},
+	[114] = {"models/metrostroi_train/signs/b50/vokzalnaya","Вокзальная"},
+	[121] = {"models/metrostroi_train/signs/b50/minskaya","Минская"},
 }
 Metrostroi.SignsTextures["gm_metrostroi"] = Metrostroi.SignsTextures["gm_metrostroi_lite"]
-Metrostroi.SignsTextures["gm_metrostroi"][123] = {"models/metrostroi_train/signs/mezdustroiskaya","(ЗЕЛЁНАЯ)\nМеждустройская"}
-Metrostroi.SignsTextures["gm_metrostroi"][322] = {"models/metrostroi_train/signs/avtostancya_yznaya","(СИНЯЯ)\nАвтостанция южная"}
+Metrostroi.SignsTextures["gm_metrostroi"][123] = {"models/metrostroi_train/signs/b50/mezdustroiskaya","(ЗЕЛЁНАЯ)\nМеждустройская"}
+Metrostroi.SignsTextures["gm_metrostroi"][322] = {"models/metrostroi_train/signs/b50/avtostancya_yznaya","(СИНЯЯ)\nАвтостанция южная"}
 
 Metrostroi.SignsTextures["gm_orange_lite"] = {
-	[403] = {"models/metrostroi_train/signs/park","Парк"},
-	[406] = {"models/metrostroi_train/signs/stancya_vollesa","Имени Уоллеса Брина"},
-	[408] = {"models/metrostroi_train/signs/truzenikov_gm","Труженников Garry's mod'а"},
+	[404] = {"models/metrostroi_train/signs/orange/park","Парк"},
+	[406] = {"models/metrostroi_train/signs/orange/brina","Имени Уоллеса Брина"},
+	[408] = {"models/metrostroi_train/signs/orange/truzenikov_gm","Труженников Garry's mod'а"},
 }
 Metrostroi.SignsTextures["gm_orange"] = Metrostroi.SignsTextures["gm_orange_lite"]
-Metrostroi.SignsTextures["gm_orange"][401] = {"models/metrostroi_train/signs/slavnaya_strana","Славная страна"}
-Metrostroi.SignsTextures["gm_orange"][501] = {"models/metrostroi_train/signs/aero","(МАЛИНОВАЯ)\nАэропорт"}
-Metrostroi.SignsTextures["gm_orange"][503] = {"models/metrostroi_train/signs/litium","(МАЛИНОВАЯ)\nЛитиевая"}
+Metrostroi.SignsTextures["gm_orange"][401] = {"models/metrostroi_train/signs/orange/aero","Аэропорт"}
+Metrostroi.SignsTextures["gm_orange"][501] = Metrostroi.SignsTextures["gm_orange"][401]
+Metrostroi.SignsTextures["gm_orange"][504] = {"models/metrostroi_train/signs/orange/metrostroiteley","(МАЛИНОВАЯ)\nМетростроителей"}
+Metrostroi.SignsTextures["gm_orange"][601] = {"models/metrostroi_train/signs/orange/brateevo","(БИРЮЗОВАЯ)\nБратеево"}
+Metrostroi.SignsTextures["gm_orange_crimson"] = {}
+Metrostroi.SignsTextures["gm_orange_crimson"][501] = {"models/metrostroi_train/signs/orange/aero","Аэропорт"}
+Metrostroi.SignsTextures["gm_orange_crimson"][504] = {"models/metrostroi_train/signs/orange/metrostroiteley","(МАЛИНОВАЯ)\nМетростроителей"}
 Metrostroi.SignsTextures["special"] = {
-	{"models/metrostroi_train/signs/phoenix1","Феникс-1"},
-	{"models/metrostroi_train/signs/v_depo","В депо"},
-	{"models/metrostroi_train/signs/obkatka","Обкатка"},
+	{"models/metrostroi_train/signs/special/sinergiya1","Синергия-1",true},
+	{"models/metrostroi_train/signs/special/phoenix1","Феникс-1",true},
+	{"models/metrostroi_train/signs/special/depot","В депо",true},
+	{"models/metrostroi_train/signs/special/testing","Обкатка",true},
+	{"models/metrostroi_train/signs/special/no_entry","Посадки НЕТ",true},
+	{"models/metrostroi_train/signs/special/cargo","Грузовой",true},
 }
 	--["gm_orange_lite"] = {},
 	--["gm_orange"] = {},
@@ -704,7 +735,8 @@ Metrostroi.SignsTextures["special"] = {
 function ENT:PrepareSigns()
 	if not self.SignsList then
 		self.SignsList = { "" }
-		for k,v in SortedPairs(Metrostroi.SignsTextures[self.Map] or {}) do
+		for k,v in SortedPairs(Metrostroi.SignsTextures[Metrostroi.CurrentMap] or {}) do
+			--v.st = k
 			local x = table.insert(self.SignsList,v)
 			self.SignsList[k] = x
 		end
@@ -927,7 +959,7 @@ function ENT:OnCouple(bogey,isfront)
 		self.RearCoupledBogey = bogey
 	end
 	
-	local train = bogey:GetNWEntity("TrainEntity")
+	local train = bogey:GetNW2Entity("TrainEntity")
 	if not IsValid(train) then return end
 	--Don't update train wires when there's no parent train 
 	
@@ -1019,7 +1051,7 @@ function ENT:OnBogeyConnect(bogey,isfront)
 		self.RearCoupledBogeyDisconnect = false
 	end
 	
-	local train = bogey:GetNWEntity("TrainEntity")
+	local train = bogey:GetNW2Entity("TrainEntity")
 	if not IsValid(train) then return end
 	--Don't update train wires when there's no parent train 
 	
@@ -1037,13 +1069,13 @@ end
 
 function ENT:UpdateCoupledTrains()
 	if self.FrontCoupledBogey then
-		self.FrontTrain = self.FrontCoupledBogey:GetNWEntity("TrainEntity")
+		self.FrontTrain = self.FrontCoupledBogey:GetNW2Entity("TrainEntity")
 	else
 		self.FrontTrain = nil
 	end
 	
 	if self.RearCoupledBogey then
-		self.RearTrain = self.RearCoupledBogey:GetNWEntity("TrainEntity")
+		self.RearTrain = self.RearCoupledBogey:GetNW2Entity("TrainEntity")
 	else
 		self.RearTrain = nil
 	end
@@ -1068,9 +1100,9 @@ function ENT:CreateBogey(pos,ang,forward,type)
 	self.SquealSound = self.SquealSound or math.floor(4*math.random())
 	self.SquealSensitivity = self.SquealSensitivity or math.random()
 	bogey.SquealSensitivity = self.SquealSensitivity
-	bogey:SetNWInt("SquealSound",self.SquealSound)
-	bogey:SetNWBool("IsForwardBogey", forward)
-	bogey:SetNWEntity("TrainEntity", self)
+	bogey:SetNW2Int("SquealSound",self.SquealSound)
+	bogey:SetNW2Bool("IsForwardBogey", forward)
+	bogey:SetNW2Entity("TrainEntity", self)
 
 	-- Constraint bogey to the train
 	if self.NoPhysics then
@@ -1111,9 +1143,9 @@ function ENT:CreateSeatEntity(seat_info)
 	end
 
 	-- Set some shared information about the seat
-	self:SetNWEntity("seat_"..seat_info.type,seat)
-	seat:SetNWString("SeatType", seat_info.type)
-	seat:SetNWEntity("TrainEntity", self)
+	self:SetNW2Entity("seat_"..seat_info.type,seat)
+	seat:SetNW2String("SeatType", seat_info.type)
+	seat:SetNW2Entity("TrainEntity", self)
 	seat_info.entity = seat
 
 	-- Constrain seat to this object
@@ -1149,7 +1181,6 @@ end
 function ENT:IsWrenchPresent()
 	if self.DriversWrenchPresent then return true end
 	if self.DriversWrenchMissing then return false end
-	
 	for k,v in pairs(self.Seats) do
 		if IsValid(v.entity) and v.entity.GetPassenger and
 			((v.type == "driver") or (v.type == "instructor")) then
@@ -1193,8 +1224,23 @@ function ENT:SetLightPower(index,power,brightness)
 					lightData[4].b*brightness
 				)
 			)
-			return
 		end
+		if (lightData[1] == "headlight") then
+			-- Set Brightness
+			local brightness = brightness * (lightData.brightness or 1.25)
+			light:SetKeyValue("lightcolor",
+				Format("%i %i %i 255",
+					lightData[4].r*brightness,
+					lightData[4].g*brightness,
+					lightData[4].b*brightness
+				)
+			)
+		end
+		if (lightData[1] == "dynamiclight") then
+			light:SetKeyValue("brightness", brightness * (lightData.brightness or 2))
+		end
+		self.LightBrightness[index] = brightness
+		return
 	end
 	
 	-- Turn off light
@@ -1465,20 +1511,24 @@ function ENT:Think()
 			--self.rep = 0
 			--self.rep = nil
 			if not self.rep or self.rep <= 0 then
-				if math.random() < 0.4 then
+				if math.random() < 0.3 and self.Last ~= 1 then
 					--print("25")
 					self.TargetDist = 25
-					self.rep = math.floor(math.random(1,3))
-				elseif math.random() < 0.4 then
+					self.Last = 1
+					self.rep = math.floor(math.random(1,2))
+				elseif math.random() < 0.3 and self.Last ~= 2 then
 					self.TargetDist = 50
 					--print("50")
-					self.rep = math.floor(math.random(1,4))
-				elseif math.random() < 0.5 then
+					self.Last = 2
+					self.rep = math.floor(math.random(1,2))
+				elseif math.random() < 0.4 and self.Last ~= 3 then
 					--print("12")
+					self.Last = 3
 					self.TargetDist = 12.5
 					self.rep = math.floor(math.random(1,3))
-				else
+				elseif self.Last ~= 4 then
 					self.TargetDist = 75
+					self.Last = 4
 					--print("100")
 					self.rep = math.floor(math.random(1,3))
 				end
@@ -1489,7 +1539,7 @@ function ENT:Think()
 				self.CurrentDist = self.CurrentDist + self.DeltaTime * self.Speed * self.SpeedSign / 3.6
 				if self.rep > 0 and (self.TargetDist < self.CurrentDist and self.TargetDist > 0 or self.TargetDist > self.CurrentDist and self.TargetDist < 0) then
 					self.rep = self.rep - 1
-					self:CreateJointSound(math.ceil(math.random(1,5)))
+					self:CreateJointSound(math.ceil(math.random(1,10)))
 					self.CurrentDist = 0
 				end
 			end
@@ -1509,14 +1559,14 @@ function ENT:Think()
 				--if v.dist > 2.91 and v.state == 0 or v.dist > 5.61 and v.state == 1 or v.dist > 19.17 and v.state == 2 or v.dist > 21.85 and v.state == 3 then
 				if v.dist > 2.26 and v.state == 0 or v.dist > 4.34 and v.state == 1 or v.dist > 14.83 and v.state == 2 or v.dist > 16.91 and v.state == 3 then
 					local Wheels = v.state > 1 and self.RearBogey.Wheels or self.FrontBogey.Wheels
-					sound.Play(self.SoundNames["styk"..v.type],Wheels:LocalToWorld(Vector(0,v.state%2 > 0 and 105/2 or 0,0)),84,nil,1)
+					sound.Play(self.SoundNames["st"..v.type..((v.state == 1 or v.state == 2) and "b" or "a")],Wheels:LocalToWorld(Vector(0,v.state%2 > 0 and 105/2 or 0,0)),84,nil,1)
 					v.state = v.state + 1
 				end
 				--if v.dist < 2.91 and v.state == 1 or v.dist < 5.61 and v.state == 2 or v.dist < 19.17 and v.state == 3 or v.dist < 21.85 and v.state == 4 then
 				if v.dist < 2.26 and v.state == 1 or v.dist < 4.34 and v.state == 2 or v.dist < 14.83 and v.state == 3 or v.dist < 16.91 and v.state == 4 then
 					local Wheels = v.state > 2 and self.RearBogey.Wheels or self.FrontBogey.Wheels
 					v.state = v.state - 1
-					sound.Play(self.SoundNames["styk"..v.type],Wheels:LocalToWorld(Vector(0,v.state%2 > 0 and 105/2 or 0,0)),84,nil,1)
+					sound.Play(self.SoundNames["st"..v.type..((v.state == 1 or v.state == 2) and "b" or "a")],Wheels:LocalToWorld(Vector(0,v.state%2 > 0 and 105/2 or 0,0)),84,nil,1)
 				end
 				if v.dist < 0 or v.dist > 19.17 then
 					local Train = v.dist > 19.17 and self.RearTrain or self.FrontTrain
@@ -1546,7 +1596,7 @@ function ENT:Think()
 	
 	-- Apply mass of passengers
 	if self.NormalMass then
-		self:GetPhysicsObject():SetMass(self.NormalMass + 80*self:GetNWFloat("PassengerCount"))
+		self:GetPhysicsObject():SetMass(self.NormalMass + 80*self:GetNW2Float("PassengerCount"))
 	end
 	
 	-- Hack for VAH switch on non-supported maps so you don't have to hold space all the time
@@ -1659,12 +1709,14 @@ function ENT:Think()
 	for i=1,32 do
 		self.TriggerOutput(self,"TrainWire"..i,readTrainWire(self,i))
 	end
+	self.TriggerOutput(self,"TrainWire35",readTrainWire(self,35))
+	self.TriggerOutput(self,"TrainWire36",readTrainWire(self,36))
 	
 	-- Calculate own speed and acceleration
 	local speed,acceleration = 0,0
 	if IsValid(self.FrontBogey) and IsValid(self.RearBogey) then
 		self.Speed = (self.FrontBogey.Speed + self.RearBogey.Speed)/2
-		self.SpeedSign = self.FrontBogey.SpeedSign
+		self.SpeedSign = self.FrontBogey.SpeedSign or 1
 		self.Acceleration = (self.FrontBogey.Acceleration + self.RearBogey.Acceleration)/2
 	else
 		self.Acceleration = 0
@@ -1690,7 +1742,7 @@ function ENT:Think()
 	end
 	self.OldSpeed = self.Speed]]
 	-- Go to next think
-	self:SetNWFloat("Accel",math.Round((self.OldSpeed or 0) - (self.Speed or 0)*(self.SpeedSign or 0),2))
+	self:SetNW2Float("Accel",math.Round((self.OldSpeed or 0) - (self.Speed or 0)*(self.SpeedSign or 0),2))
 	self.OldSpeed = (self.Speed or 0)*(self.SpeedSign or 0)
 	self:NextThink(CurTime()+0.05)
 	return true
@@ -1705,21 +1757,24 @@ end
 function ENT:SpawnFunction(ply, tr)
 	--MaxTrains limit
 	if self.ClassName ~= "gmod_subway_base" then
-		local Limit1 = math.min(2,GetConVarNumber("metrostroi_maxwagons"))*GetConVarNumber("metrostroi_maxtrains_onplayer")
-		local Limit2 = math.max(0,GetConVarNumber("metrostroi_maxwagons")-2)*GetConVarNumber("metrostroi_maxtrains_onplayer")
+		local Limit1 = math.min(2,GetConVarNumber("metrostroi_maxwagons"))*GetConVarNumber("metrostroi_maxtrains_onplayer")-1
+		local Limit2 = math.max(0,GetConVarNumber("metrostroi_maxwagons")-2)*GetConVarNumber("metrostroi_maxtrains_onplayer")-1
 
-		if Metrostroi.TrainCount() + 1 > GetConVarNumber("metrostroi_maxtrains")*GetConVarNumber("metrostroi_maxwagons") then
+		if Metrostroi.TrainCount() > GetConVarNumber("metrostroi_maxtrains")*GetConVarNumber("metrostroi_maxwagons")-1 then
 			Metrostroi.LimitMessage(ply)
 			return
 		end
-		
-		if self.ClassName:find("ezh3") or self.ClassName:find("717") or self.ClassName:find("7036") then
-			if Metrostroi.TrainCountOnPlayer(ply, "gmod_subway_81-717", "gmod_subway_ezh3", "gmod_subway_81-7036") + 1 > Limit1 then
+		if Metrostroi.TrainCountOnPlayer(ply) > GetConVarNumber("metrostroi_maxwagons")*GetConVarNumber("metrostroi_maxtrains_onplayer")-1 then
+			Metrostroi.LimitMessage(ply)
+			return
+		end
+		if self.SubwayTrain and self.SubwayTrain.WagType == 1 then
+			if Metrostroi.TrainCountOnPlayer(ply, 1) > Limit1 then
 				Metrostroi.LimitMessage(ply)
 				return
 			end
-		elseif self.ClassName:find("ema") or self.ClassName:find("714") or self.ClassName:find("7037") then
-			if Metrostroi.TrainCountOnPlayer(ply, "gmod_subway_81-714", "gmod_subway_ema", "gmod_subway_81-7037") + 1 > Limit2 then
+		elseif self.SubwayTrain and self.SubwayTrain.WagType == 2 then
+			if Metrostroi.TrainCountOnPlayer(ply, 2) > Limit2 then
 				Metrostroi.LimitMessage(ply)
 				return
 			end
@@ -1855,27 +1910,73 @@ net.Receive("metrostroi-cabin-button", function(len, ply)
 	local button = net.ReadString()
 	local eventtype = net.ReadBit()
 	local seat = ply:GetVehicle()
+	local outside = net.ReadBool()
 	local train 
 
-	if seat and IsValid(seat) then 
+	if seat and IsValid(seat) and not outside then 
 		-- Player currently driving
-		train = seat:GetNWEntity("TrainEntity")
+		train = seat:GetNW2Entity("TrainEntity")
 		if (not train) or (not train:IsValid()) then return end
-		if (seat != train.DriverSeat) and (seat != train.InstructorsSeat) and not button:find("Door") then return end
+		if (seat != train.DriverSeat) and (seat != train.InstructorsSeat) and (train.CPPICanPhysgun and not train:CPPICanPhysgun(ply)) and not button:find("Door") then return end
 	else
 		-- Player not driving, check recent train
-		train = ply.lastVehicleDriven:GetNWEntity("TrainEntity")
+		train = IsValid(ply.lastVehicleDriven) and ply.lastVehicleDriven:GetNW2Entity("TrainEntity") or NULL
+		if outside then
+			local trace = util.TraceLine({
+				start = ply:EyePos(),
+				endpos = ply:EyePos() + ply:EyeAngles():Forward() * 100,
+				filter = function( ent ) if ent:GetClass():find("subway") then return true end end
+			})
+			train = trace.Entity
+		end
 		if !IsValid(train) then return end
-		if ply != train.DriverSeat.lastDriver then return end
-		if CurTime() - train.DriverSeat.lastDriverTime > 1	then return end
+		if outside and (train.CPPICanPhysgun and not train:CPPICanPhysgun(ply)) then return end
+		if not outside and ply != train.DriverSeat.lastDriver then return end
+		if not outside and train.DriverSeat.lastDriverTime and (CurTime() - train.DriverSeat.lastDriverTime) > 1 then return end
 	end
 	train:ButtonEvent(button,(eventtype > 0))
+end)
+
+-- Receiver for panel touchs, Checks if people are the legit driver and calls buttonevent on the train
+net.Receive("metrostroi-panel-touch", function(len, ply)
+	local panel = net.ReadString()
+	local x = net.ReadInt(11)
+	local y = net.ReadInt(11)
+	local outside = net.ReadBool()
+	local state = net.ReadBool()
+	local seat = ply:GetVehicle()
+	local train 
+
+	if seat and IsValid(seat) and not outside then 
+		-- Player currently driving
+		train = seat:GetNW2Entity("TrainEntity")
+		if (not train) or (not train:IsValid()) then return end
+		if (seat != train.DriverSeat) and (seat != train.InstructorsSeat) and not train:CPPICanPhysgun(ply) then return end
+	else
+		-- Player not driving, check recent train
+		train = ply.lastVehicleDriven and ply.lastVehicleDriven:GetNW2Entity("TrainEntity") or NULL
+		if outside then
+			local trace = util.TraceLine({
+				start = ply:EyePos(),
+				endpos = ply:EyePos() + ply:EyeAngles():Forward() * 100,
+				filter = function( ent ) if ent:GetClass():find("subway") then return true end end
+			})
+			train = trace.Entity
+		end
+		if !IsValid(train) then return end
+		if outside and not train:CPPICanPhysgun(ply) then return end
+		if not outside and ply != train.DriverSeat.lastDriver then return end
+		if not outside and train.DriverSeat.lastDriverTime and (CurTime() - train.DriverSeat.lastDriverTime) > 1 then return end
+	end
+	if panel ~= "" and not train[panel] then print("Metrostroi:System not found,"..panel) return end
+	if panel ~= "" and not train[panel].Touch then print("Metrostroi:Touch function not found if system,"..panel) return end
+	if panel ~= "" then train[panel]:Touch(state,x,y) else train:Touch(state,x,y) end
 end)
 
 -- Denies entry if player recently sat in the same train seat
 -- This prevents getting stuck in seats when trying to exit
 local function CanPlayerEnter(ply,vec,role)
-	local train = vec:GetNWEntity("TrainEntity")
+	local train = vec:GetNW2Entity("TrainEntity")
 	
 	if IsValid(train) and IsValid(ply.lastVehicleDriven) and ply.lastVehicleDriven.lastDriverTime != nil then
 		if CurTime() - ply.lastVehicleDriven.lastDriverTime < 1 then return false end
@@ -1888,11 +1989,11 @@ local function HandleExitingPlayer(ply, vehicle)
 	vehicle.lastDriverTime = CurTime()
 	ply.lastVehicleDriven = vehicle
 
-	local train = vehicle:GetNWEntity("TrainEntity")
+	local train = vehicle:GetNW2Entity("TrainEntity")
 	if IsValid(train) then
 		
 		-- Move exiting player
-		local seattype = vehicle:GetNWString("SeatType")
+		local seattype = vehicle:GetNW2String("SeatType")
 		local offset 
 		
 		if (seattype == "driver") then

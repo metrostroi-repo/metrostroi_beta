@@ -12,7 +12,7 @@ function ENT:Initialize()
 	self.LastSignalTime = 0
 
 	-- Find rotating parts which belong to this switch
-	local list = ents.FindInSphere(self:GetPos(),256)
+	local list = ents.FindInSphere(self:GetPos(),game.GetMap():find("metrostroi") and 512 or 256)
 	self.TrackSwitches = {}
 	for k,v in pairs(list) do
 		if (v:GetClass() == "prop_door_rotating") and (string.find(v:GetName(),"switch") or string.find(v:GetName(),"swh") or string.find(v:GetName(),"swit")) then
@@ -96,9 +96,11 @@ function ENT:Think()
 
 	-- Process logic
 	self:NextThink(CurTime() + 1.0)
+	if self.TrackPosition.path.id.."/"..self.TrackPosition.node1.id == "16/8" then
+	end
 	if self.TrackPosition then
 		--PrintTable(self.TrackPosition.node1)
-		self:SetNWString("ID",self.TrackPosition.path.id.."/"..self.TrackPosition.node1.id)
+		self:SetNW2String("ID",self.TrackPosition.path.id.."/"..self.TrackPosition.node1.id)
 	end
 	return true
 end
