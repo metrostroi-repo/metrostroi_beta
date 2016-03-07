@@ -1,6 +1,8 @@
 ﻿local Map = game.GetMap() or ""
 
-if Map:find("gm_mus") and Map:find("metro") then
+if Map:find("gm_mus_crimson") then
+	return
+elseif Map:find("gm_mus") and Map:find("metro") then
 	Metrostroi.PlatformMap = "orange"
 	Metrostroi.CurrentMap = "gm_orange"
 elseif Map:find("gm_mus") then
