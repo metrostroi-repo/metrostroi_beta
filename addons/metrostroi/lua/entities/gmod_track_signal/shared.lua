@@ -20,7 +20,6 @@ Metrostroi.LiterWarper = {
 	Q = "ya",
 	W = "sh2",
 	J = "ge",
-	U = "y",
 	Z = "ze",
 }
 
@@ -178,12 +177,12 @@ ENT.TrafficLightModels[0] = {
 	["name"]	= Vector(-2,2.5,-25),
 	[1]	= { 32, "models/metrostroi/signals/light_2.mdl", {
 				[0] = Vector(7.5,6.1,24.5),
-				[1] = Vector(7.5,6.1,14.2), 
+				[1] = Vector(7.5,6.1,14.2),
 				}},
 	[2]	= { 40, "models/metrostroi/signals/light_3.mdl", {
 				[0] = Vector(7.5,6.1,35),
 				[1] = Vector(7.5,6.1,24.8),
-				[2] = Vector(7.5,6.1,14.2), 
+				[2] = Vector(7.5,6.1,14.2),
 				}},
 
 	[4] = { 18, "models/metrostroi/signals/light_pathindicator.mdl",  Vector(13.1,2, 19.5), 1.75, 2.05, 4},
@@ -202,8 +201,8 @@ ENT.TrafficLightModels[1] = {
 				[1] = Vector(0,15, 8.8),
 				}},
 	[2]	= { 60, "models/metrostroi/signals/light_outside_3.mdl", {
-				[0] = Vector(0,15,30.8), 
-				[1] = Vector(0,15,20), 			
+				[0] = Vector(0,15,30.8),
+				[1] = Vector(0,15,20),
 				[2] = Vector(0,15, 8.8),
 				} },
 
@@ -228,7 +227,7 @@ ENT.TrafficLightModels[2] = {
 				}},
 	[2]	= { 45, "models/metrostroi/signals/light_outside2_3.mdl", {
 				[0] = Vector(9.5,4.1,39),
-				[1] = Vector(9.5,4.1,27.2), 		
+				[1] = Vector(9.5,4.1,27.2),
 				[2] = Vector(9.5,4.1,15.8),
 				}},
 

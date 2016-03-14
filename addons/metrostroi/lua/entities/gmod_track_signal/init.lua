@@ -82,7 +82,7 @@ function ENT:SayHook(ply, comm)
 	--print(ply,comm,self)
 	if comm:sub(1,8) == "!sactiv " then
 		comm = comm:sub(9,-1):upper()
-		
+
 		comm = string.Explode(":",comm)
 		if self.Routes then
 			for k,v in pairs(self.Routes) do
@@ -95,7 +95,7 @@ function ENT:SayHook(ply, comm)
 		end
 	elseif comm:sub(1,10) == "!sdeactiv " then
 		comm = comm:sub(11,-1):upper()
-		
+
 		comm = string.Explode(":",comm)
 		if self.Routes then
 			for k,v in pairs(self.Routes) do
@@ -109,13 +109,13 @@ function ENT:SayHook(ply, comm)
 	elseif comm:sub(1,8) == "!sclose " then
 		comm = comm:sub(9,-1):upper()
 		--RunConsoleCommand("say",comm,"IT WORKED!!!")
-		
+
 		comm = string.Explode(":",comm)
 		if comm[1] == self.Name then
 			RunConsoleCommand("say",comm)
 			--RunConsoleCommand("say","open manual route",self.Name)
 			if self.Routes[1] and self.Routes[1].Manual then
-				self:CloseRoute(1) 
+				self:CloseRoute(1)
 			--RunConsoleCommand("say","open manual route",self.Name)
 			else
 				if not self.Close then
@@ -126,7 +126,7 @@ function ENT:SayHook(ply, comm)
 				end
 				--RunConsoleCommand("say","close route",self.Name,"next signal",comm[2])
 				if (self.LastOpenedRoute and self.LastOpenedRoute == 1) or self.Routes[1].Repeater then
-					self:CloseRoute(1) 
+					self:CloseRoute(1)
 				else
 					self:OpenRoute(1)
 				end
@@ -156,7 +156,7 @@ function ENT:SayHook(ply, comm)
 				end
 			else
 				if self.Routes[1] and self.Routes[1].Manual then
-					self:OpenRoute(1) 
+					self:OpenRoute(1)
 				--RunConsoleCommand("say","open manual route",self.Name)
 				elseif self.Close then
 					self.Close = false
@@ -250,7 +250,7 @@ function ENT:PostInitalize()
 	self.Switches = {}
 	for i = 1,#self.Routes do
 		if not self.Routes[i].Switches then continue end
-	
+
 		local Switches = string.Explode(",",self.Routes[i].Switches)
 		local SwitchesTbl = {}
 		--local GoodSwitches = true
@@ -318,6 +318,16 @@ function ENT:GetMaxARS()
 	if not self.Routes[1] or not ARSCodes then return 1 end
 	return tonumber(ARSCodes[#ARSCodes]) or 1
 end
+function ENT:GetMaxARSNext()
+	local Routes = self.NextSignalLink and self.NextSignalLink.Routes or self.Routes
+	local ARSCodes = Routes[1] and Routes[1].ARSCodes
+	local code = tonumber(ARSCodes[#ARSCodes]) or 1
+	local This = self:GetMaxARS()
+	if not ARSCodes then return This end
+	if code > This then return This end
+	--if not ARSCodes then return 1 end
+	return tonumber(ARSCodes[#ARSCodes]) or 1
+end
 
 function ENT:ARSLogic(tim)
 	--print(self.FoundedAll)
@@ -326,7 +336,7 @@ function ENT:ARSLogic(tim)
 
 	-- Check track occuping
 	if not self.Routes[self.Route or 1].Repeater  then
-		if Metrostroi.Voltage > 50 and not self.Close then --not self.OverrideTrackOccupied and 
+		if Metrostroi.Voltage > 50 and not self.Close then --not self.OverrideTrackOccupied and
 			if self.Node and  self.TrackPosition then
 				if self.Left then
 					self.Occupied,self.OccupiedBy,self.OccupiedByNow = Metrostroi.IsTrackOccupied(self.Node, self.TrackPosition.x,not self.TrackPosition.forward,self.ARSOnly and "ars" or "light", self)
@@ -344,13 +354,13 @@ function ENT:ARSLogic(tim)
 			--if self.Name == "AU477" then print( self.OccupiedBy) end
 		else
 			self.NextSignalLink = nil
-			self.Occupied = Metrostroi.Voltage < 50 or self.Close --self.OverrideTrackOccupied or 
+			self.Occupied = Metrostroi.Voltage < 50 or self.Close --self.OverrideTrackOccupied or
 		end
 
-		if self.Occupied then	
+		if self.Occupied then
 			if self.Routes[self.Route or 1].Manual then self.Routes[self.Route or 1].IsOpened = false end
 		end
-		if self.Occupied or not self.NextSignalLink or not self.NextSignalLink.FreeBS then	
+		if self.Occupied or not self.NextSignalLink or not self.NextSignalLink.FreeBS then
 			if self.Routes[self.Route or 1].Manual then self.Routes[self.Route or 1].IsOpened = false end
 			self.FreeBS = 0
 		else
@@ -382,7 +392,7 @@ function ENT:ARSLogic(tim)
 		self.InvationSignal = false
 		self.OldRoute = self.Route
 	end
-	--Removing NSL					
+	--Removing NSL
 	self.NextSignalLink = nil
 	--Set the first route, if no switches in route or no switches
 	--or not self.Switches
@@ -390,12 +400,12 @@ function ENT:ARSLogic(tim)
 		self.NextSignalLink = self.NextSignals[self.Routes[1].NextSignal]
 		self.Route = 1
 	else
-		local route 
+		local route
 		--Finding right route
 		for i = 1,#self.Routes do
 			--if not self.Routes[i].Switches then continue end
 			--If we have NSL, then we don't must find right route
-			
+
 			--If all switches right - get this signal!
 			if self.SwitchesFunction[i] and self.SwitchesFunction[i]() then
 				--if self.Route ~= i then
@@ -478,7 +488,7 @@ function ENT:Think()
 		self:ARSLogic(self.PrevTime - CurTime())
 	end
 	--self:ARSLogic(0.25 )
-	
+
 	--If we use only ARS Box - we stop all next operations (lenses, autostop)
 	if self.ARSOnly then
 		local number = self.NextSignalLink and (self.NextSignalLink.RouteNumberOverrite or self.NextSignalLink.RouteNumber) or nil
@@ -498,7 +508,7 @@ function ENT:Think()
 			self.RouteNumberOverrite = number ~= "" and number or nil
 		end
 	end
-	if self.ARSOnly or Metrostroi.Voltage <= 50  then 
+	if self.ARSOnly or Metrostroi.Voltage <= 50  then
 		if self.Sprites then
 			for k,v in pairs(self.Sprites) do
 				SafeRemoveEntity(v)
@@ -521,7 +531,7 @@ function ENT:Think()
 		for k,v in pairs(FEnts) do
 			local Tpos = Metrostroi.TrainPositions[v] and Metrostroi.TrainPositions[v][1]
 			if IsValid(v) and v.Pneumatic and Tpos and self.TrackPosition.path == Tpos.path and self.TrackDir == Metrostroi.TrainDirections[v] then--and  v:GetPos():Distance(pos) < 300 then
-				--(v.SubwayTrain.Name == "81-717" or v.SubwayTrain.Name == "Ezh3") and 
+				--(v.SubwayTrain.Name == "81-717" or v.SubwayTrain.Name == "Ezh3") and
 				if (IsValid(self.OccupiedBy) and v ~= self.OccupiedBy or self.AutostopOverride) and v.UAVA and not v.Pneumatic.UAVA and not v.Pneumatic.EmergencyValve and v.SpeedSign > 0 and v.Speed >= 1 and v ~= self.AutostopEnt and v ~= self.CurrentAutostopEnt then
 					--print(v ~= self.CurrentAutostopEnt)
 					print("SRYV!!!", self.AutostopOverride,self.Name,v.SubwayTrain.Name,self.OccupiedBy,v.SpeedSign, v.Owner,self.Occupied,self:GetAngles(),v:GetAngles())
@@ -556,7 +566,7 @@ function ENT:Think()
 			for i = 1,#v do
 				--Get the LightID and check, is this light must light up
 				local LightID = IsValid(self.NextSignalLink) and math.min(#Route.LightsExploded,self.FreeBS+1) or 1
-				
+
 				--local InvationSignal = ((v[i] == "W" and self.InvationSignal and k == self.InS)
 				local AverageState = Route.LightsExploded[LightID]:find(tostring(index)) or ((v[i] == "W" and self.InvationSignal and self.GoodInvationSignal == index) and 1 or 0)
 				local MustBlink = (v[i] == "W" and self.InvationSignal and self.GoodInvationSignal == index) or (AverageState > 0 and Route.LightsExploded[LightID][AverageState+1] == "b") --Blinking, when next is "b" (or it's invasion signal')
@@ -572,14 +582,14 @@ function ENT:Think()
 				--if v[i] == "R" and AverageState > 0 then print(self.Name,v[i] == "R",AverageState) end
 				--if MustBlink and TimeToOff then AverageState = 0 end
 				--Simulate signal changing delay
-				--[=[ 
+				--[=[
 --				if not self.Sprites[index.."a"] and Route.LightsExploded[LightID]:find(tostring(index)) and not self.EnableDelay[index] and not MustBlink then
 					--self.EnableDelay[index] = true
 				--else
 --					if self.EnableDelay[index] and AverageState == 0 then
 						--self.EnableDelay[index] = false
 					--end
-				
+
 					-- Overall glow
 					self:SetSprite(index.."a",fa,
 						"models/metrostroi_signals/signal_sprite_002.vmt",0.40,1.0,

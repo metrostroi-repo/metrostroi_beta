@@ -13,6 +13,7 @@ hook.Add("PostDrawOpaqueRenderables", "metrostroi_sign_debug_draw", function(isD
 			cam.End3D2D()
 		end
 end )
+
 function ENT:Initialize()
 	--self.ModelProp = self:GetNW2Int("Model")
 	hook.Add("PlayerBindPress", "metrostroi_sign_startup"..self:EntIndex(), function()

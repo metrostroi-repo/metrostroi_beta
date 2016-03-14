@@ -65,7 +65,7 @@ function ENT:PostEntityPaste(ply,ent,createdEntities)
 
 			-- Assign ownership
 			if CPPI and IsValid(self:CPPIGetOwner()) then v[1]:CPPISetOwner(self:CPPIGetOwner()) end
-			
+
 			-- Some shared general information about the bogey
 			self.SquealSound = self.SquealSound or math.floor(4*math.random())
 			self.SquealSensitivity = self.SquealSensitivity or math.random()
@@ -105,7 +105,7 @@ function ENT:Initialize()
 		self:SetSolid(SOLID_VPHYSICS)
 	end
 	self:SetUseType(SIMPLE_USE)
-	
+
 	-- Possible number of train wires
 	self.TrainWireCount = self.TrainWireCount or 36
 	-- Train wires
@@ -149,12 +149,12 @@ function ENT:Initialize()
 			if v then
 				local i = v:Inputs()
 				local o = v:Outputs()
-				
-				for _,v2 in pairs(i) do 
+
+				for _,v2 in pairs(i) do
 					if type(v2) == "string" then
 						local name = (v.Name or "")..v2
 						if not ignoreOutputs[name] then
-							table.insert(inputs,name) 
+							table.insert(inputs,name)
 							table.insert(inputTypes,"NORMAL")
 						end
 					elseif type(v2) == "table" then
@@ -167,12 +167,12 @@ function ENT:Initialize()
 						ErrorNoHalt("Invalid wire input for metrostroi subway entity")
 					end
 				end
-				
-				for _,v2 in pairs(o) do 
+
+				for _,v2 in pairs(o) do
 					if type(v2) == "string" then
 						local name = (v.Name or "")..v2
 						if not ignoreOutputs[name] then
-							table.insert(outputs,(v.Name or "")..v2) 
+							table.insert(outputs,(v.Name or "")..v2)
 							table.insert(outputTypes,"NORMAL")
 						end
 					elseif type(v2) == "table" then
@@ -187,15 +187,15 @@ function ENT:Initialize()
 				end
 			end
 		end
-		
+
 		-- Add input for a custom driver seat
 		table.insert(inputs,"DriverSeat")
 		table.insert(inputTypes,"ENTITY")
-		
+
 		-- Add input for wrench
 		table.insert(inputs,"DriversWrenchPresent")
 		table.insert(inputTypes,"NORMAL")
-		
+
 		-- Add I/O for train wires
 		if self.SubwayTrain then
 			--for i=1,self.TrainWireCount do
@@ -206,7 +206,7 @@ function ENT:Initialize()
 				table.insert(outputTypes,"NORMAL")
 			end
 		end
-		
+
 		self.Inputs = WireLib.CreateSpecialInputs(self,inputs,inputTypes)
 		self.Outputs = WireLib.CreateSpecialOutputs(self,outputs,outputTypes)
 	end
@@ -215,10 +215,10 @@ function ENT:Initialize()
 	self.ButtonBuffer = {}
 	self.KeyBuffer = {}
 	self.KeyMap = {}
-	
+
 	-- Override for if drivers wrench is present
 	self.DriversWrenchPresent = false
-	
+
 	-- External interaction areas
 	self.InteractionAreas = {}
 
@@ -234,7 +234,7 @@ function ENT:Initialize()
 	self.Seats = {}
 	-- List of headlights, dynamic lights, sprite lights
 	self.Lights = {}
-	
+
 	-- Cross-connections in train wires
 	self.TrainWireCrossConnections = {}
 	-- Overrides for train wire values from wiremod interface
@@ -243,21 +243,21 @@ function ENT:Initialize()
 
 	-- Load sounds
 	self:InitializeSounds()
-	
+
 	-- Is this train 'odd' or 'even' in coupled set
 	self.TrainCoupledIndex = 0
-	
+
 	-- Speed and acceleration of train
 	self.Speed = 0
 	self.SpeedSign = 0
 	self.Acceleration = 0
-	
+
 	-- Initialize train
 	if Turbostroi and (not self.NoPhysics) then
 		Turbostroi.InitializeTrain(self)
 	end
 	self.Changed = {}
-	
+
 	-- Passenger related data (must be set by derived trains to allow boarding)
 	self.LeftDoorsOpen = false
 	self.LeftDoorsBlocked = false
@@ -266,7 +266,7 @@ function ENT:Initialize()
 	self.RightDoorsBlocked = false
 	self.RightDoorPositions = { Vector(0,0,0) }
 	--self:SetNW2Float("PassengerCount", 0)
-	
+
 	-- Get default train mass
 	if IsValid(self:GetPhysicsObject()) then
 		self.NormalMass = self:GetPhysicsObject():GetMass()
@@ -303,7 +303,7 @@ function ENT:OnRemove()
 			SafeRemoveEntity(v)
 		end
 	end
-	
+
 	-- Deinitialize train
 	if Turbostroi then
 		Turbostroi.DeinitializeTrain(self)
@@ -315,7 +315,7 @@ end
 function ENT:GetDriverName()
 	local drv = self:GetDriver()
 	local name = tostring(self)
-	if IsValid(drv) then 
+	if IsValid(drv) then
 		name = drv:GetName().."(sit in driver place)"
 	elseif IsValid(self.Owner) then
 		name = self.Owner:GetName().."(owner)"
@@ -347,7 +347,7 @@ end
 
 -- Trigger input
 function ENT:TriggerInput(name, value)
-	-- Custom seat 
+	-- Custom seat
 	if name == "DriverSeat" then
 		if IsValid(value) and value:IsVehicle() then
 			self.DriverSeat = value
@@ -355,13 +355,13 @@ function ENT:TriggerInput(name, value)
 			self.DriverSeat = nil
 		end
 	end
-	
+
 	-- Train wire input
 	if string.sub(name,1,9) == "TrainWire" then
 		local id = tonumber(string.sub(name,10))
 		self.TrainWireOverrides[id] = value
 	end
-	
+
 	-- Drivers wrench present
 	if name == "DriversWrenchPresent" then
 		self.DriversWrenchPresent = (value > 0.5)
@@ -386,18 +386,18 @@ function ENT:GetDebugVars()
 	for i=1,32 do
 		self.DebugVars["TW"..i] = self:ReadTrainWire(i)
 	end
-	
+
 	-- System variables
 	for k,v in pairs(self.Systems) do
 		for _,output in pairs(v.OutputsList or {}) do
 			self.DebugVars[(v.Name or "")..output] = v[output] or 0
 		end
 	end
-	
+
 	-- Speed/acceleration
 	self.DebugVars["Speed"] = self.Speed
 	self.DebugVars["Acceleration"] = self.Acceleration
-	return self.DebugVars 
+	return self.DebugVars
 end
 
 --Debugging function, call via the console or something
@@ -428,11 +428,11 @@ function ENT:InitializeHighspeedLayout()
 				end
 			end
 		end
-		
+
 		--layout = layout.."["..offset.."]\t"..v[2].."."..v[3].."\r\n"
 	end
 	--file.Write("hs_layout.txt",layout)
-	
+
 	--[[local str = ""
 	local offset = 0
 	for k,v in SortedPairs(self.Systems) do
@@ -527,13 +527,13 @@ function ENT:ReadCell(Address)
 			local x1,x2,x3 = 1e9,0,1e9
 			for stationID,stationData in pairs(Metrostroi.Stations) do
 				for platformID,platformData in pairs(stationData) do
-					if (platformData.node_start.path == pos.path) and 
-						(platformData.x_start < pos.x) and 
+					if (platformData.node_start.path == pos.path) and
+						(platformData.x_start < pos.x) and
 						(platformData.x_end > pos.x) then
 						current = stationID
 						cPlatID = platformID
 					end
-					if (platformData.node_start.path == pos.path) and 
+					if (platformData.node_start.path == pos.path) and
 						(platformData.x_start > pos.x) then
 						if platformData.x_start < x1 then
 							x1 = platformData.x_start
@@ -541,7 +541,7 @@ function ENT:ReadCell(Address)
 							nPlatID = platformID
 						end
 					end
-					if (platformData.node_start.path == pos.path) and 
+					if (platformData.node_start.path == pos.path) and
 						(platformData.x_start < pos.x) then
 						if platformData.x_start > x2 then
 							x2 = platformData.x_start
@@ -549,7 +549,7 @@ function ENT:ReadCell(Address)
 							pPlatID = platformID
 						end
 					end
-					if (platformData.node_start.path == pos.path) and 
+					if (platformData.node_start.path == pos.path) and
 						(platformData.x_end > pos.x) then
 						if platformData.x_end < x3 then
 							x3 = platformData.x_end
@@ -567,7 +567,7 @@ function ENT:ReadCell(Address)
 			if Address == 49166 then return cPlatID end
 			if Address == 49167 then return nPlatID end
 			if Address == 49168 then return pPlatID end
-			
+
 			if Address == 49169 then return current > 0 and current or next end
 			if Address == 49170 then return cPlatID > 0 and cPlatID or nPlatID end
 		end
@@ -615,7 +615,7 @@ function ENT:ReadCell(Address)
 		local wagonIndex = 1+math.floor(Address/65536)
 		local variableAddress = Address % 65536
 		---self:UpdateWagonList()
-		
+
 		if self.WagonList[wagonIndex] and IsValid(self.WagonList[wagonIndex]) then
 			return self.WagonList[wagonIndex]:ReadCell(variableAddress)
 		else
@@ -646,7 +646,7 @@ function ENT:WriteCell(Address, value)
 			if i == charID then ch = value end
 			newStr = newStr..(string.char(ch) or "?")
 		end
-		self:SetNW2String("CustomStr"..stringID,newStr)		
+		self:SetNW2String("CustomStr"..stringID,newStr)
 	end
 	if Address == 49164 then
 		if self.Announcer then
@@ -657,7 +657,7 @@ function ENT:WriteCell(Address, value)
 		local wagonIndex = 1+math.floor(Address/65536)
 		local variableAddress = Address % 65536
 		---self:UpdateWagonList()
-		
+
 		if self.WagonList[wagonIndex] and IsValid(self.WagonList[wagonIndex]) then
 			return self.WagonList[wagonIndex]:WriteCell(variableAddress,value)
 		else
@@ -799,7 +799,7 @@ function ENT:WriteTrainWire(k,v)
 	-- Check if line is write-able
 	local can_write = self:TrainWireCanWrite(k)
 	local wrote = false
-	
+
 	-- Writing rules for different wires
 	local allowed_write = v ~= 0 -- Normally positive values override others
 	if k == 18 then allowed_write = v <= 0 end -- For wire 18, zero values override others
@@ -809,7 +809,7 @@ function ENT:WriteTrainWire(k,v)
 			elseif k == b then k = a end
 		end
 	end
-	
+
 	-- Write only if can write (no-one else occupies it) or allowed to write (legal value)
 	if can_write then
 		self.TrainWires[k] = v
@@ -818,7 +818,7 @@ function ENT:WriteTrainWire(k,v)
 		self.TrainWires[k] = v
 		wrote = true
 	end
-	
+
 	-- Record us as last writer
 	if wrote and (allowed_write or can_write) then
 		self.TrainWireWriters[k] = self.TrainWireWriters[k] or {}
@@ -826,7 +826,7 @@ function ENT:WriteTrainWire(k,v)
 		local prev_e = self.TrainWireWriters[k].e
 		self.TrainWireWriters[k].t = CurTime()
 		self.TrainWireWriters[k].e = self
-		
+
 		if (prev_e ~= self) and ((CurTime() - prev_t) < 0.1) and allowed_write then
 			self:OnTrainWireError(k)
 		end
@@ -851,20 +851,20 @@ end
 function ENT:ResetTrainWires()
 	-- Remember old train wires reference
 	local trainWires = self.TrainWires
-	
+
 	-- Create new train wires
 	self.TrainWires = {}
 	self.TrainWireWriters = {}
-	
+
 	-- Initialize train wires to zero values
 	for i=1,128 do self.TrainWires[i] = 0 end
-	
+
 	-- Update train wires in all connected trains
 	local function updateWires(train,checked)
 		if not train then return end
 		if checked[train] then return end
 		checked[train] = true
-		
+
 		if train.TrainWires == trainWires then
 			train.TrainWires = self.TrainWires
 			train.TrainWireWriters = self.TrainWireWriters
@@ -883,13 +883,13 @@ function ENT:SetTrainWires(coupledTrain)
 	-- Get train wires from train
 	self.TrainWires = coupledTrain.TrainWires
 	self.TrainWireWriters = coupledTrain.TrainWireWriters
-	
+
 	-- Update train wires in all connected trains
 	local function updateWires(train,checked)
 		if not train then return end
 		if checked[train] then return end
 		checked[train] = true
-		
+
 		if train.TrainWires ~= coupledTrain.TrainWires then
 			train.TrainWires = coupledTrain.TrainWires
 			train.TrainWireWriters = coupledTrain.TrainWireWriters
@@ -902,7 +902,7 @@ end
 
 function ENT:GetTrainWire18Resistance()
 	---self:UpdateWagonList()
-	
+
 	-- Total resistance
 	local Rtotal = 0.0
 	for i,train in ipairs(self.WagonList) do
@@ -913,7 +913,7 @@ function ENT:GetTrainWire18Resistance()
 			Rtotal = Rtotal + (Rtrain^-1)
 		end
 	end
-	
+
 	-- Mask for panel RP light info
 	--local Mask = (self.Panel["RedRP"] > 0.25) and 0 or 1e9
 	return Rtotal^-1
@@ -930,9 +930,9 @@ function ENT:UpdateIndexes()
 		if not train then return end
 		if checked[train] then return end
 		checked[train] = true
-		
+
 		train.TrainCoupledIndex = newIndex
-		
+
 		if not train.FrontCoupledBogeyDisconnect then
 			if train.FrontTrain and (train.FrontTrain.FrontTrain == train) then
 				updateIndexes(train.FrontTrain,checked,1-newIndex)
@@ -958,17 +958,17 @@ function ENT:OnCouple(bogey,isfront)
 	else
 		self.RearCoupledBogey = bogey
 	end
-	
+
 	local train = bogey:GetNW2Entity("TrainEntity")
 	if not IsValid(train) then return end
-	--Don't update train wires when there's no parent train 
-	
+	--Don't update train wires when there's no parent train
+
 	self:UpdateCoupledTrains()
 
 	if ((train.FrontTrain == self) or (train.RearTrain == self)) then
 		self:UpdateIndexes()
 	end
-	
+
 	self:UpdateWagonList()
 	-- Update train wires
 	if (isfront and self.FrontCoupledBogeyDisconnect) or (not isfront and self.RearCoupledBogeyDisconnect) then
@@ -996,13 +996,13 @@ function ENT:OnCouple(bogey,isfront)
 end
 
 function ENT:OnDecouple(isfront)
-	--print(self,"Disconnected from front?:" ,isfront)	
+	--print(self,"Disconnected from front?:" ,isfront)
 	if isfront then
 		self.FrontCoupledBogey = nil
-	else 
+	else
 		self.RearCoupledBogey = nil
 	end
-	
+
 	self:UpdateCoupledTrains()
 	self:UpdateIndexes()
 	self:ResetTrainWires()
@@ -1028,13 +1028,13 @@ function ENT:OnDecouple(isfront)
 end
 
 function ENT:OnBogeyDisconnect(bogey,isfront)
-	print(self,"Disconnected from front?:" ,isfront)	
+	print(self,"Disconnected from front?:" ,isfront)
 	if isfront then
 		self.FrontCoupledBogeyDisconnect = true
 	else
 		self.RearCoupledBogeyDisconnect = true
 	end
-	
+
 	self:UpdateCoupledTrains()
 	self:UpdateIndexes()
 	self:ResetTrainWires()
@@ -1050,17 +1050,17 @@ function ENT:OnBogeyConnect(bogey,isfront)
 	else
 		self.RearCoupledBogeyDisconnect = false
 	end
-	
+
 	local train = bogey:GetNW2Entity("TrainEntity")
 	if not IsValid(train) then return end
-	--Don't update train wires when there's no parent train 
-	
+	--Don't update train wires when there's no parent train
+
 	self:UpdateCoupledTrains()
 
 	--if ((train.FrontTrain == self) or (train.RearTrain == self)) then
 		self:UpdateIndexes()
 	--end
-	
+
 	-- Update train wires
 	self:SetTrainWires(train)
 
@@ -1073,7 +1073,7 @@ function ENT:UpdateCoupledTrains()
 	else
 		self.FrontTrain = nil
 	end
-	
+
 	if self.RearCoupledBogey then
 		self.RearTrain = self.RearCoupledBogey:GetNW2Entity("TrainEntity")
 	else
@@ -1095,7 +1095,7 @@ function ENT:CreateBogey(pos,ang,forward,type)
 
 	-- Assign ownership
 	if CPPI and IsValid(self:CPPIGetOwner()) then bogey:CPPISetOwner(self:CPPIGetOwner()) end
-	
+
 	-- Some shared general information about the bogey
 	self.SquealSound = self.SquealSound or math.floor(4*math.random())
 	self.SquealSensitivity = self.SquealSensitivity or math.random()
@@ -1132,10 +1132,10 @@ function ENT:CreateSeatEntity(seat_info)
 	seat:Spawn()
 	seat:GetPhysicsObject():SetMass(10)
 	seat:SetCollisionGroup(COLLISION_GROUP_WORLD)
-	
+
 	--Assign ownership
 	if CPPI and IsValid(self:CPPIGetOwner()) then seat:CPPISetOwner(self:CPPIGetOwner()) end
-	
+
 	-- Hide the entity visually
 	if seat_info.type == "passenger" then
 		seat:SetColor(Color(0,0,0,0))
@@ -1151,7 +1151,7 @@ function ENT:CreateSeatEntity(seat_info)
 	-- Constrain seat to this object
 	-- constraint.NoCollide(self,seat,0,0)
 	seat:SetParent(self)
-	
+
 	-- Add to cleanup list
 	table.insert(self.TrainEntities,seat)
 	return seat
@@ -1170,7 +1170,7 @@ function ENT:CreateSeat(type,offset,angle,model)
 		angle = angle or Angle(0,0,0),
 	}
 	table.insert(self.Seats,seat_info)
-	
+
 	-- If needed, create an entity for this seat
 	if (type == "driver") or (type == "instructor") or (type == "passenger") then
 		return self:CreateSeatEntity(seat_info)
@@ -1208,11 +1208,11 @@ function ENT:SetLightPower(index,power,brightness)
 	brightness = brightness or 1
 
 	-- Check if light already glowing
-	if (power and (self.GlowingLights[index])) and 
+	if (power and (self.GlowingLights[index])) and
 	   (brightness == self.LightBrightness[index]) then return end
 
 	-- If light already glowing and only brightness changed
-	if (power and (self.GlowingLights[index])) and 
+	if (power and (self.GlowingLights[index])) and
 	   (brightness ~= self.LightBrightness[index]) then
 		local light = self.GlowingLights[index]
 		if (lightData[1] == "glow") or (lightData[1] == "light") then
@@ -1242,12 +1242,12 @@ function ENT:SetLightPower(index,power,brightness)
 		self.LightBrightness[index] = brightness
 		return
 	end
-	
+
 	-- Turn off light
 	SafeRemoveEntity(self.GlowingLights[index])
 	self.GlowingLights[index] = nil
 	self.LightBrightness[index] = brightness
-	
+
 	-- Create light
 	if (lightData[1] == "headlight") and (power) then
 		local light = ents.Create("env_projectedtexture")
@@ -1281,7 +1281,7 @@ function ENT:SetLightPower(index,power,brightness)
 		light:SetParent(self)
 		light:SetLocalPos(lightData[2])
 		light:SetLocalAngles(lightData[3])
-	
+
 		-- Set parameters
 		local brightness = brightness * (lightData.brightness or 0.5)
 		light:SetKeyValue("rendercolor",
@@ -1292,13 +1292,13 @@ function ENT:SetLightPower(index,power,brightness)
 			)
 		)
 		light:SetKeyValue("rendermode", lightData.type or 3) -- 9: WGlow, 3: Glow
-		light:SetKeyValue("renderfx", 14)		
+		light:SetKeyValue("renderfx", 14)
 		light:SetKeyValue("model", lightData.texture or "sprites/glow1.vmt")
 --		light:SetKeyValue("model", "sprites/light_glow02.vmt")
 --		light:SetKeyValue("model", "sprites/yellowflare.vmt")
 		light:SetKeyValue("scale", lightData.scale or 1.0)
 		light:SetKeyValue("spawnflags", 1)
-	
+
 		-- Turn light on
 		light:Spawn()
 		self.GlowingLights[index] = light
@@ -1308,7 +1308,7 @@ function ENT:SetLightPower(index,power,brightness)
 		light:SetParent(self)
 		light:SetLocalPos(lightData[2])
 		light:SetLocalAngles(lightData[3])
-	
+
 		-- Set parameters
 		local brightness = brightness * (lightData.brightness or 0.5)
 		light:SetKeyValue("rendercolor",
@@ -1325,7 +1325,7 @@ function ENT:SetLightPower(index,power,brightness)
 --		light:SetKeyValue("model", "sprites/yellowflare.vmt")
 		light:SetKeyValue("scale", lightData.scale or 1.0)
 		light:SetKeyValue("spawnflags", 1)
-	
+
 		-- Turn light on
 		light:Spawn()
 		self.GlowingLights[index] = light
@@ -1416,7 +1416,7 @@ function ENT:OnKeyEvent(key,state)
 	else
 		self:OnKeyRelease(key)
 	end
-	
+
 	if self:HasModifier(key) then
 		--If we have a modifier
 		local actmods = self:GetActiveModifiers(key)
@@ -1430,13 +1430,13 @@ function ENT:OnKeyEvent(key,state)
 		elseif self.KeyMap[key] ~= nil then
 			self:ButtonEvent(self.KeyMap[key],state)
 		end
-		
+
 	elseif self:IsModifier(key) and not state then
 		--Release modified keys
 		for k,v in pairs(self.KeyMap[key]) do
 			self:ButtonEvent(v,false)
 		end
-		
+
 	elseif self.KeyMap[key] ~= nil and type(self.KeyMap[key]) == "string" then
 		--If we're a regular binded key
 		self:ButtonEvent(self.KeyMap[key],state)
@@ -1505,7 +1505,7 @@ end
 -- Think and execute systems stuff
 function ENT:Think()
 	if self.FrontBogey then
-		if self.SpeedSign and self.WagonList[1] == self and (not self.FrontTrain and self.Speed*self.SpeedSign > 0.25 or not self.RearTrain and self.Speed*self.SpeedSign < -0.25)  then 
+		if self.SpeedSign and self.WagonList[1] == self and (not self.FrontTrain and self.Speed*self.SpeedSign > 0.25 or not self.RearTrain and self.Speed*self.SpeedSign < -0.25)  then
 			--print(self.FrontBogey.Wheels,self.RearBogey)
 			--self.TargetDist
 			--self.rep = 0
@@ -1544,7 +1544,7 @@ function ENT:Think()
 				end
 			end
 		end
-		
+
 	--DISTANCES
 	--0.774
 	--WHEELS:81 2.05 --2.66
@@ -1573,7 +1573,7 @@ function ENT:Think()
 					if Train then Train:CreateJointSound(v.type) end
 					table.remove(self.Joints,k)
 				end
-				
+
 			end
 		end
 	end
@@ -1590,15 +1590,15 @@ function ENT:Think()
 	accelerationVector:Rotate(self:GetAngles())
 	self:SetTrainAcceleration(accelerationVector)
 	self.PreviousVelocity = self:GetVelocity()]]--
-	
+
 	-- Get angular velocity
 	--self:SetTrainAngularVelocity(math.pi*self:GetPhysicsObject():GetAngleVelocity()/180)
-	
+
 	-- Apply mass of passengers
 	if self.NormalMass then
 		self:GetPhysicsObject():SetMass(self.NormalMass + 80*self:GetNW2Float("PassengerCount"))
 	end
-	
+
 	-- Hack for VAH switch on non-supported maps so you don't have to hold space all the time
 	if (not self.VAHHack) and (not Metrostroi.MapHasFullSupport()) then
 		self.VAHHack = true
@@ -1609,20 +1609,20 @@ function ENT:Think()
 			self.RC1:TriggerInput("Set",0)
 		end
 	end
-	
+
 	-- Calculate turn information, unused right now
 	--[[if self.FrontBogey and self.RearBogey then
 		self.BogeyDistance = self.BogeyDistance or self.FrontBogey:GetPos():Distance(self.RearBogey:GetPos())
 		local a = math.AngleDifference(self.FrontBogey:GetAngles().y,self.RearBogey:GetAngles().y+180)
 		self.TurnRadius = (self.BogeyDistance/2)/math.sin(math.rad(a/2))
-		
+
 		-- If we're pretty much going straight, correct massive values
 		if math.abs(self.TurnRadius) > 1e4 then
-			self.TurnRadius = 0 
-		end	
+			self.TurnRadius = 0
+		end
 	end]]--
 
-	-- Process the keymap for modifiers 
+	-- Process the keymap for modifiers
 	-- TODO: Need a neat way of calling this once after self.KeyMap is populated
 	if not self.KeyMods and self.KeyMap then
 		self:ProcessKeyMap()
@@ -1631,8 +1631,8 @@ function ENT:Think()
 	-- Keyboard input is done via PlayerButtonDown/Up hooks that call ENT:OnKeyEvent
 	-- Joystick input
 	if IsValid(self.DriverSeat) then
-		local ply = self.DriverSeat:GetPassenger(0) 
-		
+		local ply = self.DriverSeat:GetPassenger(0)
+
 		if IsValid(ply) then
 			if self.KeyMap then self:HandleKeyboardInput(ply) end
 			if joystick then self:HandleJoystickInput(ply) end
@@ -1651,7 +1651,7 @@ function ENT:Think()
 		local iterationsCount = 1
 		if (not self.Schedule) or (iterationsCount ~= self.Schedule.IterationsCount) then
 			self.Schedule = { IterationsCount = iterationsCount }
-			
+
 			-- Find max number of iterations
 			local maxIterations = 0
 			for k,v in pairs(self.Systems) do maxIterations = math.max(maxIterations,(v.SubIterations or 1)) end
@@ -1672,7 +1672,7 @@ function ENT:Think()
 				end
 			end
 		end
-		
+
 		-- Simulate according to schedule
 		for i,s in ipairs(self.Schedule) do
 			for k,v in ipairs(s) do
@@ -1680,7 +1680,7 @@ function ENT:Think()
 			end
 		end
 	end
-	
+
 	-- Wire outputs
 	--local triggerOutput = self.TriggerOutput
 	for _,name in pairs(self.WireIOSystems) do
@@ -1696,7 +1696,7 @@ function ENT:Think()
 			end
 		end
 	end
-	
+
 	-- Write and read train wires
 	local readTrainWire = self.ReadTrainWire
 	local writeTrainWire = self.WriteTrainWire
@@ -1711,7 +1711,7 @@ function ENT:Think()
 	end
 	self.TriggerOutput(self,"TrainWire35",readTrainWire(self,35))
 	self.TriggerOutput(self,"TrainWire36",readTrainWire(self,36))
-	
+
 	-- Calculate own speed and acceleration
 	local speed,acceleration = 0,0
 	if IsValid(self.FrontBogey) and IsValid(self.RearBogey) then
@@ -1785,9 +1785,9 @@ function ENT:SpawnFunction(ply, tr)
 	local distancecap = 2000 -- When to ignore hitpos and spawn at set distanace
 	local pos, ang = nil
 	local inhibitrerail = false
-	
+
 	--TODO: Make this work better for raw base ent
-	
+
 	if tr.Hit then
 		-- Setup trace to find out of this is a track
 		local tracesetup = {}
@@ -1831,7 +1831,7 @@ function ENT:SpawnFunction(ply, tr)
 	ent:Activate()
 
 	if not inhibitrerail then Metrostroi.RerailTrain(ent) end
-	
+
 	-- Debug mode
 	--Metrostroi.DebugTrain(ent,ply)
 	return ent
@@ -1877,10 +1877,10 @@ end
 local function ShouldFireEvents(buffer,state)
 	if state == nil then return true end
 	if buffer == nil and state == false then return false end
-	return (state ~= buffer) 
+	return (state ~= buffer)
 end
 
--- Checks a button with the buffer and calls 
+-- Checks a button with the buffer and calls
 -- OnButtonPress/Release as well as TriggerInput
 
 function ENT:ButtonEvent(button,state)
@@ -1893,7 +1893,7 @@ function ENT:ButtonEvent(button,state)
 			self:OnButtonPress(button)
 		end
 	end
-	
+
 	if ShouldWriteToBuffer(self.ButtonBuffer[button],state) then
 		self.ButtonBuffer[button]=state
 	end
@@ -1911,9 +1911,9 @@ net.Receive("metrostroi-cabin-button", function(len, ply)
 	local eventtype = net.ReadBit()
 	local seat = ply:GetVehicle()
 	local outside = net.ReadBool()
-	local train 
+	local train
 
-	if seat and IsValid(seat) and not outside then 
+	if seat and IsValid(seat) and not outside then
 		-- Player currently driving
 		train = seat:GetNW2Entity("TrainEntity")
 		if (not train) or (not train:IsValid()) then return end
@@ -1945,9 +1945,9 @@ net.Receive("metrostroi-panel-touch", function(len, ply)
 	local outside = net.ReadBool()
 	local state = net.ReadBool()
 	local seat = ply:GetVehicle()
-	local train 
+	local train
 
-	if seat and IsValid(seat) and not outside then 
+	if seat and IsValid(seat) and not outside then
 		-- Player currently driving
 		train = seat:GetNW2Entity("TrainEntity")
 		if (not train) or (not train:IsValid()) then return end
@@ -1977,7 +1977,7 @@ end)
 -- This prevents getting stuck in seats when trying to exit
 local function CanPlayerEnter(ply,vec,role)
 	local train = vec:GetNW2Entity("TrainEntity")
-	
+
 	if IsValid(train) and IsValid(ply.lastVehicleDriven) and ply.lastVehicleDriven.lastDriverTime != nil then
 		if CurTime() - ply.lastVehicleDriven.lastDriverTime < 1 then return false end
 	end
@@ -1991,11 +1991,11 @@ local function HandleExitingPlayer(ply, vehicle)
 
 	local train = vehicle:GetNW2Entity("TrainEntity")
 	if IsValid(train) then
-		
+
 		-- Move exiting player
 		local seattype = vehicle:GetNW2String("SeatType")
-		local offset 
-		
+		local offset
+
 		if (seattype == "driver") then
 			offset = Vector(0,10,-17)
 		elseif (seattype == "instructor") then
@@ -2003,12 +2003,12 @@ local function HandleExitingPlayer(ply, vehicle)
 		elseif (seattype == "passenger") then
 			offset = Vector(10,0,-17)
 		end
-		
+
 		offset:Rotate(train:GetAngles())
 		ply:SetPos(vehicle:GetPos()+offset)
-		
+
 		ply:SetEyeAngles(vehicle:GetForward():Angle())
-		
+
 		-- Server
 		train:ClearKeyBuffer()
 		-- Client
@@ -2030,7 +2030,7 @@ local function JoystickRegister()
 	Metrostroi.RegisterJoystickInput("met_reverser",true,"Reverser",-1,1)
 	Metrostroi.RegisterJoystickInput("met_pneubrake",true,"Pneumatic Brake",1,5)
 	Metrostroi.RegisterJoystickInput("met_headlight",false,"Headlight Toggle")
-	
+
 --	Metrostroi.RegisterJoystickInput("met_reverserup",false,"Reverser Up")
 --	Metrostroi.RegisterJoystickInput("met_reverserdown",false,"Reverser Down")
 --	Will make this somewhat better later

@@ -57,7 +57,7 @@ ENT.ButtonMap["Battery"] = {
 	width = 100,
 	height = 100,
 	scale = 0.08,
-	
+
 	buttons = {
 		{ID = "VBToggle", x=0, y=0, w=100, h=100, tooltip="ВБ: Выключатель батареи\nVB: Battery on/off"},
 	}
@@ -70,7 +70,7 @@ ENT.ButtonMap["AV_Left"] = {
 	width = 460,
 	height = 340,
 	scale = 0.0625,
-	
+
 	buttons = {
 		{ID = "A65Toggle", x=180+35*1,  y=260, radius=30, tooltip="A65 Interior lighting"},
 		{ID = "A56Toggle", x=180+35*2,  y=260, radius=30, tooltip="A56 Включение аккумуляторной батареи\nTurn on battery power to control circuits"},
@@ -88,7 +88,7 @@ ENT.ButtonMap["AV_Right"] = {
 	width = 460,
 	height = 340,
 	scale = 0.0625,
-	
+
 	buttons = {
 		{ID = "A54Toggle", x=120+35*0,  y=60+100*0, radius=30, tooltip="A54 Управление проводом 10АК\nTrain wire 10AK control"},
 		{ID = "A27Toggle", x=120+35*1,  y=60+100*0, radius=30, tooltip="A27 Turn on DIP and lighting"},
@@ -129,7 +129,7 @@ ENT.ButtonMap["Main"] = {
 	width = 460,
 	height = 340,
 	scale = 0.0625,
-	
+
 	buttons = {
 		{ID = "KRPSet",			x=230+45*0, y=115+45*0, radius=20, tooltip="ПУСК: Кнопка пуска\nSTART: Start button"},
 		{ID = "VozvratRPSet",	x=230+45*1, y=115+45*0, radius=20, tooltip="Возврат реле перегрузки\nReset overload relay"},
@@ -262,7 +262,7 @@ ENT.ClientProps["gv_wrench"] = {
 local function addAV(i,panel,av)
 	Metrostroi.ClientPropForButton("a"..i,{
 		panel = panel,
-		button = "A"..av.."Toggle",	
+		button = "A"..av.."Toggle",
 		model = "models/metrostroi/81-717/circuit_breaker.mdl",
 	})
 end
@@ -278,11 +278,11 @@ local AVInverseMap = {}
 for k,v in pairs(AVMap) do AVInverseMap[v] = k-1 end
 
 -- Add actual models
-for k,v in pairs(ENT.ButtonMap["AV_Right"].buttons) do
+for _,v in pairs(ENT.ButtonMap["AV_Right"].buttons) do
 	local av = tonumber(string.sub(v.ID,2,(string.find(v.ID,"Toggle") or 1)-1)) or "VU"
 	addAV(AVInverseMap[av],"AV_Right",av)
 end
-for k,v in pairs(ENT.ButtonMap["AV_Left"].buttons) do
+for _,v in pairs(ENT.ButtonMap["AV_Left"].buttons) do
 	local av = tonumber(string.sub(v.ID,2,(string.find(v.ID,"Toggle") or 1)-1)) or "VU"
 	addAV(AVInverseMap[av],"AV_Left",av)
 end
@@ -347,7 +347,7 @@ Metrostroi.ClientPropForButton("BPSNon",{
 --------------------------------------------------------------------------------
 -- Add doors
 local function GetDoorPosition(i,k,j)
-	if j == 0 
+	if j == 0
 	then return Vector(359.0 - 35.0*k     - 229.5*i,-65*(1-2*k),7.5)
 	else return Vector(359.0 - 35.0*(1-k) - 229.5*i,-65*(1-2*k),7.5)
 	end
@@ -407,19 +407,19 @@ function ENT:UpdateTextures()
 	local texture = Metrostroi.Skins["train"][self:GetNW2String("texture")]
 	local passtexture = Metrostroi.Skins["pass"][self:GetNW2String("passtexture")]
 	local cabintexture = Metrostroi.Skins["cab"][self:GetNW2String("cabtexture")]
-	for _,self in pairs(self.ClientEnts) do
-		if not IsValid(self) then continue end
-		for k,v in pairs(self:GetMaterials()) do
+	for _,ent in pairs(self.ClientEnts) do
+		if not IsValid(ent) then continue end
+		for k,v in pairs(ent:GetMaterials()) do
 			local tex = string.Explode("/",v)
 			tex = tex[#tex]
 			if cabintexture and cabintexture.textures[tex] then
-				self:SetSubMaterial(k-1,cabintexture.textures[tex])
+				ent:SetSubMaterial(k-1,cabintexture.textures[tex])
 			end
 			if passtexture and passtexture.textures[tex] then
-				self:SetSubMaterial(k-1,passtexture.textures[tex])
+				ent:SetSubMaterial(k-1,passtexture.textures[tex])
 			end
 			if texture and texture.textures[tex] then
-				self:SetSubMaterial(k-1,texture.textures[tex])
+				ent:SetSubMaterial(k-1,texture.textures[tex])
 			end
 		end
 	end
@@ -439,40 +439,38 @@ function ENT:Think()
 		self.CabinTexture = self:GetNW2String("cabtexture")
 		self:UpdateTextures()
 	end
-	
+
 	-- Distance cull
 	local distance = self:GetPos():Distance(LocalPlayer():GetPos())
 	if distance > 8192 then return end
-	
-	local transient = (self.Transient or 0)*0.05
-	if (self.Transient or 0) ~= 0.0 then self.Transient = 0.0 end
+
 	-- Simulate pressure gauges getting stuck a little
 	self:Animate("brake334", 		1-self:GetPackedRatio(0), 			0.00, 0.50,  256,24)
 	self:Animate("pmp_wrench",		self:GetPackedRatio(2),				0.40, 0.75,  4,false)
 	--self:Animate("brake013", 		self:GetPackedRatio(0)^0.5,			0.00, 0.65,  256,24)
 	self:Animate("brake013",		self:GetPackedRatio(0),				0.30, 0.90,  256,24)
 	self:Animate("volt1", 			self:GetPackedRatio(10),			0.38,0.64)
-	
+
 	self:ShowHide("pmp_wrench",		self:GetPackedBool(0))
 	self:HidePanel("AV_Left", not self:GetPackedBool(0))
 	self:HidePanel("AV_Right", not self:GetPackedBool(0))
 	self:HidePanel("Main", not self:GetPackedBool(0))
 	self:ShowHide("brake013",		self:GetPackedBool(22) and self:GetPackedBool(0))
 	self:ShowHide("brake334",		not self:GetPackedBool(22) and self:GetPackedBool(0))
-	
+
 	self:Animate("brake_line",		self:GetPackedRatio(4),				0.16, 0.84,  256,2)--,,0.01)
 	self:Animate("train_line",		self:GetPackedRatio(5),				0.16, 0.84,  256,2)--,,0.01)
 	self:Animate("brake_cylinder",	self:GetPackedRatio(6),	 			0.17, 0.86,  256,2)--,,0.03)
 	self:Animate("voltmeter",		self:GetPackedRatio(7),				0.38, 0.63)
 	self:Animate("ampermeter",		self:GetPackedRatio(8),				0.38, 0.63)
 	--self:Animate("volt2",			0, 									0.38, 0.63)
-	
+
 	self:Animate("VozvratRP",		self:GetPackedBool(2) and 1 or 0, 	0,1, 16, false)
 	self:Animate("brake_disconnect",self:GetPackedBool(6) and 1 or 0, 	0,0.7, 3, false)
 	self:Animate("battery",			self:GetPackedBool(7) and 1 or 0, 	0,1, 16, false)
 	self:Animate("RezMK",			self:GetPackedBool(8) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VMK",				self:GetPackedBool(9) and 1 or 0, 	0,1, 16, false)
-	self:Animate("KRP",				self:GetPackedBool(113) and 1 or 0, 0,1, 16, false)	
+	self:Animate("KRP",				self:GetPackedBool(113) and 1 or 0, 0,1, 16, false)
 	self:Animate("BPSNon",			self:GetPackedBool(59) and 1 or 0, 	0,1, 16, false)
 
 	if self.LampType ~= self:GetNW2Int("LampType",1) then
@@ -509,14 +507,6 @@ function ENT:Think()
 		if self.Door1 then self.Door1 = math.min(0.99,math.max(0,self.Door1+accel*self.DeltaTime)) end
 		if self.Door2 then self.Door2 = math.min(0.99,math.max(0,self.Door2-accel*self.DeltaTime)) end
 	end
-	if self.Door1 == 0.99 then
-		--sendButtonMessage({ID = "BackDoor",state = true})
-		--sendButtonMessage({ID = "BackDoor",state = false})
-	end
-	if self.Door2 == 0.99 then
-		--sendButtonMessage({ID = "PassDoor",state = true})
-		--sendButtonMessage({ID = "PassDoor",state = false})
-	end
 	self:Animate("door1",	self:GetPackedBool(157) and (self.Door1 or 0.99) or 0,0,0.54, 1024, 1)
 	self:Animate("door2",	self:GetPackedBool(156) and (self.Door2 or 0.99) or 0,0,0.51, 1024, 1)
 
@@ -525,22 +515,22 @@ function ENT:Think()
 	self:Animate("RearBrake",	self:GetNW2Bool("RbI") and 1 or 0,0,0.35, 3, false)
 	self:Animate("RearTrain",	self:GetNW2Bool("RtI") and 1 or 0,0,0.35, 3, false)
 	self:Animate("ParkingBrake",	self:GetPackedBool(160) and 1 or 0,0,0.35, 3, false)
-	
+
 	-- Animate AV switches
-	for i,v in ipairs(self.Panel.AVMap) do
+	for i in ipairs(self.Panel.AVMap) do
 		local value = self:GetPackedBool(64+(i-1)) and 1 or 0
 		self:Animate("a"..(i-1),value,0,1,8,false)
-	end	
-	
+	end
+
 	-- Main switch
 	if self.LastValue ~= self:GetPackedBool(5) then
 		self.ResetTime = CurTime()+1.5
 		self.LastValue = self:GetPackedBool(5)
-	end	
+	end
 	self:Animate("gv_wrench",	(self:GetPackedBool(5) and 1 or 0), 	0,0.51, 128,  1,false)
 	self:ShowHide("gv_wrench",	CurTime() < self.ResetTime)
 	self.TextureTime = self.TextureTime or CurTime()
-	
+
 	-- Animate doors
 	--[[for i=0,3 do
 		for k=0,1 do
@@ -568,14 +558,6 @@ function ENT:Think()
 			--local offset_r = Vector(math.abs(32*animation),0,0)
 			self:Animate(n_l,self:GetPackedBool(21+(1-k)*4) and 1 or 0,0,1, 0.8 + (-0.2+0.4*math.random()),0)
 			self:Animate(n_r,self:GetPackedBool(21+(1-k)*4) and 1 or 0,0,1, 0.8 + (-0.2+0.4*math.random()),0)
-			if self.ClientEnts[n_l] then
-				
-				--self.ClientEnts[n_l]:SetSkin(self:GetSkin())
-			end
-			if self.ClientEnts[n_r] then
-				--self.ClientEnts[n_r]:SetPos(self:LocalToWorld(self.ClientProps[n_r].pos - (1.0 - 2.0*k)*offset_r))
-				--self.ClientEnts[n_r]:SetSkin(self:GetSkin())
-			end
 		end
 	end
 	if self.ClientEnts["door1"] then self.ClientEnts["door1"]:SetSkin(self:GetSkin()) end
@@ -600,7 +582,7 @@ function ENT:Think()
 	end
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
 	self:SetSoundState("release3_w",self.BrakeLineRamp2 + math.max(0,self.BrakeLineRamp1/2-0.15),1.0)
-	
+
 	self:SetSoundState("cran1_w",math.min(1,self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),1.0)
 
 	-- Compressor
@@ -617,10 +599,10 @@ function ENT:Think()
 			--self:PlayOnce("compressor_e_end",nil,1,nil,true)
 		end
 	end
-	
+
 	-- RK rotation
 	if self:GetPackedBool(112) then self.RKTimer = CurTime() end
-	local state = (CurTime() - (self.RKTimer or 0)) < 0.2
+	state = (CurTime() - (self.RKTimer or 0)) < 0.2
 	self.PreviousRKState = self.PreviousRKState or false
 	if self.PreviousRKState ~= state then
 		self.PreviousRKState = state
@@ -632,7 +614,7 @@ function ENT:Think()
 			self:SetSoundState("rk_stop",0.7,1,nil,0.75)
 		end
 	end
-	
+
 	-- BPSN sound
 	self.BPSNType = self:GetNW2Int("BPSNType",7)
 	if not self.OldBPSNType then self.OldBPSNType = self.BPSNType end
@@ -646,10 +628,10 @@ function ENT:Think()
 		end
 	end
 
-	local state = self:GetPackedBool(52)
+	state = self:GetPackedBool(52)
 	--self.PreviousBPSNState = self.PreviousBPSNState or false
 	--
-	if state then	
+	if state then
 		if self.BPSNType ~= 7 then
 			self:SetSoundState("bpsn"..self.BPSNType,2,1.0,nil,0.9)
 		else
@@ -707,7 +689,7 @@ function ENT:DrawPost()
 		draw.DrawText("НАЗ","Trebuchet24",80,55,Color(0,0,0,255))
 		draw.DrawText("0","Trebuchet24",150,55,Color(0,0,0,255))
 	end)
-	
+
 	-- Draw train numbers
 	local dc = render.GetLightColor(self:GetPos())
 	self:DrawOnPanel("TrainNumber1",function()

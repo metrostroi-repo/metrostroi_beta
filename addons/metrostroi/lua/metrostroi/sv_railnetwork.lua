@@ -734,7 +734,7 @@ function Metrostroi.UpdateTrainPositions()
 	for _,class in pairs(Metrostroi.TrainClasses) do
 		local trains = ents.FindByClass(class)
 		for _,train in pairs(trains) do
-			if train.ALS_ARS and train.ALS_ARS.IgnoreThisARS then return end
+			if train.ALS_ARS and train.ALS_ARS.IgnoreThisARS then continue end
 			local positions = Metrostroi.GetPositionOnTrack(train:LocalToWorld(Vector(400,0,0)),train:GetAngles()) 
 			local positions2 
 			if not positions or not positions[1] then

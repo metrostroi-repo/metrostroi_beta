@@ -25,7 +25,6 @@ local function gauss_random(x0,sigma)
 	return x*(sigma or 0.5) + (x0 or 0)
 end
 
-
 --------------------------------------------------------------------------------
 --
 --------------------------------------------------------------------------------
@@ -193,6 +192,7 @@ function ENT:Think()
 	end
 	
 	-- If platform is defined and pool is not
+	--print(self:GetNW2Vector("StationCenter"))
 	--print(entStart,entEnd,self.Pool)
 	local dataReady = (self:GetNW2Float("X0",-1) >= 0) and (self:GetNW2Float("Sigma",-1) > 0)
 	local poolReady = (self.Pool) and (#self.Pool == self:PoolSize())
@@ -342,4 +342,4 @@ end
 --------------------------------------------------------------------------------
 -- Make sure entity is not drawn
 --------------------------------------------------------------------------------
-function ENT:Draw() end
+function ENT:Draw()  end

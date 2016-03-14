@@ -35,8 +35,26 @@ Metrostroi.AnnouncerData =
 	[502] = {"Pionerskaya",        				true ,false,false,true   ,false,0   },
 	[503] = {"Litievaya",        					false,true,false,false   ,false,{799,0235,799}},
 	[504] = {"Metrostroiteley",        			false,false,false,true   ,false,0},
-	
+
 	[601] = {"Brateyevo",        					false,false,false,true   ,false,0},
+}
+Metrostroi.AnnouncerTranslate =
+{
+	[401] = "Аэропорт",
+	[402] = "Славная страна",
+	[403] = "Литиевая",
+	[404] = "Парк",
+	[405] = "ЖСФСкейп",
+	[406] = "имени Уоллеса брина",
+	[407] = "ВХЕ",
+	[408] = "Труженников Гаррис мода",
+
+	[501] = "Аэропорт",
+	[502] = "Пионерская",
+	[503] = "Литиевая",
+	[504] = "Метростроителей",
+
+	[601] = "Братеево",
 }
 Metrostroi.WorkingStations = {
 	{401,402,403,404,405,406,407,408},

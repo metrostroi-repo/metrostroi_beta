@@ -18,6 +18,15 @@ Metrostroi.AnnouncerData =
 	[113] = {"Novoarmeyskaya",          	false,true ,0       ,false,false,0   },
 	[114] = {"Vokzalnaya",						false,false,1       ,false,false,0   },
 }
+Metrostroi.AnnouncerTranslate = {
+	[108] = "Автозаводская",
+	[109] = "Индустриальная",
+	[110] = "Московская",
+	[111] = "Октябрьская",
+	[112] = "Площадь мира",
+	[113] = "Новоармейская",
+	[114] = "Вокзальная",
+}
 
 Metrostroi.WorkingStations = {
 	{108,109,110,111,112,113,114},

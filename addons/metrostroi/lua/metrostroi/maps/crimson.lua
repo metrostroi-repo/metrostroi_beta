@@ -22,6 +22,13 @@ Metrostroi.AnnouncerData =
 	[503] = {"Litievaya",        					false,true,false,false   ,false,{799,0235,799}},
 	[504] = {"Metrostroiteley",        			false,false,false,true   ,false,0},
 }
+Metrostroi.AnnouncerTranslate =
+{
+	[501] = "Аэропорт",
+	[502] = "Пионерская",
+	[503] = "Литиевая",
+	[504] = "Метростроителей",
+}
 Metrostroi.WorkingStations = {
 	{501,502,503,504},
 }

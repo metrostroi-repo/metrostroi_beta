@@ -64,7 +64,7 @@ function ENT:Initialize()
 	self:DropToFloor()
 	if IsValid(self.PlatformStart) then self.PlatformStart:DropToFloor() end
 	if IsValid(self.PlatformEnd) then self.PlatformEnd:DropToFloor() end
-	
+
 	-- Positions
 	if IsValid(self.PlatformStart) then
 		self.PlatformStart = self.PlatformStart:GetPos()
@@ -81,7 +81,7 @@ function ENT:Initialize()
 	self.WindowStart = 0  -- Increases when people board train
 	self.WindowEnd = 0 -- Increases naturally over time
 	self.PassengersLeft = 0 -- Number of passengers that left trains
-	
+
 	-- Send things to client
 	self:SetNW2Float("X0",self.PlatformX0)
 	self:SetNW2Float("Sigma",self.PlatformSigma)
@@ -150,17 +150,17 @@ local function getTrainDriver(train,checked)
 	if not IsValid(train) then return end
 	if checked[train] then return end
 	checked[train] = true
-	
+
 	local ply = train:GetDriver()
 	if IsValid(ply) then -- and (train.KV.ReverserPosition ~= 0)
 		return ply
 	end
-	
+
 	return getTrainDriver(train.RearTrain,checked) or getTrainDriver(train.FrontTrain,checked)
 end
 
 function ENT:FireHorliftDoors(input)
-	local doors = ents.FindByName("station"..self.StationIndex.."_platform"..self.PlatformIndex.."_door") 
+	local doors = ents.FindByName("station"..self.StationIndex.."_platform"..self.PlatformIndex.."_door")
 	for k,v in pairs(doors) do
 		--print(k,v)
 		v:Fire(input,"","1")
@@ -179,12 +179,12 @@ function ENT:Think()
 	for k,v in pairs(Metrostroi.TrainClasses) do
 		merge(trains,ents.FindByClass(v))
 	end
-	
+
 	-- Send update to client
 	self:SetNW2Int("WindowStart",self.WindowStart)
 	self:SetNW2Int("WindowEnd",self.WindowEnd)
 	self:SetNW2Int("PassengersLeft",self.PassengersLeft)
-	
+
 	-- Check if any trains are at the platform
 	local platformStart	= self.PlatformStart
 	local platformEnd	= self.PlatformEnd
@@ -209,14 +209,14 @@ function ENT:Think()
 		if not IsValid(v) then trains[k] = nil end
 		if not IsValid(v) or v:GetPos():Distance(self:GetPos()) > platformStart:Distance(platformEnd) then continue end
 		local platform_distance	= ((platformStart-v:GetPos()) - ((platformStart-v:GetPos()):Dot(platformNorm))*platformNorm):Length()
-		
+
 		local vertical_distance = math.abs(v:GetPos().z - platformStart.z)
 		local train_start		= (v:LocalToWorld(Vector(480,0,0)) - platformStart):Dot(platformDir) / (platformDir:Length()^2)
 		local train_end			= (v:LocalToWorld(Vector(-480,0,0)) - platformStart):Dot(platformDir) / (platformDir:Length()^2)
 		local left_side			= train_start > train_end
 		if swap_side then left_side = not left_side end
 		local doors_open 		= (left_side and v.LeftDoorsOpen) or ((not left_side) and v.RightDoorsOpen)
-		if vertical_distance > 192 then doors_open = false end		
+		if vertical_distance > 192 then doors_open = false end
 		if (train_start < 0) and (train_end < 0) then doors_open = false end
 		if (train_start > 1) and (train_end > 1) then doors_open = false end
 		if train_start > -0.2 and train_start < 1.2 and vertical_distance < 192 and platform_distance < 256  then
@@ -236,7 +236,7 @@ function ENT:Think()
 					local x_e = 0.97668 - i*0.1929
 					stopped_fine = stopped_fine or ((train_start < x_s) and (train_start > x_e))
 				end
-			
+
 				-- Open doors on station
 				if stopped_fine and v.SOSD then
 					self.ARSOverride = true
@@ -246,7 +246,7 @@ function ENT:Think()
 						self:FireHorliftDoors("Open")
 					end
 				end
-				
+
 				-- Allow boarding
 				if self.HorliftTimer2 then
 					passengers_can_board = true
@@ -255,16 +255,16 @@ function ENT:Think()
 				passengers_can_board = true
 			end
 		end
-		
-		-- Board passengers		
+
+		-- Board passengers
 		if passengers_can_board then
 			-- Find player of the train
 			local driver = getTrainDriver(v)
-			
-			-- Limit train to platform	
+
+			-- Limit train to platform
 			train_start = math.max(0,math.min(1,train_start))
 			train_end = math.max(0,math.min(1,train_end))
-		
+
 			-- Check for announcement
 			if (v.LastPlatform == self) and (v.AnnouncementToLeaveWagon == true) and
 				(v.AnnouncementToLeaveWagonAcknowledged ~= true) then
@@ -285,11 +285,11 @@ function ENT:Think()
 			-- Calculate number of passengers near the train
 			local passenger_density = math.abs(CDF(train_start,self.PlatformX0,self.PlatformSigma) - CDF(train_end,self.PlatformX0,self.PlatformSigma))
 			local passenger_count = passenger_density * self:PopulationCount()
-			
+
 			-- Get number of doors
 			local door_count = #v.LeftDoorPositions
 			if not left_side then door_count = #v.RightDoorPositions end
-			
+
 			-- Get maximum boarding rate for normal russian subway train doors
 			local max_boarding_rate = 1.0 * door_count * dT
 			-- Get boarding rate based on passenger density
@@ -312,7 +312,7 @@ function ENT:Think()
 					driver:AddFrags(left)
 					--driver:AddDeaths(-left)
 				end
-			
+
 				-- Move passengers
 				v.PassengersToLeave = v.PassengersToLeave - left
 				self.PassengersLeft = self.PassengersLeft + left
@@ -325,9 +325,9 @@ function ENT:Think()
 			end
 			-- Change number of people in train
 			v:BoardPassengers(passenger_delta)
-			
+
 			-- Keep list of door positions
-			if left_side 
+			if left_side
 			then for k,vec in pairs(v.LeftDoorPositions)  do table.insert(boardingDoorList,v:LocalToWorld(vec)) end
 			else for k,vec in pairs(v.RightDoorPositions) do table.insert(boardingDoorList,v:LocalToWorld(vec)) end
 			end
@@ -344,14 +344,14 @@ function ENT:Think()
 			end
 			self.TritonePlayed = true
 		end
-	else	
+	else
 		self.TritonePlayed = nil
 	end
 	-- Add passengers
 	if (not self.PlatformLast) and (#boardingDoorList == 0) then
 		local target = GetConVarNumber("metrostroi_passengers_scale",50)*self.PopularityIndex --300
 		-- then target = target*0.1 end
-		
+
 		if target <= 0 then
 			self.WindowEnd = self.WindowStart
 		else
@@ -366,7 +366,7 @@ function ENT:Think()
 			self.WindowEnd = (self.WindowEnd + math.floor(growthDelta+0.5)) % self:PoolSize()
 		end
 	end
-	
+
 	-- Reset timer for horizontal lift stations
 	if self.HorliftStation > 0 then
 		if self.HorliftTimer2 then
@@ -375,14 +375,14 @@ function ENT:Think()
 				self.HorliftTimer1 = nil
 				self.HorliftTimer2 = nil
 				self.HorliftTimer3 = CurTime()
-			end		
+			end
 		end
 		if self.HorliftTimer3 and (CurTime() - self.HorliftTimer3) > 2.5 then
 			self.ARSOverride = false
 			self.HorliftTimer3 = nil
 		end
 	end
-	
+
 	-- Block local ARS sections
 	if self.ARSOverride ~= nil then
 		-- Signal override to all signals
@@ -397,11 +397,11 @@ function ENT:Think()
 				v.YellowSignal = not self.ARSOverride
 			end
 		end
-		
+
 		-- Finish override
 		self.ARSOverride = nil
 	end
-	
+
 	-- Send boarding list FIXME make this nicer
 	for k,v in ipairs(boardingDoorList) do
 		self:SetNW2Vector("TrainDoor"..k,v)

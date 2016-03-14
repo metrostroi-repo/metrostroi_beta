@@ -48,7 +48,7 @@ function Metrostroi.PeriodRandomNumber()
 	if (CurTime() - randomPeriodStart) > 60 then
 		randomPeriodNumber = math.random()
 	end
-	
+
 	-- Refresh the period
 	randomPeriodStart = CurTime()
 
@@ -68,25 +68,25 @@ if not Metrostroi.JoystickValueRemap then
 	Metrostroi.JoystickSystemMap = {}
 end
 
-function Metrostroi.RegisterJoystickInput (uid,analog,desc,min,max) 
+function Metrostroi.RegisterJoystickInput (uid,analog,desc,min,max)
 	if not joystick then
-		Error("Joystick Input registered without joystick addon installed, get it at https://github.com/MattJeanes/Joystick-Module") 
+		Error("Joystick Input registered without joystick addon installed, get it at https://github.com/MattJeanes/Joystick-Module")
 	end
 	--If this is only called in a JoystickRegister hook it should never even happen
-	
-	if #uid > 20 then 
-		print("Metrostroi Joystick UID too long, trimming") 
+
+	if #uid > 20 then
+		print("Metrostroi Joystick UID too long, trimming")
 		local uid = string.Left(uid,20)
 	end
-	
-	
-	local atype 
+
+
+	local atype
 	if analog then
 		atype = "analog"
 	else
 		atype = "digital"
 	end
-	
+
 	local temp = {
 		uid = uid,
 		type = atype,
@@ -94,18 +94,18 @@ function Metrostroi.RegisterJoystickInput (uid,analog,desc,min,max)
 		category = "Metrostroi" --Just Metrostroi for now, seperate catagories for different trains later?
 		--Catergory is also checked in subway base, don't just change
 	}
-	
-	
+
+
 	--Joystick addon's build-in remapping doesn't work so well, so we're doing this instead
 	if min ~= nil and max ~= nil and analog then
 		Metrostroi.JoystickValueRemap[uid]={min,max}
 	end
-	
+
 	jcon.register(temp)
 end
 
 -- Wrapper around joystick get to implement our own remapping
-function Metrostroi.GetJoystickInput(ply,uid) 
+function Metrostroi.GetJoystickInput(ply,uid)
 	local remapinfo = Metrostroi.JoystickValueRemap[uid]
 	local jvalue = joystick.Get(ply,uid)
 	if remapinfo == nil then
@@ -132,7 +132,7 @@ end
 
 function Player:GetTrain()
 	local seat = self:GetVehicle()
-	if seat then 
+	if seat then
 		return seat:GetNW2Entity("TrainEntity")
 	end
 end
@@ -215,13 +215,13 @@ concommand.Add("metrostroi_time", function(ply, _, args)
 					prefix = ">>>>"
 					printed = true
 				end
-				ply:PrintMessage(HUD_PRINTCONSOLE, 
+				ply:PrintMessage(HUD_PRINTCONSOLE,
 					Format(prefix.."\t[%03d][%s] %02d:%02d:%02d",v[1],
 						Metrostroi.StationNames[v[1]] or "N/A",
 						math.floor(v[3]/60)%24,
 						math.floor(v[3])%60,
 						math.floor(v[3]*60)%60))
-				
+
 			end
 		end
 	end
@@ -239,8 +239,8 @@ concommand.Add("metrostroi_schedule", function(ply, _, args)
 
 	local pos = Metrostroi.TrainPositions[train]
 	if pos and pos[1] then
-		local line = tonumber(args[1])
-		local path = tonumber(args[2])
+		local line = tonumber(args[1]) or 1
+		local path = tonumber(args[2]) or 2
 		local starts = tonumber(args[3])
 		local ends = tonumber(args[4])
 
@@ -300,7 +300,7 @@ concommand.Add("metrostroi_fail", function(ply, _, args)
 			end
 		end
 	end
-	
+
 	local train = table.Random(trainList)
 	if train then
 		if IsValid(ply) then
@@ -308,7 +308,7 @@ concommand.Add("metrostroi_fail", function(ply, _, args)
 			print("Player "..tostring(ply).." generated random failure in train "..train:EntIndex())
 		else
 			print("Generating random failure in train "..train:EntIndex())
-		end		
+		end
 		train:TriggerInput("FailSimFail",1)
 	else
 		if IsValid(ply) then
@@ -369,7 +369,7 @@ concommand.Add("metrostroi_wire", function(ply, _, args)
 			end
 		end
 	end
-	
+
 	local train = table.Random(trainList)
 	if train then
 		if IsValid(ply) then
@@ -407,7 +407,7 @@ concommand.Add("metrostroi_wire_reset", function(ply, _, args)
 			end
 		end
 	end
-	
+
 	if #trainList > 0 then
 		if IsValid(ply) then
 			ply:PrintMessage(HUD_PRINTCONSOLE,"reset wire outside power in train!")
@@ -445,7 +445,7 @@ hook.Add("Think", "Metrostroi_ElectricConsumptionThink", function()
 	prevTime = prevTime or CurTime()
 	local deltaTime = (CurTime() - prevTime)
 	prevTime = CurTime()
-	
+
 	-- Calculate total rate
 	Metrostroi.TotalRateWatts = 0
 	Metrostroi.Current = 0
@@ -458,18 +458,18 @@ hook.Add("Think", "Metrostroi_ElectricConsumptionThink", function()
 			end
 		end
 	end
-	
+
 	-- Ignore invalid values
 	if Metrostroi.TotalRateWatts > 1e8 then Metrostroi.TotalRateWatts = 0 end
-	
+
 	-- Calculate total kWh
 	Metrostroi.TotalkWh = Metrostroi.TotalkWh + (Metrostroi.TotalRateWatts/(3.6e6))*deltaTime
-	
+
 	-- Calculate total resistance of people on rails and current flowing through
 	local Rperson = 0.613
 	local Iperson = Metrostroi.Voltage / (Rperson/(Metrostroi.PeopleOnRails + 1e-9))
 	Metrostroi.Current = Metrostroi.Current + Iperson
-	
+
 	-- Check if exceeded global maximum current
 	if Metrostroi.Current > GetConVarNumber("metrostroi_current_limit") then
 		Metrostroi.VoltageRestoreTimer = CurTime() + 7.0
@@ -480,7 +480,7 @@ hook.Add("Think", "Metrostroi_ElectricConsumptionThink", function()
 	local Rfeed = 0.03 --25
 	Metrostroi.Voltage = math.max(0,GetConVarNumber("metrostroi_voltage") - Metrostroi.Current*Rfeed)
 	if CurTime() < Metrostroi.VoltageRestoreTimer then Metrostroi.Voltage = 0 end
-	
+
 	--print(Format("%5.1f v %.0f A",Metrostroi.Voltage,Metrostroi.Current))
 end)
 
@@ -488,11 +488,11 @@ concommand.Add("metrostroi_electric", function(ply, _, args) -- (%.2f$) Metrostr
 	local m = Format("[%25s] %010.3f kWh, %.3f kW (%5.1f v, %4.0f A)","<total>",
 		Metrostroi.TotalkWh,Metrostroi.TotalRateWatts*1e-3,
 		Metrostroi.Voltage,Metrostroi.Current)
-	if IsValid(ply) 
+	if IsValid(ply)
 	then ply:PrintMessage(HUD_PRINTCONSOLE,m)
 	else print(m)
 	end
-			
+
 	if CPPI then
 		local U = {}
 		local D = {}
@@ -512,7 +512,7 @@ concommand.Add("metrostroi_electric", function(ply, _, args) -- (%.2f$) Metrostr
 		for player,_ in pairs(U) do --, n=%.0f%%
 			--local m = Format("[%20s] %08.1f KWh (lost %08.1f KWh)",player,U[player]/(3.6e6),D[player]/(3.6e6)) --,100*D[player]/U[player]) --,D[player])
 			local m = Format("[%25s] %010.3f kWh (%.2f$)",player,U[player]/(3.6e6),Metrostroi.GetEnergyCost(U[player]/(3.6e6)))
-			if IsValid(ply) 
+			if IsValid(ply)
 			then ply:PrintMessage(HUD_PRINTCONSOLE,m)
 			else print(m)
 			end
@@ -552,16 +552,16 @@ local function murder(v)
 		local y2 = 1.78 ---0.50
 		if (y > y1) and (y < y2) and (z < -1.70) and (z > -1.72) and (Metrostroi.Voltage > 40) then
 			local pos = v:GetPos()
-			
+
 			util.BlastDamage(v,v,pos,64,3.0*Metrostroi.Voltage)
-			
+
 			local effectdata = EffectData()
 			effectdata:SetOrigin(pos + Vector(0,0,-16+math.random()*(40+0)))
 			util.Effect("cball_explode",effectdata,true,true)
-			
+
 			sound.Play("ambient/energy/zap"..math.random(1,3)..".wav",pos,75,math.random(100,150),1.0)
 			Metrostroi.PeopleOnRails = Metrostroi.PeopleOnRails + 1
-			
+
 			--if math.random() > 0.85 then
 				--Metrostroi.VoltageRestoreTimer = CurTime() + 7.0
 				--print("[!] Power feed protection tripped: "..(tostring(v) or "").." died on rails")

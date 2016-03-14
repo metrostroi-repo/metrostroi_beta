@@ -7,11 +7,12 @@ local function resource_AddDir(dir)
 		resource_AddDir(dir.."/"..fdir)
 	end
 
-	for k,v in pairs(files) do
+	for _,v in pairs(files) do
 		resource.AddFile(dir.."/"..v)
 	end
 end
-if SERVER then	
+
+if SERVER then
 	util.AddNetworkString("metrostroi-cabin-button")
 	util.AddNetworkString("metrostroi-cabin-reset")
 	util.AddNetworkString("metrostroi-panel-touch")
@@ -30,7 +31,7 @@ if SERVER then
 	resource_AddDir("models/metrostroi/passengers")
 	resource_AddDir("models/metrostroi/signals")
 	resource_AddDir("models/metrostroi/tatra_t3")
-	
+
 	resource_AddDir("sound/subway_trains")
 	resource_AddDir("sound/subway_announcer")
 	resource_AddDir("sound/subway_stations_test1")
@@ -41,15 +42,15 @@ end
 --------------------------------------------------------------------------------
 -- Create metrostroi global library
 --------------------------------------------------------------------------------
-if not Metrostroi then	
+if not Metrostroi then
 	-- Global library
 	Metrostroi = {}
 
 	-- Supported train classes
 	Metrostroi.TrainClasses = {}
 	Metrostroi.IsTrainClass = {}
-	timer.Simple(0.05, function() 
-		for name,ent_base in pairs(scripted_ents.GetList()) do
+	timer.Simple(0.05, function()
+		for name in pairs(scripted_ents.GetList()) do
 			local prefix = "gmod_subway_"
 			if string.sub(name,1,#prefix) == prefix then
 				table.insert(Metrostroi.TrainClasses,name)
@@ -57,7 +58,7 @@ if not Metrostroi then
 			end
 		end
 	end)
-	
+
 	-- List of all systems
 	Metrostroi.Systems = {}
 	Metrostroi.BaseSystems = {}
@@ -114,8 +115,8 @@ if SERVER then
 	else
 		Turbostroi = nil
 	end
-	
-	if Turbostroi 
+
+	if Turbostroi
 	then print("Metrostroi: Simulation acceleration ENABLED!")
 	else print("Metrostroi: Simulation acceleration DISABLED")
 	end
@@ -124,26 +125,26 @@ if SERVER then
 	local files = file.Find("metrostroi/sv_*.lua","LUA")
 	for _,filename in pairs(files) do include("metrostroi/"..filename) end
 	-- Load all shared files serverside
-	local files = file.Find("metrostroi/sh_*.lua","LUA")
+	files = file.Find("metrostroi/sh_*.lua","LUA")
 	for _,filename in pairs(files) do include("metrostroi/"..filename) end
 
 	-- Add all clientside files
-	local files = file.Find("metrostroi/cl_*.lua","LUA")
+	files = file.Find("metrostroi/cl_*.lua","LUA")
 	for _,filename in pairs(files) do AddCSLuaFile("metrostroi/"..filename) end
 	-- Add all shared files
-	local files = file.Find("metrostroi/sh_*.lua","LUA")
+	files = file.Find("metrostroi/sh_*.lua","LUA")
 	for _,filename in pairs(files) do AddCSLuaFile("metrostroi/"..filename) end
 	-- Add all system files
-	local files = file.Find("metrostroi/systems/sys_*.lua","LUA")
+	files = file.Find("metrostroi/systems/sys_*.lua","LUA")
 	for _,filename in pairs(files) do AddCSLuaFile("metrostroi/systems/"..filename) end
 	-- Add skin
 	Metrostroi.Skins = {}
-	local files = file.Find("metrostroi/skins/*.lua","LUA")
-	for _,filename in pairs(files) do 
+	files = file.Find("metrostroi/skins/*.lua","LUA")
+	for _,filename in pairs(files) do
 		AddCSLuaFile("metrostroi/skins/"..filename)
 		include("metrostroi/skins/"..filename)
 	end
-	
+
 	--Include map scripts
 	Metrostroi.AnnouncerData = {}
 	Metrostroi.NameConverter = {}
@@ -161,8 +162,8 @@ if SERVER then
 	}
 	Metrostroi.Skins["717_schemes"] = {}
 	Metrostroi.Skins["717_schemes"][""] = "metrostroi_skins/81-717_schemes/int_blank"
-	local files = file.Find("metrostroi/maps/*.lua","LUA")
-	for _,filename in pairs(files) do 
+	files = file.Find("metrostroi/maps/*.lua","LUA")
+	for _,filename in pairs(files) do
 		AddCSLuaFile("metrostroi/maps/"..filename)
 		include("metrostroi/maps/"..filename)
 	end
@@ -170,10 +171,10 @@ else
 	-- Load all clientside files
 	local files = file.Find("metrostroi/cl_*.lua","LUA")
 	for _,filename in pairs(files) do include("metrostroi/"..filename) end
-	
+
 	-- Add skins
 	Metrostroi.Skins = {}
-	local files = file.Find("metrostroi/skins/*.lua","LUA")
+	files = file.Find("metrostroi/skins/*.lua","LUA")
 	for _,filename in pairs(files) do include("metrostroi/skins/"..filename) end
 	--Include map scripts
 	Metrostroi.AnnouncerData = {}
@@ -192,11 +193,11 @@ else
 	}
 	Metrostroi.Skins["717_schemes"] = {}
 	Metrostroi.Skins["717_schemes"][""] = "metrostroi_skins/81-717_schemes/int_blank"
-	local files = file.Find("metrostroi/maps/*.lua","LUA")
+	files = file.Find("metrostroi/maps/*.lua","LUA")
 	for _,filename in pairs(files) do 	include("metrostroi/maps/"..filename) end
-	
+
 	-- Load all shared files
-	local files = file.Find("metrostroi/sh_*.lua","LUA")
+	files = file.Find("metrostroi/sh_*.lua","LUA")
 	for _,filename in pairs(files) do include("metrostroi/"..filename) end
 end
 
@@ -218,15 +219,15 @@ end
 local function loadSystem(filename)
 	-- Get the Lua code
 	include(filename)
-	
+
 	-- Load train systems
 	if TRAIN_SYSTEM then TRAIN_SYSTEM.FileName = filename end
 	local name = TRAIN_SYSTEM_NAME or "UndefinedSystem"
 	TRAIN_SYSTEM_NAME = nil
-	
+
 	-- Register system with turbostroi
 	if Turbostroi and (not Metrostroi.TurbostroiRegistered[name]) then
-		Turbostroi.RegisterSystem(name,filename) 
+		Turbostroi.RegisterSystem(name,filename)
 		Metrostroi.TurbostroiRegistered[name] = true
 	end
 
@@ -239,17 +240,17 @@ local function loadSystem(filename)
 		if not TRAIN_SYSTEM then print("No system: "..tbl._base) return end
 		for k,v in pairs(TRAIN_SYSTEM) do
 			if type(v) == "function" then
-				tbl[k] = function(...) 
+				tbl[k] = function(...)
 					if not Metrostroi.BaseSystems[tbl._base][k] then
 						print("ERROR",k,tbl._base)
 					end
-					return Metrostroi.BaseSystems[tbl._base][k](...) 
+					return Metrostroi.BaseSystems[tbl._base][k](...)
 				end
 			else
 				tbl[k] = v
 			end
 		end
-		
+
 		tbl.Initialize = tbl.Initialize or function() end
 		tbl.ClientInitialize = tbl.ClientInitialize or function() end
 		tbl.Think = tbl.Think or function() end
@@ -259,7 +260,7 @@ local function loadSystem(filename)
 		tbl.Outputs = tbl.Outputs or function() return {} end
 		tbl.TriggerOutput = tbl.TriggerOutput or function() end
 		tbl.TriggerInput = tbl.TriggerInput or function() end
-		
+
 		tbl.Train = train
 		if SERVER then
 			tbl:Initialize(...)
@@ -269,7 +270,7 @@ local function loadSystem(filename)
 		tbl.OutputsList = tbl:Outputs()
 		tbl.InputsList = tbl:Inputs()
 		tbl.IsInput = {}
-		for k,v in pairs(tbl.InputsList) do tbl.IsInput[v] = true end
+		for _,v in pairs(tbl.InputsList) do tbl.IsInput[v] = true end
 		return tbl
 	end
 end
@@ -277,25 +278,35 @@ end
 
 -- Load all systems
 local files = file.Find("metrostroi/systems/sys_*.lua","LUA")
-for _,short_filename in pairs(files) do 
+for _,short_filename in pairs(files) do
 	local filename = "metrostroi/systems/"..short_filename
-	
+
 	-- Load the file
-	if SERVER 
+	if SERVER
 	then loadSystem(filename)
 	else timer.Simple(0.05, function() loadSystem(filename) end)
 	end
 end
-for k, v in pairs(Metrostroi.WorkingStations) do
-	for k1, v1 in pairs(v) do
-		Metrostroi.WorkingStations[k][v1] = k1
+local function loadAnn ()
+	if Metrostroi.WorkingStations then
+		for k, v in pairs(Metrostroi.WorkingStations) do
+			for k1, v1 in pairs(v) do
+				Metrostroi.WorkingStations[k][v1] = k1
+			end
+		end
+	end
+
+	if Metrostroi.EndStations then
+		for k, v in pairs(Metrostroi.EndStations) do
+			for k1, v1 in pairs(v) do
+				Metrostroi.EndStations[k][v1] = k1
+			end
+		end
 	end
 end
-
-for k, v in pairs(Metrostroi.EndStations) do
-	for k1, v1 in pairs(v) do
-		Metrostroi.EndStations[k][v1] = k1
-	end
+if SERVER
+then loadAnn()
+else timer.Simple(0.1, loadAnn)
 end
 if SERVER then
 	util.AddNetworkString "MetrostroiMessages"
@@ -314,7 +325,7 @@ if SERVER then
 		end
 	end
 	local m_adm = {}
-	for k,v in pairs(player.GetAll()) do
+	for _,v in pairs(player.GetAll()) do
 		if IsValid(v) and v:IsAdmin() then
 			table.insert(m_adm,v)
 		end
@@ -329,22 +340,22 @@ else
 		warn:SetSize(380, 120)
 		warn:SetDraggable(false)
 		warn:SetSizable(false)
-		warn:Center()	
+		warn:Center()
 		warn:MakePopup()
 		local wrn = warn.Paint
 		warn.Paint = function(self, w, h)
 			wrn(self, w, h)
 			draw.DrawText(msg, "Trebuchet18", w/2, 30, color_white, 1)
-		end		
-		
+		end
+
 		local Open = vgui.Create("DButton", warn)
 		Open:SetText("Open link")
-		Open:SetPos(15, 85)	
+		Open:SetPos(15, 85)
 		Open:SetSize(80, 25)
 		Open.DoClick = function()
 			gui.OpenURL(url)
 		end
-		
+
 		local Close = vgui.Create("DButton", warn)
 		Close:SetText("Close")
 		Close:SetPos(290, 85)
