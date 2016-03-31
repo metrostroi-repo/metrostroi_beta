@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "cyber_metrostroi/test/signals/body_color"
+	$PhongAlbedoTint 1
+	$PhongWarpTexture "cyber_metrostroi/test/signals/body_tint"
+	$nocull  "1"
+}

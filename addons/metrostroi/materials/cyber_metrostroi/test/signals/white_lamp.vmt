@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "cyber_metrostroi/test/signals/white_lamp"
+	$selfillum 1
+}
