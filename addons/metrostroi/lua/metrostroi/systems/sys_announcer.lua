@@ -17,7 +17,6 @@ Metrostroi.Announcements = {
 	[0001] = { 0.700, "" },
 	[0002] = { 1.500, "" },
 	[0003]={ 1.000,       "subway_announcer/00_03.mp3" },
-  --[0003] = { 1.0,       "subway_announcer_pnm/00_03.mp3" },
 	[0005]={ 0.380,       "subway_announcer/00_05.mp3" },
 	[0006]={ 0.271,       "subway_announcer/00_06.mp3" },
 	[0007]={ 4.577,       "subway_announcer/00_07.mp3" },

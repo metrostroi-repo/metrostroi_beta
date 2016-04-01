@@ -124,7 +124,7 @@ surface.CreateFont("MetrostroiSubway_IGLA", {
   strikeout = false,
   symbol = false,
   rotary = false,
-  shadow = true,
+  shadow = false,
   additive = false,
   outline = false
 })

@@ -61,7 +61,7 @@ function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
 			self.Anims[id].P = value
 		end
 	end
-		
+
 	if damping == false then
 		local dX = speed * self.DeltaTime
 		if value > self.Anims[id].val then
@@ -83,13 +83,13 @@ function ENT:Animate(clientProp, value, min, max, speed, damping, stickyness)
 		local dX2dT = (speed or 128)*(value - self.Anims[id].val) - self.Anims[id].V * (damping or 8.0)
 		if dX2dT >  max_accel then dX2dT =  max_accel end
 		if dX2dT < -max_accel then dX2dT = -max_accel end
-		
+
 		self.Anims[id].V = self.Anims[id].V + dX2dT * self.DeltaTime
 		if self.Anims[id].V >  max_speed then self.Anims[id].V =  max_speed end
 		if self.Anims[id].V < -max_speed then self.Anims[id].V = -max_speed end
-		
+
 		self.Anims[id].val = math.max(0,math.min(1,self.Anims[id].val + self.Anims[id].V * self.DeltaTime))
-		
+
 		-- Check if value got stuck
 		if (math.abs(dX2dT) < 0.001) and stickyness and (self.DeltaTime > 0) then
 			self.Anims[id].stuck = true
@@ -106,7 +106,7 @@ function ENT:AnimateFrom(clientProp,from)
 	return self.Anims[from].val
 end
 function ENT:OnRemove()
-	--hook.Remove("PostDrawOpaqueRenderables", "metrostroi_signal_draw_"..self:EntIndex())	
+	--hook.Remove("PostDrawOpaqueRenderables", "metrostroi_signal_draw_"..self:EntIndex())
 	self.CLDraw = false
 	self.OldName = ""
 	self:RemoveModels()
@@ -154,10 +154,10 @@ function ENT:Think()
 		self:RemoveModels()
 		return
 	end
-	
+
 
 	if not self.Name then
-		if self.sended and (CurTime() - self.sended) > 0 then 
+		if self.sended and (CurTime() - self.sended) > 0 then
 			self.sended = nil
 		end
 		if not self.sended then
@@ -188,7 +188,7 @@ function ENT:Think()
 			self.NextNumWork = CurTime() + 1
 		end
 		self.OldNum = self.Num
-		
+
 		if (self.NextSignalWork or CurTime()) - CurTime() >= 0 then
 			self.Sig = ""
 		end
@@ -201,7 +201,7 @@ function ENT:Think()
 		--if not self.LensesTBL or self.Lenses ~= self.OldLenses then
 			--self.LensesTBL = string.Explode("-",self.Lenses)
 		--end
-		
+
 		--self.SigStop = (self.NextSignalWork or CurTime()) - CurTime() >= 0
 		for k,v in pairs(self.TrafficLightModels[self.LightType]) do
 			if type(v) == "string" then
@@ -221,7 +221,7 @@ function ENT:Think()
 
 		local offset = self.RenderOffset[self.LightType] or Vector(0,0,0)
 		for k,v in ipairs(self.LensesTBL) do
-			local data	
+			local data
 			if v ~= "M" then
 				data = #v ~= 1 and self.TrafficLightModels[self.LightType][#v-1] or self.TrafficLightModels[self.LightType][Metrostroi.Signal_IS]
 			else
@@ -242,12 +242,12 @@ function ENT:Think()
 				for i = 1,#v do
 					ID2 = ID2 + 1
 					if not self.Signals[ID] then self.Signals[ID] = {} end
-					--if self.Sig[ID2] == "1" or (self.Sig[ID2] == "2" and (RealTime() % 2 > 0.25)) then 
+					--if self.Sig[ID2] == "1" or (self.Sig[ID2] == "2" and (RealTime() % 2 > 0.25)) then
 					--else
 					--end
 					local State = self:Animate(ID.."/"..i,	((tonumber(self.Sig[ID2]) == 1 or (tonumber(self.Sig[ID2]) == 2 and (RealTime() % 1.2 > 0.5))) and not self.SigStop) and 1 or 0, 	0,1, 256)
 					if not IsValid(self.Models[3][ID..ID2]) and State > 0 then self.Signals[ID][i] = nil end
-					
+
 					if State >0 and self.Signals[ID][i] ~= State  and not IsValid(self.Models[3][ID..ID2]) then
 						self.Models[3][ID..ID2] = ClientsideModel("models/metrostroi/signals/sign_lense.mdl",RENDERGROUP_OPAQUE)
 						self.Models[3][ID..ID2]:SetPos(self:LocalToWorld(self.BasePosition + offset + data[3][i-1]*Vector(1,self.Left and -1.1 or 1,1)+Vector(0,0.1,0)))
@@ -257,7 +257,7 @@ function ENT:Think()
 						self.Models[3][ID..ID2]:SetRenderMode(RENDERMODE_TRANSALPHA)
 						self.Models[3][ID..ID2]:SetColor(Color(255,255,255,0))
 					end
-					if IsValid(self.Models[3][ID..ID2]) then 
+					if IsValid(self.Models[3][ID..ID2]) then
 						if State > 0 and self.Signals[ID][i] ~= State then
 							self.Models[3][ID..ID2]:SetColor(Color(255,255,255,State*255))
 						elseif  State == 0 and self.State ~= State then
