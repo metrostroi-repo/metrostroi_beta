@@ -170,21 +170,25 @@ ENT.Routes = {
 --------------------------------------------------------------------------------
 -- Inside
 --------------------------------------------------------------------------------
-ENT.RenderOffset[0] = Vector(0,0,112+32)
+ENT.RenderOffset[0] = Vector(6,0,112+32)
 ENT.TrafficLightModels[0] = {
 	["m1"]	= "models/metrostroi/signals/box.mdl",
 	["m2"]	= "models/metrostroi/signals/pole_2.mdl",
-	["name"]	= Vector(-2,2.5,-25),
-	[1]	= { 32, "models/metrostroi/signals/light_2.mdl", {
-				[0] = Vector(7.5,6.1,24.5),
-				[1] = Vector(7.5,6.1,14.2),
+	["name"]	= Vector(-2-5,2.5,-25),
+	[1]	= { 32, "models/cyber_metrostroi/test/double.mdl", {
+		[0] = Vector(0,0,15.6),
+		[1] = Vector(0,0,7.3),
+		["glass"]	= {
+			{"models/cyber_metrostroi/test/lense.mdl",Vector(0,3.4,15.6)},
+			{"models/cyber_metrostroi/test/lense.mdl",Vector(0,3.4,7.3)},
+		}
 				}},
-	[2]	= { 40, "models/metrostroi/signals/light_3.mdl", {
-				[0] = Vector(7.5,6.1,35),
-				[1] = Vector(7.5,6.1,24.8),
-				[2] = Vector(7.5,6.1,14.2),
+	[2]	= { 40, "models/cyber_metrostroi/test/triple.mdl", {
+				[0] = Vector(0,0,23.652),
+				[1] = Vector(0,0,15.495),
+				[2] = Vector(0,0,7.261),
+				["glass"]	= "models/cyber_metrostroi/test/lenses_triple.mdl",
 				}},
-
 	[4] = { 18, "models/metrostroi/signals/light_pathindicator.mdl",  Vector(13.1,2, 19.5), 1.75, 2.05, 4},
 }
 
@@ -235,8 +239,8 @@ ENT.TrafficLightModels[2] = {
 }
 ENT.SignalConverter = {
 	R = 1,
-	Y = 6,
-	G = 2,
+	Y = 2,
+	G = 3,
 	B = 4,
 	W = 5
 }
