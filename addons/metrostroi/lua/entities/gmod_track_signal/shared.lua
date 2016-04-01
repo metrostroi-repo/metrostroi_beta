@@ -187,7 +187,11 @@ ENT.TrafficLightModels[0] = {
 				[0] = Vector(0,0,23.652),
 				[1] = Vector(0,0,15.495),
 				[2] = Vector(0,0,7.261),
-				["glass"]	= "models/cyber_metrostroi/test/lenses_triple.mdl",
+				["glass"]	= {
+					{"models/cyber_metrostroi/test/lense.mdl",Vector(0,3.4,23.652)},
+					{"models/cyber_metrostroi/test/lense.mdl",Vector(0,3.4,15.495)},
+					{"models/cyber_metrostroi/test/lense.mdl",Vector(0,3.4,7.261)},
+				}
 				}},
 	[4] = { 18, "models/metrostroi/signals/light_pathindicator.mdl",  Vector(13.1,2, 19.5), 1.75, 2.05, 4},
 }
