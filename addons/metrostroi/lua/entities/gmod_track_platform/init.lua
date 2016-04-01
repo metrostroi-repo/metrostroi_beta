@@ -3,7 +3,6 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 
-
 function ENT:PlayAnnounce(arriving,Ann)
 	if not arriving then
 		if self.MustPlayAnnounces then

@@ -315,7 +315,7 @@ end
 function FailSim.Reset()
 	for k,v in pairs(FailSim.Objects) do
 		for k2,v2 in pairs(v.Parameters) do
-			FailSim.ResetParameter(v,v2)
+			FailSim.ResetParameter(v,v2,0)
 			--if v2.oldvalue then v2.value = v2.oldvalue end
 			--if v2.oldinstance_precision then v2.instance_precision = v2.oldinstance_precision end
 			--v2.failures = {}

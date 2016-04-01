@@ -11,7 +11,7 @@ if not TURBOSTROI then
 	local function updateTrains(trains)
 		--local recvMessage = Turbostroi.RecvMessage
 		-- Get data packets from simulation
-		for _,train in pairs(trains) do			
+		for _,train in pairs(trains) do
 			while true do
 				id,system,name,index,value = Turbostroi.RecvMessage(train)
 				if id == 1 then
@@ -39,7 +39,7 @@ if not TURBOSTROI then
 				messageCounter = messageCounter + 1
 			end
 		end
-		
+
 		-- Send train wire values
 		-- Output all system values
 		for _,train in pairs(trains) do
@@ -90,22 +90,22 @@ if not TURBOSTROI then
 		end
 		hook.Add("Think", "Turbostroi_Think", function()
 			if not Turbostroi then return end
-			
+
 			-- Proceed with the think loop
 			Turbostroi.SetSimulationFPS(FPS)
 			Turbostroi.SetTargetTime(CurTime())
 			Turbostroi.Think()
-				
+
 			-- Update all types of trains
 			for k,v in pairs(Metrostroi.TrainClasses) do
 				if v ~= "gmod_subway_ai" then
 					updateTrains(ents.FindByClass(v))
 				end
 			end
-				
+
 			-- HACK
 			GLOBAL_SKIP_TRAIN_SYSTEMS = nil
-			
+
 			-- Print stats
 			if ((CurTime() - messageTimeout) > 1.0) then
 				messageTimeout = CurTime()
@@ -139,7 +139,7 @@ function CurTime() return CurrentTime end
 function Metrostroi.DefineSystem(name)
 	TRAIN_SYSTEM = {}
 	Metrostroi.BaseSystems[name] = TRAIN_SYSTEM
-	
+
 	-- Create constructor
 	Metrostroi.Systems[name] = function(train,...)
 		local tbl = { _base = name }
@@ -147,30 +147,30 @@ function Metrostroi.DefineSystem(name)
 		if not TRAIN_SYSTEM then print("No system: "..tbl._base) return end
 		for k,v in pairs(TRAIN_SYSTEM) do
 			if type(v) == "function" then
-				tbl[k] = function(...) 
+				tbl[k] = function(...)
 					if not Metrostroi.BaseSystems[tbl._base][k] then
 						print("ERROR",k,tbl._base)
 					end
-					return Metrostroi.BaseSystems[tbl._base][k](...) 
+					return Metrostroi.BaseSystems[tbl._base][k](...)
 				end
 			else
 				tbl[k] = v
 			end
 		end
-		
+
 		tbl.Initialize = tbl.Initialize or function() end
 		tbl.Think = tbl.Think or function() end
 		tbl.Inputs = tbl.Inputs or function() return {} end
 		tbl.Outputs = tbl.Outputs or function() return {} end
 		tbl.TriggerInput = tbl.TriggerInput or function() end
 		tbl.TriggerOutput = tbl.TriggerOutput or function() end
-		
+
 		tbl.Train = train
 		tbl:Initialize(...)
 		tbl.OutputsList = tbl:Outputs()
 		tbl.InputsList = tbl:Inputs()
 		tbl.IsInput = {}
-		for k,v in pairs(tbl.InputsList) do tbl.IsInput[v] = true end		
+		for k,v in pairs(tbl.InputsList) do tbl.IsInput[v] = true end
 		return tbl
 	end
 end
@@ -185,14 +185,14 @@ function GlobalTrain.LoadSystem(self,a,b,...)
 		name = a
 		sys_name = a
 	end
-	
+
 	if not Metrostroi.Systems[name] then error("No system defined: "..name) end
 	if self.Systems[sys_name] then error("System already defined: "..sys_name)  end
-	
+
 	self[sys_name] = Metrostroi.Systems[name](self,...)
 	if (name ~= sys_name) or (b) then self[sys_name].Name = sys_name end
 	self.Systems[sys_name] = self[sys_name]
-	
+
 	-- Don't simulate on here
 	local no_acceleration = Metrostroi.BaseSystems[name].DontAccelerateSimulation
 	if no_acceleration then
@@ -223,23 +223,23 @@ print("[!] Train initialized!")
 function Think()
 	-- This is just blatant copy paste from init.lua of base train entity
 	local self = GlobalTrain
-	
+
 	-- Perform data exchange
 	DataExchange()
-	
+
 	----------------------------------------------------------------------------
 	self.PrevTime = self.PrevTime or CurTime()
 	self.DeltaTime = (CurTime() - self.PrevTime)
 	self.PrevTime = CurTime()
-	
+
 	-- Is initialized?
 	if not self.Initialized then return end
-	
+
 	-- Run iterations on systems simulation
 	local iterationsCount = 1
 	if (not self.Schedule) or (iterationsCount ~= self.Schedule.IterationsCount) then
 		self.Schedule = { IterationsCount = iterationsCount }
-		
+
 		-- Find max number of iterations
 		local maxIterations = 0
 		for k,v in pairs(self.Systems) do maxIterations = math.max(maxIterations,(v.SubIterations or 1)) end
@@ -260,7 +260,7 @@ function Think()
 			end
 		end
 	end
-	
+
 	-- Simulate according to schedule
 	for i,s in ipairs(self.Schedule) do
 		for k,v in ipairs(s) do
@@ -312,7 +312,7 @@ function DataExchange()
 			end
 		end
 	end
-	
+
 	-- Output train wire writes
 	if not Metrostroi.DataCache["wires"] then Metrostroi.DataCache["wires"] = {} end
 	for twID,value in pairs(GlobalTrain.WriteTrainWires) do

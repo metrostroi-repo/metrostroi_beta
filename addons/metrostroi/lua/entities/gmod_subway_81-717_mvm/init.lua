@@ -358,6 +358,11 @@ function ENT:UpdateTextures()
 					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["m"].clean)
 				end
 			end
+		elseif v == "models/metrostroi_train/81/tabl" then
+			if not self.SignsList then
+				self:PrepareSigns()
+			end
+			if self.SignsList[self.SignsIndex] then self:SetSubMaterial(k-1,self.SignsList[self.SignsIndex][1]) end
 		end
 		local tex = string.Explode("/",v)
 		tex = tex[#tex]
@@ -375,9 +380,9 @@ function ENT:UpdateTextures()
 	self:SetNW2Int("LampType",(self.LampType or 1))
 	self:SetNW2Bool("Breakers",(self.Breakers or 0) > 0)
 	self:SetNW2Bool("BPSNBuzzType",self.PNM)
-	self:SetNW2String("texture",self.Texture)
-	self:SetNW2String("passtexture",self.PassTexture)
-	self:SetNW2String("cabtexture",self.CabTexture)
+	--self:SetNW2String("texture",self.Texture)
+	--self:SetNW2String("passtexture",self.PassTexture)
+	--self:SetNW2String("cabtexture",self.CabTexture)
 end
 --[[
 local LK = {}
@@ -388,6 +393,33 @@ local OldTime
 ]]
 --------------------------------------------------------------------------------
 function ENT:Think()
+	if self.Breakers ~= self.OldBreakers then
+		if self.Breakers == 1 then
+				self.SoundNames["r1_5_close"] = {"subway_trains/drive_on1.wav","subway_trains/drive_on2.wav"}
+		else
+				self.SoundNames["r1_5_close"] = {"subway_trains/drive_on3.wav","subway_trains/drive_on4.wav"}
+		end
+		self.OldBreakers = self.Breakers
+	end
+	if self.KVSnd ~= self.OldKVSnd then
+		if self.KVSnd == 3 then
+			self.R1_5:TriggerInput("CloseTime",0.1)
+		else
+			self.R1_5:TriggerInput("CloseTime",0)
+		end
+		self.OldKVSnd = self.KVSnd
+	end
+	if self.SignsIndex ~= self.OldSignsIndex then
+		for k,v in pairs(self:GetMaterials()) do
+			if v == "models/metrostroi_train/81/tabl" then
+				if not self.SignsList then
+					self:PrepareSigns()
+				end
+				if self.SignsList[self.SignsIndex] then self:SetSubMaterial(k-1,self.SignsList[self.SignsIndex][1]) end
+			end
+		end
+		self.OldSignsIndex = self.SignsIndex
+	end
 	--[[
 	if self.KV.ControllerPosition ~= KV then
 		if KV == 0 then OldTime = nil end
@@ -449,7 +481,7 @@ function ENT:Think()
 		self.OldARSType = self.ARSType
 		self.RVT:TriggerInput("OpenTime",self.ARSType == 4 and 1.3 or 0.3 )
 	end
-	
+
 	self:SetBodygroup(1,(self.Breakers or 0))
 	self:SetBodygroup(2,math.min(3,self.Adverts or 1)-1)
 	self:SetBodygroup(3,(self.ARSType or 0)-1)

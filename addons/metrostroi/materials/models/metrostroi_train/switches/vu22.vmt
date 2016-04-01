@@ -1,6 +1,6 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "models/metrostroi_train/switches/vu22"
-	$bumpmap models/metrostroi_train/switches/vu22_n
-	"$model" "1"
-}
+"VertexLitGeneric"
+{
+	"$basetexture" "models/metrostroi_train/switches/vu22"
+	$bumpmap models/metrostroi_train/switches/vu22_n
+	"$model" "1"
+}

@@ -22,7 +22,7 @@ function ENT:PreEntityCopy()
 		BogeyDupe.WireData = WireLib.BuildDupeInfo( self.Entity )
 	end
 	BogeyDupe.NoPhysics = self.NoPhysics
-	
+
 
 	duplicator.StoreEntityModifier(self, "BogeyDupe", BogeyDupe)
 end
@@ -30,13 +30,13 @@ duplicator.RegisterEntityModifier( "BogeyDupe" , function() end)
 
 function ENT:PostEntityPaste(ply,ent,createdEntities)
 	local BogeyDupe = ent.EntityMods.BogeyDupe
-	if IsValid(self.Wheels) then 
+	if IsValid(self.Wheels) then
 		self.Wheels:SetParent()
 		self.Wheels:Remove()
 	end
 	self.Wheels = createdEntities[BogeyDupe.Wheels]
 	self.BogeyType = BogeyDupe.BogeyType
-	
+
 	if self.BogeyType == "tatra" then
 		self:SetModel("models/metrostroi/tatra_t3/tatra_bogey.mdl")
 	else
@@ -78,15 +78,15 @@ function ENT:Initialize()
 		self:SetSolid(SOLID_VPHYSICS)
 	end
 	self:SetUseType(SIMPLE_USE)
-	
+
 	-- Set proper parameters for the bogey
 	if IsValid(self:GetPhysicsObject()) then
 		self:GetPhysicsObject():SetMass(5000)
 	end
-	
+
 	-- Store coupling point offset
 	self.CouplingPointOffset = Vector(-162,0,13)
-	
+
 	-- Create wire controls
 	if Wire_CreateInputs then
 		self.Inputs = Wire_CreateInputs(self,{
@@ -97,7 +97,7 @@ function ENT:Initialize()
 			"Speed", "BrakeCylinderPressure"
 		})
 	end
-	
+
 	-- Setup default motor state
 	self.Reversed = false
 	self.MotorForce = 30000.0
@@ -106,11 +106,11 @@ function ENT:Initialize()
 	self.Acceleration = 0
 	self.PneumaticBrakeForce = 100000.0
 	self.DisableSound = 0
-	
+
 	self.Angle = 0
-	
+
 	self.Variables = {}
-	
+
 	-- Pressure in brake cylinder
 	self.BrakeCylinderPressure = 0.0 -- atm
 	-- Speed at which pressure in cylinder changes
@@ -129,7 +129,7 @@ function ENT:InitializeWheels()
 		else
 			wheels:SetPos(self:LocalToWorld(Vector(0,0.0,-10)))
 			wheels:SetAngles(self:GetAngles() + Angle(0,90,0))
-		end		
+		end
 		--wheels = ents.Create("gmod_subway_wheels")
 		--wheels:SetPos(self:LocalToWorld(Vector(0,0.0,-10)))
 		--wheels:SetAngles(self:GetAngles() + Angle(0,90,0))
@@ -179,18 +179,18 @@ local function AreCoupled(ent1,ent2)
 	local constrainttable = constraint.FindConstraints(ent1,"AdvBallsocket")
 	local coupled = false
 	for k,v in pairs(constrainttable) do
-		if v.Type == "AdvBallsocket" then 
+		if v.Type == "AdvBallsocket" then
 			if( (v.Ent1 == ent1 or v.Ent1 == ent2) and (v.Ent2 == ent1 or v.Ent2 == ent2)) then
 				coupled = true
 			end
 		end
 	end
-	
+
 	return coupled
 end
 
--- Adv ballsockets ents by their CouplingPointOffset 
-function ENT:Couple(ent) 
+-- Adv ballsockets ents by their CouplingPointOffset
+function ENT:Couple(ent)
 	if IsValid(constraint.AdvBallsocket(
 		self,
 		ent,
@@ -213,7 +213,7 @@ function ENT:Couple(ent)
 		1 --nocollide
 	)) then
 		sound.Play("buttons/lever2.wav",(self:GetPos()+ent:GetPos())/2)
-		
+
 		self:OnCouple(ent)
 		ent:OnCouple(self)
 	end
@@ -245,11 +245,11 @@ local function CanCoupleTogether(ent1,ent2)
 	if not (ent2.CanCouple and ent2:CanCouple()) then return false end
 	if not AreInCoupleDistance(ent1,ent2) then return false end
 	if not AreFacingEachother(ent1,ent2) then return false end
-	return true 
+	return true
 end
 
 -- Used the couple with other bogeys
-function ENT:StartTouch(ent) 
+function ENT:StartTouch(ent)
 	if CanCoupleTogether(self,ent) then
 		self:Couple(ent)
 	end
@@ -286,7 +286,7 @@ end
 
 function ENT:GetConnectDisconnect()
 	local isfront = self:GetNW2Bool("IsForwardBogey")
-	local train = self:GetNW2Entity("TrainEntity") 
+	local train = self:GetNW2Entity("TrainEntity")
 	if IsValid(train) then
 		if (train.FrontCoupledBogeyDisconnect and isfront) or (train.RearCoupledBogeyDisconnect and not isfront) then
 			return false
@@ -310,12 +310,12 @@ function ENT:Decouple()
 	if self.CoupledBogey then
 		sound.Play("buttons/lever8.wav",(self:GetPos()+self.CoupledBogey:GetPos())/2)
 		removeAdvBallSocketBetweenEnts(self,self.CoupledBogey)
-		
+
 		self.CoupledBogey.CoupledBogey = nil
 		self.CoupledBogey:Decouple()
 		self.CoupledBogey = nil
 	end
-	
+
 	-- Above this runs on initiator, below runs on both
 	self.DeCoupleTime = CurTime()
 	self:OnDecouple()
@@ -324,11 +324,10 @@ end
 
 function ENT:OnCouple(ent)
 	self.CoupledBogey = ent
-	
+
 	--Call OnCouple on our parent train as well
 	local parent = self:GetNW2Entity("TrainEntity")
 	local isforward = self:GetNW2Bool("IsForwardBogey")
-	
 	if IsValid(parent) then
 		parent:OnCouple(ent,isforward)
 	end
@@ -338,26 +337,26 @@ function ENT:OnDecouple()
 	--Call OnDecouple on our parent train as well
 	local parent = self:GetNW2Entity("TrainEntity")
 	local isforward = self:GetNW2Bool("IsForwardBogey")
-	
+
 	if IsValid(parent) then
 		parent:OnDecouple(isforward)
 	end
 end
 
-function ENT:Think()	
+function ENT:Think()
 	--if not self.Joints then self.Joints = {} end
-	
+
 	-- Re-initialize wheels
 	if (not self.Wheels) or
 		(not self.Wheels:IsValid()) or
 		(self.Wheels:GetNW2Entity("TrainBogey") ~= self) then
 		self:InitializeWheels()
-		
+
 		if IsValid(self:GetNW2Entity("TrainEntity")) then
 			constraint.NoCollide(self.Wheels,self:GetNW2Entity("TrainEntity"),0,0)
 		end
 	end
- 
+
 	-- Update timing
 	self.PrevTime = self.PrevTime or CurTime()
 	self.DeltaTime = (CurTime() - self.PrevTime)
@@ -385,7 +384,7 @@ function ENT:Think()
 	local sign = 1
 	if localSpeed < 0 then sign = -1 end
 	self.Speed = absSpeed
-	
+
 	-- Calculate acceleration in m/s
 	self.Acceleration = 0.277778*(self.Speed - (self.PrevSpeed or 0)) / self.DeltaTime
 	self.PrevSpeed = self.Speed
@@ -412,16 +411,16 @@ function ENT:Think()
 	end
 	motorPower = math.max(-1.0,motorPower)
 	motorPower = math.min(1.0,motorPower)
-	
-	
+
+
 	-- Calculate forces
 	local motorForce = self.MotorForce*motorPower
 	local pneumaticFactor = math.max(0,math.min(1,1.5*self.Speed))
 	--if self:CPPIGetOwner():GetName():find("gleb") then print(self,Format("%d",pneumaticFactor),self.PneumaticBrakeForce,BrakeCP,self.ParkingBrake,BrakeCP < 0.05) end
 	local pneumaticForce = -sign*pneumaticFactor*self.PneumaticBrakeForce*BrakeCP
-	
+
 	if BrakeCP < 0.05 then pneumaticForce = 0 end
-	
+
 	-- Compensate forward friction
 	local compensateA = self.Speed / 86
 	local compensateF = sign * self:GetPhysicsObject():GetMass() * compensateA
@@ -429,24 +428,24 @@ function ENT:Think()
 	local sideSpeed = -self:GetVelocity():Dot(self:GetAngles():Right()) * 0.06858
 	if sideSpeed < 0.5 then sideSpeed = 0 end
 	local sideForce = sideSpeed * 0.5 * self:GetPhysicsObject():GetMass()
-	
+
 	-- Apply force
 	local dt_scale = 66.6/(1/self.DeltaTime)
 	local force = dt_scale*(motorForce + pneumaticForce + compensateF)
-	
+
 	local side_force = dt_scale*(sideForce)
-	
+
 	if self.Reversed
 	then self:GetPhysicsObject():ApplyForceCenter( self:GetAngles():Forward()*force + self:GetAngles():Right()*side_force)
 	else self:GetPhysicsObject():ApplyForceCenter(-self:GetAngles():Forward()*force + self:GetAngles():Right()*side_force)
 	end
-	
+
 	-- Apply Z axis damping
 	local avel = self:GetPhysicsObject():GetAngleVelocity()
 	local avelz = math.min(20,math.max(-20,avel.z))
 	local damping = Vector(0,0,-avelz) * 0.75 * dt_scale
-	self:GetPhysicsObject():AddAngleVelocity(damping) 
-	
+	self:GetPhysicsObject():AddAngleVelocity(damping)
+
 	-- Calculate brake squeal
 	local k = ((self.SquealSensitivity or 0.5) - 0.5)*2
 	local brakeSqueal = (math.abs(pneumaticForce)/(5000*(1+0.8*k)))^2
@@ -461,7 +460,7 @@ function ENT:Think()
 		if self.Speed > 2 then
 			--brakeRamp = 1 - math.min(1.0,math.max(0.0,(self.Speed-3)/10.0))
 		end
-	--	if brakeRamp > 0.01 and brakeSqueal > 0 then 
+	--	if brakeRamp > 0.01 and brakeSqueal > 0 then
 		self:SetBrakeSqueal(self.BrakeSqueal or brakeSqueal)
 --		end
 	end
@@ -469,7 +468,7 @@ function ENT:Think()
 		self:SetSpeed(absSpeed)
 	end
 	self:NextThink(CurTime())
-	
+
 	-- Trigger outputs
 	if Wire_TriggerOutput then
 		Wire_TriggerOutput(self, "Speed", absSpeed)
@@ -488,7 +487,7 @@ function ENT:SpawnFunction(ply, tr)
 	local distancecap = 2000 -- When to ignore hitpos and spawn at set distanace
 	local pos, ang = nil
 	local inhibitrerail = false
-	
+
 	if tr.Hit then
 		-- Setup trace to find out of this is a track
 		local tracesetup = {}
@@ -528,12 +527,12 @@ function ENT:SpawnFunction(ply, tr)
 	ent:SetAngles(ang)
 	ent:Spawn()
 	ent:Activate()
-	
+
 	if not inhibitrerail then Metrostroi.RerailBogey(ent) end
 	return ent
 end
 --[[
-hook.Add("AdvDupe_FinishPasting","bogeyspawned",function(tbl) 
+hook.Add("AdvDupe_FinishPasting","bogeyspawned",function(tbl)
 	local Type = 0
 	for k,v in pairs(tbl) do
 		if string.find("gmod_subway",v:GetClass()) then

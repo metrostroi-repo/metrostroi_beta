@@ -64,12 +64,12 @@ function TRAIN_SYSTEM:Initialize()
 		{"U2",						"20b"},
 		{	1,	1,	1,	0,	0,	0,	0	},
 	}
-	
+
 	-- Initialize contacts values
 	for i=1,#self.ReverserMatrix/2 do
 		local v = self.ReverserMatrix[i*2-1]
 		self[v[1].."-"..v[2]] = 0
-	end	
+	end
 	for i=1,#self.ControllerMatrix/2 do
 		local v = self.ControllerMatrix[i*2-1]
 		self[v[1].."-"..v[2]] = 0
@@ -97,21 +97,21 @@ function TRAIN_SYSTEM:TriggerInput(name,value)
 		if (self.Enabled ~= 0) and (self.ReverserPosition ~= 0) and (math.floor(value) ~= self.ControllerPosition) then
 			local prevControllerPosition = self.ControllerPosition
 			self.ControllerPosition = math.floor(value)
-			
+
 			-- Limit motion
 			if self.ControllerPosition >  3 then self.ControllerPosition =  3 end
 			if self.ControllerPosition < -3 then self.ControllerPosition = -3 end
-		end		
-		
+		end
+
 	elseif name == "ControllerAutodriveSet" then
 		if (self.Enabled ~= 0) and (self.ReverserPosition ~= 0) and (math.floor(value) ~= self.ControllerPositionAutodrive) then
 			self.ControllerPositionAutodrive = math.floor(value)
-			
+
 			-- Limit motion
 			if self.ControllerPositionAutodrive >  3 then self.ControllerPosition =  3 end
 			if self.ControllerPositionAutodrive < -3 then self.ControllerPosition = -3 end
-		end		
-		
+		end
+
 	elseif name == "ReverserSet" then
 		if (self.Enabled ~= 0) and (math.floor(value) ~= self.ReverserPosition) and self.ControllerPosition == 0 then
 			local prevReverserPosition = self.ReverserPosition
@@ -139,7 +139,7 @@ function TRAIN_SYSTEM:TriggerInput(name,value)
 	elseif (name == "SetX3") and (value > 0.5) then
 		self:TriggerInput("ControllerSet",3)
 	elseif (name == "Set0") and (value > 0.5) then
-		self:TriggerInput("ControllerSet",0)		
+		self:TriggerInput("ControllerSet",0)
 	elseif (name == "Set0Fast") and (value > 0.5) then
 		self:TriggerInput("ControllerSet",0)
 		self.ChangeSpeed = 0.05
@@ -155,7 +155,7 @@ end
 
 function TRAIN_SYSTEM:Think()
 	local Train = self.Train
-	
+
 	if (self.Enabled == 0) and (self.ReverserPosition ~= 0) then
 		self.ReverserPosition = 0
 		self.ControllerPosition = 0
@@ -164,14 +164,14 @@ function TRAIN_SYSTEM:Think()
 		self.ReverserPosition = 0
 		self.ControllerPosition = 0
 	end
-	
+
 	-- Move controller
 	self.Timer = self.Timer or CurTime()
 	if ((CurTime() - self.Timer > self.ChangeSpeed) and (self.ControllerPosition > self.RealControllerPosition)) then
 		local previousPosition = self.RealControllerPosition
 		self.Timer = CurTime()
 		self.RealControllerPosition = self.RealControllerPosition + 1
-		
+
 		local A,B = previousPosition,self.RealControllerPosition
 
 		if (A == -3) and (B == -2) then self.Train:PlayOnce((self.Type == 1 and "ezh_" or "").."kv_t2_t1a",  "cabin",0.8) end
@@ -186,12 +186,12 @@ function TRAIN_SYSTEM:Think()
 		local previousPosition = self.RealControllerPosition
 		self.Timer = CurTime()
 		self.RealControllerPosition = self.RealControllerPosition - 1
-		
+
 		local A,B = previousPosition,self.RealControllerPosition
 		if (A ==  3) and (B ==  2) then self.Train:PlayOnce((self.Type == 1 and "ezh_" or "").."kv_x3_x2", "cabin",0.9) end
 		if (A ==  2) and (B ==  1) then self.Train:PlayOnce((self.Type == 1 and "ezh_" or "").."kv_x2_x1", "cabin",0.9) end
 		if (A ==  1) and (B ==  0) then self.Train:PlayOnce((self.Type == 1 and "ezh_" or "").."kv_x1_0", "cabin",0.9) end
-		
+
 		if (A ==  0) and (B == -1) then self.Train:PlayOnce((self.Type == 1 and "ezh_" or "").."kv_0_t1",  "cabin",0.8) end
 		if (A == -1) and (B == -2) then self.Train:PlayOnce((self.Type == 1 and "ezh_" or "").."kv_t1_t1a",  "cabin",0.8) end
 		if (A == -2) and (B == -3) then self.Train:PlayOnce((self.Type == 1 and "ezh_" or "").."kv_t1a_t2",  "cabin",0.8) end

@@ -57,9 +57,9 @@ local function Trace(ply,tr)
 	local distancecap = 2000 -- When to ignore hitpos and spawn at set distanace
 	local pos, ang = nil
 	local inhibitrerail = false
-	
+
 	--TODO: Make this work better for raw base ent
-	
+
 	if tr.Hit then
 		-- Setup trace to find out of this is a track
 		local tracesetup = {}
@@ -157,11 +157,11 @@ local CLpos,CLang = Vector(0,0,0),Angle(0,0,0)
 
 function UpdateGhostPos(pl)
 	local trace = util.TraceLine(util.GetPlayerTrace(pl))
-	
+
 	local tbl =  Metrostroi.RerailGetTrackData(trace.HitPos,pl:GetAimVector())
-	
+
 	if not tbl then tbl = Trace(pl, trace) end
-	
+
 	local pos,ang = Vector(0,0,0),Angle(0,0,0)
 	if tbl[3] ~= nil then
 		pos = tbl[1]+Vector(0,0,55)
@@ -309,7 +309,7 @@ function TOOL:SetSettings(ent, ply, i,inth)
 			if (i == 1 or i == self.tbl.WagNum or !self.int) and v ~= "A5"  then ent:TriggerInput(v.."Set", self.tbl.Switches > 0 and (math.random() > math.random(0.1,0.4) or self.tbl.SwitchesR == 0)) end
 		end
 		local rot = (self.fent:GetAngles().yaw - ent:GetAngles().yaw) ~= 0
-		--local rot = 
+		--local rot =
 		--print
 		local DoorsL = self.tbl.DoorsL
 		local DoorsR = self.tbl.DoorsR
@@ -344,6 +344,7 @@ function TOOL:SetSettings(ent, ply, i,inth)
 			if not k:find("kv_") then continue end
 			if k:find("ezh") then continue end
 			ent.SoundNames[k] = string.gsub(v,"kv%d","kv"..self:GetClientNumber("kvsnd"))
+			ent.KVSnd = self:GetClientNumber("kvsnd")
 			ent.NewKV = self:GetClientNumber("kvsnd") > 1
 			ent:SetNW2Bool("NewKV",ent.NewKV)
 		end
@@ -363,7 +364,7 @@ function TOOL:SetSettings(ent, ply, i,inth)
 			end
 		end
 	end
-	
+
 	if ent.UpdateTextures then
 		local tex = Metrostroi.Skins["train"][self.tbl.Texture]
 		local ptex = Metrostroi.Skins["pass"][self.tbl.PassTexture]
@@ -377,7 +378,7 @@ function TOOL:SetSettings(ent, ply, i,inth)
 		if ctex and (ent:GetClass() == "gmod_subway_"..ctex.typ  or Metrostroi.NameConverter[ctex.typ] and ent:GetClass()  == "gmod_subway_"..Metrostroi.NameConverter[ctex.typ]) then
 			ent.CabTexture = self.tbl.CabTexture
 		end
-	
+
 		ent:UpdateTextures()
 	end
 end
@@ -401,7 +402,7 @@ function TOOL:Finish()
 	if not self then return end
 	if IsValid(self.GhostEntity) then
 		self.GhostEntity:Remove()
-	end 
+	end
 	self.Spawned = false
 	if SERVER then
 		self:GetOwner():SelectWeapon(self:GetClientInfo("oldW"))
@@ -412,18 +413,15 @@ end
 
 function TOOL:LeftClick(trace)
 	self.Spawned = true
-	timer.Simple(0,function()
-		self:Finish()
-	end)
 	--[[
-	if CLIENT then 
+	if CLIENT then
 		[
 		timer.Simple(0.5,
 			function()
 				if self.GhostEntity then
 					RunConsoleCommand("gmod_toolmode", self:GetClientInfo("oldT"))
 					self.GhostEntity:Remove()
-				end 
+				end
 			end
 		)]
 		return true
@@ -441,6 +439,9 @@ function TOOL:LeftClick(trace)
 		end
 	end
 	self:SpawnWagon(trace)
+	timer.Simple(0,function()
+		self:Finish()
+	end)
 	return
 end
 
@@ -454,7 +455,7 @@ function TOOL.BuildCPanel(panel)
 	panel:AddControl("Header", { Text = "#Tool.train_spawner.name", Description = "#Tool.train_spawner.desc" })
 end
 
-if SERVER then 
+if SERVER then
 	--util.AddNetworkString "metrostroi_train_spawner_ghost"
 	--[[
 	timer.Create("metrostroi_train_spawner_ghost",0.3,0,
@@ -466,7 +467,7 @@ if SERVER then
 	)]]
 	return
 end
---[[ 
+--[[
 function TOOL:Think()
 	self.tbl = self:GetConvar()
 	if (!IsValid(self.GhostEntity) or self.GhostEntity:GetModel() ~= self:GetCurrentModel(self.tbl.Train,self.tbl.Mask)) then

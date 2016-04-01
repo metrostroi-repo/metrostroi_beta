@@ -1,11 +1,11 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "models/metrostroi_train/em/ema_doors"
-	"$model" "1"
-	"$phong" "1"
- 
-	"$bumpmap"				"models/metrostroi_train/em/ema_doors_n"
-	"$phongexponenttexture"	"models/metrostroi_train/em/ema_doors_phong"
-	"$phongboost"				5.0
-	"$phongfresnelranges"		"[0 0.5 1]"
-}
+"VertexLitGeneric"
+{
+	"$basetexture" "models/metrostroi_train/em/ema_doors"
+	"$model" "1"
+	"$phong" "1"
+ 
+	"$bumpmap"				"models/metrostroi_train/em/ema_doors_n"
+	"$phongexponenttexture"	"models/metrostroi_train/em/ema_doors_phong"
+	"$phongboost"				5.0
+	"$phongfresnelranges"		"[0 0.5 1]"
+}
