@@ -8,8 +8,8 @@ local LKNames = { "LK1", "LK2", "LK3", "LK4", "LK5" }
 function TRAIN_SYSTEM:Initialize()
 
 	self.ValveType = 1
-	
-	-- Position of the train drivers valve 
+
+	-- Position of the train drivers valve
 	--  Type 1 (334)
 	-- 1 Accelerated charge
 	-- 2 Normal charge (brake release)
@@ -25,7 +25,7 @@ function TRAIN_SYSTEM:Initialize()
 	-- 5 Emergency application
 	self.DriverValvePosition = 2
 	self.RealDriverValvePosition = self.DriverValvePosition
-	
+
 
 	-- Pressure in reservoir
 	self.ReservoirPressure = 0.0 -- atm
@@ -47,7 +47,7 @@ function TRAIN_SYSTEM:Initialize()
 	-- Автоматический выключатель торможения (АВТ)
 	self.Train:LoadSystem("AVT","Relay","AVT-325")
 	-- Регулятор давления (АК)
-	self.Train:LoadSystem("AK","Relay","AK-11B")	
+	self.Train:LoadSystem("AK","Relay","AK-11B")
 	-- Автоматический выключатель управления (АВУ)
 	self.Train:LoadSystem("AVU","Relay","AVU-045")
 	-- Блокировка тормозов
@@ -58,8 +58,8 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("VDOL","Relay","")
 	self.Train:LoadSystem("VDOP","Relay","")
 	self.Train:LoadSystem("VDZ","Relay","")
-	
-	
+
+
 	-- Разобщение клапана машиниста
 	self.Train:LoadSystem("DriverValveDisconnect","Relay","Switch")
 	-- Краны двойной тяги
@@ -83,17 +83,17 @@ function TRAIN_SYSTEM:Initialize()
 
 	-- Brake cylinder atmospheric valve open
 	self.BrakeCylinderValve = 0
-	
+
 	-- Overpressure protection valve open
 	self.TrainLineOverpressureValve = 0
-	
+
 	-- Compressor simulation
 	self.Compressor = 0 --Simulate overheat with TRK FIXME
-	
+
 	-- Disconnect valve status
 	self.DriverValveDisconnectPrevious = 0
 	self.EPKPrevious = 0
-	
+
 	-- Doors state
 	--[[self.Train:LoadSystem("LeftDoor1","Relay",{ open_time = 0.5, close_time = 0.5 })
 	self.Train:LoadSystem("LeftDoor2","Relay",{ open_time = 0.5, close_time = 0.5 })
@@ -105,7 +105,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("RightDoor4","Relay",{ open_time = 0.5, close_time = 0.5 })]]--
 	self.LeftDoorState = { 0,0,0,0 }
 	self.RightDoorState = { 0,0,0,0 }
-	
+
 	self.PlayOpen = 1e9
 	self.PlayClosed = 1e9
 	self.TrainLineOpen = false
@@ -120,7 +120,7 @@ function TRAIN_SYSTEM:Inputs()
 end
 
 function TRAIN_SYSTEM:Outputs()
-	return { "BrakeLinePressure", "BrakeCylinderPressure", "DriverValvePosition", 
+	return { "BrakeLinePressure", "BrakeCylinderPressure", "DriverValvePosition",
 			 "ReservoirPressure", "TrainLinePressure", "DoorLinePressure" }
 end
 
@@ -151,7 +151,7 @@ function TRAIN_SYSTEM:equalizeCouplePressure(dT,pressure,train,valve_status,rate
 	if not valve_status then return end
 	local other
 	if IsValid(train) then other = train.Pneumatic end
-	
+
 	-- Get second pressure
 	local P2 = 0
 	if other then P2 = other[pressure] end
@@ -160,7 +160,7 @@ function TRAIN_SYSTEM:equalizeCouplePressure(dT,pressure,train,valve_status,rate
 		rate = close_rate or rate
 		--self.TrainLinePressure_dPdT = 0.0
 	end
-	
+
 	-- Calculate rate
 	local dPdT = rate * (P2 - self[pressure])
 	-- Calculate delta
@@ -190,7 +190,7 @@ function TRAIN_SYSTEM:UpdatePressures(Train,dT)
 	local rearBrakeOpen = Train.RearBrakeLineIsolation.Value == 0
 	local frontTrainOpen = Train.FrontTrainLineIsolation.Value == 0
 	local rearTrainOpen = Train.RearTrainLineIsolation.Value == 0
-	
+
 	local frontBrakeLeak = false
 	local rearBrakeLeak = false
 	local frontTrainLeak = false
@@ -231,7 +231,7 @@ function TRAIN_SYSTEM:UpdatePressures(Train,dT)
 			rearTrainLeak = rearTrainOpen and (Train.RearTrain.RearTrainLineIsolation.Value == 1)
 		end
 	end
-	
+
 	-- Equalize pressure
 	self.TrainLineOpen = false
 	if self.ValveType == 1 then
@@ -267,7 +267,7 @@ end
 
 function TRAIN_SYSTEM:equalizePressure(dT,pressure,target,rate,fill_rate,no_limit,smooth)
 	if fill_rate and (target > self[pressure]) then rate = fill_rate end
-	
+
 	-- Calculate derivative
 	local dPdT = rate
 	if target < self[pressure] then dPdT = -dPdT end
@@ -287,22 +287,22 @@ end
 -------------------------------------------------------------------------------
 function TRAIN_SYSTEM:Think(dT)
 	local Train = self.Train
-	
+
 	-- Apply specific rate to equalize pressure
-	
-	
+
+
 	----------------------------------------------------------------------------
 	-- Accumulate derivatives
 	self.TrainLinePressure_dPdT = 0.0
 	self.BrakeLinePressure_dPdT = 0.0
 	self.ReservoirPressure_dPdT = 0.0
 	self.BrakeCylinderPressure_dPdT = 0.0
-	
+
 	-- Reduce pressure for brake line
 	self.TrainToBrakeReducedPressure = math.min(5.1,self.TrainLinePressure) -- * 0.725)
 	-- Feed pressure to door line
 	self.DoorLinePressure = self.TrainToBrakeReducedPressure * 0.90
-	
+
 	local trainLineConsumption_dPdT = 0.0
 	if self.ValveType == 1 then
 		-- 334: 1 Fill reservoir from train line, fill brake line from train line
@@ -312,7 +312,7 @@ function TRAIN_SYSTEM:Think(dT)
 			self.BrakeLinePressure_dPdT = self.ReservoirPressure_dPdT
 			trainLineConsumption_dPdT = trainLineConsumption_dPdT + math.max(0,self.BrakeLinePressure_dPdT)
 		end
-		
+
 		-- 334: 2 Brake line, reservoir replenished from brake line reductor
 		if (self.DriverValvePosition == 2) and (Train.DriverValveTLDisconnect.Value == 1.0 and Train.DriverValveBLDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"ReservoirPressure", self.TrainToBrakeReducedPressure*1.05, 1.30)
@@ -321,23 +321,23 @@ function TRAIN_SYSTEM:Think(dT)
 			self.BrakeLinePressure_dPdT = self.ReservoirPressure_dPdT
 			trainLineConsumption_dPdT = trainLineConsumption_dPdT + math.max(0,self.BrakeLinePressure_dPdT)
 		end
-		
+
 		-- 334: 3 Close all valves
 		if (self.DriverValvePosition == 3) and (Train.DriverValveBLDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"ReservoirPressure", self.BrakeLinePressure, 3.00)
 			self:equalizePressure(dT,"BrakeLinePressure", self.ReservoirPressure, 3.00)
-			
+
 			-- Typical leak
 			self:equalizePressure(dT,"ReservoirPressure", 0.00, 0.03)
 		end
-		
+
 		-- 334: 4 Reservoir open to atmosphere, brake line equalizes with reservoir
 		if (self.DriverValvePosition == 4) and (Train.DriverValveBLDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"ReservoirPressure", 0.0,0.35 + 0.04*(Train:GetWagonCount() - 1))--0.35)-0.55
 			self.BrakeLinePressure = self.ReservoirPressure
 			self.BrakeLinePressure_dPdT = self.ReservoirPressure_dPdT
 		end
-		
+
 		-- 334: 5 Reservoir and brake line open to atmosphere
 		if (self.DriverValvePosition == 5) and (Train.DriverValveBLDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"ReservoirPressure", 0.0, 1.00 + 0.175*(Train:GetWagonCount() - 1))--1.70
@@ -351,37 +351,37 @@ function TRAIN_SYSTEM:Think(dT)
 			self:equalizePressure(dT,"BrakeLinePressure", self.TrainLinePressure, pr_speed)
 			trainLineConsumption_dPdT = trainLineConsumption_dPdT + math.max(0,self.BrakeLinePressure_dPdT)
 		end
-		
+
 		-- 013: 2 Normal pressure
 		if (self.DriverValvePosition == 2) and (Train.DriverValveDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"BrakeLinePressure", 1.01*math.min(5.1,self.TrainToBrakeReducedPressure), pr_speed, nil, 8.0)
 			trainLineConsumption_dPdT = trainLineConsumption_dPdT + math.max(0,self.BrakeLinePressure_dPdT)
 		end
-		
+
 		-- 013: 3 4.3 Atm
 		if (self.DriverValvePosition == 3) and (Train.DriverValveDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"BrakeLinePressure", 1.01*math.min(4.3,self.TrainToBrakeReducedPressure), pr_speed, nil, 8.0)
 			trainLineConsumption_dPdT = trainLineConsumption_dPdT + math.max(0,self.BrakeLinePressure_dPdT)
 		end
-		
+
 		-- 013: 4 4.0 Atm
 		if (self.DriverValvePosition == 4) and (Train.DriverValveDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"BrakeLinePressure", 1.01*math.min(4.0,self.TrainToBrakeReducedPressure), pr_speed, nil, 8.0)
 			trainLineConsumption_dPdT = trainLineConsumption_dPdT + math.max(0,self.BrakeLinePressure_dPdT)
 		end
-		
+
 		-- 013: 5 3.7 Atm
 		if (self.DriverValvePosition == 5) and (Train.DriverValveDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"BrakeLinePressure", 1.01*math.min(3.7,self.TrainToBrakeReducedPressure), pr_speed, nil, 8.0)
 			trainLineConsumption_dPdT = trainLineConsumption_dPdT + math.max(0,self.BrakeLinePressure_dPdT)
 		end
-		
+
 		-- 013: 6 3.0 Atm
 		if (self.DriverValvePosition == 6) and (Train.DriverValveDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"BrakeLinePressure", 1.01*math.min(3.0,self.TrainToBrakeReducedPressure), pr_speed, nil, 8.0)
 			trainLineConsumption_dPdT = trainLineConsumption_dPdT + math.max(0,self.BrakeLinePressure_dPdT)
 		end
-			
+
 		-- 013: 7 0.0 Atm
 		if (self.DriverValvePosition == 7) and (Train.DriverValveDisconnect.Value == 1.0) then
 			self:equalizePressure(dT,"BrakeLinePressure", 0.0, pr_speed)
@@ -403,7 +403,7 @@ function TRAIN_SYSTEM:Think(dT)
 			--if self.DriversValve == 1 then
 				--self:equalizePressure(dT,"BrakeCylinderPressure", targetPressure, 2.00, 3.50, nil, 1.0) --0.75, 1.25)
 			--else
-			
+
 				self:equalizePressure(dT,"BrakeCylinderPressure", targetPressure, self.TrainToBrakeReducedPressure*0.15, 6.50, nil, 1.0) --0.75, 1.25)
 				   --equalizePressure(dT,									pressure,		target,rate,fill_rate,no_limit,smooth)
 			--end
@@ -434,7 +434,7 @@ function TRAIN_SYSTEM:Think(dT)
 	if (self.BrakeLinePressure < 2.0 or self.UAVA) and self.EmergencyValve then
 		self.EmergencyValve = false
 	end
-	if Train.UAVA and Train.UAVA.Value > 0.5 then--self.BrakeLinePressure < 3.0 and 
+	if Train.UAVA and Train.UAVA.Value > 0.5 then--self.BrakeLinePressure < 3.0 and
 		self.UAVA = true
 	end
 	if Train.UAVA and Train.UAVA.Value < 0.5 then
@@ -442,7 +442,7 @@ function TRAIN_SYSTEM:Think(dT)
 	end
 	-- Simulate cross-feed between different wagons
 	self:UpdatePressures(Train,dT)
-	
+
 	----------------------------------------------------------------------------
 	-- Simulate compressor operation and train line depletion
 	self.Compressor = Train.KK.Value * ((not Train.Electric or Train.Electric.Power750V > 550) and 1 or 0)
@@ -458,7 +458,7 @@ function TRAIN_SYSTEM:Think(dT)
 		self.TrainLineOpen = true
 		if self.TrainLinePressure < 5.2 then self.TrainLineOverpressureValve = 0 end
 	end
-	
+
 	----------------------------------------------------------------------------
 	-- Pressure triggered relays
 	Train.AVT:TriggerInput("Open", self.BrakeCylinderPressure > 1.9) -- 1.8 - 2.0
@@ -469,7 +469,7 @@ function TRAIN_SYSTEM:Think(dT)
 	Train.AVU:TriggerInput("Close",self.BrakeLinePressure > 3.5) -- 3.5 - 3.7
 	Train.BPT:TriggerInput("Set",  self.BrakeCylinderPressure > 0.4)
 	Train.DKPT:TriggerInput("Set", self.BrakeCylinderPressure > 0.8) -- 1.8 - 2.0
-	
+
 	----------------------------------------------------------------------------
 	-- Simulate doors opening, closing
 	if self.DoorLinePressure > 3.5 then
@@ -480,7 +480,7 @@ function TRAIN_SYSTEM:Think(dT)
 			   (self.LeftDoorState[4] == 0) then
 				self.PlayOpen = CurTime()
 			end
-			   
+
 			self.LeftDoorState[1] = 1
 			self.LeftDoorState[2] = 1
 			self.LeftDoorState[3] = 1
@@ -511,25 +511,25 @@ function TRAIN_SYSTEM:Think(dT)
 			   (self.RightDoorState[4] == 1) then
 				self.PlayClose = CurTime()
 			end
-			
+
 			self.LastCloseTrigger = self.LastCloseTrigger or CurTime()
 			if (CurTime() - self.LastCloseTrigger) > 2.0 then
 				self.LastCloseTrigger = CurTime()
 				--self.CloseValue = nil
 			end
-			
+
 			if self.CloseValue == nil then
 				self.CloseValue = (math.random() > 0.005) --05)
 				if self.CloseValue == false then print("DOOR FAIL",self.Train) end
 				--print("DOOR DESTINY",self.CloseValue)
 			end
-			
+
 			if self.CloseValue == true then
 				self.LeftDoorState[1] = 0
 				self.LeftDoorState[2] = 0
 				self.LeftDoorState[3] = 0
 				self.LeftDoorState[4] = 0
-			
+
 				self.RightDoorState[1] = 0
 				self.RightDoorState[2] = 0
 				self.RightDoorState[3] = 0
@@ -548,7 +548,7 @@ function TRAIN_SYSTEM:Think(dT)
 		(self.RightDoorState[2] == 0) and
 		(self.RightDoorState[3] == 0) and
 		(self.RightDoorState[4] == 0))
-		
+
 	-- Play sounds
 	local play_open 		= (CurTime() - (self.PlayOpen or 1e9)) > 0.3
 	local play_close 		= (CurTime() - (self.PlayClose or 1e9)) > 0.3
@@ -574,7 +574,7 @@ function TRAIN_SYSTEM:Think(dT)
 		Train:PlayOnce("door_close1")
 		self.TrainLinePressure = self.TrainLinePressure - 0.04
 	end
-	
+
 	----------------------------------------------------------------------------
 	if self.DriverValveDisconnectPrevious ~= Train.DriverValveDisconnect.Value then
 		self.DriverValveDisconnectPrevious = Train.DriverValveDisconnect.Value
@@ -595,16 +595,16 @@ function TRAIN_SYSTEM:Think(dT)
 			self.BrakeLinePressure = math.max(0.0,self.BrakeLinePressure - 1.0)
 		end
 	end
-	
 
-	----------------------------------------------------------------------------	
+
+	----------------------------------------------------------------------------
 	-- FIXME
 	Train:SetNW2Bool("FbI",Train.FrontBrakeLineIsolation.Value ~= 0)
 	Train:SetNW2Bool("RbI",Train.RearBrakeLineIsolation.Value ~= 0)
 	Train:SetNW2Bool("FtI",Train.FrontTrainLineIsolation.Value ~= 0)
 	Train:SetNW2Bool("RtI",Train.RearTrainLineIsolation.Value ~= 0)
 	Train:SetNW2Bool("AD",Train.AirDistributorDisconnect.Value == 0)
-	
+
 
 	local ValveType = self.ValveType > 1
 

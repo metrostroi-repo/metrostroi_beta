@@ -1,7 +1,7 @@
-"LightmappedGeneric"
-{
-	"$basetexture" "wood/trima"
-	"$envmap" "env_cubemap"
-	"$envmapmask" "wood/trima_ref"
-	"$surfaceprop" "wood"
-}
+"LightmappedGeneric"
+{
+	"$basetexture" "wood/trima"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "wood/trima_ref"
+	"$surfaceprop" "wood"
+}

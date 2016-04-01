@@ -31,24 +31,24 @@ TOOL.ClientConVar["breakers"] = 0
 
 function TOOL:LeftClick(trace)
 	if CLIENT then return true end
-	
+
 	local ply = self:GetOwner()
 	if not trace then return false end
 	if trace.Entity and trace.Entity:IsPlayer() then return false end
 	if not Metrostroi.IsTrainClass[trace.Entity:GetClass()] then return false end
-	
+
 	local train = trace.Entity
 	if train:GetClass():find("1-703") then return end
 	--train:SetSkin(self:GetClientNumber("skin"))
 	train.LED = self:GetClientNumber("led") > 0
 	train.ARSType = self:GetClientNumber("ars")
 	train:SetNW2Int("ARSType",train.ARSType)
-	train.LampType = self:GetClientNumber("lamp") 
-	train.MaskType = self:GetClientNumber("mask") 
-	train.SeatType = self:GetClientNumber("seat") 
-	train.HandRail = self:GetClientNumber("hand") 
+	train.LampType = self:GetClientNumber("lamp")
+	train.MaskType = self:GetClientNumber("mask")
+	train.SeatType = self:GetClientNumber("seat")
+	train.HandRail = self:GetClientNumber("hand")
 	train.MVM = self:GetClientNumber("mvm") > 0
-	train.BortLampType = self:GetClientNumber("bort") 
+	train.BortLampType = self:GetClientNumber("bort")
 	train.BPSNType= self:GetClientNumber("bpsn")
 	train.Breakers= self:GetClientNumber("breakers")
 	train:SetNW2Bool("Breakers",(train.Breakers or 1) > 0)
@@ -61,6 +61,7 @@ function TOOL:LeftClick(trace)
 		if type(v) ~= "string" then continue end
 		if not k:find("kv_") then continue end
 		if k:find("ezh") then continue end
+		train.KVSnd = self:GetClientNumber("kvsnd")
 		train.SoundNames[k] = string.gsub(v,"kv%d","kv"..self:GetClientNumber("kvsnd"))
 		train.NewKV = self:GetClientNumber("kvsnd") > 1
 		train:SetNW2Bool("NewKV",train.NewKV)
@@ -73,7 +74,7 @@ function TOOL:LeftClick(trace)
 			--train.SoundNames[k] = string.Replace(v,"subway_trains/kv","subway_trains/new/kv")
 		--end
 	--end
-	
+
 	if train.Horn then train.Horn:TriggerInput("NewType",self:GetClientNumber("horn")) end
 	if not train:GetClass():find("81") then
 		local path = Metrostroi.Skins["ezh3"][self:GetClientNumber("texture")].path
@@ -92,7 +93,7 @@ function TOOL:LeftClick(trace)
 		train.PassTexture = path
 		--ent:SetSkin(self.tbl.Paint-1)
 	end
-	
+
 	--Entity:SetSkin(
 	--[[local entlist = ents.FindInSphere(trace.HitPos,64)
 	for k,v in pairs(entlist) do
@@ -145,7 +146,7 @@ function TOOL:LoadConCMD()
 		Breakers = 0,
 	}
 	for k in pairs(self.Settings) do
-		self.Settings[k] = GetConVarNumber("train_edit_"..k:lower())	
+		self.Settings[k] = GetConVarNumber("train_edit_"..k:lower())
 	end
 	if self.Settings.Train > #SettingTypes then self.Settings.Train = #SettingTypes RunConsoleCommand("train_edit_train",self.Settings.Train) end
 	if self.Settings.Train < 1 then self.Settings.Train = 1 RunConsoleCommand("train_edit_train",self.Settings.Train) end
@@ -201,7 +202,7 @@ function TOOL:UpdateTrainList()
 			else
 				if k == self.Settings.Texture then self.Settings.Texture = 1 end
 				--if IsValid(self.VGUI.Texture) then self.VGUI.Texture:ChooseOptionID(1) end
-			end	
+			end
 		end
 		for i=1,#Metrostroi.Skins[self.Settings.Train == 1 and "717" or "ezh3"] do
 		end
@@ -257,7 +258,7 @@ function TOOL:BuildCPanelCustom()
 			["Petersburg/Kyiv"]	= { train_edit_ars = 2 },
 		}
 	})
-	
+
 	panel:AddControl("ComboBox", {
 		Label = "ARS panel type",
 		Options = {

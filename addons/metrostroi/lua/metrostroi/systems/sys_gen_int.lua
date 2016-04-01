@@ -22,7 +22,7 @@ function TRAIN_SYSTEM.SolveE(Train,Triggers)
 		for i=1,100 do T[i] = 0 end
 		Train.SolverTemporaryVariables = T
 	end
-	
+
 	-- Solve all circuits
 	T["SDRK_ShortCircuit"] = -10*Train.RheostatController.RKP*(Train.RUT.Value+Train.RRT.Value+(1.0-Train.SR1.Value) )
 	Triggers["SDRK_Shunt"]( 1.0 - (0.20+0.20*C((RK >= 2) and (RK <= 7))*C(P == 1))*Train.LK2.Value )
@@ -98,7 +98,7 @@ function TRAIN_SYSTEM.SolveE(Train,Triggers)
 	--S["28A"] = Train.A51.Value*Train:ReadTrainWire(28)
 	--S["31A"] = Train.A31.Value*Train:ReadTrainWire(31)+T[3]*1
 	--S["32A"] = Train.A32.Value*Train:ReadTrainWire(32)+T[4]*1
-	
+
 	S["25A"] = Train:ReadTrainWire(25)
 	S["27A"] = Train:ReadTrainWire(27)
 	S["28A"] = Train:ReadTrainWire(28)
@@ -173,7 +173,7 @@ function TRAIN_SYSTEM.SolveE(Train,Triggers)
 	S["2Ye"] = (1-2*Train.RRP.Value)*((1-Train.RRP.Value) + Train.RRP.Value)*S["2Zh-2A"]*Train.LK4.Value*S["2A-2G"]*Train:ReadTrainWire(2)+(S["2Ye10AV"])
 	S["F13"] = S["F7"]--*Train.A46.Value
 	S["F10"] = S["F7/1"]*Train.VUS.Value--*Train.A47.Value
-	
+
 
 	-- Call all triggers
 	T[4] = min(1,S["12A"])
@@ -365,7 +365,7 @@ function TRAIN_SYSTEM.Solve81_704(Train,Triggers)
 	--S["28A"] = Train.A51.Value*Train:ReadTrainWire(28)
 	--S["31A"] = Train.A31.Value*Train:ReadTrainWire(31)+T[3]*1
 	--S["32A"] = Train.A32.Value*Train:ReadTrainWire(32)+T[4]*1
-	
+
 	S["25A"] = Train:ReadTrainWire(25)
 	S["27A"] = Train:ReadTrainWire(27)
 	S["28A"] = Train:ReadTrainWire(28)
@@ -440,7 +440,7 @@ function TRAIN_SYSTEM.Solve81_704(Train,Triggers)
 	S["2Ye"] = (1-2*Train.RRP.Value)*((1-Train.RRP.Value) + Train.RRP.Value)*S["2Zh-2A"]*Train.LK4.Value*S["2A-2G"]*Train:ReadTrainWire(2)+(S["2Ye10AV"])
 	S["F13"] = S["F7"]--*Train.A46.Value
 	S["F10"] = S["F7/1"]*Train.VUS.Value--*Train.A47.Value
-	
+
 
 	-- Call all triggers
 	T[4] = min(1,S["12A"])
@@ -560,7 +560,7 @@ function TRAIN_SYSTEM.SolveEzh3(Train,Triggers)
 		for i=1,100 do T[i] = 0 end
 		Train.SolverTemporaryVariables = T
 	end
-	
+
 	-- Solve all circuits
 	T["SDRK_ShortCircuit"] = -10*Train.RheostatController.RKP*(Train.RUT.Value+Train.RRT.Value+(1.0-Train.SR1.Value) )
 	Triggers["SDRK_Shunt"]( 1.0 - (0.20+0.20*C((RK >= 2) and (RK <= 7))*C(P == 1))*Train.LK2.Value )
@@ -858,7 +858,7 @@ function TRAIN_SYSTEM.Solve81_717(Train,Triggers)
 		for i=1,100 do T[i] = 0 end
 		Train.SolverTemporaryVariables = T
 	end
-	
+
 	-- Solve all circuits
 	T["SDRK_ShortCircuit"] = -10*Train.RheostatController.RKP*(Train.RUT.Value+Train.RRT.Value+(1.0-Train.SR1.Value)+C(RK == 6)*C(P == 2)*(1.0-Train.Rper.Value)*Train.LK3.Value)
 	Triggers["SDRK_Shunt"]( 1.0 - (0.20+0.20*C((RK >= 2) and (RK <= 7))*C(P == 1))*Train.LK2.Value )
@@ -1113,7 +1113,7 @@ function TRAIN_SYSTEM.Solve81_714(Train,Triggers)
 		for i=1,100 do T[i] = 0 end
 		Train.SolverTemporaryVariables = T
 	end
-	
+
 	-- Solve all circuits
 	T["SDRK_ShortCircuit"] = -10*Train.RheostatController.RKP*(Train.RUT.Value+Train.RRT.Value+(1.0-Train.SR1.Value)+C(RK == 6)*C(P == 2)*(1.0-Train.Rper.Value)*Train.LK3.Value)
 	Triggers["SDRK_Shunt"]( 1.0 - (0.20+0.20*C((RK >= 2) and (RK <= 7))*C(P == 1))*Train.LK2.Value )
@@ -1286,7 +1286,7 @@ function TRAIN_SYSTEM.SolveEma508(Train,Triggers)
 		for i=1,100 do T[i] = 0 end
 		Train.SolverTemporaryVariables = T
 	end
-	
+
 	-- Solve all circuits
 	T["SDRK_ShortCircuit"] = -10*Train.RheostatController.RKP*(Train.RUT.Value+Train.RRT.Value+(1.0-Train.SR1.Value) )
 	Triggers["SDRK_Shunt"]( 1.0 - (0.20+0.20*C((RK >= 2) and (RK <= 7))*C(P == 1))*Train.LK2.Value )

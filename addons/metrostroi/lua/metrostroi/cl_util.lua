@@ -134,7 +134,7 @@ function Metrostroi.PositionFromPanel(panel,button_id_or_vec,z,train)
 	local panel = self.ButtonMap[panel]
 	if not panel then return Vector(0,0,0) end
 	if not panel.buttons then return Vector(0,0,0) end
-	
+
 	-- Find button or read position
 	local vec
 	if type(button_id_or_vec) == "string" then
@@ -234,7 +234,7 @@ hook.Add("PostDrawOpaqueRenderables", "metrostroi-draw-stopmarker",function()
 	prevTime = prevTime or RealTime()
 	local dT = math.max(0.001,RealTime() - prevTime)
 	prevTime = RealTime()
-	
+
 	-- Skip if disabled
 	if GetConVarNumber("metrostroi_stop_helper") ~= 1 then return end
 
@@ -256,7 +256,7 @@ hook.Add("PostDrawOpaqueRenderables", "metrostroi-draw-stopmarker",function()
 	local D1 = T1*V + (T1^2)*A/2
 	local D2 = T2*V + (T2^2)*A/2
 
-	-- Smooth out D	
+	-- Smooth out D
 	D1 = math.min(200,math.max(0,D1))*0.65
 	D2 = math.min(200,math.max(0,D2))*0.70
 	D1true = D1true + (D1 - D1true)*12.0*dT
@@ -322,11 +322,11 @@ end)
 --------------------------------------------------------------------------------
 -- Fix for gm_metrostroi 3D sky
 --------------------------------------------------------------------------------
-local player_state = {} 
+local player_state = {}
 timer.Create("Metrostroi_3DSkyFix",1.0,0,function()
 	local player = LocalPlayer()
 	if not IsValid(player) then return end
 	if string.sub(game.GetMap(),1,13) ~= "gm_metrostroi" then return end
-	
+
 	RunConsoleCommand("r_3dsky", (player:GetPos().z < -1024) and "0" or "1")
 end)

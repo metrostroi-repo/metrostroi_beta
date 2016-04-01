@@ -376,6 +376,11 @@ function ENT:UpdateTextures()
 					self:SetSubMaterial(k-1,Metrostroi.Skins["717_schemes"]["p"].clean)
 				end
 			end
+		elseif v == "models/metrostroi_train/81/tabl" then
+			if not self.SignsList then
+				self:PrepareSigns()
+			end
+			if self.SignsList[self.SignsIndex] then self:SetSubMaterial(k-1,self.SignsList[self.SignsIndex][1])  end
 		end
 		local tex = string.Explode("/",v)
 		tex = tex[#tex]
@@ -398,6 +403,33 @@ function ENT:UpdateTextures()
 	self:SetNW2String("cabtexture",self.CabTexture)
 end
 function ENT:Think()
+	if self.Breakers ~= self.OldBreakers then
+		if self.Breakers == 1 then
+				self.SoundNames["r1_5_close"] = {"subway_trains/drive_on1.wav","subway_trains/drive_on2.wav"}
+		else
+				self.SoundNames["r1_5_close"] = {"subway_trains/drive_on3.wav","subway_trains/drive_on4.wav"}
+		end
+		self.OldBreakers = self.Breakers
+	end
+	if self.KVSnd ~= self.OldKVSnd then
+		if self.KVSnd == 3 then
+			self.R1_5:TriggerInput("CloseTime",0.1)
+		else
+			self.R1_5:TriggerInput("CloseTime",0)
+		end
+		self.OldKVSnd = self.KVSnd
+	end
+	if self.SignsIndex ~= self.OldSignsIndex then
+		for k,v in pairs(self:GetMaterials()) do
+			if v == "models/metrostroi_train/81/tabl" then
+				if not self.SignsList then
+					self:PrepareSigns()
+				end
+				if self.SignsList[self.SignsIndex] then self:SetSubMaterial(k-1,self.SignsList[self.SignsIndex][1]) end
+			end
+		end
+		self.OldSignsIndex = self.SignsIndex
+	end
 	self.ExtraSeat1:SetPos(Vector(420,-40,-28+1))
 	--self.ExtraSeat3:SetPos(Vector(402,50,-43))
 	if self.VUD1.Value > 0 and self.VUD2.Value > 0 and self.ASNP31.Value == 0 then self.ASNP31:TriggerInput("Set",1) self.ASNP32:TriggerInput("Set",1) end

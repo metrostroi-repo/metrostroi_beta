@@ -568,9 +568,9 @@ ENT.ButtonMap["Schedule"] = {
 ENT.ButtonMap["IGLA"] = {
 	pos = Vector(460.8,-27.0,37.0),
 	ang = Angle(0,-125,90),
-	width = 440,
-	height = 190,
-	scale = 0.024,
+	width = 440, --18333.333333333333333333333333333
+	height = 190, --7916.6666666666666666666666666667
+	scale = 0.017,
 }
 
 -- Temporary panels (possibly temporary)
@@ -719,6 +719,12 @@ ENT.ClientProps["reverser"] = {
 	pos = Vector(445.5,-32+1.7,-7.5),
 	ang = Angle(93,0,0)
 }
+ENT.ClientProps["reverser2"] = {
+	model = "models/metrostroi/81-717/reverser.mdl",
+	pos = Vector(454.425049,1.349526,1.629222),
+	ang = Angle(130.882477,0.000000,270.000000),
+}
+
 ENT.ClientProps["ParkingBrake"] = {
 	model = "models/metrostroi/81-717/uava.mdl",
 	pos = Vector(436.6,-24,-34.8),
@@ -1857,6 +1863,7 @@ function ENT:Think()
 	self:Animate("volt1", 			self:GetPackedRatio(10),			0.381, 0.645,				nil, nil,  256,2,0.01)
 	self:Animate("speed1", 			self:GetPackedRatio("Speed"),			0.42-0.06, 0.627+0.06,				nil, nil,  256,2,0.01)
 	self:ShowHide("reverser",		self:GetPackedBool(0))
+	self:ShowHide("reverser2",		not self:GetPackedBool(0) and not self:GetPackedBool(27))
 	self:Animate("krureverser",		0.5+(0.5-self.KRUPos*0.5)-0.5*(self:GetPackedRatio(2)/2),		0.05, 1,  3,false)
 	self:ShowHide("krureverser",	self:GetPackedBool(27))
 
@@ -2703,7 +2710,7 @@ function ENT:DrawPost(special)
 		local text1 = ""
 		local text2 = ""
 		local C1 = Color(0,200,255,255)
-		local C2 = Color(0,0,100,155)
+		local C2 = Color(0,0,100,200)
 		local flash = false
 		local T = self:GetPackedRatio(11)
 		local Ptrain = self:GetPackedRatio(5)*16.0
@@ -2748,18 +2755,25 @@ function ENT:DrawPost(special)
 		if T > 750 then text1 = " !! PIZDA POEZDU !! " end
 
 		-- Draw text
+		local flashing = false
 		if flash and ((RealTime() % 1.0) > 0.5) then
-			C2,C1 = C1,C2
+			--C2,C1 = C1,C2
+			flashing = true
 		end
 		for i=1,20 do
 			surface.SetDrawColor(C2)
-			surface.DrawRect(42+(i-1)*17.7+1,42+4,16,22)
-			draw.DrawText(string.upper(text1[i] or ""),"MetrostroiSubway_IGLA",42+(i-1)*17.7,42+0,C1)
+			local str = {utf8.codepoint(text1,1,-1)}
+			local char = utf8.char(str[i])
+			surface.DrawRect(54+(i-1)*25.1,70,20,30)
+
+			if not flashing then draw.DrawText(string.upper(char or ""),"MetrostroiSubway_IGLA",54+(i-1)*25.1-2,68+0,C1) end
 		end
 		for i=1,20 do
+			local str = {utf8.codepoint(text2,1,-1)}
+			local char = utf8.char(str[i])
 			surface.SetDrawColor(C2)
-			surface.DrawRect(42+(i-1)*17.7+1,42+24+4,16,22)
-			draw.DrawText(string.upper(text2[i] or ""),"MetrostroiSubway_IGLA",42+(i-1)*17.7,42+24,C1)
+			surface.DrawRect(54+(i-1)*25.1,70+34,20,30)
+			draw.DrawText(string.upper(char or ""),"MetrostroiSubway_IGLA",54+(i-1)*25.1-2,68+34,C1)
 		end
 		surface.SetAlphaMultiplier(1)
 	end)
@@ -2776,25 +2790,25 @@ function ENT:DrawPost(special)
 			surface.SetDrawColor(255,255,255)
 			surface.DrawRect(58,617,230,22) -- 120
 			surface.SetAlphaMultiplier(1.0)
-			draw.DrawText("DURA V 1.0","MetrostroiSubway_IGLA",60,613 + 22*0, Color(0,0,0,255))
+			draw.DrawText("DURA V 1.0","MetrostroiSubway_FixedSYS",60,613 + 22*0, Color(0,0,0,255))
 
 			surface.SetAlphaMultiplier(0.4)
 			surface.SetDrawColor(GetColor(31)) surface.SetAlphaMultiplier(0.4)
 			surface.DrawRect(58,617 + 22 * 1,230,22)
 			surface.SetAlphaMultiplier(1.0)
-			draw.DrawText("Channel:" .. (self:GetPackedBool(31) and "2" or "1"),"MetrostroiSubway_IGLA",60,613 + 22*1,GetColor(31, true))
+			draw.DrawText("Channel:" .. (self:GetPackedBool(31) and "2" or "1"),"MetrostroiSubway_FixedSYS",60,613 + 22*1,GetColor(31, true))
 
 			surface.SetAlphaMultiplier(0.4)
 			surface.SetDrawColor(GetColor(153)) surface.SetAlphaMultiplier(0.4)
 			surface.DrawRect(58,617 + 22 * 2,230,22)
 			surface.SetAlphaMultiplier(1.0)
-			draw.DrawText("Channel1:" .. (self:GetPackedBool(153) and "Alt" or "Main"),"MetrostroiSubway_IGLA",60,613 + 22*2,GetColor(153, true))
+			draw.DrawText("Channel1:" .. (self:GetPackedBool(153) and "Alt" or "Main"),"MetrostroiSubway_FixedSYS",60,613 + 22*2,GetColor(153, true))
 
 			surface.SetAlphaMultiplier(0.4)
 			surface.SetDrawColor(GetColor(154))
 			surface.DrawRect(58,617 + 22 * 3,230,22)
 			surface.SetAlphaMultiplier(1.0)
-			draw.DrawText("Channel2:" .. (self:GetPackedBool(154) and "Alt" or "Main"),"MetrostroiSubway_IGLA",60,613 + 22*3,GetColor(154, true))
+			draw.DrawText("Channel2:" .. (self:GetPackedBool(154) and "Alt" or "Main"),"MetrostroiSubway_FixedSYS",60,613 + 22*3,GetColor(154, true))
 			surface.SetAlphaMultiplier(0.4)
 			surface.SetDrawColor(255,255,255)
 			surface.DrawRect(58,617 + 22 * 4,230, 120 - 88) -- 120

@@ -4,11 +4,11 @@ include("shared.lua")
 
 ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 ---------------------------------------------------
--- Defined train information                      
+-- Defined train information
 -- Types of wagon(for wagon limit system):
--- 0 = Head or intherim                           
--- 1 = Only head                                     
--- 2 = Only intherim                                
+-- 0 = Head or intherim
+-- 1 = Only head
+-- 2 = Only intherim
 ---------------------------------------------------
 ENT.SubwayTrain = {
 	Type = "E",
@@ -26,7 +26,7 @@ function ENT:Initialize()
 	self:SetModel("models/metrostroi/e/em508.mdl")
 	self.BaseClass.Initialize(self)
 	self:SetPos(self:GetPos() + Vector(0,0,140))
-	
+
 	-- Create seat entities
 	self.DriverSeat = self:CreateSeat("driver",Vector(418,-45,-28+4))
 	self.InstructorsSeat = self:CreateSeat("instructor",Vector(430,40,-48+6+2.5),Angle(0,90,0),"models/vehicles/prisoner_pod_inner.mdl")
@@ -38,16 +38,16 @@ function ENT:Initialize()
 	self.DriverSeat:SetRenderMode(RENDERMODE_TRANSALPHA)
 	self.InstructorsSeat:SetColor(Color(0,0,0,0))
 	self.InstructorsSeat:SetRenderMode(RENDERMODE_TRANSALPHA)
-	
+
 	self.ExtraSeat1:SetColor(Color(0,0,0,0))
 	self.ExtraSeat1:SetRenderMode(RENDERMODE_TRANSALPHA)
 	self.ExtraSeat2:SetColor(Color(0,0,0,0))
 	self.ExtraSeat2:SetRenderMode(RENDERMODE_TRANSALPHA)
-	
+
 	-- Create bogeys
 	self.FrontBogey = self:CreateBogey(Vector( 325-10,0,-80),Angle(0,180,0),true)
 	self.RearBogey  = self:CreateBogey(Vector(-325-10,0,-80),Angle(0,0,0),false)
-	
+
 	-- Initialize key mapping
 	self.KeyMap = {
 		[KEY_1] = "KVSetX1",
@@ -58,12 +58,12 @@ function ENT:Initialize()
 		[KEY_6] = "KVSetT1AB",
 		[KEY_7] = "KVSetT2",
 		[KEY_8] = "KRP",
-		
+
 		[KEY_EQUAL] = "R_Program1Set",
 		[KEY_MINUS] = "R_Program2Set",
 
 		[KEY_G] = "VozvratRPSet",
-		
+
 		[KEY_0] = "KVReverserUp",
 		[KEY_9] = "KVReverserDown",
 		[KEY_PAD_PLUS] = "KVReverserUp",
@@ -72,7 +72,7 @@ function ENT:Initialize()
 		[KEY_S] = "KVDown",
 		[KEY_F] = "PneumaticBrakeUp",
 		[KEY_R] = "PneumaticBrakeDown",
-		
+
 		[KEY_A] = "KDL",
 		[KEY_D] = "KDP",
 		[KEY_V] = "VUD1Toggle",
@@ -87,7 +87,7 @@ function ENT:Initialize()
 		[KEY_PAD_7] = "PneumaticBrakeSet7",
 		[KEY_PAD_DIVIDE] = "KRPSet",
 		[KEY_PAD_MULTIPLY] = "KAHSet",
-		
+
 		[KEY_SPACE] = "PBSet",
 		[KEY_BACKSPACE] = "EmergencyBrake",
 
@@ -98,7 +98,7 @@ function ENT:Initialize()
 			[KEY_SPACE] = "KVTSet",
 			[KEY_F] = "BCCDSet",
 			[KEY_R] = "VZPSet",
-		
+
 			[KEY_A] = "DURASelectAlternate",
 			[KEY_D] = "DURASelectMain",
 			[KEY_V] = "DURAToggleChannel",
@@ -106,10 +106,10 @@ function ENT:Initialize()
 			[KEY_2] = "DIPoffSet",
 			[KEY_4] = "KVSet0Fast",
 			[KEY_L] = "DriverValveDisconnectToggle",
-			
+
 			[KEY_7] = "KVWrenchNone",
 			[KEY_8] = "KVWrenchKRU",
-			[KEY_9] = "KVWrenchKV", 
+			[KEY_9] = "KVWrenchKV",
 			[KEY_0] = "KVWrench0",
 			[KEY_6] = "KVSetT1A",
 
@@ -121,7 +121,7 @@ function ENT:Initialize()
 			[KEY_PAD_6] = "BRightSet",
 			[KEY_PAD_ENTER] = "BPSet",
 		},
-		
+
 		[KEY_RSHIFT] = {
 			[KEY_7] = "KVWrenchNone",
 			[KEY_8] = "KVWrenchKRU",
@@ -143,7 +143,7 @@ function ENT:Initialize()
 			[KEY_L] = "EPKToggle",
 		},
 	}
-	
+
 	self.InteractionZones = {
 		{	Pos = Vector(458,-30,-55),
 			Radius = 32,
@@ -202,25 +202,25 @@ function ENT:Initialize()
 		[5] = { "glow",				Vector(458,-5,  57), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
 		[6] = { "glow",				Vector(458, 5,  57), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
 		[7] = { "glow",				Vector(458, 15, 57), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
-		
+
 		-- Reverse
 		[8] = { "light",			Vector(458,-31, 58), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
 		[9] = { "light",			Vector(458, 31, 58), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
-		
+
 		-- Cabin
 		[10] = { "dynamiclight",	Vector( 420, -40, 35), Angle(0,0,0), Color(255,255,255), brightness = 0.1, distance = 550 },
-		
+
 		-- Interior
 		[11] = { "dynamiclight",	Vector( 250, 0, 5), Angle(0,0,0), Color(255,255,255), brightness = 3, distance = 400 },
 		[12] = { "dynamiclight",	Vector(   0, 0, 5), Angle(0,0,0), Color(255,255,255), brightness = 3, distance = 400 },
 		[13] = { "dynamiclight",	Vector(-250, 0, 5), Angle(0,0,0), Color(255,255,255), brightness = 3, distance = 400 },
-		
+
 		-- Side lights
 		[14] = { "light",			Vector(390, 69, 54), Angle(0,0,0), Color(255,0,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		[15] = { "light",			Vector(390, 69, 51), Angle(0,0,0), Color(150,255,255), brightness = 0.6, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		[16] = { "light",			Vector(390, 69, 48), Angle(0,0,0), Color(50,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		[17] = { "light",			Vector(390, 69, 45), Angle(0,0,0), Color(255,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		
+
 		[18] = { "light",			Vector(390, -69, 54), Angle(0,0,0), Color(255,0,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		[19] = { "light",			Vector(390, -69, 51), Angle(0,0,0), Color(150,255,255), brightness = 0.6, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		[20] = { "light",			Vector(390, -69, 48), Angle(0,0,0), Color(50,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
@@ -241,7 +241,7 @@ function ENT:Initialize()
 		[38] = { "light", 			Vector(444,-59.5,17.4-4.4), Angle(0,0,0), Color(100,255,0), brightness = 1.0, scale = 0.020 },
 		[70    ] = { "headlight",	Vector( 430, -60, -47), Angle(45,-90,0), Color(255,255,255), brightness = 0.5, distance = 400 , fov=120, shadows = 1 },
 	}
-		
+
 	for i = 1,23 do
 		self.Lights[69+i] = { "light", Vector(-470 + 35*i, 0, 65), Angle(180,0,0), Color(255,220,180), brightness = 0.25, scale = 0.75}
 		--self:SetLightPower(69+i,RealTime()%1*2>1)
@@ -252,7 +252,7 @@ function ENT:Initialize()
 		[5] = 4, -- Reverser F<->B
 		[31] = 32, -- Doors L<->R
 	}
-	
+
 	-- Setup door positions
 	self.LeftDoorPositions = {}
 	self.RightDoorPositions = {}
@@ -260,10 +260,10 @@ function ENT:Initialize()
 		table.insert(self.LeftDoorPositions,Vector(353.0 - 35*0.5 - 231*i,65,-1.8))
 		table.insert(self.RightDoorPositions,Vector(353.0 - 35*0.5 - 231*i,-65,-1.8))
 	end
-	
+
 	-- KV wrench mode
 	self.KVWrenchMode = 0
-	
+
 	-- Parking brake ratio
 	self.ManualBrake = 0.0
 	self.RearDoor = false
@@ -358,8 +358,8 @@ function ENT:Think()
 	if self.DriversWrenchPresent then
 		self.KV:TriggerInput("Enabled",self:IsWrenchPresent() and 1 or 0)
 	end
-	self:SetLightPower(1, self.Panel["HeadLights3"] > 0.5,(math.min(1,self.Panel["HeadLights1"])*0.50 + 
-						math.min(1,self.Panel["HeadLights2"])*0.25 + 
+	self:SetLightPower(1, self.Panel["HeadLights3"] > 0.5,(math.min(1,self.Panel["HeadLights1"])*0.50 +
+						math.min(1,self.Panel["HeadLights2"])*0.25 +
 						math.min(1,self.Panel["HeadLights3"])*0.25)
 	)
 	self:SetLightPower(2, self.Panel["HeadLights3"] > 0.5)
@@ -371,7 +371,7 @@ function ENT:Think()
 	-- Reverser lights
 	self:SetLightPower(8, self.Panel["RedLightRight"] > 0.5)
 	self:SetLightPower(9, self.Panel["RedLightLeft"] > 0.5)
-	
+
 	-- Interior/cabin lights
 	self:SetLightPower(10, self.Panel["CabinLight"] > 0.5)
 
@@ -389,23 +389,23 @@ function ENT:Think()
 	self:SetLightPower(33, (self.L_3.Value > 0.5))
 	--self:SetLightPower(12, self.Panel["EmergencyLight"] > 0.5)
 	--self:SetLightPower(13, self.PowerSupply.XT3_4 > 65.0)
-	
+
 	-- Side lights
 	self:SetLightPower(14, false)
 	self:SetLightPower(18, false)
-	
+
 	self:SetLightPower(15, self.Panel["TrainDoors"] > 0.5)
 	self:SetLightPower(19, self.Panel["TrainDoors"] > 0.5)
-	
+
 	self:SetLightPower(16, self.Panel["GreenRP"] > 0.5)
 	self:SetLightPower(20, self.Panel["GreenRP"] > 0.5)
-	
+
 	self:SetLightPower(17, self.Panel["TrainBrakes"] > 0.5)
 	self:SetLightPower(21, self.Panel["TrainBrakes"] > 0.5)
 
 	-- Total temperature
 	local IGLA_Temperature = math.max(self.Electric.T1,self.Electric.T2)
-	
+
 	-- Switch and button states
 	self:SetPackedBool(0,self:IsWrenchPresent())
 	self:SetPackedBool(1,self.VUS.Value == 1.0)
@@ -485,18 +485,18 @@ function ENT:Think()
 	self:SetPackedBool(159,self.CabinDoor)
 
 	-- Signal if doors are open or no to platform simulation
-	self.LeftDoorsOpen = 
+	self.LeftDoorsOpen =
 		(self.Pneumatic.LeftDoorState[1] > 0.5) or
 		(self.Pneumatic.LeftDoorState[2] > 0.5) or
 		(self.Pneumatic.LeftDoorState[3] > 0.5) or
 		(self.Pneumatic.LeftDoorState[4] > 0.5)
-	self.RightDoorsOpen = 
+	self.RightDoorsOpen =
 		(self.Pneumatic.RightDoorState[1] > 0.5) or
 		(self.Pneumatic.RightDoorState[2] > 0.5) or
 		(self.Pneumatic.RightDoorState[3] > 0.5) or
 		(self.Pneumatic.RightDoorState[4] > 0.5)
 	self:WriteTrainWire(35,(self.Pneumatic.BrakeCylinderPressure > 0.1) and 1 or 0)
-	
+
 	-- DIP/power
 	self:SetPackedBool(32,self.Panel["V1"] > 0.5)
 	-- LxRK
@@ -511,9 +511,9 @@ function ENT:Think()
 	-- Green RP
 	self:SetPackedBool(36,self.Panel["GreenRP"] > 0.5)
 	-- Cabin heating
-	self:SetPackedBool(37,self.Panel["KUP"] > 0.5)	
+	self:SetPackedBool(37,self.Panel["KUP"] > 0.5)
 	-- AVU
-	self:SetPackedBool(38,self.Panel["AVU"] > 0.5)	
+	self:SetPackedBool(38,self.Panel["AVU"] > 0.5)
 	-- Ring
 	self:SetPackedBool(39,self.Panel["Ring"] > 0.5)
 	-- SD
@@ -536,12 +536,12 @@ function ENT:Think()
 	self:SetPackedBool(48,self.ALS_ARS.LVD)
 	-- LVD
 	self:SetPackedBool(50,self:ReadTrainWire(1) > 0.5)
-	
+
 	-- AV states
 	for i,v in ipairs(self.Panel.AVMap) do
-		if tonumber(v) 
+		if tonumber(v)
 		then self:SetPackedBool(64+(i-1),self["A"..v].Value == 1.0)
-		elseif self[v] then self:SetPackedBool(64+(i-1),self[v].Value == 1.0) 
+		elseif self[v] then self:SetPackedBool(64+(i-1),self[v].Value == 1.0)
 		end
 	end
     self.SOSD = self.Panel["SD"] <= 0 and self.Panel["V1"] > 0 and self.KV.ReverserPosition ~= 0
@@ -551,11 +551,11 @@ function ENT:Think()
 	self:SetPackedRatio(0, 1-self.Pneumatic.DriverValvePosition/7)
 	self:SetPackedRatio(1, (self.KV.ControllerPosition+3)/7)
 	self:SetPackedRatio(2, 1-(self.KV.ReverserPosition+1)/2)
-	self:SetPackedRatio(4, self.Pneumatic.BrakeLinePressure/16.0)	
+	self:SetPackedRatio(4, self.Pneumatic.BrakeLinePressure/16.0)
 	self:SetPackedRatio(5, self.Pneumatic.TrainLinePressure/16.0)
 	self:SetPackedRatio(6, (self.Pneumatic.BrakeCylinderPressure + 4.0*self.ManualBrake)/6.0)
 	self:SetPackedRatio(7, self.Electric.Power750V/1000.0)
-	self:SetPackedRatio(8, math.abs(self.Electric.I24)/1000.0)	
+	self:SetPackedRatio(8, math.abs(self.Electric.I24)/1000.0)
 	--self:SetPackedRatio(9, self.Pneumatic.BrakeLinePressure_dPdT or 0)
 	if self.Pneumatic.TrainLineOpen then
 		self:SetPackedRatio(9, (-self.Pneumatic.TrainLinePressure_dPdT or 0)*6)
@@ -564,18 +564,18 @@ function ENT:Think()
 	end
 	self:SetPackedRatio(10,(self.Panel["V1"] * self.Battery.Voltage) / 100.0)
 	self:SetPackedRatio(11,IGLA_Temperature)
-	
+
 	-- Update ARS system
 	self:SetPackedRatio(3, self.ALS_ARS.Speed/100.0)
 	if (self.ALS_ARS.Ring == true) then
 		self:SetPackedBool(39,true)
 	end
-	
+
 	-- RUT test
 	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNW2Float("PassengerCount")/300)))
 	if math.abs(self:GetAngles().pitch) > 2.5 then weightRatio = weightRatio + 1.00 end
 	self.YAR_13A:TriggerInput("WeightLoadRatio",math.max(0,math.min(2.50,weightRatio)))
-	
+
 	-- Exchange some parameters between engines, pneumatic system, and real world
 	self.Engines:TriggerInput("Speed",self.Speed)
 	if IsValid(self.FrontBogey) and IsValid(self.RearBogey) then
@@ -592,7 +592,7 @@ function ENT:Think()
 		if self.Speed < 10 then P = P*(1.0 + 0.5*(10.0-self.Speed)/10.0) end
 		self.RearBogey.MotorPower  = P*0.5*((A > 0) and 1 or -1)
 		self.FrontBogey.MotorPower = P*0.5*((A > 0) and 1 or -1)
-		
+
 		-- Apply brakes
 		self.FrontBogey.PneumaticBrakeForce = 40000.0
 		self.FrontBogey.BrakeCylinderPressure = self.Pneumatic.BrakeCylinderPressure + 7.0*self.ManualBrake
@@ -603,15 +603,15 @@ function ENT:Think()
 		self.RearBogey.BrakeCylinderPressure_dPdT = -self.Pneumatic.BrakeCylinderPressure_dPdT
 		--self.RearBogey.ParkingBrake = self.ManualBrake.Value > 0.5
 	end
-	
+
 	-- Generate bogey sounds
 	local jerk = math.abs((self.Acceleration - (self.PrevAcceleration or 0)) / self.DeltaTime)
 	self.PrevAcceleration = self.Acceleration
-	
+
 	if jerk > (2.0 + self.Speed/15.0) then
 		self.PrevTriggerTime1 = self.PrevTriggerTime1 or CurTime()
 		self.PrevTriggerTime2 = self.PrevTriggerTime2 or CurTime()
-		
+
 		if ((math.random() > 0.00) or (jerk > 10)) and (CurTime() - self.PrevTriggerTime1 > 1.5) then
 			self.PrevTriggerTime1 = CurTime()
 			self.FrontBogey:EmitSound("subway_trains/chassis_"..math.random(1,3)..".wav", 70, math.random(90,110))
@@ -653,7 +653,7 @@ function ENT:OnButtonPress(button)
 		self.ManualBrake = math.min(1.0,(self.ManualBrake or 0) + 0.008)
 		if self.ManualBrake == 1.0 then return end
 		--print(self.ManualBrake)
-	end	
+	end
 	if string.find(button,"PneumaticBrakeSet") then
 		self.Pneumatic:TriggerInput("BrakeSet",tonumber(button:sub(-1,-1)))
 		return
@@ -714,14 +714,14 @@ function ENT:OnButtonPress(button)
 		self:PrepareSigns()
 		self.SignsIndex = self.SignsIndex + 1
 		if self.SignsIndex > #self.SignsList then self.SignsIndex = 1 end
-		
+
 		self:SetNW2String("FrontText",self.SignsList[self.SignsIndex][2])
 	end
 	if button == "PrevSign" then
 		self:PrepareSigns()
 		self.SignsIndex = self.SignsIndex - 1
 		if self.SignsIndex < 1 then self.SignsIndex = #self.SignsList end
-		
+
 		self:SetNW2String("FrontText",self.SignsList[self.SignsIndex][2])
 	end
 
@@ -788,8 +788,8 @@ function ENT:OnButtonPress(button)
 		self.ManualBrake = math.min(1.0,self.ManualBrake + 0.008)
 		if self.ManualBrake == 1.0 then return end
 		--print(self.ManualBrake)
-	end	
-	
+	end
+
 	if button == "KVUp" then
 		if self.KV.ControllerPosition ~= -1 then
 			self.KV:TriggerInput("ControllerUp",1.0)
@@ -825,19 +825,19 @@ function ENT:OnButtonPress(button)
 	if (self.KVWrenchMode == 2) and (button == "KVSet0") then
 		self.KRU:TriggerInput("Set0",1)
 		self:OnButtonPress("KRUSet0")
-	end		
+	end
 
 	if button == "KVSetT1AB" then
 		if self.KV.ControllerPosition == -2 then
 			self.KV:TriggerInput("ControllerSet",-1)
 			timer.Simple(0.20,function()
-				self.KV:TriggerInput("ControllerSet",-2)			
+				self.KV:TriggerInput("ControllerSet",-2)
 			end)
 		else
 			self.KV:TriggerInput("ControllerSet",-2)
 		end
 	end
-	if button == "KVWrench0" then 
+	if button == "KVWrench0" then
 		if self.KVWrenchMode == 3 or self.KVWrenchMode == 1 then
 			if self.KVWrenchMode ~= 1 then
 				self:PlayOnce("revers_in","cabin",0.7)
@@ -892,7 +892,7 @@ function ENT:OnButtonPress(button)
 	if button == "KDL" then self.KDL:TriggerInput("Close",1) self:OnButtonPress("KDLSet") end
 	if button == "KDP" then self.KDP:TriggerInput("Close",1) self:OnButtonPress("KDPSet") end
 	if button == "VDL" then self.VDL:TriggerInput("Close",1) self:OnButtonPress("VDLSet") end
-	if button == "KRP" then 
+	if button == "KRP" then
 		self.KRP:TriggerInput("Set",1)
 		self:OnButtonPress("KRPSet")
 	end
@@ -924,7 +924,7 @@ function ENT:OnButtonPress(button)
 		end
 		return
 	end
-	
+
 	if button == "DriverValveDisconnectToggle" then
 		if self.DriverValveDisconnect.Value == 1.0 then
 			self:PlayOnce("pneumo_disconnect2","cabin",0.9)
@@ -935,7 +935,7 @@ function ENT:OnButtonPress(button)
 		end
 		return
 	end
-	
+
 	if button == "EPKToggle" and self.DriverValveDisconnect.Value == 1.0 then
 		if self.EPK.Value == 1.0 then
 			self:PlayOnce("epv_off","cabin",0.9)
@@ -955,7 +955,7 @@ function ENT:OnButtonRelease(button)
 	if button == "KDP" then self.KDP:TriggerInput("Open",1) self:OnButtonRelease("KDPSet") end
 	if button == "VDL" then self.VDL:TriggerInput("Open",1) self:OnButtonRelease("VDLSet") end
 
-	if button == "KRP" then 
+	if button == "KRP" then
 		self.KRP:TriggerInput("Set",0)
 		self:OnButtonRelease("KRPSet")
 	end
@@ -974,8 +974,8 @@ end
 
 function ENT:OnCouple(train,isfront)
 	self.BaseClass.OnCouple(self,train,isfront)
-	
-	
+
+
 	if isfront then
 		self.FrontBrakeLineIsolation:TriggerInput("Open",1.0)
 		self.FrontTrainLineIsolation:TriggerInput("Open",1.0)

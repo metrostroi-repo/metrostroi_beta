@@ -1,6 +1,5 @@
 include("shared.lua")
 
-
 --------------------------------------------------------------------------------
 -- Random number generation
 --------------------------------------------------------------------------------
@@ -45,8 +44,8 @@ local rareModels = { -- Less common special models
 
 
 function ENT:Initialize()
-	self.PassengerSounds = CreateSound(self,Sound( "subway_stations_test1/peoples.wav" ))	
-	self.NonPassengerSounds = CreateSound(self,Sound( "ambient/levels/canals/tunnel_wind_loop1.wav" ))	
+	self.PassengerSounds = CreateSound(self,Sound( "subway_stations_test1/peoples.wav" ))
+	self.NonPassengerSounds = CreateSound(self,Sound( "ambient/levels/canals/tunnel_wind_loop1.wav" ))
 	self.ClientModels = {}
 	self.CleanupModels = {}
 end
@@ -63,37 +62,37 @@ local function isPositionFree(pos)
 	local ped_size = 16
 	local ped_legs = 8
 	local ped_height = 90
-	
+
 	trace.start = pos+Vector(0,0,ped_legs)
 	trace.endpos = pos+Vector(0,0,ped_height)
 	trace.mask = -1
 	local result = util.TraceLine(trace)
 	if result.Hit then return false end
-	
+
 	trace.start = pos+Vector(-ped_size,0,ped_legs)
 	trace.endpos = pos+Vector(-ped_size,0,ped_height)
 	trace.mask = -1
 	local result = util.TraceLine(trace)
 	if result.Hit then return false end
-	
+
 	trace.start = pos+Vector(ped_size,0,ped_legs)
 	trace.endpos = pos+Vector(ped_size,0,ped_height)
 	trace.mask = -1
 	local result = util.TraceLine(trace)
 	if result.Hit then return false end
-	
+
 	trace.start = pos+Vector(0,-ped_size,ped_legs)
 	trace.endpos = pos+Vector(0,-ped_size,ped_height)
 	trace.mask = -1
 	local result = util.TraceLine(trace)
 	if result.Hit then return false end
-	
+
 	trace.start = pos+Vector(0,ped_size,ped_legs)
 	trace.endpos = pos+Vector(0,ped_size,ped_height)
 	trace.mask = -1
 	local result = util.TraceLine(trace)
 	if result.Hit then return false end
-	
+
 	return true
 end
 
@@ -107,10 +106,10 @@ function ENT:PopulatePlatform(platformStart,platformEnd,stationCenter)
 	local platformN		= (platformDir:Angle()+Angle(0,90,0)):Forward()
 	local platformD		= platformDir:GetNormalized()
 	local platformWidth = ((platformStart-stationCenter) - ((platformStart-stationCenter):Dot(platformD))*platformD):Length()
-	
+
 	-- Create pool
 	self.Pool = self.Pool or {}
-	
+
 	-- Fill pool
 	math.randomseed(self:Seed() + #self.Pool)
 	local N = math.min(self:PoolSize() - #self.Pool,32)
@@ -122,22 +121,22 @@ function ENT:PopulatePlatform(platformStart,platformEnd,stationCenter)
 			local a = -1
 			while (a < 0) or (a > 1) do a = gauss_random(self:GetNW2Float("X0"),self:GetNW2Float("Sigma")) end
 			local b = math.abs(gauss_random(0.00,0.20))
-		
+
 			-- Create random position
 			pedestrian.distance = b*platformWidth
 			pedestrian.pos = platformStart + platformDir*a + platformN*pedestrian.distance
-			
+
 			-- Check if pedestrian is not standing in a building
 			if isPositionFree(pedestrian.pos) then break end
 			iterations = iterations + 1
 		end
-		
+
 		-- Random other parameters
 		pedestrian.ang = platformN:Angle() + Angle(0,math.random(-50,50),0)
 		pedestrian.skin = math.random()
 		pedestrian.scale = 0.98 + gauss_random(0,0.03)
 		pedestrian.model = table.Random(passengerModels)
-		
+
 		-- Add to pool
 		table.insert(self.Pool,pedestrian)
 	end
@@ -148,7 +147,7 @@ end
 -- Think loop that manages clientside models
 --------------------------------------------------------------------------------
 function ENT:Think()
-	--self.TestSound = CreateSound(self,Sound( "subway_stations_test1/orange_1.mp3" ))	
+	--self.TestSound = CreateSound(self,Sound( "subway_stations_test1/orange_1.mp3" ))
 	--self.TestSound:SetDSP(117)
 	--self.TestSound:SetSoundLevel(105)
 	--self.TestSound:SetDSP(58)
@@ -178,19 +177,19 @@ function ENT:Think()
 	self.PrevTime = self.PrevTime or CurTime()
 	self.DeltaTime = (CurTime() - self.PrevTime)
 	self.PrevTime = CurTime()
-	
+
 	-- Platform parameters
 	local platformStart = self:GetNW2Vector("PlatformStart")
 	local platformEnd = self:GetNW2Vector("PlatformEnd")
 	local stationCenter = self:GetNW2Vector("StationCenter")
-	
+
 	-- Platforms with tracks in middle
 	local dot = (stationCenter - platformStart):Cross(platformEnd - platformStart)
 	if dot.z > 0.0 then
 		local a,b = platformStart,platformEnd
 		platformStart,platformEnd = b,a
 	end
-	
+
 	-- If platform is defined and pool is not
 	--print(self:GetNW2Vector("StationCenter"))
 	--print(entStart,entEnd,self.Pool)
@@ -199,11 +198,11 @@ function ENT:Think()
 	if (not poolReady) and (stationCenter:Length() > 0.0) then
 		self:PopulatePlatform(platformStart,platformEnd,stationCenter)
 	end
-	
+
 	-- Check if set of models changed
 	if (CurTime() - (self.ModelCheckTimer or 0) > 1.0) and poolReady then
 		self.ModelCheckTimer = CurTime()
-		
+
 		local WindowStart = self:GetNW2Int("WindowStart")
 		local WindowEnd = self:GetNW2Int("WindowEnd")
 		for i=1,self:PoolSize() do
@@ -244,7 +243,7 @@ function ENT:Think()
 			end
 		end
 	end
-	
+
 	-- Add models for cleanup of people who left trains
 	self.PassengersLeft = self.PassengersLeft or self:GetNW2Int("PassengersLeft")
 	while poolReady and (self.PassengersLeft < self:GetNW2Int("PassengersLeft")) do
@@ -253,14 +252,14 @@ function ENT:Think()
 		local i = math.max(1,math.min(count,1+math.floor((count-1)*math.random() + 0.5)))
 		local pos = self:GetNW2Vector("TrainDoor"..i,Vector(0,0,0))
 		pos.z = self:GetPos().z
-		
+
 		-- Create clientside model
 		local i = math.max(1,math.min(self:PoolSize(),1+math.floor(math.random()*self:PoolSize() + 0.5)))
 		local ent = ClientsideModel(self.Pool[i].model,RENDERGROUP_OPAQUE)
 		ent:SetPos(pos)
 		ent:SetSkin(math.floor(ent:SkinCount()*self.Pool[i].skin))
 		ent:SetModelScale(self.Pool[i].scale,0)
-		
+
 		-- Generate target pos
 		local platformDir   = platformEnd-platformStart
 		local platformN		= (platformDir:Angle()+Angle(0,90,0)):Forward()
@@ -276,11 +275,11 @@ function ENT:Think()
 			ent = ent,
 			target = target,
 		})
-		
+
 		-- Add passenger
 		self.PassengersLeft = self.PassengersLeft + 1
 	end
-	
+
 	-- Animate models for cleanup
 	for k,v in pairs(self.CleanupModels) do
 	--	if not v or not IsValid(v) then self.CleanupModels[k] = nil return end
@@ -289,20 +288,20 @@ function ENT:Think()
 		local target = v.target
 		pos.z = 0
 		target.z = 0
-		
+
 		-- Find direction in which pedestrians must walk
 		local targetDir = (target - pos):GetNormalized()
-		
+
 		-- Make it go along the platform if too far
-		local distance = pos:Distance(target) 
+		local distance = pos:Distance(target)
 		if distance > 192 then
 			local platformDir = (platformEnd-platformStart):GetNormalized()
 			local projection = targetDir:Dot(platformDir)
 			if math.abs(projection) > 0.1 then
 				targetDir = (platformDir * projection):GetNormalized()
 			end
-		end		
-		
+		end
+
 		-- Move pedestrian
 		local threshold = 16
 		local speed = 1024
@@ -310,14 +309,14 @@ function ENT:Think()
 		v.ent:SetPos(v.ent:GetPos() + targetDir*math.min(threshold,speed*self.DeltaTime))
 		-- Rotate pedestrian
 		v.ent:SetAngles(targetDir:Angle() + Angle(0,180,0))
-		
+
 		-- Delete if reached the target point
 		if distance < 2*threshold or LocalPlayer():GetPos().z - v.ent:GetPos().z > 500 then
 			v.ent:Remove()
 			self.CleanupModels[k] = nil
 		end
-		
-		
+
+
 		-- Check if door can be reached at all (it still exists)
 		local count = self:GetNW2Int("TrainDoorCount",0)
 		local distance = 1e9
@@ -327,11 +326,11 @@ function ENT:Think()
 			local d = vec:Distance(v.target)
 			if d < distance then
 				new_target = vec
-				distance = d 
+				distance = d
 			end
 		end
 
-		--if distance > 32 
+		--if distance > 32
 		--then v.target = self:GetPos()
 		--else v.target = new_target
 		--end

@@ -17,7 +17,7 @@ local relay_types = {
 	},
 	["VA21-29"] = {
 		contactor		= true,
-		normally_closed	= true,	
+		normally_closed	= true,
 	},
 	["AVU-045"] = {
 		in_cabin_avu	= true,
@@ -38,18 +38,18 @@ function TRAIN_SYSTEM:Initialize(parameters,extra_parameters)
 		end
 		parameters.relay_type = relay_type
 	end
-	
+
 	-- Create new table
 	local old_param = parameters
 	parameters = {} for k,v in pairs(old_param) do parameters[k] = v end
-	
+
 	-- Add extra parameters
 	if type(extra_parameters) == "table" then
 		for k,v in pairs(extra_parameters) do
 			parameters[k] = v
 		end
-	end	
-	
+	end
+
 	-- Contactors have different failure modes
 	parameters.contactor		= parameters.contactor or false
 	-- Should the relay be initialized in 'closed' state
@@ -87,7 +87,7 @@ function TRAIN_SYSTEM:Initialize(parameters,extra_parameters)
 	-- Calculate failure parameters
 	local MTBF = parameters.MTBF or 1000000 -- cycles, mean time between failures
 	local MFR = 1/MTBF   -- cycles^-1, total failure rate
-	local openWeight,closeWeight	
+	local openWeight,closeWeight
 	-- FIXME
 	openWeight = 0.25
 	closeWeight = 0.25
@@ -103,9 +103,9 @@ function TRAIN_SYSTEM:Initialize(parameters,extra_parameters)
 	end]]--
 
 	-- Add failure points
-	FailSim.AddFailurePoint(self,	"CloseTime", "Mechanical problem (close time not nominal)", 
+	FailSim.AddFailurePoint(self,	"CloseTime", "Mechanical problem (close time not nominal)",
 		{ type = "precision", 	value = 0.5,	mfr = MFR*0.65*openWeight, recurring = true } )
-	FailSim.AddFailurePoint(self,	"OpenTime", "Mechanical problem (open time not nominal)", 
+	FailSim.AddFailurePoint(self,	"OpenTime", "Mechanical problem (open time not nominal)",
 		{ type = "precision", 	value = 0.5,	mfr = MFR*0.65*closeWeight , recurring = true } )
 	FailSim.AddFailurePoint(self,	"CloseTime", "Stuck closed",
 		{ type = "value", 		value = 1e9,	mfr = MFR*0.65*openWeight, dmtbf = 0.2 } )
@@ -131,7 +131,7 @@ function TRAIN_SYSTEM:Initialize(parameters,extra_parameters)
 	self.Time = 0
 	self.ChangeTime = nil
 	self.Blocked = 0
-	
+
 	-- This increases precision at cost of perfomance
 	self.SubIterations = 2
 end
@@ -183,9 +183,9 @@ function TRAIN_SYSTEM:TriggerInput(name,value)
 		self.TargetValue = 0.0
 		return
 	end
-		
+
 	if self.Blocked > 0 and name ~= "Block" and (name == "Close" and self.relay_type == "PK-162" or self.relay_type ~= "PK-162") then return end
-	
+
 	-- Open/close coils of the relay
 	if (name == "Block") then
 		self.Blocked = value
@@ -194,7 +194,7 @@ function TRAIN_SYSTEM:TriggerInput(name,value)
 			self.ChangeTime = self.Time + FailSim.Value(self,"CloseTime")
 			--if self.rvt then print(FailSim.Value(self,"CloseTime")) end
 		end
-		--if self.rpb and 
+		--if self.rpb and
 		if self.Value == 1.0 then self.ChangeTime = nil end
 		self.TargetValue = 1.0
 	elseif (name == "Open") and (value > self.trigger_level) and (self.Value ~= 0.0) then
@@ -246,7 +246,7 @@ function TRAIN_SYSTEM:Think(dT)
 		self.SpuriousTripTimer = self.Time + (0.5 + 2.5*math.random())
 		FailSim.ResetParameter(self,"SpuriousTrip",0.0)
 		FailSim.Age(self,1)
-		
+
 		-- Simulate switch right away
 		self.Value = 1.0 - self.Value
 		self.TargetValue = self.Value
@@ -302,7 +302,7 @@ function TRAIN_SYSTEM:Think(dT)
 				if self.av then self.Train:PlayOnce("auto_on","cabin") end
 				if self.mainav then self.Train:PlayOnce("mainauto_on","cabin") end
 				if self.krishka then self.Train:PlayOnce("kr_close","cabin") end
-				if self.paketnik then self.Train:PlayOnce("pak_on","cabin") end 
+				if self.paketnik then self.Train:PlayOnce("pak_on","cabin") end
 				if self.switch then self.Train:PlayOnce("switch_on","cabin") end
 			end
 			if self.Value == 0.0 and self.maxvalue ~= 2 or self.Value == 1.0 and self.maxvalue == 2 then
@@ -315,7 +315,7 @@ function TRAIN_SYSTEM:Think(dT)
 				if self.av then self.Train:PlayOnce("auto_off","cabin") end
 				if self.mainav then self.Train:PlayOnce("mainauto_off","cabin") end
 				if self.krishka then self.Train:PlayOnce("kr_open","cabin") end
-				if self.paketnik then self.Train:PlayOnce("pak_off","cabin") end 
+				if self.paketnik then self.Train:PlayOnce("pak_off","cabin") end
 				if self.switch then self.Train:PlayOnce("switch_off","cabin") end
 			end
 		end

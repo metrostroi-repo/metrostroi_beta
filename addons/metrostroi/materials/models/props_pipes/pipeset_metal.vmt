@@ -1,5 +1,5 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "Models/props_pipes/pipeset_metal"
-	"$surfaceprop" "metal"
-}
+"VertexLitGeneric"
+{
+	"$basetexture" "Models/props_pipes/pipeset_metal"
+	"$surfaceprop" "metal"
+}

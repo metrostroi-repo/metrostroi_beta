@@ -1,21 +1,21 @@
-VertexLitGeneric
-{
-	$basetexture "models/metrostroi_train/e/body"
-	"$model" "1"
-	$bumpmap "models/metrostroi_train/e/body_n"
-	$surfaceprop Canister
-	$ssbump 1
-
-	$lightwarptexture "models/metrostroi_train/e/ramp_tf2"
-
-	$envmap "env_cubemap"
-	$envmapmask "models/metrostroi_train/e/body_p.hdr.hdr"
-	$envmaptint "[0.92 0.92 0.92]"
-
-	$phong 1
-	$phongexponenttexture "models/metrostroi_train/e/body_p"
-	$phongfresnelranges "[0.05 0.5 1]"
-	$phongtint "[0.83 0.83 0.83]"
-	$phongalbedotint 1
-	$phongboost 10
+VertexLitGeneric
+{
+	$basetexture "models/metrostroi_train/e/body"
+	"$model" "1"
+	$bumpmap "models/metrostroi_train/e/body_n"
+	$surfaceprop Canister
+	$ssbump 1
+
+	$lightwarptexture "models/metrostroi_train/e/ramp_tf2"
+
+	$envmap "env_cubemap"
+	$envmapmask "models/metrostroi_train/e/body_p.hdr.hdr"
+	$envmaptint "[0.92 0.92 0.92]"
+
+	$phong 1
+	$phongexponenttexture "models/metrostroi_train/e/body_p"
+	$phongfresnelranges "[0.05 0.5 1]"
+	$phongtint "[0.83 0.83 0.83]"
+	$phongalbedotint 1
+	$phongboost 10
 }

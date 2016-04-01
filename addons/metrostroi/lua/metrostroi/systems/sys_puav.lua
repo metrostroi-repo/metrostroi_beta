@@ -184,7 +184,7 @@ if CLIENT then
 		--surface.SetDrawColor(Color(200,0,0))
 		--surface.DrawRect(13,213,30,23)
 		--draw.SimpleText("ЛКН2","MetrostroiSubway_PUAV1",27, 224,Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-		
+
 		local b = self.Anims["light_OCh"] and self.Anims["light_OCh"].val or 0
 		if b > 0 then
 			surface.SetAlphaMultiplier(b)

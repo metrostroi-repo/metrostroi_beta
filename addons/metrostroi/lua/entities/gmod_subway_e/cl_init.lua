@@ -1855,11 +1855,9 @@ function ENT:OnButtonPressed(button)
 	local blocked_l = self:GetPackedBool(132) and 0 or 1
 	local blocked_r = self:GetPackedBool(133) and 0 or 1
 	if button == "ParkingBrakeLeft" then
-		print(1)
 		self.ParkingBrakeAngle = (self.ParkingBrakeAngle or 0) - blocked_l*45
 	end
 	if button == "ParkingBrakeRight" then
-		print(2)
 		self.ParkingBrakeAngle = (self.ParkingBrakeAngle or 0) + blocked_r*45
 	end
 	if button == "ShowHelp" then

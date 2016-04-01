@@ -22,7 +22,6 @@ end
 
 
 
-
 --------------------------------------------------------------------------------
 -- Custom drop to floor that only checks origin and not bounding box
 --------------------------------------------------------------------------------
@@ -236,14 +235,12 @@ end)
 concommand.Add("metrostroi_schedule", function(ply, _, args)
 	if not IsValid(ply) then return end
 	local train = ply:GetTrain()
-
 	local pos = Metrostroi.TrainPositions[train]
-	if pos and pos[1] then
-		local line = tonumber(args[1]) or 1
-		local path = tonumber(args[2]) or 2
+	--if pos and pos[1] then
+		local line = tonumber(args[1])
+		local path = tonumber(args[2]) or 1
 		local starts = tonumber(args[3])
 		local ends = tonumber(args[4])
-
 		train.Schedule = Metrostroi.GenerateSchedule("Line"..line.."_Platform"..path,starts,ends)
 		if train.Schedule then
 			train:SetNW2Int("_schedule_id",train.Schedule.ScheduleID)
@@ -259,7 +256,7 @@ concommand.Add("metrostroi_schedule", function(ply, _, args)
 				train:SetNW2String("_schedule_"..k.."_5",Metrostroi.StationNames[v[1]] or v[1])
 			end
 		end
-	end
+	--end
 end)
 
 

@@ -113,12 +113,28 @@ surface.CreateFont("MetrostroiSubway_LargeText3", {
   outline = false
 })
 surface.CreateFont("MetrostroiSubway_IGLA", {
-  font = "Fixedsys",
-  size = 32,
+  font = "IEE2",
+  size = 30,
   weight = 0,
   blursize = 0,
   scanlines = 0,
-  antialias = true,
+  antialias = false,
+  underline = false,
+  italic = false,
+  strikeout = false,
+  symbol = false,
+  rotary = false,
+  shadow = true,
+  additive = false,
+  outline = false
+})
+surface.CreateFont("MetrostroiSubway_FixedSYS", {
+  font = "FixedsysTTF",
+  size = 30,
+  weight = 0,
+  blursize = 0,
+  scanlines = 0,
+  antialias = false,
   underline = false,
   italic = false,
   strikeout = false,
@@ -509,7 +525,7 @@ function ENT:Think()
 	end
 
 	-- Reset CSEnts
-	if CurTime() - (self.ClientEntsResetTimer or 0) > 10.0 then
+	if CurTime() - (self.ClientEntsResetTimer or 0) > 10.0 and IsValid(self) then
 		self.ClientEntsResetTimer = CurTime()
 		self:RemoveCSEnts()
 		self:CreateCSEnts()
@@ -524,6 +540,7 @@ function ENT:Think()
 	end
 
 	-- Update CSEnts
+
 	if CurTime() - (self.PrevThinkTime or 0) > 1 or self.UpdateRender then
 		self.PrevThinkTime = CurTime()
 
@@ -536,11 +553,12 @@ function ENT:Think()
 
 		local shouldrender = self:ShouldRenderClientEnts()
 		if self.RenderClientEnts ~= shouldrender or self.UpdateRender then
-			self.RenderClientEnts = shouldrender
-			if self.RenderClientEnts then
+			if shouldrender and IsValid(self)  then
 				self:CreateCSEnts()
-			else
+				self.RenderClientEnts = shouldrender
+			elseif not shouldrender then
 				self:RemoveCSEnts()
+				self.RenderClientEnts = shouldrender
 			end
 		end
 
@@ -1258,6 +1276,29 @@ local function findAimButton(ply,press)
 	end
 end
 
+hook.Remove("Think","metrostroi-DSP-check",function()
+  local plypos = LocalPlayer():GetPos()
+  local res = util.TraceLine{
+    start = plypos,
+    endpos = plypos+Vector(0,0,150),
+    ignoreworld = true,
+    filter = {LocalPlayer()},
+  }
+
+  if IsValid(res.Entity) and res.Entity.Base == "gmod_subway_base" then
+     res = util.TraceLine{
+      start = plypos,
+      endpos = plypos-Vector(0,0,150),
+      ignoreworld = true,
+      filter = {LocalPlayer()},
+    }
+    if IsValid(res.Entity) and res.Entity.Base == "gmod_subway_base" then
+      LocalPlayer():SetDSP(0,true)
+    else
+    end
+  else
+  end
+end)
 -- Checks what button/panel is being looked at and check for custom crosshair
 hook.Add("Think","metrostroi-cabin-panel",function()
 	local ply = LocalPlayer()

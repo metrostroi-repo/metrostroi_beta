@@ -32,7 +32,7 @@ function TRAIN_SYSTEM:CheckContact(ent,pos,dir,id)
 		local pos = result.Entity:GetPos()
 		self.VoltageDropByTouch = (self.VoltageDropByTouch or 0) + 1
 		util.BlastDamage(result.Entity,result.Entity,pos,64,3.0*self.Main750V)
-		
+
 		local effectdata = EffectData()
 		effectdata:SetOrigin(pos + Vector(0,0,-16+math.random()*(40+0)))
 		util.Effect("cball_explode",effectdata,true,true)
@@ -44,7 +44,7 @@ function TRAIN_SYSTEM:CheckContact(ent,pos,dir,id)
 		local constrainttable = constraint.FindConstraints(ent,"Weld")
 		local coupled = false
 		for k,v in pairs(constrainttable) do
-			if v.Type == "Weld" then 
+			if v.Type == "Weld" then
 				if( (v.Ent1 == ent or v.Ent1 == result.Entity) and (v.Ent2 == ent or v.Ent2 == result.Entity)) then
 					coupled = true
 				end
@@ -76,7 +76,7 @@ function TRAIN_SYSTEM:Think(dT)
 	end
 
 	-- Draw overheat of the engines FIXME
-	local smoke_intensity = 
+	local smoke_intensity =
 		self.Train.Electric.Overheat1 or
 		self.Train.Electric.Overheat2 or 0
 
@@ -104,30 +104,30 @@ function TRAIN_SYSTEM:Think(dT)
 		self.NextStates[3],self.Udochkas[3]  = self:CheckContact(self.Train.RearBogey,Vector(0, -61,-14),Vector(0,-1,0),3)
 		self.NextStates[4],self.Udochkas[4]  = self:CheckContact(self.Train.RearBogey,Vector(0,  61,-14),Vector(0, 1,0),4)
 	end
-	
+
 	-- Voltage spikes
 	self.VoltageDrop = self.VoltageDrop or 0
 	self.VoltageDrop = math.max(-30,math.min(30,self.VoltageDrop + (0 - self.VoltageDrop)*10*dT))
-	
+
 	-- Detect changes in contact states
 	for i=1,4 do
 		local state = self.NextStates[i]
 		if state ~= self.ContactStates[i] then
 			self.ContactStates[i] = state
-			
+
 			if true then --state then
 				local sound_source = (i <= 2) and "front_bogey" or "rear_bogey"
 				if state then
 					self.VoltageDrop = -40*(0.5 + 0.5*math.random())
 				end
-				
+
 				local dt = CurTime() - self.PlayTime[i]
 				self.PlayTime[i] = CurTime()
 
 				local volume = 0.63
 				if dt < 1.0 then volume = 0.53 end
 				self.Train:PlayOnce("tr",sound_source,volume,math.random(90,120))
-				
+
 				-- Sparking probability
 				local probability = math.min(1.0,math.max(0.0,1-(self.Train.Electric.Itotal/600)))
 				if state and (math.random() > probability) then
@@ -146,7 +146,7 @@ function TRAIN_SYSTEM:Think(dT)
 					light:SetKeyValue("distance", 256)
 					light:SetKeyValue("brightness", 5)
 					light:Spawn()
-					light:Fire("TurnOn","","0") 
+					light:Fire("TurnOn","","0")
 
 					local function rem()
 						if IsValid(light) then
@@ -164,10 +164,10 @@ function TRAIN_SYSTEM:Think(dT)
 	end
 
 	-- Non-metrostroi maps
-	if ((GetConVarNumber("metrostroi_train_requirethirdrail") <= 0)) or 
+	if ((GetConVarNumber("metrostroi_train_requirethirdrail") <= 0)) or
 	   (not Metrostroi.MapHasFullSupport()) then
 		self.Main750V = (Metrostroi.Voltage or 750) + self.VoltageDrop
-		return 
+		return
 	end
 
 	-- Detect voltage
