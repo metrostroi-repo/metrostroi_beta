@@ -1,5 +1,5 @@
-"VertexLitGeneric"
-{
-	"$baseTexture"				"/models/scenery/furniture/bench/concretebench"
-	"$surfaceprop"				"concrete"
-}
+"VertexLitGeneric"
+{
+	"$baseTexture"				"/models/scenery/furniture/bench/concretebench"
+	"$surfaceprop"				"concrete"
+}

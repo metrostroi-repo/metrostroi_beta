@@ -1,15 +1,15 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "models/metrostroi_train/em/ema_cabine"
-	"$model" "1"
-	"$phong" "1"
-	"$selfillum" "1"
- 
-	"$bumpmap"				"models/metrostroi_train/em/ema_cabine_n"
-	"$phongexponenttexture"	"models/metrostroi_train/em/ema_cabine_phong"
-	"$phongboost"				3.0
-	"$phongfresnelranges"		"[0 0.5 1]"
-	$envmap			env_cubemap
-	$envmapmask		"models/metrostroi_train/em/ema_cabine_phong"
-
-}
+"VertexLitGeneric"
+{
+	"$basetexture" "models/metrostroi_train/em/ema_cabine"
+	"$model" "1"
+	"$phong" "1"
+	"$selfillum" "1"
+ 
+	"$bumpmap"				"models/metrostroi_train/em/ema_cabine_n"
+	"$phongexponenttexture"	"models/metrostroi_train/em/ema_cabine_phong"
+	"$phongboost"				3.0
+	"$phongfresnelranges"		"[0 0.5 1]"
+	$envmap			env_cubemap
+	$envmapmask		"models/metrostroi_train/em/ema_cabine_phong"
+
+}

@@ -1,8 +1,8 @@
-"LightmappedGeneric"
-{
-	"$baseTexture" "stone/cemflrb"
-	"$surfaceprop" "concrete"
-	"$envmap" "env_cubemap"
-	"$envmapmask" "effects/ref_50"
-
-}
+"LightmappedGeneric"
+{
+	"$baseTexture" "stone/cemflrb"
+	"$surfaceprop" "concrete"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "effects/ref_50"
+
+}

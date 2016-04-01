@@ -1,10 +1,10 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "metrostroi_skins/81-717/1"
-	"$surfaceprop" "metalvehicle"
-	$phong 1
-	$phongexponenttexture models/metrostroi_train/81/b01a_exp
-	"$bumpmap" "models/metrostroi_train/81/b01a_bump"
-	$phongboost	0.3
-	$phongfresnelranges	"[1 1 1]"
-}
+"VertexLitGeneric"
+{
+	"$basetexture" "metrostroi_skins/81-717/1"
+	"$surfaceprop" "metalvehicle"
+	$phong 1
+	$phongexponenttexture models/metrostroi_train/81/b01a_exp
+	"$bumpmap" "models/metrostroi_train/81/b01a_bump"
+	$phongboost	0.3
+	$phongfresnelranges	"[1 1 1]"
+}

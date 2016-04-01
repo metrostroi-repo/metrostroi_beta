@@ -1,19 +1,19 @@
-VertexLitGeneric
-{
-	$basetexture "models/metrostroi_train/e/cabine"
-	$bumpmap "models/metrostroi_train/e/cabine_n"
-	$surfaceprop Canister
-
-	$lightwarptexture "models/metrostroi_train/e/ramp_tf2"
-
-	$envmap "models/metrostroi_train/e/controller_s"
-
-	$phong 1
-	$phongfresnelranges "[1 1 1]"
-	$phongtint "[0.87 0.87 0.87]"
-	$phongexponent 147
-	$phongboost 0.83
-
-	$model 1
-	$selfillum 1
+VertexLitGeneric
+{
+	$basetexture "models/metrostroi_train/e/cabine"
+	$bumpmap "models/metrostroi_train/e/cabine_n"
+	$surfaceprop Canister
+
+	$lightwarptexture "models/metrostroi_train/e/ramp_tf2"
+
+	$envmap "models/metrostroi_train/e/controller_s"
+
+	$phong 1
+	$phongfresnelranges "[1 1 1]"
+	$phongtint "[0.87 0.87 0.87]"
+	$phongexponent 147
+	$phongboost 0.83
+
+	$model 1
+	$selfillum 1
 }

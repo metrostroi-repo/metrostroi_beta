@@ -1,8 +1,8 @@
-LightmappedGeneric
-{
-	"$basetexture"	"wood\biltdoorb"
-	"$envmap" "env_cubemap"
-	"$envmapmask" "wood\biltdoorb_ref"
-	"$surfaceprop" "wood"
-
-}
+LightmappedGeneric
+{
+	"$basetexture"	"wood\biltdoorb"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "wood\biltdoorb_ref"
+	"$surfaceprop" "wood"
+
+}

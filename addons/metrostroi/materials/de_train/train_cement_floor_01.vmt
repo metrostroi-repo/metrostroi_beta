@@ -1,5 +1,5 @@
-LightmappedGeneric
-{
-$basetexture "de_train\train_cement_floor_01"
-$surfaceprop concrete
-}
+LightmappedGeneric
+{
+$basetexture "de_train\train_cement_floor_01"
+$surfaceprop concrete
+}

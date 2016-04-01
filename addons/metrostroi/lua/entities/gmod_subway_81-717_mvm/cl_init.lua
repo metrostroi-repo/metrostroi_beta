@@ -2755,18 +2755,15 @@ function ENT:DrawPost(special)
 		if T > 750 then text1 = " !! PIZDA POEZDU !! " end
 
 		-- Draw text
-		local flashing = false
 		if flash and ((RealTime() % 1.0) > 0.5) then
-			--C2,C1 = C1,C2
-			flashing = true
+			C2,C1 = C1,C2
 		end
 		for i=1,20 do
 			surface.SetDrawColor(C2)
 			local str = {utf8.codepoint(text1,1,-1)}
 			local char = utf8.char(str[i])
 			surface.DrawRect(54+(i-1)*25.1,70,20,30)
-
-			if not flashing then draw.DrawText(string.upper(char or ""),"MetrostroiSubway_IGLA",54+(i-1)*25.1-2,68+0,C1) end
+			draw.DrawText(string.upper(char or ""),"MetrostroiSubway_IGLA",54+(i-1)*25.1-2,68+0,C1)
 		end
 		for i=1,20 do
 			local str = {utf8.codepoint(text2,1,-1)}
