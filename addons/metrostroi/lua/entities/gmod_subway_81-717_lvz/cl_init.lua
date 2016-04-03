@@ -636,9 +636,9 @@ ENT.ButtonMap["Schedule"] = {
 ENT.ButtonMap["IGLA"] = {
 	pos = Vector(460.8,-27.0,37.0),
 	ang = Angle(0,-125,90),
-	width = 440,
-	height = 190,
-	scale = 0.024,
+	width = 440, --18333.333333333333333333333333333
+	height = 190, --7916.6666666666666666666666666667
+	scale = 0.017,
 }
 ENT.ButtonMap["Motorola"] = {
 	--pos = Vector(453.9,-33.9,16.3),
@@ -834,6 +834,12 @@ ENT.ClientProps["reverser"] = {
 	pos = Vector(445.5,-32+1.7,-7.5),
 	ang = Angle(93,0,0)
 }
+ENT.ClientProps["reverser2"] = {
+	model = "models/metrostroi/81-717/reverser.mdl",
+	pos = Vector(454.425049,1.349526,1.629222),
+	ang = Angle(130.882477,0.000000,270.000000),
+}
+
 ENT.ClientProps["brake_disconnect"] = {
 	model = "models/metrostroi/81-717/uava.mdl",
 	pos = Vector(431.8,-24.1+1.5,-33.7),
@@ -2163,6 +2169,7 @@ function ENT:Think()
 	self:Animate("reverser",		self:GetPackedRatio(2),				0.46, 0.54,  4,false)
 	self:Animate("volt1", 			self:GetPackedRatio(10),			0.381, 0.645,				nil, nil,  256,2,0.01)
 	self:ShowHide("reverser",		self:GetPackedBool(0))
+	self:ShowHide("reverser2",		not self:GetPackedBool(0) and not self:GetPackedBool(27))
 	self:Animate("krureverser",		0.5+(0.5-self.KRUPos*0.5)-0.5*(self:GetPackedRatio(2)/2),		0.05, 1,  3,false)
 	self:ShowHide("krureverser",	self:GetPackedBool(27))
 
@@ -2629,8 +2636,7 @@ function ENT:Think()
 		if self.BPSNType ~= 7 then
 			self:SetSoundState("bpsn"..self.BPSNType,2,1.0,nil,0.9)
 		else
-			self:SetSoundState("bpsn2",0.2,1.0)
-			self:SetSoundState("bpsn3",0.4,1)
+			self:SetSoundState("bpsn2",0.1,1.0)
 			self:SetSoundState("bpsn6",1,1)
 		end
 		if self.PreviousBPSNState ~= state then self.BPSNOff = nil end
@@ -2646,7 +2652,6 @@ function ENT:Think()
 			self:SetSoundState("bpsn"..self.BPSNType,1-math.cos((self.BPSNOff - CurTime()) / 2 * math.pi/2),1)
 		else
 			self:SetSoundState("bpsn2",1-math.cos((self.BPSNOff - CurTime()) / 2 * math.pi/2),1)
-			self:SetSoundState("bpsn3",1-math.cos((self.BPSNOff - CurTime()) / 2 * math.pi/2),1)
 			self:SetSoundState("bpsn6",1-math.cos((self.BPSNOff - CurTime()) / 2 * math.pi/2),1)
 		end
 	elseif self.BPSNOff == false then
@@ -2654,7 +2659,6 @@ function ENT:Think()
 			self:SetSoundState("bpsn"..self.BPSNType,0,0)
 		else
 			self:SetSoundState("bpsn2",0,1.0)
-			self:SetSoundState("bpsn3",0,1)
 			self:SetSoundState("bpsn6",0,1)
 		end
 	end
@@ -2969,13 +2973,17 @@ function ENT:DrawPost(special)
 		end
 		for i=1,20 do
 			surface.SetDrawColor(C2)
-			surface.DrawRect(42+(i-1)*17.7+1,42+4,16,22)
-			draw.DrawText(string.upper(text1[i] or ""),"MetrostroiSubway_IGLA",42+(i-1)*17.7,42+0,C1)
+			local str = {utf8.codepoint(text1,1,-1)}
+			local char = utf8.char(str[i])
+			surface.DrawRect(54+(i-1)*25.1,70,20,30)
+			draw.DrawText(string.upper(char or ""),"MetrostroiSubway_IGLA",54+(i-1)*25.1-2,68+0,C1)
 		end
 		for i=1,20 do
+			local str = {utf8.codepoint(text2,1,-1)}
+			local char = utf8.char(str[i])
 			surface.SetDrawColor(C2)
-			surface.DrawRect(42+(i-1)*17.7+1,42+24+4,16,22)
-			draw.DrawText(string.upper(text2[i] or ""),"MetrostroiSubway_IGLA",42+(i-1)*17.7,42+24,C1)
+			surface.DrawRect(54+(i-1)*25.1,70+34,20,30)
+			draw.DrawText(string.upper(char or ""),"MetrostroiSubway_IGLA",54+(i-1)*25.1-2,68+34,C1)
 		end
 		surface.SetAlphaMultiplier(1)
 	end)

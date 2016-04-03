@@ -102,11 +102,11 @@ function TRAIN_SYSTEM:AnnDisplay(train,ezh3)
 					Metrostroi.DrawLine(235+9+(x-xmin)*18 - (ezh3 and 5 or 0),141 + y*30-10,235+9+(x-xmin)*18,141+ y*30+9, Color(0,0,0),3)
 				elseif char == "_" then
 					if CurTime()%0.5<=0.25 then
-						draw.DrawText(char,"MetrostroiSubway_IGLA",236+(x-xmin)*18 - (ezh3 and 5 or 0),121 + y*30, Color(0,0,0))
+						draw.DrawText(char,"MetrostroiSubway_FixedSYS",236+(x-xmin)*18 - (ezh3 and 5 or 0),121 + y*30, Color(0,0,0))
 					end
 					xmin = xmin + 1
 				else
-					draw.DrawText(char,"MetrostroiSubway_IGLA",235+(x-xmin)*18 - (ezh3 and 5 or 0),125 + y*30, Color(0,0,0))
+					draw.DrawText(char,"MetrostroiSubway_FixedSYS",235+(x-xmin)*18 - (ezh3 and 5 or 0),125 + y*30, Color(0,0,0))
 				end
 				x = x + 1
 			end

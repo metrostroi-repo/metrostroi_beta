@@ -179,9 +179,10 @@ function ENT:Think()
 	self.PrevTime = CurTime()
 
 	-- Platform parameters
-	local platformStart = self:GetNW2Vector("PlatformStart")
-	local platformEnd = self:GetNW2Vector("PlatformEnd")
-	local stationCenter = self:GetNW2Vector("StationCenter")
+	local platformStart = self:GetNW2Vector("PlatformStart",false)
+	local platformEnd = self:GetNW2Vector("PlatformEnd",false)
+	local stationCenter = self:GetPos()--self:GetNW2Vector("StationCenter",false)
+	if not platformStart or not platformEnd or not stationCenter or not self:GetNW2Float("X0",false) or not self:GetNW2Float("Sigma",false) then return end
 
 	-- Platforms with tracks in middle
 	local dot = (stationCenter - platformStart):Cross(platformEnd - platformStart)
@@ -259,7 +260,6 @@ function ENT:Think()
 		ent:SetPos(pos)
 		ent:SetSkin(math.floor(ent:SkinCount()*self.Pool[i].skin))
 		ent:SetModelScale(self.Pool[i].scale,0)
-
 		-- Generate target pos
 		local platformDir   = platformEnd-platformStart
 		local platformN		= (platformDir:Angle()+Angle(0,90,0)):Forward()
