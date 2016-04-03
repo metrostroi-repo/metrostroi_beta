@@ -380,9 +380,9 @@ function ENT:UpdateTextures()
 	self:SetNW2Int("LampType",(self.LampType or 1))
 	self:SetNW2Bool("Breakers",(self.Breakers or 0) > 0)
 	self:SetNW2Bool("BPSNBuzzType",self.PNM)
-	--self:SetNW2String("texture",self.Texture)
-	--self:SetNW2String("passtexture",self.PassTexture)
-	--self:SetNW2String("cabtexture",self.CabTexture)
+	self:SetNW2String("texture",self.Texture)
+	self:SetNW2String("passtexture",self.PassTexture)
+	self:SetNW2String("cabtexture",self.CabTexture)
 end
 --[[
 local LK = {}

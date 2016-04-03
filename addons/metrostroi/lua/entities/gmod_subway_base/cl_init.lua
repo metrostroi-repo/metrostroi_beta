@@ -130,11 +130,11 @@ surface.CreateFont("MetrostroiSubway_IGLA", {
 })
 surface.CreateFont("MetrostroiSubway_FixedSYS", {
   font = "FixedsysTTF",
-  size = 30,
+  size = 40,
   weight = 0,
   blursize = 0,
   scanlines = 0,
-  antialias = false,
+  antialias = true,
   underline = false,
   italic = false,
   strikeout = false,
@@ -374,18 +374,16 @@ end
 function ENT:CanDrawThings()
 	return not IsValid(LocalPlayer():GetVehicle()) or self == LocalPlayer():GetVehicle():GetNW2Entity("TrainEntity")
 end
-hook.Add("PostDrawOpaqueRenderables", "metrostroi_base_draw", function(isDD)
-	if isDD then
-		return
-	end
+hook.Add("PostDrawTranslucentRenderables", "metrostroi_base_draw", function(_,isDD)
+	if isDD then return end
 	for _,ent in pairs(ents.GetAll()) do
 		--print(self.BaseClassName)
 		if ent.Base ~= "gmod_subway_base" then continue end
+  	if not ent.ShouldRenderClientEnts or not ent:ShouldRenderClientEnts() then continue end
+
 		if ent.DrawPost then ent:DrawPost(not ent:CanDrawThings()) end
 		if not ent:CanDrawThings() then continue end
 		ent.CLDraw = true
-
-		if not ent.ShouldRenderClientEnts or not ent:ShouldRenderClientEnts() then continue end
 
 		if ent.Systems then
 			for _,v in pairs(ent.Systems) do

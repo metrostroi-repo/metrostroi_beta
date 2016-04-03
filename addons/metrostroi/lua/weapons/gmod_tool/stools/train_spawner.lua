@@ -380,6 +380,7 @@ function TOOL:SetSettings(ent, ply, i,inth)
 		end
 
 		ent:UpdateTextures()
+		ent:SetNW2Bool("NW2Fix",math.random()>0.5)
 	end
 end
 
