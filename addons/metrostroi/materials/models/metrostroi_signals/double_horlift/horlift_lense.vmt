@@ -1,0 +1,5 @@
+"Unlitgeneric"
+{
+	"$basetexture" "models/metrostroi_signals/double_horlift/lense_horlift"
+	 "$selfillum" 1
+}
