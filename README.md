@@ -28,6 +28,16 @@ Licensing
 All models and materials belong to their corresponding authors. Mainly used without
 permission for purposes of prototyping a subway train simulator.
 
+### Models and materials of E-type metrocars.
+
+Copyright (C) 2015-2016 Oldy. All rights reserved.
+
+All models of E-type metrocars are provided with the following restrictions:
+
+- These files can only be redistributed for use with the Metrostroi simulator
+- It is forbidden to use for any commercial purposes without a permission from the author
+- It is forbidden to make any changes in these files in any derivative projects without an explicit permission from the author
+
 
 ### Sounds
 The sounds are based on audio/video recordings that belong to their corresponding
