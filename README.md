@@ -36,6 +36,8 @@ Models of metrocar 81-703 (E type), 81-704 and 81-705 (Ema type) belongs to thei
 These models of cars can only be used as addons in Steam Workshop as additions for Metrostroi simulator (Garrys Mod Modification) 
 These files can only be redistributed for use with the Metrostroi simulator. It is forbidden to use all of these models and materials for any commercial purposes without a permission from the author. It is forbidden to make any changes in these files in any derivative projects without an explicit permission from the author. 
 
+
+
 ### Sounds
 The sounds are based on audio/video recordings that belong to their corresponding
 authors.
