@@ -8,8 +8,8 @@ end
 function ENT:Initialize()
 	self:EntIndex()
 	self.VMF = self.VMF or {}
-	self.Type		= (tonumber(self.VMF.Type) or 1)
-	self.Light		= (tonumber(self.VMF.Light) or 1)
+	self.Type		= (tonumber(self.VMF.Type) or 0)
+	self.Light		= (tonumber(self.VMF.Light) or 0)
 	if self.Type == 0 then
 		self:SetModel("models/metrostroi/clock_time_moscow.mdl")
 	else
