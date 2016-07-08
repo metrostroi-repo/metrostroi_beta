@@ -254,8 +254,8 @@ function TRAIN_SYSTEM:Think(dT)
 				self.Signal70	= ars:GetARS(7,Train)
 				self.Signal60	= ars:GetARS(6,Train)
 				self.Signal40	= ars:GetARS(4,Train)
-				self.Signal0	= ars:GetARS(0,Train)
-				self.Special	= ars:Get325Hz()
+				self.Signal0	= ars:GetARS(0,Train) or ars:GetARS(2,Train)
+				self.Special	= ars:Get325Hz() and not ars:GetARS(2,Train)
 				self.NoFreq		= ars:GetARS(1,Train) or not (self.Signal80 or self.Signal70 or self.Signal60 or self.Signal40 or self.Signal0)
 				if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then RunConsoleCommand("say",ars.Name,tostring(arsback and arsback.Name),tostring(ars.NextSignalLink and ars.NextSignalLink.Name or "unknown"),tostring(pos.node1.path.id),tostring(Metrostroi.TrainDirections[Train])) end
 				self.RealNoFreq = not (self.Signal80 or self.Signal70 or self.Signal60 or self.Signal40 or self.Signal0)
@@ -539,7 +539,7 @@ function TRAIN_SYSTEM:Think(dT)
 		---self.LKT = (self["33G"] > 0.5) or (self["29"] > 0.5) or (Train:ReadTrainWire(35) > 0)
 		self.LVD = self.LVD or self["33D"] < 0.5
 		if Train:ReadTrainWire(6) < 1 and self["33D"] > 0.5  then  self.LVD = false end
-		self.Ring = ((self["33D"] < 0.5 and ((NFBrake < 1 and self.ARSBrakeTimer ~= nil and self.ARSBrakeTimer ~= false) or self.VRDTimer ~= false)) or self.KSZD or (self.PeepTimer and self.PeepTimer-CurTime() > 0)) or math.max(20,self.SpeedLimit-1) < self.Speed
+		self.Ring = ((self["33D"] < 0.5 and ((NFBrake < 1 and self.ARSBrakeTimer ~= nil and self.ARSBrakeTimer ~= false) or self.VRDTimer ~= false)) or self.KSZD or (self.PeepTimer and self.PeepTimer-CurTime() > 0)) or math.max(20,self.SpeedLimit-1) < self.Speed and (PAKSDM or PAM)
 		if self.ElectricBrake or self.PneumaticBrake2 then
 			if not self.LKT then
 				self:EPVBrake("LKT not light-up when ARS stopping")
@@ -585,9 +585,9 @@ function TRAIN_SYSTEM:Think(dT)
 		if PAKSD or PAKSDM and not Train[KSDType].UOS then
 			Train[KSDType].UOS = true
 		end
-		--self["33D"] = 1
+		--self["33D"] = self.Speed > 55 and 0 or 1
 		self["33G"] = 0
-		self["33Zh"] = 1--KAH
+		self["33Zh"] = 1
 		--
 		self["2"] = 0
 		self["20"] = 0

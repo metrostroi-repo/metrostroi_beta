@@ -1,0 +1,5 @@
+"unlitgeneric"
+{
+	$basetexture "\models\metrostroi\signals\text\0"
+	"$additive" 1
+}

@@ -5,7 +5,7 @@ if Map:find("gm_mus_crimson") then
 elseif Map:find("gm_mus") and Map:find("metro") then
 	Metrostroi.PlatformMap = "orange"
 	Metrostroi.CurrentMap = "gm_orange"
-elseif Map:find("gm_mus") then
+elseif Map:find("gm_mus_orange") then
 	Metrostroi.PlatformMap = "orange"
 	Metrostroi.CurrentMap = "gm_orange_lite"
 else

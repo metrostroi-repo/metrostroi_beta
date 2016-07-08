@@ -22,11 +22,11 @@ end
 function ENT:InitializeSystems()
 	-- Электросистема 81-710
 	self:LoadSystem("Electric","81_717_Electric")
-	
+
 	-- Токоприёмник
-	self:LoadSystem("TR","TR_3B")	
+	self:LoadSystem("TR","TR_3B")
 	-- Электротяговые двигатели
-	self:LoadSystem("Engines","DK_117DM")	
+	self:LoadSystem("Engines","DK_117DM")
 
 	-- Резисторы для реостата/пусковых сопротивлений
 	self:LoadSystem("KF_47A")
@@ -34,7 +34,7 @@ function ENT:InitializeSystems()
 	self:LoadSystem("KF_50A")
 	-- Ящик с предохранителями
 	self:LoadSystem("YAP_57")
-	
+
 	-- Резисторы для цепей управления
 	--self:LoadSystem("YAS_44V")
 	-- Реостатный контроллер для управления пусковыми сопротивления
@@ -46,7 +46,7 @@ function ENT:InitializeSystems()
 	-- Контроллер резервного управления
 	self:LoadSystem("KRU")
 
-	
+
 	-- Ящики с реле и контакторами
 	self:LoadSystem("LK_755A")
 	self:LoadSystem("YAR_13A")
@@ -55,7 +55,7 @@ function ENT:InitializeSystems()
 	self:LoadSystem("YAK_37E")
 	self:LoadSystem("YAS_44V")
 	self:LoadSystem("YARD_2")
-	self:LoadSystem("PR_14X_Panels")	
+	self:LoadSystem("PR_14X_Panels")
 
 	-- Пневмосистема 81-710
 	self:LoadSystem("Pneumatic","81_717_Pneumatic")
@@ -72,9 +72,11 @@ function ENT:InitializeSystems()
 	self:LoadSystem("PA-M")
 	self:LoadSystem("PA-KSD-M")
 	self:LoadSystem("PUAV")
-	
+
 	self:LoadSystem("Radiostation","Motorola")
-	
+
+	self:LoadSystem("IGLA")
+
 	self:LoadSystem("ADoorDisable","Relay")
 	self:LoadSystem("ASNP31","Relay","Switch")
 	self:LoadSystem("ASNP32","Relay","Switch")

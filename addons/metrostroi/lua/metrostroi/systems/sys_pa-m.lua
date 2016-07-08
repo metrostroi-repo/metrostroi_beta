@@ -113,7 +113,9 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
+		extended = true,
 	})
 	surface.CreateFont("Metrostroi_PAM50", {
 	  font = "Arial",
@@ -128,7 +130,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 	surface.CreateFont("Metrostroi_PAM60", {
 	  font = "Arial",
@@ -143,7 +146,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 
 	surface.CreateFont("Metrostroi_PAM25", {
@@ -159,7 +163,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 	surface.CreateFont("Metrostroi_PAM1_25", {
 	  font = "Arial",
@@ -174,7 +179,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 	surface.CreateFont("Metrostroi_PAM20", {
 	  font = "Arial",
@@ -189,7 +195,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 	surface.CreateFont("Metrostroi_PAM1_20", {
 	  font = "Arial",
@@ -204,7 +211,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 	surface.CreateFont("Metrostroi_PAM15", {
 	  font = "Arial",
@@ -219,7 +227,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 	surface.CreateFont("Metrostroi_PAM24", {
 	  font = "Arial",
@@ -234,7 +243,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 	surface.CreateFont("Metrostroi_PAM22", {
 	  font = "Arial",
@@ -249,7 +259,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 	surface.CreateFont("Metrostroi_PAM28", {
 	  font = "Arial",
@@ -264,9 +275,10 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
-	
+
 	surface.CreateFont("Metrostroi_PAM80", {
 	  font = "Arial",
 	  size = 80,
@@ -280,7 +292,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 	surface.CreateFont("Metrostroi_PAMBSOD", {
 	  font = "Trebuchet",
@@ -295,9 +308,10 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
-	
+
 	function Metrostroi.DrawLine(x1,y1,x2,y2,col,sz)
 		surface.SetDrawColor(col)
 		if x1 == x2 then
@@ -324,7 +338,7 @@ if CLIENT then
 		Metrostroi.DrawLine(x,y+h,x+w,y+h,c)
 		Metrostroi.DrawLine(x,y,x,y+h,c)
 	end
-	 
+
 	function Metrostroi.DrawRectOutline(x,y,w,h,col,sz)
 		local wid = sz or 1
 		if wid < 0 then
@@ -337,7 +351,7 @@ if CLIENT then
 			end
 		end
 	end
-	 
+
 	function Metrostroi.DrawRectOL(x,y,w,h,col,sz,col1)
 		local wid = sz or 1
 		if wid < 0 then
@@ -352,13 +366,13 @@ if CLIENT then
 		surface.SetDrawColor(col1)
 		surface.DrawRect(x+math.max(0,sz-1),y+math.max(0,sz-1),w-math.max(0,(sz-0.5)*2),h-math.max(0,(sz-0.5)*1.5))
 	end
-	 
+
 	function Metrostroi.DrawTextRect(x,y,w,h,col,mat)
 		surface.SetDrawColor(col)
-		surface.SetMaterial(mat) 
+		surface.SetMaterial(mat)
 		surface.DrawTexturedRect(x,y,w,h)
 	end
-	 
+
 	function Metrostroi.DrawTextRectOL(x,y,w,h,col,mat,sz,col1)
 		local wid = sz or 1
 		if wid < 0 then
@@ -373,7 +387,7 @@ if CLIENT then
 		surface.SetDrawColor(col)
 		surface.DrawRect(x+math.max(0,sz-1),y+math.max(0,sz-1),w-math.max(0,(sz-0.5)*2),h-math.max(0,(sz-0.5)*1.5))
 		surface.SetDrawColor(Color(col.r - 40,col.g - 40,col.b - 40))
-		surface.SetMaterial(mat) 
+		surface.SetMaterial(mat)
 		surface.DrawTexturedRect(x+math.max(0,sz-1),y+math.max(0,sz-1),w-math.max(0,(sz-0.5)*2),h-math.max(0,(sz-0.5)*2))
 	end
 
@@ -390,35 +404,35 @@ if CLIENT then
 			if not self.BSODTimer then self.BSODTimer = CurTime() end
 			surface.SetDrawColor(Color(0,0,172))
 			surface.DrawTexturedRect(0,19,512,389)
-			
+
             if  CurTime() - self.BSODTimer > 1/32*1 then draw.SimpleText("A problem has been detected and PA-M has been shut down to prevent damage","Metrostroi_PAMBSOD",5, 25,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
             if  CurTime() - self.BSODTimer > 2/32*1 then draw.SimpleText("to your train.","Metrostroi_PAMBSOD",5, 35,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
-            
+
             if  CurTime() - self.BSODTimer > 4/32*1 then draw.SimpleText("The problem seems to be caused by the following file: CORE.SYS","Metrostroi_PAMBSOD",5, 55,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
-            
+
             if  CurTime() - self.BSODTimer > 6/32*1 then draw.SimpleText("VISITED_BY_KEK_POLICE_ERROR","Metrostroi_PAMBSOD",5, 75,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
-            
+
             if  CurTime() - self.BSODTimer > 7/32*1 then draw.SimpleText("If this is the first time you've seen this Stop error screen","Metrostroi_PAMBSOD",5, 95,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
             if  CurTime() - self.BSODTimer > 8/32*1 then draw.SimpleText("restart your computer. If this screen appears again, follow","Metrostroi_PAMBSOD",5, 105,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
             if  CurTime() - self.BSODTimer > 9/32*1 then draw.SimpleText("these steps:","Metrostroi_PAMBSOD",5, 115,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
-            
+
             if  CurTime() - self.BSODTimer > 11/32*1 then draw.SimpleText("Check to make sure any new hardware or software is properly installed.","Metrostroi_PAMBSOD",5, 135,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
             if  CurTime() - self.BSODTimer > 12/32*1 then draw.SimpleText("If this is a new installation, ask your hardware or software manufacturer","Metrostroi_PAMBSOD",5, 145,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
             if  CurTime() - self.BSODTimer > 13/32*1 then draw.SimpleText("for any Windows updates you might need.","Metrostroi_PAMBSOD",5, 155,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
-            
+
             if  CurTime() - self.BSODTimer > 15/32*1 then draw.SimpleText("If problems continue, disable or remove any newly installed hardware","Metrostroi_PAMBSOD",5, 175,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
             if  CurTime() - self.BSODTimer > 16/32*1 then draw.SimpleText("or software. Disable BIOS memory options such as caching or shadowing.","Metrostroi_PAMBSOD",5, 185,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
             if  CurTime() - self.BSODTimer > 17/32*1 then draw.SimpleText("If you need to use Safe Mode to remove or disable components, restart","Metrostroi_PAMBSOD",5, 195,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
             if  CurTime() - self.BSODTimer > 18/32*1 then draw.SimpleText("your computer, press F8 to select Advanced Startup Options, and then","Metrostroi_PAMBSOD",5, 205,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
             if  CurTime() - self.BSODTimer > 19/32*1 then draw.SimpleText("select Safe Mode.","Metrostroi_PAMBSOD",5, 215,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
-            
+
             if  CurTime() - self.BSODTimer > 21/32*1 then draw.SimpleText("Technical information:","Metrostroi_PAMBSOD",5, 235,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
-            
+
             if  CurTime() - self.BSODTimer > 22/32*1 then draw.SimpleText("*** STOP: 0x0000000A (0x0000000C, 0x00000002, 0x00000000, 3311BACE)","Metrostroi_PAMBSOD",5, 255,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
-            
-            
+
+
             if  CurTime() - self.BSODTimer > 25/32*1 then draw.SimpleText("*** autodrive.sys - Address 3311BACE base at 5721DAC7, Date Stamp 533acb25","Metrostroi_PAMBSOD",5, 285,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
-            
+
             if  CurTime() - self.BSODTimer > 27/32*1 then draw.SimpleText("Beginning dump of physical memory.","Metrostroi_PAMBSOD",5, 305,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
             if  CurTime() - self.BSODTimer > 28/32*1 then draw.SimpleText("Physical memory dump complete.","Metrostroi_PAMBSOD",5, 315,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
             if  CurTime() - self.BSODTimer > 29/32*1 then draw.SimpleText("Contact your system administrator or technical support group for further","Metrostroi_PAMBSOD",5, 325,Color(255,255,255),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
@@ -434,23 +448,23 @@ if CLIENT then
 			surface.SetDrawColor(Color(0,0,255))
 			surface.SetMaterial( Material("vgui/gradient_down"))
 			surface.DrawTexturedRect(0,0,512,427)
-			
+
 			surface.SetDrawColor(Color(255,255,255))
 			surface.SetMaterial( Material("vgui/gradient-d"))
 			surface.DrawTexturedRect(0,200,512,50)
 			surface.SetMaterial( Material("vgui/gradient-u"))
 			surface.DrawTexturedRect(0,250,512,50)
-			
+
 			surface.SetDrawColor(Color(0,255,0))
 			surface.SetMaterial( Material("vgui/gradient-d"))
 			surface.DrawTexturedRect(0,200,512,227)
-			
+
 			draw.SimpleText("НИИ Фабрики SENT","Metrostroi_PAM30",256, 100,Color(0,155,255,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			draw.SimpleText("Терминал машиниста (ПА-М)","Metrostroi_PAM30",256, 130,Color(0,155,255,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 		end
-			
+
 		if train:GetNW2Int("PAM:State",-1) == 3 then
-			
+
 			draw.SimpleText("НАЧАЛЬНЫЙ ТЕСТ ЗАКОНЧЕН","Metrostroi_PAM30",256, 30,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 
 			Metrostroi.DrawRectOutline(10, 80, 492, 210,Color(110,172,95),3)
@@ -464,7 +478,7 @@ if CLIENT then
 			draw.SimpleText("Начальная установка","Metrostroi_PAM30",60, 165,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			draw.SimpleText("норма","Metrostroi_PAM30",480, 165,Color(110,172,95),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
 			draw.SimpleText("Версия ПО БЦВМ     =     0.6","Metrostroi_PAM30",80, 245,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			
+
 			if not train:GetNW2Bool("PAM:RR",false) then
 				draw.SimpleText("Вставьте реверсивную рукоятку","Metrostroi_PAM30",10, 320,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			else
@@ -472,7 +486,7 @@ if CLIENT then
 				Metrostroi.DrawRectOutline(100, 345, 75, 30,Color(110,172,95),3 ,Color(230,230,230))
 				draw.SimpleText("нажми Enter","Metrostroi_PAM30",10, 360,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			end
-			
+
 		end
 		if train:GetNW2Int("PAM:State",-1) == 4 then
 			--elf.Train:GetNW2Int("PAM:Pass",0) ~= -1 and string.rep("*",self.Train:GetNW2Int("PAM:Pass",0)) or "ACCESS ERROR"
@@ -486,17 +500,17 @@ if CLIENT then
 					draw.SimpleText(string.rep("*",train:GetNW2Int("PAM:Pass",0)),"Metrostroi_PAM80",256, 200,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				end
 			end
-			
+
 			Metrostroi.DrawRectOutline(190, 330, 135, 40,Color(110,172,95),3,Color(230,230,230) )
 			draw.SimpleText("Для ввода нажми","Metrostroi_PAM30",256, 300,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			draw.SimpleText("ENTER","Metrostroi_PAM30",256, 350,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-			
+
 		end
 		if train:GetNW2Int("PAM:State",-1) == 5 then
 			draw.SimpleText("Депо. Начальное меню.","Metrostroi_PAM30",256, 30,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			--elf.Train:GetNW2Int("PAM:Pass",0) ~= -1 and string.rep("*",self.Train:GetNW2Int("PAM:Pass",0)) or "ACCESS ERROR"
 			Metrostroi.DrawRectOutline(10, 80, 492, 333,Color(110,172,95),3)
-			
+
 			Metrostroi.DrawRectOL(40, 166 + (not train:GetNW2Bool("PAM:Restart") and 40 or 0), 432, 40,Color(110,172,95),3,train:GetNW2Int("PAM:State5",1) == 1 and Color(230,230,230) or Color(180,180,180))
 
 			draw.SimpleText("Выход на линию","Metrostroi_PAM30",60, 186 + (not train:GetNW2Bool("PAM:Restart") and 40 or 0),Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
@@ -504,7 +518,7 @@ if CLIENT then
 				Metrostroi.DrawRectOL(40, 216, 432, 40,Color(110,172,95),3,train:GetNW2Int("PAM:State5",1) == 2 and Color(230,230,230) or Color(180,180,180))
 				draw.SimpleText("Перезапуск","Metrostroi_PAM30",60, 236,Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			end
-			
+
 		end
 		if train:GetNW2Int("PAM:State",-1) == 6 then
 			local Line = self.Train:GetNW2Int("PAM:Line",0)
@@ -515,7 +529,7 @@ if CLIENT then
 			draw.SimpleText("Ввод исходных данных","Metrostroi_PAM30",256, 30,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			--elf.Train:GetNW2Int("PAM:Pass",0) ~= -1 and string.rep("*",self.Train:GetNW2Int("PAM:Pass",0)) or "ACCESS ERROR"
 			Metrostroi.DrawRectOutline(10, 50, 492, 367,Color(110,172,95),3)
-			
+
 			Metrostroi.DrawRectOL(40, 60, 432, 40,Color(110,172,95),3,train:GetNW2Int("PAM:State6",1) == 1 and Color(230,230,230) or Color(180,180,180))
 			draw.SimpleText("Линия","Metrostroi_PAM30",45, 80,Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			draw.SimpleText(Line,"Metrostroi_PAM30",457, 80,Color(2,2,2),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
@@ -538,7 +552,7 @@ if CLIENT then
 			Metrostroi.DrawRectOL(40, 210, 432, 40,Color(110,172,95),3,train:GetNW2Int("PAM:State6",1) == 4 and Color(230,230,230) or Color(180,180,180))
 			draw.SimpleText("Маршрут","Metrostroi_PAM30",45, 230,Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			if RouteNumber > -1 then draw.SimpleText(RouteNumber,"Metrostroi_PAM30",457, 230,Color(2,2,2),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER) end
-			
+
 			Metrostroi.DrawRectOL(40, 260, 432, 40,Color(110,172,95),3,train:GetNW2Int("PAM:State6",1) == 5 and Color(230,230,230) or Color(180,180,180))
 			draw.SimpleText("Ввод данных","Metrostroi_PAM30",45, 280,Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			if train:GetNW2Bool("PAM:State6Error",false) then
@@ -548,8 +562,8 @@ if CLIENT then
 				Metrostroi.DrawRectOL(190, 220, 132, 40,Color(2,2,2),3,Color(220,220,220))
 				draw.SimpleText("ENTER","Metrostroi_PAM30",256, 240,Color(2,2,2),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			end
-				
-			
+
+
 			if train:GetNW2Int("PAM:State6",1) == 2 and tbl and tbl[Line] then
 				local i = 1
 				for k,v in pairs(tbl[Line]) do
@@ -570,7 +584,7 @@ if CLIENT then
 								draw.SimpleText("...","Metrostroi_PAM30",86, 150+i*22,Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 								draw.SimpleText("...","Metrostroi_PAM30",465, 150+i*22,Color(2,2,2),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
 							end
-							
+
 							i = i + 1
 							if i > 10 then break end
 						end
@@ -598,7 +612,7 @@ if CLIENT then
 								draw.SimpleText("...","Metrostroi_PAM30",86, 200+i*22,Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 								draw.SimpleText("...","Metrostroi_PAM30",465, 200+i*22,Color(2,2,2),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
 							end
-							
+
 							i = i + 1
 							if i > 9 then break end
 						end
@@ -615,7 +629,7 @@ if CLIENT then
 			draw.SimpleText("Перезапуск","Metrostroi_PAM30",110, 30,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			--elf.Train:GetNW2Int("PAM:Pass",0) ~= -1 and string.rep("*",self.Train:GetNW2Int("PAM:Pass",0)) or "ACCESS ERROR"
 			Metrostroi.DrawRectOutline(10, 50, 492, 367,Color(110,172,95),3)
-			
+
 			Metrostroi.DrawRectOL(40, 60, 432, 40,Color(110,172,95),3,train:GetNW2Int("PAM:State6",1) == 1 and Color(230,230,230) or Color(180,180,180))
 			draw.SimpleText("Линия","Metrostroi_PAM30",45, 80,Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			draw.SimpleText(Line,"Metrostroi_PAM30",457, 80,Color(2,2,2),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
@@ -632,7 +646,7 @@ if CLIENT then
 			Metrostroi.DrawRectOL(40, 160, 432, 40,Color(110,172,95),3,train:GetNW2Int("PAM:State6",1) == 3 and Color(230,230,230) or Color(180,180,180))
 			draw.SimpleText("Маршрут","Metrostroi_PAM30",45, 180,Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			if RouteNumber > -1 then draw.SimpleText(RouteNumber,"Metrostroi_PAM30",457, 180,Color(2,2,2),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER) end
-			
+
 
 			Metrostroi.DrawRectOL(40, 210, 432, 40,Color(110,172,95),3,train:GetNW2Int("PAM:State6",1) == 4 and Color(230,230,230) or Color(180,180,180))
 			draw.SimpleText("Ввод данных","Metrostroi_PAM30",45, 230,Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
@@ -664,7 +678,7 @@ if CLIENT then
 								draw.SimpleText("...","Metrostroi_PAM30",86, 150+i*22,Color(2,2,2),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 								draw.SimpleText("...","Metrostroi_PAM30",465, 150+i*22,Color(2,2,2),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
 							end
-							
+
 							i = i + 1
 							if i > 10 then break end
 						end
@@ -682,7 +696,7 @@ if CLIENT then
 			Metrostroi.DrawRectOutline(240, 225, 100, 30,Color(110,172,95),3,Color(254,237,142))
 			draw.SimpleText("нажми              ENTER","Metrostroi_PAM30",60, 240,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			draw.SimpleText("Проверка состава разрешена","Metrostroi_PAM30",256, 365,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-			
+
 		end
 		if train:GetNW2Int("PAM:State",-1) == 9 then
 			local Line = train:GetNW2Int("PAM:Line",0)
@@ -729,10 +743,10 @@ if CLIENT then
 			end
 			draw.SimpleText(speed,"Metrostroi_PAM50",480, 85,Color(110,172,95),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 			draw.SimpleText(spd,"Metrostroi_PAM50",480, 120,(spd == "НЧ" and 20 or spd) > 20 and Color(254,237,142) or  Color(200,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-			
+
 			draw.SimpleText("S = "..S,"Metrostroi_PAM30",6, 401,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			draw.SimpleText("Рц = "..train:GetNW2String("PAM:SName",""),"Metrostroi_PAM30",240, 401,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			
+
 			surface.SetDrawColor(Color(180,180,180))
 			if not train:GetNW2Bool("PAM:RR",false) then
 				surface.DrawRect(6,295,490,21)
@@ -749,7 +763,7 @@ if CLIENT then
 
 			surface.DrawRect(6,355,100,21)-- surface.DrawRect(111,355,100,20) surface.DrawRect(215,355,50,20)
 			draw.SimpleText("КВ АРС","Metrostroi_PAM30",56, 365,train:GetPackedBool(48) and Color(200,0,0) or Color(20,20,20),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-			
+
 			Metrostroi.DrawRectOutline(370, 320, 130, 60,Color(110,172,95),3 )
 			draw.SimpleText("Т.       "..Format("%02d:%02d:%02d",date.hour,date.min,date.sec),"Metrostroi_PAM20",375, 330,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
 			draw.SimpleText("Тпр.    "..(self.Train:GetPackedRatio(3)*100.0 > 0.25 and math.min(999,math.floor(S/(speed*1000/3600))) or "inf"),"Metrostroi_PAM20",375, 347.5,Color(110,172,95),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
@@ -862,7 +876,7 @@ if CLIENT then
 					draw.SimpleText("ENTER","Metrostroi_PAM30",256, 240,Color(2,2,2),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 				end
 			end
-				
+
 			if train:GetNW2Bool("PAM:SetupError",false) then
 				Metrostroi.DrawRectOL(100, 125, 312, 150,Color(20,20,20),3,Color(180,180,180))
 				draw.SimpleText("Критическая ошибка","Metrostroi_PAM30",256, 150,Color(200,2,2),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
@@ -963,9 +977,9 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		end
 		if name == "BEnter" and self.State6Choose == 5 then
 			if not Metrostroi.WorkingStations[self.Line] or
-				not Metrostroi.WorkingStations[self.Line][tonumber(self.FirstStation)] or 
+				not Metrostroi.WorkingStations[self.Line][tonumber(self.FirstStation)] or
 				not Metrostroi.AnnouncerData[tonumber(self.FirstStation)] or
-				not Metrostroi.WorkingStations[self.Line][tonumber(self.LastStation)] or 
+				not Metrostroi.WorkingStations[self.Line][tonumber(self.LastStation)] or
 				not Metrostroi.AnnouncerData[tonumber(self.LastStation)] or
 				#self.RouteNumber < 3 or self.LastStation == self.FirstStation then
 				self.State6Error = not self.State6Error
@@ -1014,9 +1028,9 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 		end
 		if name == "BEnter" and self.State6Choose == 4 then
 			if not Metrostroi.EndStations[self.Line] or
-				not Metrostroi.EndStations[self.Line][tonumber(self.FirstStation)] or 
+				not Metrostroi.EndStations[self.Line][tonumber(self.FirstStation)] or
 				not Metrostroi.AnnouncerData[tonumber(self.FirstStation)] or
-				not Metrostroi.EndStations[self.Line][tonumber(self.LastStation)] or 
+				not Metrostroi.EndStations[self.Line][tonumber(self.LastStation)] or
 				not Metrostroi.AnnouncerData[tonumber(self.LastStation)] or
 				#self.RouteNumber < 3 or self.LastStation == self.FirstStation then
 				self.State6Error = not self.State6Error
@@ -1188,7 +1202,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			end
 			if name == "BEnter" and self.Fix == 2 then
 				if not Metrostroi.WorkingStations[self.FLine] or
-					not Metrostroi.WorkingStations[self.FLine][tonumber(self.FStation)] or 
+					not Metrostroi.WorkingStations[self.FLine][tonumber(self.FStation)] or
 					not Metrostroi.AnnouncerData[tonumber(self.FStation)] or tonumber(self.FStation) == self.FirstStation then
 					self.State6Error = not self.State6Error
 				else
@@ -1231,7 +1245,7 @@ function TRAIN_SYSTEM:Trigger(name,nosnd)
 			end
 			if name == "BEnter" and self.Zon == 2 then
 				if not Metrostroi.WorkingStations[self.FLine] or
-					not Metrostroi.WorkingStations[self.FLine][tonumber(self.FStation)] or 
+					not Metrostroi.WorkingStations[self.FLine][tonumber(self.FStation)] or
 					not Metrostroi.AnnouncerData[tonumber(self.FStation)] or tonumber(self.FStation) == self.LastStation then
 					self.State6Error = not self.State6Error
 				else
@@ -1448,7 +1462,7 @@ function TRAIN_SYSTEM:Think(dT)
 			elseif self.StopTrain then
 				self.StopTrain = false
 			end
-				
+
 			if self.RealState == 8 and not self.Transit then
 				if self.Train.UPO.Distance < 75 and not self.Arrived and Metrostroi.WorkingStations[self.Line][self.Train.UPO.Station] and ARS.Speed <= 1 then
 					self.Arrived = true
@@ -1558,7 +1572,7 @@ function TRAIN_SYSTEM:Think(dT)
 				Train:SetNW2Int("PAM:FAc",tonumber(self.FStation) or -1)
 				Train:SetNW2Bool("PAM:State6Error",self.State6Error)
 			end
-				
+
 		else
 		end
 	end

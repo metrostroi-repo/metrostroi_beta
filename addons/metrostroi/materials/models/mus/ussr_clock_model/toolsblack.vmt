@@ -1,0 +1,7 @@
+"unlitgeneric"
+{
+	$model 1 	"$basetexture" "tools/toolsblack"
+	"%compilenolight" 1
+
+	"%keywords" "c17downtown,c17industrial,c17sewers,c17trainstation,combine,wasteland"
+}

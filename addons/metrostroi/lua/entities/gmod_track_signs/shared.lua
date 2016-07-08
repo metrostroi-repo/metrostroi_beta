@@ -14,57 +14,58 @@ ENT.SignModels = {}
 --------------------------------------------------------------------------------
 --ENT.RenderOffset[0] = Vector(0,0,112+32)
 ENT.SignModels[0] = {
-	model = "models/metrostroi/signs/och.mdl",
-	pos = Vector(0,121,115),
-	angles = Angle(0,90,0),
+	model = "models/metrostroi/re_sign/t_och_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 }
 ENT.SignModels[1] = {
-	model = "models/metrostroi/signs/40.mdl",
-	pos = Vector(0,152,111),
-	angles = Angle(0,90,0),
+	model = "models/metrostroi/re_sign/t_40_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 }
 ENT.SignModels[2] = {
-	model = "models/metrostroi/signs/60.mdl",
-	pos = Vector(0,152,111),
-	angles = Angle(0,90,0),
+	model = "models/metrostroi/re_sign/t_60_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 }
 ENT.SignModels[3] = {
-	model = "models/metrostroi/signs/70.mdl",
-	pos = Vector(0,152,111),
-	angles = Angle(0,90,0),
+	model = "models/metrostroi/re_sign/t_70_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 }
 ENT.SignModels[4] = {
-	model = "models/metrostroi/signs/80.mdl",
-	pos = Vector(0,152,111),
-	angles = Angle(0,90,0),
+	model = "models/metrostroi/re_sign/t_80_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 }
 ENT.SignModels[5] = {
-	model = "models/metrostroi/signs/grc.mdl",
-	pos = Vector(0,126,111),
-	angles = Angle(0,90,0),
+	model = "models/metrostroi/re_sign/station_border.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
+	noauto = true,
 }
 ENT.SignModels[6] = {
-	model = "models/metrostroi/signs/horn_street.mdl",
-	pos = Vector(0,100,-10),
-	angles = Angle(-90,90,-90),
+	model = "models/metrostroi/re_sign/signal_outdoor.mdl",
+	pos = Vector(0,100,50),
+	angles = Angle(0,90,0),
 	noauto = true,
 }
 ENT.SignModels[7] = {
-	model = "models/metrostroi/signs/stop2.mdl",
-	pos = Vector(0,100,-7),
+	model = "models/metrostroi/re_sign/stop_1.mdl",
+	pos = Vector(0,100,40),
 	angles = Angle(0,90,0),
 	noauto = true,
 }
 ENT.SignModels[8] = {
-	model = "models/metrostroi/signs/opasno.mdl",
-	pos = Vector(0,152,111),
-	angles = Angle(0,90,0),
+	model = "models/metrostroi/re_sign/t_opasno_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 	noauto = true,
 }
 ENT.SignModels[9] = {
-	model = "models/metrostroi/signs/otstoy.mdl",
-	pos = Vector(0,132,111),
-	angles = Angle(0,90,0),
+	model = "models/metrostroi/re_sign/t_otstoi_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 	noauto = true,
 }
 ENT.SignModels[10] = {
@@ -74,66 +75,189 @@ ENT.SignModels[10] = {
 	noauto = true,
 }
 ENT.SignModels[11] = {
-	model = "models/metrostroi/signs/stop.mdl",
-	pos = Vector(0,126,111),
-	angles = Angle(-90,90,-90),
-	YAuto = true,
+	model = "models/metrostroi/re_sign/t_!_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 }
 ENT.SignModels[12] = {
-	model = "models/metrostroi/signs/t.mdl",
-	pos = Vector(0,126,111),
-	angles = Angle(-90,90,-90),
-	YAuto = true,
+	model = "models/metrostroi/re_sign/t_x_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 }
 ENT.SignModels[13] = {
-	model = "models/metrostroi/signs/t_start.mdl",
-	pos = Vector(0,152,111),
-	angles = Angle(0,90,0),
+	model = "models/metrostroi/re_sign/t_nachalo_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 }
 ENT.SignModels[14] = {
-	model = "models/metrostroi/signs/t_end.mdl",
-	pos = Vector(0,152,111),
-	angles = Angle(0,90,0),
+	model = "models/metrostroi/re_sign/t_t_konec_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 }
 ENT.SignModels[15] = {
-	model = "models/metrostroi/signs/t_sbor.mdl",
-	pos = Vector(0,152,111),
-	angles = Angle(0,90,0),
+	model = "models/metrostroi/re_sign/t_sbor_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 }
 ENT.SignModels[16] = {
-	model = "models/metrostroi/signs/ted_up.mdl",
-	pos = Vector(0,126,111),
-	angles = Angle(-90,90,-90),
-	YAuto = true,
+	model = "models/metrostroi/re_sign/t_tedoff_r.mdl",
+	pos = Vector(0,90,112),
+	angles = Angle(0,0,-0),
 }
 ENT.SignModels[17] = {
-	model = "models/metrostroi/signs/ted_down.mdl",
-	pos = Vector(0,126,111),
-	angles = Angle(-90,90,-90),
-	YAuto = true,
+	model = "models/metrostroi/re_sign/t_tedon_r.mdl",
+	pos = Vector(0,90,112),
+	angles = Angle(0,0,-0),
 }
 ENT.SignModels[18] = {
-	model = "models/metrostroi/signs/horn.mdl",
-	pos = Vector(0,126,111),
-	angles = Angle(-90,90,-90),
-	YAuto = true,
+	model = "models/metrostroi/re_sign/t_c_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
 }
 ENT.SignModels[19] = {
-	model = "models/metrostroi/signs/stop_rail_t.mdl",
-	pos = Vector(0,0,-6),
-	angles = Angle(-90,90,-90),
+	model = "models/metrostroi/re_sign/t_t_r.mdl",
+	pos = Vector(0,0,-2),
+	angles = Angle(0,0,0),
 	noauto = true,
+	noleft = true,
 }
 ENT.SignModels[20] = {
-	model = "models/metrostroi/signs/stop_rail.mdl",
-	pos = Vector(0,0,-6),
-	angles = Angle(-90,90,-90),
+	model = "models/metrostroi/re_sign/t_shod.mdl",
+	pos = Vector(0,0,-2),
+	angles = Angle(0,0,0),
 	noauto = true,
+	noleft = true,
 }
 ENT.SignModels[21] = {
-	model = "models/metrostroi/signs/doors_left.mdl",
-	pos = Vector(0,0,-6),
-	angles = Angle(-90,90,-90),
+	model = "models/metrostroi/re_sign/t_door_r.mdl",
+	pos = Vector(0,0,-2),
+	angles = Angle(0,0,0),
+	noauto = true,
+	noleft = true
+}
+ENT.SignModels[22] = {
+	model = "models/metrostroi/re_sign/t_phone_l.mdl",
+	pos = Vector(0,99,125),
+	angles = Angle(0,-90,0),
+	rotate = true,
+}
+ENT.SignModels[23] = {
+	model = "models/metrostroi/re_sign/t_phone_r.mdl",
+	pos = Vector(0,99,125),
+	angles = Angle(0,-90,0),
+	rotate = true,
+}
+ENT.SignModels[24] = {
+	model = "models/metrostroi/re_sign/t_1up_r.mdl",--replace
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
+}
+ENT.SignModels[25] = {
+	model = "models/metrostroi/re_sign/stop_2.mdl",
+	pos = Vector(0,100,40),
+	angles = Angle(0,90,0),
+	noauto = true,
+}
+ENT.SignModels[26] = {
+	model = "models/metrostroi/re_sign/signal_outdoor_och.mdl",
+	pos = Vector(0,100,50),
+	angles = Angle(0,90,0),
+	noauto = true,
+}
+ENT.SignModels[27] = {
+	model = "models/metrostroi/re_sign/signal_outdoor_35.mdl",
+	pos = Vector(0,100,50),
+	angles = Angle(0,90,0),
+	noauto = true,
+}
+ENT.SignModels[28] = {
+	model = "models/metrostroi/re_sign/signal_outdoor_40.mdl",
+	pos = Vector(0,100,50),
+	angles = Angle(0,90,0),
+	noauto = true,
+}
+ENT.SignModels[29] = {
+	model = "models/metrostroi/re_sign/signal_outdoor_60.mdl",
+	pos = Vector(0,100,50),
+	angles = Angle(0,90,0),
+	noauto = true,
+}
+ENT.SignModels[30] = {
+	model = "models/metrostroi/re_sign/signal_outdoor_70.mdl",
+	pos = Vector(0,100,50),
+	angles = Angle(0,90,0),
+	noauto = true,
+}
+ENT.SignModels[31] = {
+	model = "models/metrostroi/re_sign/signal_outdoor_80.mdl",
+	pos = Vector(0,100,50),
+	angles = Angle(0,90,0),
+	noauto = true,
+}
+ENT.SignModels[32] = {
+	model = "models/metrostroi/re_sign/signal_outdoor_sbor.mdl",
+	pos = Vector(0,100,50),
+	angles = Angle(0,90,0),
 	noauto = true,
 }
 
+ENT.SignModels[33] = {
+	model = "models/metrostroi/re_sign/t_35_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
+}
+ENT.SignModels[34] = {
+	model = "models/metrostroi/re_sign/t_opasno_200_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
+}
+ENT.SignModels[35] = {
+	model = "models/metrostroi/tracks/powerrail_end_2.mdl",
+	pos = Vector(0,-0.2,-0.6),
+	angles = Angle(0,0,0),
+	noauto = true,
+	rotate = true,
+}
+ENT.SignModels[36] = {
+	model = "models/metrostroi/tracks/powerrail_end_2.mdl",
+	pos = Vector(0,-0.2+139,-0.6),
+	angles = Angle(0,180,0),
+	noauto = true,
+	rotate = true,
+}
+ENT.SignModels[37] = {
+	model = "models/metrostroi/re_sign/t_2up_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
+}
+ENT.SignModels[38] = {
+	model = "models/metrostroi/re_sign/t_3up_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
+}
+ENT.SignModels[39] = {
+	model = "models/metrostroi/re_sign/t_4up_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
+}
+ENT.SignModels[40] = {
+	model = "models/metrostroi/re_sign/t_5up_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
+}
+ENT.SignModels[41] = {
+	model = "models/metrostroi/re_sign/t_6up_r.mdl",
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
+}
+ENT.SignModels[42] = {
+	model = "models/metrostroi/re_sign/signal_outdoor_x.mdl",
+	pos = Vector(0,100,50),
+	angles = Angle(0,90,0),
+	noauto = true,
+}
+ENT.SignModels[43] = {
+	model = "models/metrostroi/re_sign/t_metal_r.mdl",--replace
+	pos = Vector(0,90,125),
+	angles = Angle(0,0,0),
+}

@@ -164,8 +164,8 @@ function TRAIN_SYSTEM:Think(dT)
 	end
 
 	-- Non-metrostroi maps
-	if ((GetConVarNumber("metrostroi_train_requirethirdrail") <= 0)) or
-	   (not Metrostroi.MapHasFullSupport()) then
+	if ((GetConVarNumber("metrostroi_train_requirethirdrail") <= 0)) then-- or
+	   --(not Metrostroi.MapHasFullSupport()) then
 		self.Main750V = (Metrostroi.Voltage or 750) + self.VoltageDrop
 		return
 	end
@@ -175,7 +175,7 @@ function TRAIN_SYSTEM:Think(dT)
 	self.DropByPeople = 0
 	for i=1,4 do
 		if self.ContactStates[i] then self.Main750V = Metrostroi.Voltage + self.VoltageDrop end
-		if self.Udochkas[i] then
+		if self.Udochkas[i] and self.ContactStates[i] then
 			self.Main750V = Metrostroi.Voltage
 		end
 	end

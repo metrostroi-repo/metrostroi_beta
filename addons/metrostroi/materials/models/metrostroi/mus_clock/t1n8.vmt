@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models/metrostroi/mus_clock/t1n8"
+	"$selfillum" 1
+	"$additive" 1
+}

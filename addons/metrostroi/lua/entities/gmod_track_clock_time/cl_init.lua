@@ -1,35 +1,46 @@
 include("shared.lua")
+ENT.DigitPositions = {
+  {Vector(35,-8.5,0)},
+  {Vector(22,-8.5,0)},
+  {Vector(6,-8.5,0)},
+  {Vector(-7,-8.5,0)},
+  {Vector(-23,-8.5,0)},
+  {Vector(-36,-8.5,0)},
+  {Vector(15,-8.5,0),true},
+  {Vector(-14,-8.5,0),true},
+}
 
+function ENT:Initialize()
+    self.Digits = {}
+end
+function ENT:Think()
+	for k,v in pairs(self.DigitPositions) do
+		if not IsValid(self.Digits[k]) and (not v[2] or self:GetNW2Bool("Type") or not self:GetNW2Bool("Type") and k==7) then
+      if v[2] then
+        self.Digits[k] = ClientsideModel("models/metrostroi/mus_clock/ind_"..(self:GetNW2Bool("Type") and "spb" or "msk").."_type"..tostring(self:GetNW2Int("Light",1)).."_dot.mdl",RENDERGROUP_OPAQUE)
+      else
+        self.Digits[k] = ClientsideModel("models/metrostroi/mus_clock/ind_"..(self:GetNW2Bool("Type") and "spb" or "msk").."_type"..tostring(self:GetNW2Int("Light",1)).."_numb.mdl",RENDERGROUP_OPAQUE)
+      end
+			self.Digits[k]:SetPos(self:LocalToWorld(v[1]))
+			self.Digits[k]:SetAngles(self:GetAngles())
+			self.Digits[k]:SetSkin(10)
+			self.Digits[k]:SetParent(self)
+		end
+	end
+
+  local d = os.date("!*t",Metrostroi.GetSyncTime())
+	if IsValid(self.Digits[1]) then self.Digits[1]:SetSkin(math.floor(d.hour / 10)) end
+	if IsValid(self.Digits[2]) then self.Digits[2]:SetSkin(math.floor(d.hour % 10)) end
+	if IsValid(self.Digits[3]) then self.Digits[3]:SetSkin(math.floor(d.min  / 10)) end
+	if IsValid(self.Digits[4]) then self.Digits[4]:SetSkin(math.floor(d.min  % 10)) end
+	if IsValid(self.Digits[5]) then self.Digits[5]:SetSkin(math.floor(d.sec  / 10)) end
+	if IsValid(self.Digits[6]) then self.Digits[6]:SetSkin(math.floor(d.sec  % 10)) end
+end
+function ENT:OnRemove()
+    for _,v in pairs(self.Digits) do
+			SafeRemoveEntity(v)
+		end
+end
 function ENT:Draw()
 	self:DrawModel()
-
-	if LocalPlayer():GetPos():Distance(self:GetPos()) > 10000 or LocalPlayer():GetPos().z - self:GetPos().z > 500 then return end
-	local pos = self:LocalToWorld(Vector(50,0,15))
-	local ang = self:LocalToWorldAngles(Angle(0,180,90))
-	cam.Start3D2D(pos, ang, 0.125)
-		--surface.SetDrawColor(0, 0, 0, 255)
-		--surface.DrawRect(0, 0, 800, 240)
-
-		local T0 = self:GetNW2Float("T0",os.time())+1396011937
-		local T1 = self:GetNW2Float("T1",CurTime())
-		local dT = (os.time()-T0 + (CurTime() % 1.0)) - (CurTime()-T1)
-		
-		local digits = { 1,2,3,4,5,6 }
-		local os_time = os.time()-dT
-		local d = os.date("!*t",os_time)
-		digits[1] = math.floor(d.hour / 10)
-		digits[2] = math.floor(d.hour % 10)
-		digits[3] = math.floor(d.min / 10)
-		digits[4] = math.floor(d.min % 10)
-		digits[5] = math.floor(d.sec / 10)
-		digits[6] = math.floor(d.sec % 10)
-
-		for i,v in ipairs(digits) do
-			local j = i-1
-			local x = 56+100*(i-1)+50*math.floor((i-1)/2)
-			local y = 48
-			Metrostroi.DrawClockDigit(x,y,1.7,v)
-		end
-		Metrostroi.DrawClockDigit(56+170,48,1.7,".")
-	cam.End3D2D()
 end

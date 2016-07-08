@@ -27,6 +27,7 @@ CreateClientConVar("metrostroi_stop_helper",0,true)
 
 CreateClientConVar("metrostroi_drawdebug",0,true)
 CreateClientConVar("metrostroi_disablecamaccel",0,true)
+CreateClientConVar("metrostroi_disablehovertext",0,true)
 CreateClientConVar("metrostroi_debugger_data_timeout",2,true,false)
 
 CreateClientConVar("metrostroi_tooltip_delay",0,true)

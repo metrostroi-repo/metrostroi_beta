@@ -1,0 +1,6 @@
+"unlitgeneric"
+{
+	$model 1
+	"$basetexture" "models/metrostroi/mus_clock/t4n3"
+	"$additive" 1
+}

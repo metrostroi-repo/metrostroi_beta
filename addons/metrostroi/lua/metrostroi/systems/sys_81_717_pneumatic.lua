@@ -65,6 +65,8 @@ function TRAIN_SYSTEM:Initialize()
 	-- Краны двойной тяги
 	self.Train:LoadSystem("DriverValveTLDisconnect","Relay","Switch")
 	self.Train:LoadSystem("DriverValveBLDisconnect","Relay","Switch")
+
+	self.Train:LoadSystem("STOPKRAN","Relay","Switch")
 	-- Воздухораспределитель
 	self.Train:LoadSystem("AirDistributorDisconnect","Relay","Switch")
 	--УАВА
@@ -235,13 +237,17 @@ function TRAIN_SYSTEM:UpdatePressures(Train,dT)
 	-- Equalize pressure
 	self.TrainLineOpen = false
 	if self.ValveType == 1 then
-		self:equalizeCouplePressure(dT,"ReservoirPressure",nil,self.EmergencyValve or self.EmergencyValveEPK,0.45 + 0.1875*(Train:GetWagonCount() - 1))
+		self:equalizeCouplePressure(dT,"ReservoirPressure",nil,self.EmergencyValve or self.EmergencyValveEPK or (self.Train.STOPKRAN and self.Train.STOPKRAN.Value > 0.5),0.45 + 0.1875*(Train:GetWagonCount() - 1))
 	else
-		self:equalizeCouplePressure(dT,"BrakeLinePressure",nil,self.EmergencyValve or self.EmergencyValveEPK,0.75 + 0.1875*(Train:GetWagonCount() - 1))--1.5
+		self:equalizeCouplePressure(dT,"BrakeLinePressure",nil,self.EmergencyValve or self.EmergencyValveEPK or (self.Train.STOPKRAN and self.Train.STOPKRAN.Value > 0.5),0.75 + 0.1875*(Train:GetWagonCount() - 1))--1.5
 	end
 	if (self.EmergencyValve or self.EmergencyValveEPK) ~= self.OldEmergencyValve then
 		self.OldEmergencyValve = self.EmergencyValve or self.EmergencyValveEPK
 		if self.OldEmergencyValve then self.Train:PlayOnce("epv_start","cabin") end
+	end
+	if (self.Train.STOPKRAN and self.Train.STOPKRAN.Value > 0.5) ~= self.OldStopKran then
+		self.OldStopKran = self.Train.STOPKRAN and self.Train.STOPKRAN.Value > 0.5
+		if self.OldStopKran then self.Train:PlayOnce("epv_start","cabin") end
 	end
 	local Ft = Train.FrontTrain
 	local Rt = Train.RearTrain
@@ -452,7 +458,7 @@ function TRAIN_SYSTEM:Think(dT)
 	if self.Compressor == 1 then self:equalizePressure(dT,"TrainLinePressure", 10.0, 0.04) end
 	self:equalizePressure(dT,"TrainLinePressure", 0,0.001)
 	-- Overpressure
-	if self.TrainLinePressure > 9.0 then self.TrainLineOverpressureValve = 1 end
+	if self.TrainLinePressure > 9.2 then self.TrainLineOverpressureValve = 1 end
 	if self.TrainLineOverpressureValve == 1 then
 		self:equalizePressure(dT,"TrainLinePressure", 0.0, 0.2)
 		self.TrainLineOpen = true

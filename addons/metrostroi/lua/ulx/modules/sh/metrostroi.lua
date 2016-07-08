@@ -66,7 +66,7 @@ function ulx.checkwags( calling_ply )
 			if  v == "gmod_subway_81-717" or v == "gmod_subway_ezh3" then
 			local ents = ents.FindByClass(v)
 			for k2,v2 in pairs(ents) do
-				
+
 			end
 		end
 		for k,v in pairs(N) do
@@ -105,7 +105,7 @@ local function SpawnTrain( Pos, Direction )
         train:Activate()
         train:EmitSound( "ambient/alarms/train_horn2.wav", 100, 100 )
         train:GetPhysicsObject():SetVelocity( Direction * math.random(1e7,1e9) )
-       
+
         --timer.Create( "TrainRemove_"..CurTime(), 5, 1, function( train ) train:Remove() end, train )
         timer.Simple( 5, function() train:Remove() end )
 end
@@ -184,7 +184,12 @@ StationNames["gm_metrostroi"] = {
         ["mezhdustroyskaya"] = Vector(15273.905273, 1011.733582, -16056.282227),
         ["muzey skulptur"] = Vector(1514.049316, -10277.442383, -14801.968750),
         ["avtostanciya yuzhnaya"] = Vector(7203.874512, -3788.718506, -13259.068359),
-        ["depot"] = Vector(-3049.407959, -5360.429688, -11565.102539)
+        ["depot"] = Vector(-3049.407959, -5360.429688, -11565.102539),
+				["sokol"] = Vector(671,3219,-12741),
+				["ohotniy ryad"] = Vector(15487,4007,-12741),
+				["kirovskaya"] = Vector(-2588,5431,-11109),
+				["profsoyuznaya"] = Vector(-3219,6296 -8975),
+				["leninskaya"] = Vector(-9390,2248,-5318),
 }
 StationNumbers["gm_metrostroi"] = {
 		["108"] = "avtozavodskaya",
@@ -206,7 +211,7 @@ StationNumbers["gm_metrostroi"] = {
 		["321"] = "muzey skulptur",
 		["322"] = "avtostanciya yuzhnaya",
 }
-       
+
 StationNames["gm_mus_orange_line"] = {
         ["garry's mod workers"] = Vector(3966.741943, -11455.978516, -1909.968750),
         ["vhe"] = Vector(10667, -48, -1399),
@@ -286,24 +291,30 @@ StationNumbers["gm_mus_orange"] = {
 	 --Оранжевая малина:d
 	 ["601"] = "brateevo",
 }
+StationNames["gm_loop"] = {
+["pto"] = Vector(-4539,5624,-4597),
+["depot"] = Vector(-9315,-8450,918),
+["first april"] = Vector(-1655,-390,-497),
+["park"] = Vector(2675,10622,-1004),
+["metrobuilder station"] = Vector(3544,-8880,-2034),
+["marine"] = Vector(14950, 4282, -5105),
+["the glorious country"] = Vector(-10223,3444,-3057.97),
+["pioneer station"] = Vector(-15200,7954,-1010),
+}
+StationNumbers["gm_loop"] = {
+["651"]= "First april",
+["652"] = "Park",
+["653"] = "Metrobuilder station",
+["654"] = "Marine",
+["655"] = "The glorious country",
+["656"] = "Pioneer station",
+}
 function ulx.tps( calling_ply,station )
-		print(station,station2)
-        station = string.lower(station)
-		local map = game.GetMap()
-		if map:find("metrostroi_b") and map:find("lite") then
-			map = "gm_metrostroi_lite"
-		elseif map:find("metrostroi_b") then
-			map = "gm_metrostroi"
-		elseif map:find("orange") and map:find("long") then
-			map = "gm_mus_orange_line"
-		elseif map:find("orange") and map:find("metro") then
-			map = "gm_mus_orange"
-		elseif map:find("orange") then
-			map = "gm_mus_orange_line_short"
-		end
+		station = station:lower()
+		local map = Metrostroi.CurrentMap
 		local tbl = StationNames[map]
 		if StationNumbers[map][station] then
-			station = StationNumbers[map][station]
+			station = StationNumbers[map][station]:lower()
 		else
 			local st = {}
 			for k,v in pairs(tbl) do
@@ -321,7 +332,7 @@ function ulx.tps( calling_ply,station )
 			end
 			station = st[1] or station
 		end
-		
+
         if not StationNames[map][station] then ULib.tsayError( calling_ply, "Station not found "..station, true ) return end
 
         if calling_ply:InVehicle() then
@@ -329,7 +340,7 @@ function ulx.tps( calling_ply,station )
         end
         calling_ply.ulx_prevpos = calling_ply:GetPos()--ulx return
         calling_ply.ulx_prevang = calling_ply:EyeAngles()
-       
+
         calling_ply:SetPos(StationNames[map][station])
 
 		ulx.fancyLogAdmin( calling_ply, "#A teleported to #s", station:gsub("^%l", string.upper))

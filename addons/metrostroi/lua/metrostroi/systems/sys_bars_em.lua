@@ -127,12 +127,12 @@ function TRAIN_SYSTEM:Think(dT)
 			self.EPK[k] = nil
 		end
 	end
-	
+
 	local PB = Train.PB and Train.PB.Value > 0.5
 	if PB and not self.AttentionPedalTimer and not self.Overspeed then
 		self.AttentionPedalTimer = CurTime() + 1
 	end
-	
+
 	if PB and self.AttentionPedalTimer and (CurTime() - self.AttentionPedalTimer) > 0  then
 		self.AttentionPedal = true
 	end
@@ -165,10 +165,10 @@ function TRAIN_SYSTEM:Think(dT)
 			local pos = Metrostroi.TrainPositions[Train] --Metrostroi.GetPositionOnTrack(Train:GetPos(),Train:GetAngles()) --(this metod laggy for dir checks)
 			if pos then pos = pos[1] end
 			-- Get previous ARS section
-			if pos then 
+			if pos then
 				ars,arsback = Metrostroi.GetARSJoint(pos.node1,pos.x,Metrostroi.TrainDirections[Train], Train)
 			end
-			
+
 			if Train.UAVA and Train.SpeedSign > 0 then
 				if IsValid(arsback) then
 					if arsback == self.AutostopSignal then
@@ -199,7 +199,7 @@ function TRAIN_SYSTEM:Think(dT)
 				self.NoFreq = true
 				self.CheckedNF = 2
 			end
-		
+
 			if IsValid(ars) then
 				self.CheckedNF = 0
 				self.Alert = nil
@@ -207,8 +207,8 @@ function TRAIN_SYSTEM:Think(dT)
 				self.Signal70	= ars:GetARS(7,Train)
 				self.Signal60	= ars:GetARS(6,Train)
 				self.Signal40	= ars:GetARS(4,Train)
-				self.Signal0	= ars:GetARS(0,Train)
-				self.Special	= ars:Get325Hz()
+				self.Signal0	= ars:GetARS(0,Train) or ars:GetARS(2,Train)
+				self.Special	= ars:Get325Hz() and not ars:GetARS(2,Train)
 				self.NoFreq		= ars:GetARS(1,Train) or not (self.Signal80 or self.Signal70 or self.Signal60 or self.Signal40 or self.Signal0)
 				if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then RunConsoleCommand("say",ars.Name,tostring(arsback and arsback.Name),tostring(ars.NextSignalLink and ars.NextSignalLink.Name or "unknown"),tostring(pos.node1.path.id),tostring(Metrostroi.TrainDirections[Train])) end
 				self.RealNoFreq = not (self.Signal80 or self.Signal70 or self.Signal60 or self.Signal40 or self.Signal0)
@@ -340,8 +340,8 @@ function TRAIN_SYSTEM:Think(dT)
 		if self.ARSBrake and self.ElectricBrake1 and self.Speed < 0.25 then
 			self.PneumaticBrake2 = true
 		end
-			
-		if self.Speed < 0.25 then 
+
+		if self.Speed < 0.25 then
  			self.PneumaticBrake1 = true
 		end
 		-- Parking brake limit
@@ -387,7 +387,7 @@ function TRAIN_SYSTEM:Think(dT)
 			if not self.NonVRD and self.Train.VRD.Value < 0.5 then
 				self.VRDTimer = nil
 			end
-				
+
 			self.NonVRD = self.Train.VRD.Value < 0.5
 			if self.NonVRD then
 				if self.VRDTimer and CurTime() - self.VRDTimer > 0 then
@@ -480,7 +480,7 @@ function TRAIN_SYSTEM:Think(dT)
 	if self.Train.RC1 and (self.Train.RC1.Value == 0) then
 		local KAH = (Train.KAH ~= nil and Train.KAH.Value > 0.5) and 1 or 0
 		--self["33D"] = 1
-		self["33G"] = 0                
+		self["33G"] = 0
 		self["33Zh"] = 1--KAH
 		--
 		self["2"] = 0
@@ -557,7 +557,7 @@ function TRAIN_SYSTEM:Think(dT)
 	self.Ring = self.Ring or (self.Alert and self.Alert - CurTime() > 0)
 	if Train.Rp8 then Train.Rp8:TriggerInput("Set",self["8"] + ((self.Train.RC1 and (self.Train.RC1.Value == 0)) and (1-self["33D"]) or 0)) end
 	self.Ring = self.RingOverride or self.Ring
-	
+
 	for k,v in pairs(self.EPK) do
 		if not self.EPKActivated then
 			if self.EPK[k] then

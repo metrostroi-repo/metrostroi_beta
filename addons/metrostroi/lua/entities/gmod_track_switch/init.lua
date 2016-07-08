@@ -3,9 +3,9 @@ AddCSLuaFile("cl_init.lua")
 include("shared.lua")
 
 function ENT:Initialize()
-	self:SetModel("models/metrostroi/signals/box.mdl")
+	self:SetModel("models/metrostroi/signals/mus/box.mdl")
 	Metrostroi.DropToFloor(self)
-	
+
 	-- Initial state of the switch
 	self.AlternateTrack = false
 	self.InhibitSwitching = false
@@ -34,12 +34,12 @@ end
 function ENT:SendSignal(index,channel,route)
 	if not route then
 		if channel and channel ~= self:GetChannel() then return end
-		
+
 		-- Switch to alternate track
 		if index == "alt" then self.AlternateTrack = true end
 		-- Switch to main track
 		if index == "main" then self.AlternateTrack = false end
-		
+
 		-- Remember this signal
 		self.LastSignal = index
 		self.LastSignalTime = CurTime()
@@ -52,13 +52,13 @@ function ENT:SendSignal(index,channel,route)
 		if index == "alt" then self.AlternateTrack = true end
 		if index == "main" then self.AlternateTrack = false end
 	end
-		
+
 end
 
 function ENT:Think()
 	-- Reset
 	self.InhibitSwitching = false
-	
+
 	-- Check if local section of track is occupied or no
 	local pos = self.TrackPosition
 	if pos and self.AlternateTrack then
@@ -67,7 +67,7 @@ function ENT:Think()
 			self.InhibitSwitching = true
 		end
 	end
-	
+
 	if self.NotChangePos == nil then
 		self.NotChangePos = false
 	end
@@ -96,9 +96,9 @@ function ENT:Think()
 
 	-- Process logic
 	self:NextThink(CurTime() + 1.0)
-	if self.TrackPosition.path.id.."/"..self.TrackPosition.node1.id == "16/8" then
-	end
-	if self.TrackPosition then
+	if self.Name and self.Name ~= "" then
+		self:SetNW2String("ID",self.Name)
+	elseif self.TrackPosition then
 		--PrintTable(self.TrackPosition.node1)
 		self:SetNW2String("ID",self.TrackPosition.path.id.."/"..self.TrackPosition.node1.id)
 	end

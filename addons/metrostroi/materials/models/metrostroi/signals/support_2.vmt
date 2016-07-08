@@ -1,0 +1,10 @@
+"vertexlitgeneric"
+{
+ "$basetexture" "models/metrostroi/signals/support_2"
+ "$bumpmap" "models/metrostroi/signals/support_2_norm"
+  $phong 1
+  $phongexponent   20
+  $phongboost    0.8
+  $phongfresnelranges  "[0.5 0.5 0.5]"
+
+}

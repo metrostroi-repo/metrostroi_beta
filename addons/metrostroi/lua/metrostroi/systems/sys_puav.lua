@@ -108,7 +108,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 	surface.CreateFont("MetrostroiSubway_PUAV2", {
 	  font = "Arial",
@@ -124,7 +125,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 	surface.CreateFont("MetrostroiSubway_PUAV3", {
 	  font = "Arial",
@@ -140,7 +142,8 @@ if CLIENT then
 	  rotary = false,
 	  shadow = false,
 	  additive = false,
-	  outline = false
+	  outline = false,
+		extended = true,
 	})
 	function TRAIN_SYSTEM:PUAV2(train)
 		local b = self:Animate("light_16",self:GetPackedBool("W16") and 1 or 0,0,1,15,false)

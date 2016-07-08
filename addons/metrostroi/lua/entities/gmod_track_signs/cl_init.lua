@@ -15,11 +15,7 @@ hook.Add("PostDrawOpaqueRenderables", "metrostroi_sign_debug_draw", function(isD
 end )
 
 function ENT:Initialize()
-	--self.ModelProp = self:GetNW2Int("Model")
-	hook.Add("PlayerBindPress", "metrostroi_sign_startup"..self:EntIndex(), function()
-		self.SendReq = CurTime() + math.random(3)
-		hook.Remove("PlayerBindPress", "metrostroi_signal_startup"..self:EntIndex())
-	end)
+	--self.ModelProp = self:GetNWInt("Model")
 end
 
 function ENT:OnRemove()
@@ -35,8 +31,8 @@ function ENT:RemoveModels()
 end
 function ENT:Think()
 	self:NextThink(CurTime()+5)
-	if self.SendReq == nil or (self.SendReq and CurTime() - self.SendReq <= 0) then return true elseif self.SendReq then self.SendReq = false end
-	if LocalPlayer():GetPos():Distance(self:GetPos()) > 10000 or LocalPlayer():GetPos().z - self:GetPos().z > 500 then
+	--if self.SendReq == nil or (self.SendReq and CurTime() - self.SendReq <= 0) then return true elseif self.SendReq then self.SendReq = false end
+	if self:IsDormant() then
 		if IsValid(self.Model) then
 			self.Model:Remove()
 			self.Model = nil
@@ -46,35 +42,40 @@ function ENT:Think()
 	else
 		self.MustDraw = true
 	end
-	--self.ModelProp = self.SignModels[self:GetNW2Int("Type",99)-1]
-	--self.Offset = self:GetNW2Vector("Offset")
-	if not self.ModelProp and not self.sended then
-		--print(self,"require signs")
-		net.Start("metrostroi-signs")
-			net.WriteEntity(self)
-		net.SendToServer()
-		self.sended = true
-		timer.Simple(1.5,function() self.sended = false end)
+	if self:GetNWInt("Type") ~= self.Type or self:GetNWBool("Left") ~= self.Left or self.Offset ~= self:GetNWVector("Offset") then
+		self.Type = self:GetNWInt("Type")
+		self.ModelProp = self.SignModels[self.Type-1]
+		self.Left = self:GetNWBool("Left",false)
+		if self.Left then
+			self.Offset = self:GetNWVector("Offset")
+		else
+			self.Offset = self:GetNWVector("Offset")
+		end
+		self:RemoveModels()
 	end
 	if not self.ModelProp then return true end
 	if not IsValid(self.Model) then
-		self.Model = ClientsideModel(self.ModelProp.model,RENDERGROUP_OPAQUE)
-		self.Model:SetParent(self)
-		self.Model:SetPos(self:LocalToWorld(self.ModelProp.pos  + self.Offset))
+		if self.Left and not self.ModelProp.noleft then
+			if self.ModelProp.model:find("_r.mdl") then
+				self.Model = ClientsideModel(self.ModelProp.model:Replace("_r.mdl","_l.mdl"),RENDERGROUP_OPAQUE)
+			else
+				self.Model = ClientsideModel(self.ModelProp.model:Replace("_l.mdl","_r.mdl"),RENDERGROUP_OPAQUE)
+			end
+		else
+			self.Model = ClientsideModel(self.ModelProp.model,RENDERGROUP_OPAQUE)
+		end
 		local RAND = math.random(-10,10)
-		self.Model:SetAngles(self:LocalToWorldAngles(self.ModelProp.angles + (self.ModelProp.noauto and Angle() or self.ModelProp.YAuto and Angle(RAND,0,0) or Angle(RAND,0,0))))
+		local pos = self.ModelProp.pos + self.Offset
+		local ang = self.ModelProp.angles
+		if not self.ModelProp.noauto then pos = pos+Vector(0,0,RAND/5); ang = ang+Angle(0,0,RAND) end
+		if self.Left then pos = pos*Vector(1,-1,1) end
+		if self.Left and self.ModelProp.rotate then ang = ang-Angle(0,180,0) end
+		self.Model:SetParent(self)
+		self.Model:SetPos(self:LocalToWorld(pos))
+		self.Model:SetAngles(self:LocalToWorldAngles(ang))
 	end
 	return true
 end
 
 function ENT:Draw()
 end
-net.Receive("metrostroi-signs", function()
-	local ent = net.ReadEntity()
-	if not IsValid(ent) or not ent.SignModels then return end
-	ent.ModelProp = ent.SignModels[net.ReadInt(6)-1]
-	ent.Offset = net.ReadVector()
-	--print(ent.Offset)
-	ent:RemoveModels()
-	--print(ent,"sign received update")
-end)
