@@ -358,7 +358,7 @@ function TOOL:SetSettings(ent, ply, i,inth)
 		end
 		if inth and ent.UAVA  then
 			ent.UAVA:TriggerInput("Set",1)
-			if not self.Plombs or not self.Plombs.VU then
+			if ent.VU and (not self.Plombs or not self.Plombs.VU) then
 				ent.VU:TriggerInput("Set",0)
 				ent.VU:TriggerInput("Block",1)
 			end
@@ -379,8 +379,8 @@ function TOOL:SetSettings(ent, ply, i,inth)
 			ent.CabTexture = self.tbl.CabTexture
 		end
 
+		ent:SetNW2String("NW2Fix",string.rep(" ",math.random()*5))
 		ent:UpdateTextures()
-		ent:SetNW2Bool("NW2Fix",math.random()>0.5)
 	end
 end
 
@@ -388,6 +388,10 @@ function TOOL:SpawnWagon(trace)
 	if CLIENT then return end
 	local ply = self:GetOwner()
 	self.oldent = NULL
+	local FIXFIXFIX = {}
+	for i=1,math.random(12) do
+		FIXFIXFIX[i] = ents.Create("env_sprite")
+	end
 	for i=1,self.tbl.WagNum do
 		local ent = self:Spawn(ply, trace, "gmod_subway_"..Trains[self.tbl.Train][i>1 and i<self.tbl.WagNum and self.int and 2 or 1]:lower(), i)
 		self.fent = i == 1 and ent or self.fent
@@ -397,6 +401,7 @@ function TOOL:SpawnWagon(trace)
 		self.oldent = ent
 	end
 	self.rot = false
+	for k,v in pairs(FIXFIXFIX) do SafeRemoveEntity(v) end
 end
 
 function TOOL:Finish()

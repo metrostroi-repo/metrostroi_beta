@@ -183,17 +183,17 @@ ENT.ButtonMap["PAKSD"] = {
 ENT.ButtonMap["PAKSD1"] = {
 	pos = Vector(454.65,28.4,5.65),
 	ang = Angle(0,-90,57.0),
-	width = 323,
-	height = 113,
-	scale = 0.0304,
+	width = 578, --9.8192
+	height = 202, --3.4352
+	scale = 0.017,
 	props = {},
 }
 ENT.ButtonMap["PAKSD2"] = {
 	pos = Vector(452.0,24.5,1.50),
 	ang = Angle(0,-90,57.0),
-	width = 315,
-	height = 103,
-	scale = 0.0184,
+	width = 341, --5.796
+	height = 112,--1.8952
+	scale = 0.0145,
 	props = {},
 }
 ENT.ButtonMap["PAM"] = {
@@ -604,6 +604,16 @@ ENT.ButtonMap["UAVAPanel"] = {
 	}
 }
 
+ENT.ButtonMap["Stopkran"] = {
+	pos = Vector(401,63,20.7),
+	ang = Angle(0,0,90),
+	width = 200,
+	height = 1300,
+	scale = 0.1/2,
+		buttons = {
+			{ID = "STOPKRANToggle",x=0, y=0, w=200, h=1300, tooltip="ЖЕНЯ ГДЕ ПУИ И ВСЁ ГОВНО(это )"},
+	}
+}
 
 --These values should be identical to those drawing the schedule
 local col1w = 80 -- 1st Column width
@@ -639,6 +649,19 @@ ENT.ButtonMap["IGLA"] = {
 	width = 440, --18333.333333333333333333333333333
 	height = 190, --7916.6666666666666666666666666667
 	scale = 0.017,
+}
+ENT.ButtonMap["IGLAButtons"] = {
+	pos = Vector(460.93,-26.87,36.85),
+	ang = Angle(0,-125,90),
+	width = 165,
+	height = 70,
+	scale = 0.0625,
+		buttons = {
+			{ID = "IGLA1Set",x=26+34*0, y=48, w=14, h=12, tooltip="ИГЛА: Первая кнопка\nIGLA: First button"},
+			{ID = "IGLA2Set",x=26+34*1, y=48, w=14, h=12, tooltip="ИГЛА: Вторая кнопка\nIGLA: Second button"},
+			{ID = "IGLA3Set",x=26+34*2, y=48, w=14, h=12, tooltip="ИГЛА: Третья кнопка\nIGLA: Third button"},
+			{ID = "IGLA4Set",x=26+34*3, y=48, w=14, h=12, tooltip="ИГЛА: Четвёртая кнопка\nIGLA: Fourth button"},
+		}
 }
 ENT.ButtonMap["Motorola"] = {
 	--pos = Vector(453.9,-33.9,16.3),
@@ -1958,6 +1981,12 @@ ENT.ClientProps["wiper"] = {
 	pos = Vector(463.8,0,53.8),
 	ang = Angle(0,-90,0)
 }
+ENT.ClientProps["Stopkran"] = {
+	model = "models/metrostroi/81-717/emergency_brake.mdl",
+	pos = Vector(402.256989,63.137810,9.227647),
+	ang = Angle(0.000000,-90.000000,0.000000),
+}
+
 for i = 0,22 do
 	ENT.ClientProps["lamp1_"..i+1] = {
 		model = "models/metrostroi_train/81/lamp1.mdl",
@@ -2028,8 +2057,9 @@ function ENT:Think()
 		self:HidePanel("AV",self.Breakers)
 		self:HidePanel("AV_1",not self.Breakers)
 		self:HidePanel("VRD",self.Breakers or (self.Blok ~= 1 and self.Blok ~= 3))
-		self:ShowHide("VRD_2",not self.Breakers or (self.Blok ~= 1 and self.Blok ~= 3))
+		self:ShowHide("VRD_2",self.Breakers and self.Blok and (self.Blok == 1 or self.Blok == 3))
 	end
+
 	if self.Blok ~= self:GetNW2Int("Blok",1) then
 		self.Blok = self:GetNW2Int	("Blok",1)
 		self:ShowHide("VPA",self.Blok and (self.Blok == 2 or self.Blok == 4))
@@ -2054,7 +2084,7 @@ function ENT:Think()
 		self:HidePanel("PAKSDM1",not self.Blok or self.Blok ~= 4)
 		self:HidePanel("PAKSDM2",not self.Blok or self.Blok ~= 4)
 		self:HidePanel("VRD",self.Breakers or (self.Blok ~= 1 and self.Blok ~= 3))
-		self:ShowHide("VRD_2",not self.Breakers or (self.Blok ~= 1 and self.Blok ~= 3))
+		self:ShowHide("VRD_2",self.Breakers and self.Blok and (self.Blok == 1 or self.Blok == 3))
 	end
 	if self.ClientProps["KVPLight_light"] and self.ClientProps["KVPLight_light"].skin ~= self:GetNW2Int("KVPType") then
 		self.ClientProps["KVPLight_light"].skin = self:GetNW2Int("KVPType")
@@ -2918,75 +2948,7 @@ function ENT:DrawPost(special)
 			surface.SetAlphaMultiplier(1.0)
 		end
 	end)
-	self:DrawOnPanel("IGLA",function()
-		if not self:GetPackedBool(32) or not self:GetPackedBool(78) then return end
-		local text1 = ""
-		local text2 = ""
-		local C1 = Color(0,200,255,255)
-		local C2 = Color(0,0,100,155)
-		local flash = false
-		local T = self:GetPackedRatio(11)
-		local Ptrain = self:GetPackedRatio(5)*16.0
-		local Pcyl = self:GetPackedRatio(6)*6.0
-		local date = os.date("!*t",os_time)
-
-		-- Default IGLA text
-		text1 = "IGLA-01K     RK TEMP"
-		text2 = Format("%02d:%02d:%02d       %3d C",date.hour,date.min,date.sec,T)
-
-		-- Modifiers and conditions
-		if self:GetPackedBool(25) then text1 = " !!  Right Doors !!" end
-		if self:GetPackedBool(21) then text1 = " !!  Left Doors  !!" end
-
-		if T > 300 then text1 = "Temperature warning!" end
-
-		if self:GetPackedBool(50) and (Pcyl > 1.1) then
-			text1 = "FAIL PNEUMATIC BRAKE"
-			flash = true
-		end
-		if self:GetPackedBool(35) and
-		   self:GetPackedBool(28) then
-			text1 = "FAIL AVU/BRAKE PRESS"
-			flash = true
-		end
-		if self:GetPackedBool(35) and
-		   (not self:GetPackedBool(40)) then
-			text1 = "FAIL SD/DOORS OPEN  "
-			flash = true
-		end
-		if self:GetPackedBool(36) then
-			text1 = "FAIL OVERLOAD RELAY "
-			flash = true
-		end
-		if Ptrain < 5.5 then
-			text1 = "FAIL TRAIN LINE LEAK"
-			flash = true
-		end
-
-		if T > 400 then flash = true end
-		if T > 500 then text1 = "!Disengage circuits!" end
-		if T > 750 then text1 = " !! PIZDA POEZDU !! " end
-
-		-- Draw text
-		if flash and ((RealTime() % 1.0) > 0.5) then
-			C2,C1 = C1,C2
-		end
-		for i=1,20 do
-			surface.SetDrawColor(C2)
-			local str = {utf8.codepoint(text1,1,-1)}
-			local char = utf8.char(str[i])
-			surface.DrawRect(54+(i-1)*25.1,70,20,30)
-			draw.DrawText(string.upper(char or ""),"MetrostroiSubway_IGLA",54+(i-1)*25.1-2,68+0,C1)
-		end
-		for i=1,20 do
-			local str = {utf8.codepoint(text2,1,-1)}
-			local char = utf8.char(str[i])
-			surface.SetDrawColor(C2)
-			surface.DrawRect(54+(i-1)*25.1,70+34,20,30)
-			draw.DrawText(string.upper(char or ""),"MetrostroiSubway_IGLA",54+(i-1)*25.1-2,68+34,C1)
-		end
-		surface.SetAlphaMultiplier(1)
-	end)
+	self:DrawOnPanel("IGLA",function(...) self.IGLA:IGLA(...) end)
 
 	self:DrawOnPanel("FrontPneumatic",function()
 		draw.DrawText(self:GetNW2Bool("FbI") and "Isolated" or "Open","Trebuchet24",150,30,Color(0,0,0,255))

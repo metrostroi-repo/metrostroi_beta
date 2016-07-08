@@ -7,7 +7,7 @@ Metrostroi.ScheduleRoutes = Metrostroi.ScheduleRoutes or {}
 Metrostroi.SchedulesInitialized = false
 
 -- List of all time intervals in which schedules must be generated
--- 		{ start_time, end_time, route_name, train_interval, 
+-- 		{ start_time, end_time, route_name, train_interval,
 Metrostroi.ScheduleConfiguration = Metrostroi.ScheduleConfiguration or {}
 
 -- List of station names
@@ -33,7 +33,7 @@ Metrostroi.ScheduleID = Metrostroi.ScheduleID or 0
 local function timeToSec(str)
 	local x = string.find(str,":")
 	if not x then return tonumber(sec) or 0 end
-	
+
 	local min = tonumber(string.sub(str,1,x-1)) or 0
 	local sec = tonumber(string.sub(str,x+1)) or 0
 	return min*60+sec,min,sec
@@ -53,7 +53,7 @@ local function prepareRouteData(routeData,name)
 			if not Metrostroi.Stations[routeData[i][1]][routeData[i][2]]	then print(Format("No platform %d for station %d",routeData[i][2],routeData[i][1])) return end
 			if not Metrostroi.Stations[routeData[i+1][1]]					then print(Format("No station %d",routeData[i+1][1])) return end
 			if not Metrostroi.Stations[routeData[i+1][1]][routeData[i][2]]	then print(Format("No platform %d for station %d",routeData[i+1][2],routeData[i+1][1])) return end
-			
+
 			-- Get nodes
 			local start_node =	Metrostroi.Stations[routeData[i  ][1]][routeData[i  ][2]].node_end
 			local end_node =	Metrostroi.Stations[routeData[i+1][1]][routeData[i+1][2]].node_end
@@ -63,17 +63,17 @@ local function prepareRouteData(routeData,name)
 					routeData[i+1][2],routeData[i+1][1],end_node.path.id))
 				return
 			end
-			
+
 			-- Calculate travel time between two nodes
 			local travelTime,travelDistance = Metrostroi.GetTravelTime(start_node,end_node)
 			-- Add time for startup and slowdown
 			travelTime = travelTime + 25
-			
+
 			-- Remember stats
 			routeData.Duration = routeData.Duration + travelTime
 			routeData[i].TravelTime = travelTime
 			routeData[i].TravelDistance = travelDistance
-	
+
 			-- Print debug information
 			print(Format("\t\t[%03d-%d]->[%03d-%d]  %02d:%02d min  %4.0f m  %4.1f km/h",
 				routeData[i][1],routeData[i][2],
@@ -84,7 +84,7 @@ local function prepareRouteData(routeData,name)
 			routeData.LastStation = routeData[i][1]
 		end
 	end
-	
+
 	-- Add a quick lookup
 	routeData.Lookup = {}
 	for i,_ in ipairs(routeData) do
@@ -95,7 +95,7 @@ end
 function Metrostroi.InitializeSchedules()
 	if Metrostroi.SchedulesInitialized then return end
 	Metrostroi.SchedulesInitialized = true
-	
+
 	-- Fix up all routes
 	print("Metrostroi: Preparing routes...")
 	for routeName,routeData in pairs(Metrostroi.ScheduleRoutes) do
@@ -125,7 +125,7 @@ function Metrostroi.GenerateSchedule(routeID,starts,ends)
 	end
 	if not fst then print("Metrostroi: Warning! Station "..starts.." not found") st = 1 end
 	if not fen then print("Metrostroi: Warning! Station "..ends.." not found") en = #Metrostroi.ScheduleRoutes[routeID] end
-	
+
 	-- Time padding (extra time before schedule starts, wait time between trains)
 	local paddingTime = timeToSec("1:30")
 	-- Current server time
@@ -134,7 +134,7 @@ function Metrostroi.GenerateSchedule(routeID,starts,ends)
 	if routeID == "Line1_Platform2" then
 		paddingTime = timeToSec("3:00")
 	end
-	
+
 	-- Determine schedule configuration
 	local interval
 	for _,config in pairs(Metrostroi.ScheduleConfiguration) do
@@ -144,18 +144,18 @@ function Metrostroi.GenerateSchedule(routeID,starts,ends)
 			interval = timeToSec(config[4])
 		end
 	end
-	
+
 	-- If no interval, then no schedules available
 	if not interval then return end
-	
-	-- If no schedules started 
+
+	-- If no schedules started
 	if not Metrostroi.DepartureTime[routeID] then
 		Metrostroi.DepartureTime[routeID] = serverTime + paddingTime/60
 	else
 		-- If schedules started, depart with interval
 		Metrostroi.DepartureTime[routeID] = math.max(Metrostroi.DepartureTime[routeID] + interval/60,serverTime + paddingTime/60)
 	end
-	
+
 	-- Create new schedule
 	Metrostroi.ScheduleID = Metrostroi.ScheduleID + 1
 	local schedule = {
@@ -163,7 +163,7 @@ function Metrostroi.GenerateSchedule(routeID,starts,ends)
 		Interval = interval,
 		Duration = Metrostroi.ScheduleRoutes[routeID].Duration,
 	}
-	
+
 	-- Fill out all stations
 	local currentTime = Metrostroi.DepartureTime[routeID]
 	for id,stationData in ipairs(Metrostroi.ScheduleRoutes[routeID]) do
@@ -171,7 +171,7 @@ function Metrostroi.GenerateSchedule(routeID,starts,ends)
 		-- Calculate stop time
 		local stopTime = 15
 --		if not stationData.TravelTime then stopTime = 0 end
-		
+
 		-- Add entry
 		schedule[#schedule+1] = {
 			stationData[1],				-- Station
@@ -179,19 +179,19 @@ function Metrostroi.GenerateSchedule(routeID,starts,ends)
 			currentTime+stopTime/60,		-- Departure time
 			currentTime,				-- Arrival time
 		}
-		
-		schedule[#schedule].arrivalTimeStr = 
+
+		schedule[#schedule].arrivalTimeStr =
 			Format("%02d:%02d:%02d",
 				math.floor(schedule[#schedule][3]/60),
 				math.floor(schedule[#schedule][3])%60,
 				math.floor(schedule[#schedule][3]*60)%60)
-		
+
 		-- Add travel time
 		if stationData.TravelTime then
 			currentTime = currentTime + (stationData.TravelTime + stopTime)/60
 		end
 	end
-	
+
 	-- Fill out start and end
 	schedule.StartStation = schedule[1][1]
 	schedule.EndStation = schedule[#schedule][1]

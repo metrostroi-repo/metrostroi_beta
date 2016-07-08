@@ -1,8 +1,0 @@
-"VertexLitGeneric"
-{
-
-	$basetexture "models/metrostroi/signals/blue"
-	$selfillum 1
-
-
-}

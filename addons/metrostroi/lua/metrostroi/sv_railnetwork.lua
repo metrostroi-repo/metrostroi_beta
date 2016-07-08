@@ -37,8 +37,7 @@ if not Metrostroi.Paths then
 
 	Metrostroi.OldUpdateTime = 0
 end
-Metrostroi.SignalVersion = 1
-
+Metrostroi.SignalVersion = 1.1
 
 
 --------------------------------------------------------------------------------
@@ -252,7 +251,6 @@ function Metrostroi.UpdateSignalEntities()
 				print(Format("Metrostroi: Signal %s, second position not found, system can't detect direction of the signal!",v.Name))
 				v.TrackDir = true
 			end
-			if v.Left then v.TrackDir = not v.TrackDir end
 			if not v.ARSOnly then
 				--v.AutostopPos = Metrostroi.GetTrackPosition(pos.path,v.TrackX - (v.TrackDir and 2.5 or -2.5))
 				--if not v.AutostopPos then print(Format("Metrostroi: Signal %s, can't place autostop!",v.Name)) end
@@ -296,13 +294,19 @@ function Metrostroi.UpdateSwitchEntities()
 	for k,v in pairs(entities) do
 		local pos = Metrostroi.GetPositionOnTrack(v:GetPos(),v:GetAngles() - Angle(0,90,0))[1]
 		if pos then
+			if not v.Name or v.Name == "" then
+				--pos.path.id.."/"..pos.node1.id
+				if not Metrostroi.SwitchesByName[pos.path.id] then Metrostroi.SwitchesByName[pos.path.id] = {} end
+				Metrostroi.SwitchesByName[pos.path.id][pos.node1.id] = v
+			end
 			Metrostroi.SwitchesForNode[pos.node1] = Metrostroi.SwitchesForNode[pos.node1] or {}
 			table.insert(Metrostroi.SwitchesForNode[pos.node1],v)
-			--pos.path.id.."/"..pos.node1.id
-			if not Metrostroi.SwitchesByName[pos.path.id] then Metrostroi.SwitchesByName[pos.path.id] = {} end
-			Metrostroi.SwitchesByName[pos.path.id][pos.node1.id] = v
 			v.TrackPosition = pos -- FIXME: check that one switch belongs to one track
 		end
+		if v.Name and v.Name ~= "" then
+			Metrostroi.SwitchesByName[v.Name] = v
+		end
+
 	end
 	Metrostroi.PostSignalInitialize()
 end
@@ -402,7 +406,6 @@ function Metrostroi.ScanTrack(itype,node,func,x,dir,checked,startx,train)
 	end
 	if checked[node] then return end
 	checked[node] = true
-
 	-- Try to use entire node length by default
 	local min_x = node.x
 	local max_x = min_x + node.length
@@ -496,6 +499,9 @@ end
 -- Get one next switch by name
 --------------------------------------------------------------------------------
 function Metrostroi.GetSwitchByName(switch_name)
+	if 	Metrostroi.SwitchesByName[switch_name] then
+		return Metrostroi.SwitchesByName[switch_name]
+	end
 	switch_name = tostring(switch_name)
 	local Path = tonumber(switch_name:sub(1,1))
 	local ID = tonumber(switch_name:sub(2,-1))
@@ -612,8 +618,8 @@ function Metrostroi.GetARSJoint(src_node,x,dir,train)
 			if not train.SpeedSing or  (math.abs(train.Speed*train.SpeedSing or 99) > 2 and ((train.Speed*train.SpeedSing > 0 and data.speed > 0) or (train.Speed*train.SpeedSing < 0 and data.speed < 0))) then
 				if inRange(x,data.StartX,data.EndX) or inRange(x,data.EndX,data.StartX) then
 					--print(data.StartX-data.EndX,train:EntIndex())
-					if data.signal and data.signal.TrackPosition and x - data.signal.TrackPosition.x > 10000 then print "Metrostroi:GetARSJoint: Signal is too far" data.signal = nil end
-					if data.signal and data.signal.TrackPosition and data.signal.TrackPosition.x - x > 10000 then print "Metrostroi:GetARSJoint: Signal is too far" data.signal = nil end
+					if data.signal and data.signal.TrackPosition and x - data.signal.TrackPosition.x > 4000 then print("Metrostroi:GetARSJoint: Signal is too far") data.signal = nil return end
+					if data.signal and data.signal.TrackPosition and data.signal.TrackPosition.x - x > 4000 then print("Metrostroi:GetARSJoint: Signal is too far") data.signal = nil return end
 					--if x < data.signal.TrackPosition.x then print(2) end
 					if src_node.path.id == data.pathID then
 						if GetConVarNumber("metrostroi_ars_printnext") == train:EntIndex() then end
@@ -734,14 +740,15 @@ function Metrostroi.UpdateTrainPositions()
 	for _,class in pairs(Metrostroi.TrainClasses) do
 		local trains = ents.FindByClass(class)
 		for _,train in pairs(trains) do
+			if not IsValid(train) then continue end
 			if train.ALS_ARS and train.ALS_ARS.IgnoreThisARS then continue end
-			local positions = Metrostroi.GetPositionOnTrack(train.FrontBogey:GetPos(),train:GetAngles())
+			local positions = Metrostroi.GetPositionOnTrack((train.FrontBogey or train):GetPos(),train:GetAngles())
 			local positions2
 			if not positions or not positions[1] then
 				positions =  Metrostroi.GetPositionOnTrack(train:LocalToWorld(Vector(0,0,0)),train:GetAngles())
 				positions2 = Metrostroi.GetPositionOnTrack(train:LocalToWorld(Vector(25,0,0)), train:GetAngles())
 			else
-				positions2 = Metrostroi.GetPositionOnTrack(train.FrontBogey:LocalToWorld(Vector(-25,0,0)), train:GetAngles())
+				positions2 = Metrostroi.GetPositionOnTrack((train.FrontBogey or train):LocalToWorld(Vector(-25,0,0)), train:GetAngles())
 			end
 			Metrostroi.TrainPositions[train] = {}
 			Metrostroi.TrainDirections[train] = true
@@ -820,10 +827,17 @@ function Metrostroi.GetTravelTime(src,dest)
 	local travel_speed = 20
 	local iter = 0
 	function scan(node,path)
+		local oldx
+		local oldars
 		while (node) and (node ~= dest) do
 			local ars_speed
 			local ars_joint = Metrostroi.GetARSJoint(node,node.x+0.01,path or true)
 			if ars_joint then
+				--[[if oldx and oldx ~= ars_joint.TrackPosition.x then
+					print(Format("\t\t\t%.2f:\t%s->%s",(ars_joint.TrackPosition.x - oldx)/18.8,oldars.Name,ars_joint.Name))
+				end
+				oldx = ars_joint.TrackPosition.x
+				oldars = ars_joint]]
 				--print(ars_joint.Name)
 				local ARSLimit = ars_joint:GetMaxARS()
 				--print(ARSLimit)
@@ -842,6 +856,7 @@ function Metrostroi.GetTravelTime(src,dest)
 			travel_dist = travel_dist + node.length
 			travel_time = travel_time + (node.length / (speed/3.6))
 			node = node.next
+			if not node then break end
 			if src.path == dest.path and node.branches and node.branches[1][2].path == src.path then scan(node,src.x > node.branches[1][2].x) end
 			if src.path == dest.path and node.branches and  node.branches[2] and node.branches[2][2].path == src.path then scan(node,src.x > node.branches[1][1].x) end
 			assert(iter < 10000, "OH SHI~")
@@ -991,8 +1006,9 @@ function Metrostroi.Load(name,keep_signs)
 		print("Metrostroi: Loading signs, signals, switches...")
 		local signs = util.JSONToTable(file.Read(string.format("metrostroi_data/signs_%s.txt",name)) or "")
 		if not signs then print("Metrostroi: Signs file is corrupted!") end
+		local version = signs.Version
 		if signs then
-			if not signs.Version or signs.Version < Metrostroi.SignalVersion then
+			if not version then
 				print("Metrostroi: This signs file is incompatible with signs version")
 				signs = nil
 			else
@@ -1010,11 +1026,13 @@ function Metrostroi.Load(name,keep_signs)
 						ent:SetChannel(v.Channel or 1)
 						ent.LockedSignal = v.LockedSignal
 						ent.NotChangePos = v.NotChangePos
+						ent.Name = v.Name,
 						ent:Spawn()
 					end
 					if v.Class == "gmod_track_signal" and v.Routes then
 						ent.SignalType = v.SignalType
 						ent.Name = v.Name
+						ent.RouteNumberSetup = v.RouteNumberSetup
 						ent.LensesStr = v.LensesStr
 						ent.Lenses = string.Explode("-",v.LensesStr)
 						ent.RouteNumber = v.RouteNumber
@@ -1022,6 +1040,8 @@ function Metrostroi.Load(name,keep_signs)
 						ent.Routes = v.Routes
 						ent.ARSOnly = v.ARSOnly
 						ent.Left = v.Left
+						ent.Double = v.Double
+						ent.DoubleL = v.DoubleL
 						ent.Approve0 = v.Approve0
 						ent.Depot = v.Depot
 						ent.NonAutoStop = v.NonAutoStop
@@ -1033,12 +1053,18 @@ function Metrostroi.Load(name,keep_signs)
 								ent.InS = i
 							end
 						end
+						if version == 1 and ent.Left then
+							print(Format("Metrostroi: Signal %s rotated.",ent.Name))
+							ent:SetAngles(ent:LocalToWorldAngles(ent:WorldToLocalAngles(ent:GetAngles())+Angle(0,180,0)))
+						end
 						ent:Spawn()
 					elseif v.Class == "gmod_track_signs" then
 						ent.SignType = v.SignType
 						ent.YOffset = v.YOffset
 						ent.ZOffset = v.ZOffset
+						ent.Left = v.Left,
 						ent:Spawn()
+						ent:SendUpdate()
 					elseif v.Class == "gmod_track_signal" then ent:Remove() end
 				end
 			end
@@ -1058,7 +1084,7 @@ function Metrostroi.Load(name,keep_signs)
 
 	-- Load schedules data
 	print("Metrostroi: Loading schedules configuration...")
-	local sched_data = util.JSONToTable(file.Read(string.format("metrostroi_data/sched_%s.txt",name)) or "")
+	local sched_data = util.JSONToTable(file.Read(string.format("metrostroi_data/sched_%s.txt", game.GetMap())) or "")
 	if sched_data then
 		Metrostroi.LoadSchedulesData(sched_data)
 	else
@@ -1086,9 +1112,10 @@ function Metrostroi.Save(name)
 	if not signals_ents then print("Metrostroi: Signs file is corrupted!") end
 	for k,v in pairs(signals_ents) do
 		if not Metrostroi.ARSSubSections[v] then
-			local Routes = v.Routes
+			local Routes = table.Copy(v.Routes)
 			for k,v in pairs(Routes) do
-				LightsExploded = nil
+				v.LightsExploded = nil
+				v.IsOpened = nil
 			end
 			table.insert(signs,{
 				Class = "gmod_track_signal",
@@ -1096,6 +1123,7 @@ function Metrostroi.Save(name)
 				Angles = v:GetAngles(),
 				SignalType = v.SignalType,
 				Name = v.Name,
+				RouteNumberSetup = v.RouteNumberSetup,
 				LensesStr = v.LensesStr,
 				RouteNumber =	v.RouteNumber,
 				IsolateSwitches = v.IsolateSwitches,
@@ -1103,7 +1131,10 @@ function Metrostroi.Save(name)
 				Routes = Routes,
 				Approve0 = v.Approve0,
 				Depot = v.Depot,
+				NonAutoStop = v.NonAutoStop,
 				Left = v.Left,
+				Double = v.Double,
+				DoubleL = v.DoubleL,
 				AutoStop = v.AutoStop,
 				PassOcc = v.PassOcc,
 			})
@@ -1115,6 +1146,7 @@ function Metrostroi.Save(name)
 			Class = "gmod_track_switch",
 			Pos = v:GetPos(),
 			Angles = v:GetAngles(),
+			Name = v.Name,
 			Channel = v:GetChannel(),
 			NotChangePos = v.NotChangePos,
 			LockedSignal = v.LockedSignal,
@@ -1129,6 +1161,7 @@ function Metrostroi.Save(name)
 			SignType = v.SignType,
 			YOffset = v.YOffset,
 			ZOffset = v.ZOffset,
+			Left = v.Left,
 		})
 	end
 	signs.Version = Metrostroi.SignalVersion
@@ -1143,6 +1176,9 @@ end
 --------------------------------------------------------------------------------
 -- Concommands and automatic loading of rail network
 --------------------------------------------------------------------------------
+hook.Add("Initialize", "Metrostroi_MapInitialize", function()
+	timer.Simple(2.0,Metrostroi.Load)
+end)
 hook.Add("Initialize", "Metrostroi_MapInitialize", function()
 	timer.Simple(2.0,Metrostroi.Load)
 end)
@@ -1162,6 +1198,15 @@ end)
 concommand.Add("metrostroi_save", function(ply, _, args)
 	if (ply:IsValid()) and (not ply:IsAdmin()) then return end
 	Metrostroi.Save()
+end)
+concommand.Add("metrostroi_reload", function(ply, _, args)
+	if (ply:IsValid()) and (not ply:IsAdmin()) then return end
+	local sched_data = util.JSONToTable(file.Read(string.format("metrostroi_data/sched_%s.txt", game.GetMap())) or "")
+	if sched_data then
+		Metrostroi.LoadSchedulesData(sched_data)
+	else
+		print("Metrostroi: Could not load schedules configuration!")
+	end
 end)
 
 concommand.Add("metrostroi_load", function(ply, _, args)

@@ -330,3 +330,17 @@ timer.Create("Metrostroi_3DSkyFix",1.0,0,function()
 
 	RunConsoleCommand("r_3dsky", (player:GetPos().z < -1024) and "0" or "1")
 end)
+function Metrostroi.GetTimedT(notsync)
+	local T0 = GetGlobalFloat("MetrostroiT0",os.time())+1396011937
+	local T1 = GetGlobalFloat("MetrostroiT1",CurTime())
+	local dT
+	if notsync then
+		dT = (os.time()-T0) - (CurTime()-T1)
+	else
+		dT = (os.time()-T0 + (CurTime() % 1.0)) - (CurTime()-T1)
+	end
+	return dT
+end
+function Metrostroi.GetSyncTime(notsync)
+	return os.time()-Metrostroi.GetTimedT(notsync)
+end

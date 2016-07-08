@@ -283,6 +283,7 @@ function ENT:Think()
 	-- Animate models for cleanup
 	for k,v in pairs(self.CleanupModels) do
 	--	if not v or not IsValid(v) then self.CleanupModels[k] = nil return end
+		if not IsValid(v.ent) then continue end
 		-- Get pos and target in XY plane
 		local pos = v.ent:GetPos()
 		local target = v.target

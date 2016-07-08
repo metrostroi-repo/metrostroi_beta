@@ -404,7 +404,6 @@ ENT.FrontDoor = 0
 --------------------------------------------------------------------------------
 
 function ENT:UpdateTextures()
-	local texture = Metrostroi.Skins["train"][self:GetNW2String("texture")]
 	local passtexture = Metrostroi.Skins["pass"][self:GetNW2String("passtexture")]
 	local cabintexture = Metrostroi.Skins["cab"][self:GetNW2String("cabtexture")]
 	for _,ent in pairs(self.ClientEnts) do
@@ -417,9 +416,6 @@ function ENT:UpdateTextures()
 			end
 			if passtexture and passtexture.textures[tex] then
 				ent:SetSubMaterial(k-1,passtexture.textures[tex])
-			end
-			if texture and texture.textures[tex] then
-				ent:SetSubMaterial(k-1,texture.textures[tex])
 			end
 		end
 	end

@@ -14,7 +14,8 @@ surface.CreateFont("MetrostroiSubway_LargeText", {
   rotary = false,
   shadow = false,
   additive = false,
-  outline = false
+  outline = false,
+  extended = true
 })
 surface.CreateFont("MetrostroiSubway_SmallText", {
   font = "Arial",
@@ -30,7 +31,8 @@ surface.CreateFont("MetrostroiSubway_SmallText", {
   rotary = false,
   shadow = false,
   additive = false,
-  outline = false
+  outline = false,
+  extended = true
 })
 surface.CreateFont("MetrostroiSubway_VerySmallText", {
   font = "Arial",
@@ -46,7 +48,8 @@ surface.CreateFont("MetrostroiSubway_VerySmallText", {
   rotary = false,
   shadow = false,
   additive = false,
-  outline = false
+  outline = false,
+  extended = true
 })
 surface.CreateFont("MetrostroiSubway_VerySmallText2", {
   font = "Arial",
@@ -78,7 +81,8 @@ surface.CreateFont("MetrostroiSubway_VerySmallText2", {
   rotary = false,
   shadow = false,
   additive = false,
-  outline = false
+  outline = false,
+  extended = true
 })
 surface.CreateFont("MetrostroiSubway_LargeText2", {
   font = "Arial",
@@ -94,7 +98,8 @@ surface.CreateFont("MetrostroiSubway_LargeText2", {
   rotary = false,
   shadow = false,
   additive = false,
-  outline = false
+  outline = false,
+  extended = true
 })
 surface.CreateFont("MetrostroiSubway_LargeText3", {
   font = "Arial",
@@ -110,7 +115,8 @@ surface.CreateFont("MetrostroiSubway_LargeText3", {
   rotary = false,
   shadow = false,
   additive = false,
-  outline = false
+  outline = false,
+  extended = true
 })
 surface.CreateFont("MetrostroiSubway_IGLA", {
   font = "IEE2",
@@ -126,12 +132,30 @@ surface.CreateFont("MetrostroiSubway_IGLA", {
   rotary = false,
   shadow = false,
   additive = false,
-  outline = false
+  outline = false,
+  extended = true
 })
 surface.CreateFont("MetrostroiSubway_FixedSYS", {
   font = "FixedsysTTF",
   size = 40,
   weight = 0,
+  blursize = 0,
+  scanlines = 0,
+  antialias = true,
+  underline = false,
+  italic = false,
+  strikeout = false,
+  symbol = false,
+  rotary = false,
+  shadow = false,
+  additive = false,
+  outline = false,
+  extended = true
+})
+surface.CreateFont("MetrostroiSubway_Speed", {
+  font = "LCD AT&T Phone Time/Date",
+  size = 200,
+  weight = 400,
   blursize = 0,
   scanlines = 0,
   antialias = true,
@@ -158,7 +182,8 @@ surface.CreateFont("MetrostroiSubway_InfoPanel", {
   rotary = false,
   shadow = false,
   additive = false,
-  outline = false
+  outline = false,
+  extended = true
 })
 surface.CreateFont("MetrostroiSubway_InfoRoute", {
   font = "Arial",
@@ -174,7 +199,8 @@ surface.CreateFont("MetrostroiSubway_InfoRoute", {
   rotary = false,
   shadow = false,
   additive = false,
-  outline = false
+  outline = false,
+  extended = true
 })
 surface.CreateFont("Trebuchet24", { --Creating BUILTIN font (idk what happened with this font')
   font = "Trebuchet",
@@ -184,6 +210,7 @@ surface.CreateFont("Trebuchet24", { --Creating BUILTIN font (idk what happened w
   scanlines = 10,
   antialias =  true,
   additive = false,
+  extended = true
 })
 --------------------------------------------------------------------------------
 -- Console commands and convars
@@ -1519,7 +1546,7 @@ hook.Add( "HUDPaint", "metrostroi-draw-crosshair-tooltip", function()
 			surface.DrawCircle(scrX/2,scrY/2,4.1,drawCrosshair and Color(255,0,0) or Color(255,255,150))
 		end
 
-		if toolTipText ~= nil then
+		if toolTipText ~= nil and GetConVarNumber("metrostroi_disablehovertext") == 0 then
 			local text1 = string.sub(toolTipText,1,string.find(toolTipText,"\n"))
 			local text2 = string.sub(toolTipText,string.find(toolTipText,"\n") or 1e9)
 			surface.SetFont("BudgetLabel")

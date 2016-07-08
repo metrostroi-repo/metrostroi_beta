@@ -1,17 +1,23 @@
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
-
+function ENT:KeyValue(key, value)
+	self.VMF = self.VMF or {}
+	self.VMF[key] = value
+end
 function ENT:Initialize()
-	self:SetModel("models/metrostroi/signals/clock_time.mdl")
+	self:EntIndex()
+	self.VMF = self.VMF or {}
+	self.Type		= (tonumber(self.VMF.Type) or 1)
+	self.Light		= (tonumber(self.VMF.Light) or 1)
+	if self.Type == 0 then
+		self:SetModel("models/metrostroi/clock_time_moscow.mdl")
+	else
+		self:SetModel("models/metrostroi/clock_time_type2.mdl")
+	end
+	self:SetNW2Bool("Type",self.Type > 0)
+	self:SetNW2Int("Light",self.Light+1)
 end
 
 function ENT:Think()
-	-- Time sync
-	self.Timeout = self.Timeout or 0
-	if (CurTime() - self.Timeout) > 60.0 then
-		self.Timeout = CurTime()
-		self:SetNW2Float("T0",os.time()-1396011937)
-		self:SetNW2Float("T1",CurTime())
-	end
 end

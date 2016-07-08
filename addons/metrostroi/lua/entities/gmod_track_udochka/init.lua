@@ -39,7 +39,7 @@ function ENT:Think()
 	local constrainttable = constraint.FindConstraints(self,"Weld")
 	self.CoupledWith = nil
 	for k,v in pairs(constrainttable) do
-		if v.Type == "Weld" then 
+		if v.Type == "Weld" then
 			if( (v.Ent1 == self or v.Ent1 == self.Coupled) and (v.Ent2 == self or v.Ent2 == self.Coupled.Coupled)) then
 				self.CoupledWith = (v.Ent1 == self.Coupled and v.Ent1 or v.Ent2)
 				if not self.Coupled then

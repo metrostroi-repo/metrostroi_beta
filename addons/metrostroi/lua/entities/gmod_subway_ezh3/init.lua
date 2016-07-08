@@ -226,9 +226,9 @@ function ENT:Initialize()
 		[20] = { "light",			Vector(390, -69, 48), Angle(0,0,0), Color(50,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		[21] = { "light",			Vector(390, -69, 45), Angle(0,0,0), Color(255,255,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 
-		[30] = { "headlight", Vector(447.8,-34.6,9.6), Angle(0,0,0), Color(255,161,40), farz = 3, nearz = 1, shadows = 0, brightness = 0.3, fov = 124 },
-		[31] = { "headlight", Vector(449,-32.9,13.5), Angle(0,4,0), Color(237,161,73), farz = 3, nearz = 1, shadows = 0, brightness = 0.2, fov = 120 },
-		[32] = { "headlight", Vector(445.6,-38.4,0.1), Angle(-65,-5,0), Color(20,161,20), farz = 5, nearz = 1, shadows = 0, brightness = 0.2, fov = 140 },
+		[30] = { "headlight", Vector(447.8,-34.6,9.6), Angle(0,0,0), Color(255,161,40), farz = 3, nearz = 1, shadows = 0, brightness = 2, fov = 124 },
+		[31] = { "headlight", Vector(449,-32.9,13.5), Angle(0,4,0), Color(237,161,73), farz = 3, nearz = 1, shadows = 0, brightness = 2, fov = 120 },
+		[32] = { "headlight", Vector(445.6,-38.4,0.1), Angle(-65,-5,0), Color(20,161,20), farz = 5, nearz = 1, shadows = 0, brightness = 2, fov = 140 },
 		[33] = { "headlight", Vector(446.5,-57.2,20.4), Angle(-90,0,0), Color(216,161,92), farz = 7.2, nearz = 1, shadows = 0, brightness = 2, fov = 120 },
 
 		-- Custom D

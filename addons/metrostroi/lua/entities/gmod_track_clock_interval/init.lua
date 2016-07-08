@@ -4,21 +4,26 @@ include("shared.lua")
 
 
 
-
+function ENT:KeyValue(key, value)
+	self.VMF = self.VMF or {}
+	self.VMF[key] = value
+end
 --------------------------------------------------------------------------------
 function ENT:Initialize()
-	self:SetModel("models/metrostroi/signals/clock_interval.mdl")
+	self:EntIndex()
+	self.VMF = self.VMF or {}
+	self.Type		= (tonumber(self.VMF.Type) or 1)
+	self.Light		= (tonumber(self.VMF.Light) or 1)
+	if self.Type == 0 then
+		self:SetModel("models/metrostroi/clock_interval_moscow.mdl")
+	else
+		self:SetModel("models/metrostroi/clock_interval_type2.mdl")
+	end
+	self:SetNW2Bool("Type",self.Type > 0)
+	self:SetNW2Int("Light",self.Light+1)
 end
 
 function ENT:Think()
-	-- Time sync
-	self.Timeout = self.Timeout or 0
-	if (CurTime() - self.Timeout) > 60.0 then
-		self.Timeout = CurTime()
-		self:SetNW2Float("T0",os.time()-1396011937)
-		self:SetNW2Float("T1",CurTime())
-	end
-
 	-- Check if train passes the sign
 	self.SensingTrain = false
 	for ray=0,6 do
@@ -29,10 +34,10 @@ function ENT:Think()
 			--filter = { },
 			ignoreworld = true,
 		}
-		
+
 		--debugoverlay.Cross(trace.start,10,1,Color(0,0,255))
 		--debugoverlay.Line(trace.start,trace.endpos,1,Color(0,0,255))
-		
+
 		local result = util.TraceLine(trace)
 		if result.Hit and (not result.HitWorld) then
 			--debugoverlay.Sphere(result.HitPos,5,1,Color(0,0,255),true)
@@ -49,7 +54,7 @@ function ENT:Think()
 		self.SensingTime = os.time()
 		self.IntervalReset = true
 	end
-	
+
 	-- If not sensing anything for more than 3 seconds, expect something again
 	if (not self.SensingTrain) and (os.time() - self.SensingTime > 7.0) then
 		self.IntervalReset = false

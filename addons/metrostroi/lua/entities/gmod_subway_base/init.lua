@@ -696,6 +696,15 @@ function ENT:SpawnSwitch(model,pos,ang,min,max,soundtbl)
 end
 Metrostroi.SignsTextures = {
 }
+
+
+Metrostroi.SignsTextures["gm_loop"] = {
+	[651] = {"models/metrostroi_train/signs/loop/firstapril","Первоапрельская"},
+	[652] = {"models/metrostroi_train/signs/loop/park","Парк"},
+	[654] = {"models/metrostroi_train/signs/loop/mr","Морская"},
+	[655] = {"models/metrostroi_train/signs/loop/slst","Славная страна"},
+	[656] = {"models/metrostroi_train/signs/loop/pio","Пионерская"},
+}
 Metrostroi.SignsTextures["gm_metrostroi_lite"] = {
 	[108] = {"models/metrostroi_train/signs/b50/avtozavodskaya","Автозаводская"},
 	[111] = {"models/metrostroi_train/signs/b50/oktyabrskyaya","Октябрьская"},

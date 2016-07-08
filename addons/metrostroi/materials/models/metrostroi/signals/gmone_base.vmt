@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/metrostroi/signals/gmone_base"
+	"$bumpmap" "models/metrostroi/signals/gmone_base_norm"
+}

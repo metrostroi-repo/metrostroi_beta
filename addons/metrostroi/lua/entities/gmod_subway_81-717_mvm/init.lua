@@ -706,6 +706,7 @@ function ENT:Think()
 	self:SetPackedBool("KDLRK",self.KDLRK.Value > 0)
 	self:SetPackedBool("KDPK",self.KDPK.Value > 0)
 	self:SetPackedBool("KAHK",self.KAHK.Value > 0)
+	self:SetPackedBool("STOPKRAN",self.STOPKRAN.Value > 0)
 
 	self:SetPackedBool("CustomD",self.CustomD.Value > 0)
 	self:SetPackedBool("CustomE",self.CustomE.Value > 0)
@@ -899,6 +900,8 @@ function ENT:Think()
 	self:SetPackedBool(46,self.ALS_ARS.Signal80)
 	-- KT
 	self:SetPackedBool(47,self.ALS_ARS.LKT)
+	-- ЛН
+	self:SetPackedBool("LN",self.ALS_ARS.LN)
 	-- KVD
 	self:SetPackedBool(48,self:ReadTrainWire(21) > 0.5)--self.ALS_ARS.LVD)
 	-- LST
@@ -913,7 +916,7 @@ function ENT:Think()
 	-- LRS
 	self:SetPackedBool(54,(self.Panel["V1"] > 0.5) and
 		(self.ALS.Value > 0.5) and
-		(GetConVarNumber("metrostroi_ars_sfreq") > 0 and not self.ALS_ARS.RealNoFreq and self.ALS_ARS.NextLimit >= self.ALS_ARS.SpeedLimit))
+		(GetConVarNumber("metrostroi_ars_sfreq") > 0 and self.ALS_ARS.SpeedLimit > 20 and not self.ALS_ARS.RealNoFreq and self.ALS_ARS.NextLimit >= self.ALS_ARS.SpeedLimit))
 
 	-- AV states
 	for i,v in ipairs(self.Panel.AVMap) do
@@ -951,7 +954,7 @@ function ENT:Think()
 		-- LEKK
 		self:SetLightPower(51, false)
 		-- LN
-		self:SetLightPower(52, false)
+		self:SetLightPower(52, self:GetPackedBool("LN") and self:GetPackedBool(32))
 		-- LKVD
 		self:SetLightPower(53, self:GetPackedBool(48) and self:GetPackedBool(32))
 		-- LKT
@@ -973,8 +976,6 @@ function ENT:Think()
   self.SOSD = self.Panel["SD"] <= 0 and self.Panel["V1"] > 0 and self.KV.ReverserPosition ~= 0
 	self:SetLightPower(70,self.SOSD)
 
-	-- Total temperature
-	local IGLA_Temperature = math.max(self.Electric.T1,self.Electric.T2)
 
 	-- Feed packed floats
 	self:SetPackedRatio(0, 1-self.Pneumatic.DriverValvePosition/7)
@@ -1007,14 +1008,12 @@ function ENT:Think()
 		--print(self.Panel["V1"] * self.Battery.Voltage)
 		self:SetPackedRatio(10,(self.Panel["V1"] * self.Battery.Voltage) / 150.0)
 	end
-	self:SetPackedRatio(11,IGLA_Temperature)
 	self:SetPackedBool("LSP",(self.Electric.Overheat1 > 0) or (self.Electric.Overheat2 > 0))
 
 	-- Update ARS system
 	self:SetPackedRatio(3, self.ALS_ARS.Speed/100)
 	self:SetPackedRatio("Speed", self.Speed/100)
-	if (self.ALS_ARS.Ring == true) or --(self:ReadTrainWire(21) > 0) or
-		((IGLA_Temperature > 500) and ((CurTime() % 2.0) > 1.0) and self.A63.Value == 1) then
+	if self.ALS_ARS.Ring == true then
 		self:SetPackedBool(39,true)
 	end
 

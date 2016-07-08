@@ -1,0 +1,14 @@
+"vertexlitgeneric"
+{
+	"$basetexture" "soviet_clock/indic_a"
+	"$selfillum" 1
+  "proxies" 
+  { 
+   "toggletexture"
+   {
+    "toggletexturevar" "$basetexture"
+    "toggletextureframenumvar" "$frame"
+    "toggletextureshouldwrap" "0"
+   } 	
+  }
+}

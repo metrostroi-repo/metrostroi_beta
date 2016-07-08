@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/metrostroi/signals/pathind_sign_3"
+	"$selfillum" 1
+}

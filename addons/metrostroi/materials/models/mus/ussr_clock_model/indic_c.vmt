@@ -1,0 +1,5 @@
+"vertexlitgeneric"
+{
+	"$basetexture" "mus/ussr_clock_model/indic_c"
+	"$selfillum" "1"
+}

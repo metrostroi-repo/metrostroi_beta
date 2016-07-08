@@ -80,7 +80,11 @@ function ENT:InitializeSounds()
 		"subway_trains/switch_6.wav",
 		"subway_trains/switch_7.wav",
 	}
-	
+	self.SoundNames["igla_on"]	= "subway_trains/igla_on1.mp3"
+	self.SoundNames["igla_off"]	= "subway_trains/igla_off2.mp3"
+	self.SoundNames["igla_start1"]	= "subway_trains/igla_start.mp3"
+	self.SoundNames["igla_start2"]	= "subway_trains/igla_on2.mp3"
+
 	-----
 	--E
 	-----
@@ -128,12 +132,12 @@ function ENT:InitializeSounds()
 
 	self.SoundNames["epv_on"]			= "subway_trains/epv_on.wav"
 	self.SoundNames["epv_off"]			= "subway_trains/epv_off.wav"
-	
+
 	self.SoundNames["epv_start"]			= "subway_trains/epv_start.wav"
-	
+
 	self.SoundNames["kr_open"]			= "subway_trains/kr_open.wav"
 	self.SoundNames["kr_close"]			= "subway_trains/kr_close.wav"
-	
+
 	self.SoundNames["kru_in"]			= "subway_trains/new/kru_in.wav"
 	self.SoundNames["kru_out"]			= "subway_trains/new/kru_out.wav"
 	self.SoundNames["revers_in"]			= "subway_trains/revers_in.wav"
@@ -153,7 +157,7 @@ function ENT:InitializeSounds()
 		"subway_trains/va21_3_off.wav",
 		"subway_trains/va21_4_off.wav",
 	}
-	
+
 	self.SoundNames["pak_on"]			= "subway_trains/pak_on.wav"
 	self.SoundNames["pak_off"]			= "subway_trains/pak_off.wav"
 
@@ -170,7 +174,7 @@ function ENT:InitializeSounds()
 	self.SoundNames["bpsn_ann"] 	= "subway_announcer/00_07.wav"
 	self.SoundNames["bpsn_ann_cab"] 	= "subway_announcer/00_07.wav"
 	self.SoundPositions["bpsn_ann_cab"]	= "cabin"
-	
+
 	self.SoundNames["release1"]		= "subway_trains/new/release_1.wav"
 	self.SoundNames["release2"]		= "subway_trains/brake_02.wav"
 	self.SoundNames["release3"]		= "subway_trains/brake_03.wav"
@@ -178,10 +182,10 @@ function ENT:InitializeSounds()
 	self.SoundPositions["release3"] = "cabin"
 	self.SoundNames["cran1"]		= "subway_trains/pneumo_idle.wav"
 	self.SoundPositions["cran1"] = "cabin"
-	
+
 	self.SoundNames["release2_w"]	= "subway_trains/brake_02.wav"
 	self.SoundNames["release3_w"]	= "subway_trains/brake_03.wav"
-	
+
 	self.SoundNames["horn2"] 		= "subway_trains/horn_3a.wav"
 	self.SoundNames["horn2_end"] 	= "subway_trains/horn_4a.wav"
 	self.SoundNames["horn3"] 		= "subway_trains/horn_5.wav"
@@ -189,40 +193,40 @@ function ENT:InitializeSounds()
 	self.SoundPositions["horn1"]	= "cabin"
 	self.SoundPositions["horn2"]	= "cabin"
 	self.SoundPositions["horn3"]	= "cabin"
-	
+
 	self.SoundNames["ring"]			= "subway_trains/ring_loop.wav"
 	self.SoundNames["ring_end"]		= "subway_trains/ring_end.wav"
 	self.SoundPositions["ring"] 	= "cabin"
 	self.SoundPositions["ring_end"] = "cabin"
-	
+
 	self.SoundNames["ring1"]		= "subway_trains/ring1.wav"
 	self.SoundNames["ring1_end"]	= "subway_trains/ring2.wav"
 	self.SoundPositions["ring1"] 	= "cabin"
 	self.SoundPositions["ring1_end"]= "cabin"
-	
+
 	self.SoundNames["ring2"]		= "subway_trains/ring_3.wav"
 	self.SoundNames["ring2_end"]	= "subway_trains/ring_4.wav"
 	self.SoundPositions["ring2"] 	= "cabin"
 	self.SoundPositions["ring2_end"]= "cabin"
-	
+
 	self.SoundNames["ring3"]		= "subway_trains/new/ring5.wav"
 	self.SoundNames["ring3_end"]	= "subway_trains/new/ring6.wav"
 	self.SoundPositions["ring3"] 	= "cabin"
 	self.SoundPositions["ring3_end"]= "cabin"
-	
+
 	self.SoundNames["ring4"]		= "subway_trains/new/ring7.wav"
 	self.SoundNames["ring4_end"]	= "subway_trains/new/ring8.wav"
 	self.SoundPositions["ring4"] 	= "cabin"
 	self.SoundPositions["ring4_end"]= "cabin"
-	
+
 	self.SoundNames["upps"]			= "subway_trains/upps.wav"
-	
+
 	self.SoundNames["dura1"]		= "subway_trains/dura_alarm_1.wav"
 	self.SoundNames["dura2"]		= "subway_trains/dura_alarm_2.wav"
-	
+
 	self.SoundNames["rk_spin"]		= "subway_trains/rk_spin.wav"
 	self.SoundNames["rk_stop"]		= "subway_trains/rk_stop.wav"
-	
+
 	self.SoundNames["lk2_on"]		= "subway_trains/lk2_on.wav"
 	self.SoundNames["lk2_off"]		= "subway_trains/lk2_off.wav"
 	self.SoundNames["lk3_on"]		= "subway_trains/lk3_on.wav"
@@ -231,19 +235,19 @@ function ENT:InitializeSounds()
 
 	self.SoundNames["inf_on"]		= "subway_trains/program_on.wav"
 	self.SoundNames["inf_off"]		= "subway_trains/program_0.wav"
-	
+
 	self.SoundNames["vpr"]		= "subway_trains/vpr.wav"
 	self.SoundNames["vpr_end"]	= "subway_trains/vpr_off.wav"
 	self.SoundPositions["vpr"] 	= "cabin"
 	self.SoundPositions["vpr_end"]= "cabin"
-	
+
 	self.SoundNames["br_334"]		= {
 		"subway_trains/new/334_1.wav",
 		"subway_trains/new/334_2.wav",
 		"subway_trains/new/334_3.wav",
 		"subway_trains/new/334_4.wav",
 	}
-	
+
 	self.SoundNames["br_013"]		= {
 		--"subway_trains/switch_1.wav",
 		"subway_trains/013_1.wav",
@@ -265,7 +269,7 @@ function ENT:InitializeSounds()
 	}
 	self.SoundNames["pneumo_reverser"] = "subway_trains/pneumo_6.wav"
 	self.SoundNames["pneumo_switch_on"] = "subway_trains/pneumo_7.wav"
-	
+
 	self.SoundNames["relay_open"] = {
 		"subway_trains/relay_1.wav",
 	}
@@ -321,7 +325,7 @@ function ENT:InitializeSounds()
 		"subway_trains/door_fail_1.wav",
 		"subway_trains/door_fail_2.wav",
 	}
-	
+
 	self.SoundNames["door_close2"] = {
 		"subway_trains/door_close_2.wav",
 		"subway_trains/door_close_3.wav",
@@ -337,7 +341,7 @@ function ENT:InitializeSounds()
 		"subway_trains/new/plomb1.wav",
 		"subway_trains/new/plomb2.wav",
 	}
-	
+
 	self.SoundNames["door_open_tor"] = "subway_trains/door_t_open.wav"
 	self.SoundNames["door_close_tor"] = "subway_trains/door_t_close.wav"
 
@@ -369,7 +373,7 @@ function ENT:InitializeSounds()
 	self.SoundNames["kv_x2_x1"]		= "subway_trains/kv1/kv_x2_x1.wav"
 	self.SoundNames["kv_x2_x3"]		= "subway_trains/kv1/kv_x2_x3.wav"
 	self.SoundNames["kv_x3_x2"]		= "subway_trains/kv1/kv_x3_x2.wav"
-	
+
 	self.SoundNames["ezh_kv_0_t1"]		= "subway_trains/kve1/kv_0_t1.wav"
 	self.SoundNames["ezh_kv_t1_0"]		= "subway_trains/kve1/kv_t1_0.wav"
 	self.SoundNames["ezh_kv_t1_t1a"]	= "subway_trains/kve1/kv_t1_t1a.wav"
@@ -382,12 +386,12 @@ function ENT:InitializeSounds()
 	self.SoundNames["ezh_kv_x2_x1"]		= "subway_trains/kve1/kv_x2_x1.wav"
 	self.SoundNames["ezh_kv_x2_x3"]		= "subway_trains/kve1/kv_x2_x3.wav"
 	self.SoundNames["ezh_kv_x3_x2"]		= "subway_trains/kve1/kv_x3_x2.wav"
-	
+
 	for i = 1,10 do
 		self.SoundNames["st"..i.."a"] = "subway_trains/new/st"..i.."a.wav"
 		self.SoundNames["st"..i.."b"] = "subway_trains/new/st"..i.."b.wav"
 	end
-	
+
 	self.SoundNames["tr"] = {
 		"subway_trains/tr_1.wav",
 		"subway_trains/tr_2.wav",
@@ -395,25 +399,25 @@ function ENT:InitializeSounds()
 		"subway_trains/tr_4.wav",
 		"subway_trains/tr_5.wav",
 	}
-	
+
 	self.SoundNames["zap"] = {
 		"ambient/energy/zap1.wav",
 		"ambient/energy/zap2.wav",
 		"ambient/energy/zap3.wav",
 	}
-	
+
 	self.SoundNames["spark"] = {
 		"ambient/energy/spark1.wav",
 		"ambient/energy/spark2.wav",
 		"ambient/energy/spark3.wav",
 		"ambient/energy/spark4.wav",
 		"ambient/energy/spark5.wav",
-	}	
+	}
 	self.SoundNames["uava_on"]		= "subway_trains/new/uava_on.wav"
 	self.SoundNames["uava_off"]		= "subway_trains/new/uava_off.wav"
 
 	self.SoundNames["paksd"]		= "subway_trains/new/paksd.wav"
-	
+
 	self.SoundTimeout = {}
 end
 
@@ -424,13 +428,13 @@ end
 function ENT:SetSoundState(sound,volume,pitch,timeout,range)
 	--if not self.Sounds[sound] then return end
 	--if sound == "ring" then sound = "zombie_loop" end
-	if not self.Sounds[sound] then 
+	if not self.Sounds[sound] then
 		if self.SoundNames and self.SoundNames[sound] then
 			local name = self.SoundNames[sound]
 			if self.SoundPositions[sound] then
 				local ent_nwID
 				if self.SoundPositions[sound] == "cabin" then ent_nwID = "seat_driver" end
-				
+
 				local ent = self:GetNW2Entity(ent_nwID)
 				if IsValid(ent) then
 					self.Sounds[sound] = CreateSound(ent, Sound(name))
@@ -441,7 +445,7 @@ function ENT:SetSoundState(sound,volume,pitch,timeout,range)
 				self.Sounds[sound] = CreateSound(self, Sound(name))
 			end
 		else
-			return 
+			return
 		end
 	end
 	local default_range = 0.80
@@ -486,12 +490,12 @@ function ENT:PlayOnce(soundid,location,range,pitch,randoff)
 	if not location then
 		self:EmitSound(sound, 100*(range or default_range), pitch or (not randoff) and  math.random(95,105) or nil)
 	elseif (location == true) or (location == "cabin") then
-		if CLIENT then self.DriverSeat = self:GetNW2Entity("seat_driver") end				
+		if CLIENT then self.DriverSeat = self:GetNW2Entity("seat_driver") end
 		if IsValid(self.DriverSeat) then
 			self.DriverSeat:EmitSound(sound, 100*(range or default_range),pitch or (not randoff) and  math.random(95,105) or nil)
 		end
 	elseif (location == true) or (location == "instructor") then
-		if CLIENT then self.InstructorsSeat = self:GetNW2Entity("seat_instructor") end				
+		if CLIENT then self.InstructorsSeat = self:GetNW2Entity("seat_instructor") end
 		if IsValid(self.InstructorsSeat) then
 			self.InstructorsSeat:EmitSound(sound, 100*(range or default_range),pitch or (not randoff) and  math.random(95,105) or nil)
 		end
@@ -522,10 +526,10 @@ function ENT:LoadSystem(a,b,...)
 		name = a
 		sys_name = a
 	end
-	
+
 	if not Metrostroi.Systems[name] then ErrorNoHalt("No system defined: "..name) return end
 	if self.Systems[sys_name] then ErrorNoHalt("System already defined: "..sys_name)  return end
-	
+
 	local no_acceleration = Metrostroi.BaseSystems[name].DontAccelerateSimulation
 	local run_everywhere = Metrostroi.BaseSystems[name].RunEverywhere
 	if SERVER and Turbostroi then
@@ -533,19 +537,19 @@ function ENT:LoadSystem(a,b,...)
 		if (not GLOBAL_SKIP_TRAIN_SYSTEMS) then
 			Turbostroi.LoadSystem(sys_name,name,...)
 		end
-		
+
 		-- Load system locally (this may load any systems nested in the initializer)
 		GLOBAL_SKIP_TRAIN_SYSTEMS = GLOBAL_SKIP_TRAIN_SYSTEMS or 0
 		if GLOBAL_SKIP_TRAIN_SYSTEMS then GLOBAL_SKIP_TRAIN_SYSTEMS = GLOBAL_SKIP_TRAIN_SYSTEMS + 1 end
 		self[sys_name] = Metrostroi.Systems[name](self,...)
 		GLOBAL_SKIP_TRAIN_SYSTEMS = GLOBAL_SKIP_TRAIN_SYSTEMS - 1
 		if GLOBAL_SKIP_TRAIN_SYSTEMS == 0 then GLOBAL_SKIP_TRAIN_SYSTEMS = nil end
-		
+
 		-- Setup nice name as normal
 		--if (name ~= sys_name) or (b) then self[sys_name].Name = sys_name end
 		self[sys_name].Name = sys_name
 		self.Systems[sys_name] = self[sys_name]
-		
+
 		-- Create fake placeholder
 		if not no_acceleration then
 			if run_everywhere then

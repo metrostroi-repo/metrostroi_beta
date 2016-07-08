@@ -1,0 +1,10 @@
+"vertexlitgeneric"
+{
+ "$basetexture" "models/metrostroi/signals/sig_mus_box"
+ "$bumpmap" "models/metrostroi/signals/sig_mus_box_norm"
+  $phong 1
+  $phongexponent   10
+  $phongboost    0.2
+  $phongfresnelranges  "[0.5 0.5 0.5]"
+
+}

@@ -75,6 +75,8 @@ function ENT:InitializeSystems()
 	self:LoadSystem("ASNP32","Relay","Switch")
 	self:LoadSystem("Horn")
 
+	self:LoadSystem("IGLA")
+
 	self:LoadSystem("Announcer")
 	self:LoadSystem("ASNP")
 end

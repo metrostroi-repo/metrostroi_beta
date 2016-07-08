@@ -21,7 +21,6 @@ function Metrostroi.NextEquipmentID()
 end
 
 
-
 --------------------------------------------------------------------------------
 -- Custom drop to floor that only checks origin and not bounding box
 --------------------------------------------------------------------------------
@@ -420,8 +419,29 @@ concommand.Add("metrostroi_wire_reset", function(ply, _, args)
 	end
 end)
 
+local function UpdateTimeSync()
+	SetGlobalFloat("MetrostroiT0",os.time()-1396011937)
+	SetGlobalFloat("MetrostroiT1",CurTime())
+end
+timer.Create("metrostroi_time_update",60,0,UpdateTimeSync)
+hook.Add("PlayerInitialSpawn","metrostroi_time_sync",UpdateTimeSync)
+UpdateTimeSync()
 
 
+function Metrostroi.GetTimedT(notsync)
+	local T0 = GetGlobalFloat("MetrostroiT0",os.time())+1396011937
+	local T1 = GetGlobalFloat("MetrostroiT1",CurTime())
+	local dT
+	if notsync then
+		dT = (os.time()-T0) - (CurTime()-T1)
+	else
+		dT = (os.time()-T0 + (CurTime() % 1.0)) - (CurTime()-T1)
+	end
+	return dT
+end
+function Metrostroi.GetSyncTime(notsync)
+	return os.time()-Metrostroi.GetTimedT(notsync)
+end
 --------------------------------------------------------------------------------
 -- Electric consumption stats
 --------------------------------------------------------------------------------
@@ -587,3 +607,49 @@ timer.Remove("Metrostroi_PlayerKillTimer")
 function Metrostroi.MapHasFullSupport()
 	return (#Metrostroi.Paths > 0)
 end
+
+concommand.Add("metrostroi_insert_signs", function(ply,_,args)
+  if IsValid(ply) and not ply:IsAdmin() then error("Metrostroi: This command can be run only from server console or by admin!") end
+  local MAP_NAME = game.GetMap() --"gm_mus_loopline_a3"
+  local MAP_VERSION = args and args[1] or ""
+
+  local commands = {Format("session_begin %s %s",MAP_NAME,MAP_VERSION)}
+
+  local function createSign(pos,ang,model)
+    table.insert(commands,Format("entity_create prop_static %s",pos))
+    table.insert(commands,Format("entity_set_keyvalue prop_static %s \"angles\" \"%s\"",pos,ang))--table.insert(commands,Format("entity_rotate_incremental prop_static %s %s",pos,ang))
+    table.insert(commands,Format("entity_set_keyvalue prop_static %s \"model\" \"%s\"",pos,model))
+  end
+
+  for k,v in pairs(ents.FindByClass("gmod_track_signs")) do
+    local data = v.SignModels[v.SignType-1]
+    local left = v.Left
+    local offset = Vector(0,v.YOffset,v.ZOffset)
+    local model = data.model
+  	if left and not data.noleft then
+  		if model:find("_r.mdl") then
+  			model = model:Replace("_r.mdl","_l.mdl")
+  		else
+  			model = model:Replace("_l.mdl","_r.mdl")
+  		end
+  	end
+    local RAND = math.random(-10,10)
+    local pos = data.pos + offset
+    local ang = data.angles
+    if not data.noauto then pos = pos+Vector(0,0,RAND/5); ang = ang+Angle(0,0,RAND) end
+    if left then pos = pos*Vector(1,-1,1) end
+    if left and data.rotate then ang = ang-Angle(0,180,0) end
+
+    createSign(v:LocalToWorld(pos),v:LocalToWorldAngles(ang),model)
+  end
+
+  table.insert(commands,"session_end")
+
+  for k,v in pairs(commands) do
+    local result = hammer.SendCommand(v)
+    if result ~= "ok" then
+			hammer.SendCommand("session_end")
+			error(Format("Error \"%s\" on command %s(%d)",result,v,k))
+		end
+  end
+end)

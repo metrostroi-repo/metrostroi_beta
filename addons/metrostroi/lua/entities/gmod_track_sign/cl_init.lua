@@ -14,7 +14,8 @@ surface.CreateFont("MetrostroiSubway_StationFont1", {
   rotary = false,
   shadow = false,
   additive = false,
-  outline = false
+  outline = false,
+  extended = true
 })
 
 surface.CreateFont("MetrostroiSubway_StationFont2", {
@@ -22,6 +23,7 @@ surface.CreateFont("MetrostroiSubway_StationFont2", {
   size = 128,
   weight = 0,
   antialias = true,
+  extended = true
 })
 
 surface.CreateFont("MetrostroiSubway_StationList1", {
@@ -29,18 +31,21 @@ surface.CreateFont("MetrostroiSubway_StationList1", {
   size = 28,
   weight = 1000,
   antialias = true,
+  extended = true
 })
 surface.CreateFont("MetrostroiSubway_StationList2", {
   font = "Arial",
   size = 28,
   weight = 0,
   antialias = true,
+  extended = true
 })
 surface.CreateFont("MetrostroiSubway_StationList3", {
   font = "Arial",
   size = 28,
   weight = 0,
   antialias = true,
+  extended = true
 })
 
 function ENT:Initialize()
@@ -51,7 +56,7 @@ end
 
 local P1 = -2
 local P2 = 3
-function ENT:DrawStation(x,y,ID,currentStation,R1,G1,B1,W,H,text1,text2,text3)		
+function ENT:DrawStation(x,y,ID,currentStation,R1,G1,B1,W,H,text1,text2,text3)
 	local R2 = 225
 	local G2 = 205
 	local B2 = 0
@@ -63,13 +68,13 @@ function ENT:DrawStation(x,y,ID,currentStation,R1,G1,B1,W,H,text1,text2,text3)
 	end
 
 	self.LastColor = self.LastColor or Color(R1,G1,B1,255)
-	
+
 	surface.SetDrawColor(0,0,0,255)
 	surface.DrawRect(x+P1,y,W-P1*2,H)
-	
+
 	surface.SetDrawColor(R1,G1,B1,255)
 	surface.DrawRect(x+P1+P2,y+P2,W-P1*2-P2*2,H-P2*2)
-	
+
 	local cx = x+W*0.1
 	local cy = y+H*0.5
 	local N = 10
@@ -126,12 +131,12 @@ function ENT:Draw()
 			yalign = TEXT_ALIGN_CENTER,
 			color = Color(0,0,0,255)})
 	cam.End3D2D()
-	
+
 	local pos = self:LocalToWorld(Vector(4,0,-32))
 	local ang = self:LocalToWorldAngles(Angle(0,90,90))
 	cam.Start3D2D(pos, ang, 0.125)
 		draw.NoTexture()
-		
+
 		local N = self:GetNW2Int("StationList#")
 		local W = 320
 		local H = 64
@@ -141,16 +146,16 @@ function ENT:Draw()
 			local x = X+W*(i-1)
 			local ID = self:GetNW2Int("StationList"..i.."[ID]")
 			local currentStation = (self:GetNW2Int("ID") == ID)
-			
+
 			local R1 = self:GetNW2Int("StationList"..i.."[R]")
 			local G1 = self:GetNW2Int("StationList"..i.."[G]")
 			local B1 = self:GetNW2Int("StationList"..i.."[B]")
-			
+
 			self:DrawStation(x,0,ID,currentStation,R1,G1,B1,W,H,
 				self:GetNW2String("StationList"..i.."[ID]"),
 				self:GetNW2String("StationList"..i.."[Name1]"),
 				self:GetNW2String("StationList"..i.."[Name2]"))
-				
+
 			-- Draw change
 			if self:GetNW2Int("Change2") == tonumber(self:GetNW2String("StationList"..i.."[ID]")) then
 				local Nc = self:GetNW2Int("Change2List#")
@@ -161,16 +166,16 @@ function ENT:Draw()
 						N2 = N2 + 1
 					end
 				end
-				
+
 				for j=1,Nc do
 					local ID = self:GetNW2Int("Change2List"..j.."[ID]")
 					local R2 = self:GetNW2Int("Change2List"..j.."[R]")
 					local G2 = self:GetNW2Int("Change2List"..j.."[G]")
 					local B2 = self:GetNW2Int("Change2List"..j.."[B]")
-					
+
 					local H2 = H*0.85
 					local y = 0
-					if j <= N2 
+					if j <= N2
 					then y = -H2*(N2-j+1)
 					else y = 0+H+H2*(j-N2-1)
 					end
@@ -182,20 +187,20 @@ function ENT:Draw()
 				end
 			end
 		end
-		
+
 		-- Inner part of arrow
 		local arrow = {
 			{ x = 0,	y = 0 },
 			{ x = 0,	y = H },
-			{ x = -H/2,	y = H/2 },			
+			{ x = -H/2,	y = H/2 },
 		}
 		for k,v in ipairs(arrow) do
 			v.x = v.x - (N*0.5)*W - 2
 		end
-	
+
 		surface.SetDrawColor(Color(0,0,0,255))
 		surface.DrawPoly(arrow)
-		
+
 		-- Outer part of arrow
 		arrow = {
 			{ x = -P2,	y = 2*P2 },
@@ -205,7 +210,7 @@ function ENT:Draw()
 		for k,v in ipairs(arrow) do
 			v.x = v.x - (N*0.5)*W
 		end
-		
+
 		surface.SetDrawColor(self.LastColor or Color(0,0,0,0))
 		surface.DrawPoly(arrow)
 	cam.End3D2D()

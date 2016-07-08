@@ -853,6 +853,9 @@ if CLIENT then
 			Metrostroi.DrawTextRectOL(156, 330, 200, 40,train:GetNW2Bool("PAKSDM:NCCanc") and Color(42,58,148) or Color(230,230,230),gr_up,2,Color(110,110,110))
 			draw.SimpleText("Выход - Esc","Metrostroi_PAM30",256, 350,train:GetNW2Bool("PAKSDM:NCCanc") and Color(255,255,255) or Color(0,0,0),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 		end
+		surface.SetAlphaMultiplier(1-train:GetNW2Float("Motorola:Bright",1)*0.5)
+		surface.SetDrawColor(Color(20,20,20))
+		surface.DrawRect(0,0,512,512)
 		surface.SetAlphaMultiplier(1)
 	end
 	function TRAIN_SYSTEM:ClientThink()

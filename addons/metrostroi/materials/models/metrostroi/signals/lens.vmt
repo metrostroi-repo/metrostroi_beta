@@ -1,6 +1,0 @@
-"VertexLitGeneric"
-{
-
-	$basetexture "models/metrostroi/signals/lens"
-	$translucent 1
-}

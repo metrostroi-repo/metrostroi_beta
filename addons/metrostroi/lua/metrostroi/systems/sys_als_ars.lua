@@ -51,6 +51,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.PneumaticBrake2_1 = false
 	self.AttentionPedal = false
 	self.KVT = false
+	self.LN = false
 	self.IgnoreThisARS = false
 
 	-- ARS wires
@@ -74,7 +75,7 @@ end
 function TRAIN_SYSTEM:Outputs()
 	return { "2", "8", "20", "31", "32", "29", "33D", "33G", "33Zh",
 			 "Speed", "Signal80","Signal70","Signal60","Signal40","Signal0","Special","NoFreq","RealNoFreq",
-			 "SpeedLimit", "NextLimit","Ring","KVT","EnableARS","EnableALS","Signal", "UAVA"}
+			 "SpeedLimit", "NextLimit","Ring","KVT", "LN","EnableARS","EnableALS","Signal", "UAVA"}
 end
 
 function TRAIN_SYSTEM:Inputs()
@@ -297,6 +298,12 @@ end
 function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKActivated)
 	local Train = self.Train
 	if EnableARS then
+		if self.SpeedLimit == 40 and self.Special and self.NextLimit == self.SpeedLimit and (not self.Train.ARSType or self.Train.ARSType <= 2) and GetConVarNumber("metrostroi_ars_sfreq") > 0 and self.Train.SubwayTrain.Name == "81-717.5m" then
+			self.LN = true
+		end
+		if (self.Train.ARSType and self.Train.ARSType > 2) or GetConVarNumber("metrostroi_ars_sfreq") == 0 or self.Train.SubwayTrain.Name ~= "81-717.5m" then
+			self.LN = false
+		end
 		--Train.RPB:TriggerInput("Set",1)
 		--print(Train.UOS:TriggerInput("Check"))
 		-- Check absolute stop
@@ -323,7 +330,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		end
 		-- Check use of valve #1 during overspeed
 		--self.PV1Timer = self.PV1Timer or -1e9
-		if self.PV1Timer and ((CurTime() - self.PV1Timer) >= 1) then 
+		if self.PV1Timer and ((CurTime() - self.PV1Timer) >= 1) then
 			if self.Overspeed then
 				self.ElectricBrake = true
 				self.PneumaticBrake2 = true
@@ -354,7 +361,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		if self.Speed > triggerSpeed and self.TW1Timer then
 			self.TW1Timer = nil
 		end
-		if self.Speed < 0.25 then 
+		if self.Speed < 0.25 then
  			self.PneumaticBrake1 = true
 		end
 		--[[
@@ -418,7 +425,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		local Ebrake, Abrake, NFBrake, Pbrake1,Pbrake2 =
 			((self.ElectricBrake) and 1 or 0),
 			((self.ARSBrake)  and 1 or 0),
-			((self.RealNoFreq and not self.KVT and not self.ARSBrake) and 1 or 0),
+			((self.SpeedLimit == 0 and not self.KVT and not self.ARSBrake) and 1 or 0),
 			(self.PneumaticBrake1 and 1 or 0),
 			(self.PneumaticBrake2 and 1 or 0)
 		-- Apply ARS system commands
@@ -434,7 +441,8 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		--if StPetersburg then print(self.Train:EntIndex()) end
 		self["8"] = Pbrake2
 			+ (KRUEnabled and 1 or 0)*Ebrake
-			+ ((self.SpeedLimit < 20 and not self.KVT or self.Speed > 20 and self.SpeedLimit < 20) and 1 or 0)
+			+ NFBrake
+		--	+ ((self.SpeedLimit < 20 and not self.KVT or self.Speed > 20 and self.SpeedLimit < 20) and 1 or 0)
 			+ (self.BPSActive and 1 or 0)
 			+ (self.AntiRolling and 1 or 0)
 			--+ (1 - ((EPKActivated and 1 or 0) or 1))
@@ -469,11 +477,15 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		if (Train.RPB) and not self.AttentionPedal then
 			--Train.RPB:TriggerInput("Open",1)
 		end
-		
+
 		self.ElectricBrake = true
 		self.PneumaticBrake1 = false
 		self.PneumaticBrake2 = true
 		self.ARSBrake = true
+		if self.LN and (not self.Train.ARSType or self.Train.ARSType <= 2) and GetConVarNumber("metrostroi_ars_sfreq") > 0 and self.Train.SubwayTrain.Name == "81-717.5m" then
+			RunConsoleCommand("say","Lose direction signal",Train:GetDriverName())
+		end
+		self.LN = false
 		self["33D"] = 0
 		self["33Zh"] = 1
 		self["8"] = KRUEnabled and (1-Train.RPB.Value) or 0
@@ -579,7 +591,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 	if self.Train.RC1 and (self.Train.RC1.Value == 0) then
 		local KAH = (Train.KAH == nil or Train.KAH.Value > 0.5) and 1 or 0
 		self["33D"] = KAH
-		self["33G"] = 0                
+		self["33G"] = 0
 		self["33Zh"] = 1--KAH
 		--
 		self["2"] = 0
@@ -641,7 +653,7 @@ function TRAIN_SYSTEM:Think(dT)
 	if PB and not self.AttentionPedalTimer and not self.Overspeed then
 		self.AttentionPedalTimer = CurTime() + 1
 	end
-	
+
 	if PB and self.AttentionPedalTimer and (CurTime() - self.AttentionPedalTimer) > 0  then
 		self.AttentionPedal = true
 	end
@@ -674,10 +686,10 @@ function TRAIN_SYSTEM:Think(dT)
 			local pos = Metrostroi.TrainPositions[Train] --Metrostroi.GetPositionOnTrack(Train:GetPos(),Train:GetAngles()) --(this metod laggy for dir checks)
 			if pos then pos = pos[1] end
 			-- Get previous ARS section
-			if pos then 
+			if pos then
 				ars,arsback = Metrostroi.GetARSJoint(pos.node1,pos.x,Metrostroi.TrainDirections[Train], Train)
 			end
-			
+
 			if Train.UAVA and Train.SpeedSign > 0 then
 				if IsValid(arsback) then
 					if arsback == self.AutostopSignal then
@@ -709,7 +721,7 @@ function TRAIN_SYSTEM:Think(dT)
 				self.NoFreq = true
 				self.CheckedNF = 2
 			end
-		
+
 			if IsValid(ars) then
 				self.CheckedNF = 0
 				self.Alert = nil
@@ -718,7 +730,8 @@ function TRAIN_SYSTEM:Think(dT)
 				self.Signal60	= ars:GetARS(6,Train)
 				self.Signal40	= ars:GetARS(4,Train)
 				self.Signal0	= ars:GetARS(0,Train)
-				self.Special	= ars:Get325Hz()
+				self.AO = ars:GetARS(2,Train)
+				self.Special	= ars:Get325Hz(true)
 				self.NoFreq		= ars:GetARS(1,Train) or not (self.Signal80 or self.Signal70 or self.Signal60 or self.Signal40 or self.Signal0)
 				if GetConVarNumber("metrostroi_ars_printnext") == Train:EntIndex() then RunConsoleCommand("say",ars.Name,tostring(arsback and arsback.Name),tostring(ars.NextSignalLink and ars.NextSignalLink.Name or "unknown"),tostring(pos.node1.path.id),tostring(Metrostroi.TrainDirections[Train])) end
 				self.RealNoFreq = not (self.Signal80 or self.Signal70 or self.Signal60 or self.Signal40 or self.Signal0)
@@ -733,6 +746,7 @@ function TRAIN_SYSTEM:Think(dT)
 					self.Signal0 = false
 					self.Special = false
 					self.NoFreq = true
+					self.AO = false
 					self.RealNoFreq = true
 					self.CheckedNF = 2
 				else
@@ -753,21 +767,31 @@ function TRAIN_SYSTEM:Think(dT)
 		self.Signal40 = false
 		self.Signal0 = false
 		self.Special = false
+		self.AO = false
 		self.NoFreq = EnableARS
 		self.RealNoFreq = EnableARS
 		self.CheckedNF = 2
 		self.Alert = nil
 	end
-
+	if self.AO then
+		self.Signal0 = CurTime()%2 < 1
+		self.NoFreq = CurTime()%2 >= 1
+		self.RealNoFreq = CurTime()%2 >= 1
+	end
 	-- ARS system placeholder logic
 	if EnableALS --[[or EnableUOS]] then
 		local V = math.floor(self.Speed +0.05)
 		local Vlimit = 0
+		local VLimit2
 		if self.Signal40 then Vlimit = 40 end
 		if self.Signal60 then Vlimit = 60 end
 		if self.Signal70 then Vlimit = 70 end
 		if self.Signal80 then Vlimit = 80 end
 
+		if not self.LN and Vlimit > 40 and GetConVarNumber("metrostroi_ars_sfreq") > 0 and (not self.Train.ARSType or self.Train.ARSType <= 2) and self.Train.SubwayTrain.Name == "81-717.5m" then
+			VLimit2 = Vlimit
+			Vlimit = Vlimit < 40 and 0 or 40
+		end
 		self.Overspeed = false
 		if self.AttentionPedal then
 			Vlimit = 0
@@ -779,8 +803,8 @@ function TRAIN_SYSTEM:Think(dT)
 		--self.Ring = self.Overspeed and (self.Speed > 5)
 
 		-- Determine next limit and current limit
-		self.SpeedLimit = Vlimit
-		self.NextLimit = Vlimit
+		self.SpeedLimit = VLimit2 or Vlimit
+		self.NextLimit = VLimit2 or Vlimit
 		if self.Signal80 then self.NextLimit = 80 end
 		if self.Signal70 then self.NextLimit = 70 end
 		if self.Signal60 then self.NextLimit = 60 end

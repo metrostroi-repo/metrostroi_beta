@@ -1,5 +1,0 @@
-"VertexlitGeneric"
-{
-	"$basetexture" "cyber_metrostroi/test/signals/yellow_lamp"
-	$selfillum 1
-}

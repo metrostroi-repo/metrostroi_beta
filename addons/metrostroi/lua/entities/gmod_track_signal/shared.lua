@@ -8,19 +8,14 @@ ENT.AdminSpawnable	= false
 ENT.TrafficLightModels = {}
 ENT.RenderOffset = {}
 ENT.BasePosition = Vector(-110,32,0)
-
-Metrostroi.Signal_2 = 1
-Metrostroi.Signal_3 = 2
-Metrostroi.Signal_IS = 3
-Metrostroi.Signal_RP = 4
-
+ENT.ReloadModels = true
+ENT.Signal_IS = "W"
 Metrostroi.LiterWarper = {
-	C = "ce",
-	H = "x",
-	Q = "ya",
-	W = "sh2",
-	J = "ge",
-	Z = "ze",
+	A = "f",B = ",",V = "d",G = "u",D = "l",E = "t",J = ";",Z = "p",
+	I = "b",Y = "q",K = "r",L = "k",M = "v",N = "y",O = "j",P = "g",
+	R = "h",S = "c",T = "n",U = "e",F = "a",H = "[",C = "w",
+	--Y = "",--ЧЩЪЫЬЭЮ
+	W = "o",Q = "z",
 }
 
 -- Lamp indexes
@@ -167,79 +162,130 @@ ENT.OnlyARS = false
 ENT.Routes = {
 }
 ]]
+ENT.AutostopModel = {
+	"models/metrostroi/signals/mus/autostop.mdl",
+	Vector(41,-0.5,1.5)
+}
+
+ENT.OldRouteNumberSetup = {
+	"1234D",
+	"WKFX","LR",
+	Vector(6,0,10.5),
+	{D=4},{["F"]=0,["L"]=0,["R"]=2,W=3,K=4}
+}
+
 --------------------------------------------------------------------------------
 -- Inside
 --------------------------------------------------------------------------------
-ENT.RenderOffset[0] = Vector(6,0,112+32)
+ENT.RenderOffset[0] = Vector(0,0.5,113.35)
 ENT.TrafficLightModels[0] = {
-	["m1"]	= "models/metrostroi/signals/box.mdl",
-	["m2"]	= "models/metrostroi/signals/pole_2.mdl",
-	["name"]	= Vector(-2-5,2.5,-25),
-	[1]	= { 32, "models/cyber_metrostroi/test/double.mdl", {
-		[0] = Vector(0,0,15.6),
-		[1] = Vector(0,0,7.3),
-		["glass"]	= {
-			{"models/cyber_metrostroi/test/lense.mdl",Vector(0,3.4,15.6)},
-			{"models/cyber_metrostroi/test/lense.mdl",Vector(0,3.4,7.3)},
-		}
-				}},
-	[2]	= { 40, "models/cyber_metrostroi/test/triple.mdl", {
-				[0] = Vector(0,0,23.652),
-				[1] = Vector(0,0,15.495),
-				[2] = Vector(0,0,7.261),
+	m1	= "models/metrostroi/signals/mus/box.mdl",
+	m2	= "models/metrostroi/signals/mus/pole_2.mdl",
+	m2_long =  "models/metrostroi/signals/mus/pole_2_long.mdl",
+	m2_long_pos = 46,
+	m2_long_replace = "pole_",
+	name	= Vector(-1.75,2.5,3),
+	name_one	= Vector(7.41,0.5,1),
+	[1]	= { 32, "models/metrostroi/signals/mus/light_2.mdl", {
+				[0] = Vector(7.41,-27.54,25.26),
+				[1] = Vector(7.41,-27.54,14.2),--
 				["glass"]	= {
-					{"models/cyber_metrostroi/test/lense.mdl",Vector(0,3.4,23.652)},
-					{"models/cyber_metrostroi/test/lense.mdl",Vector(0,3.4,15.495)},
-					{"models/cyber_metrostroi/test/lense.mdl",Vector(0,3.4,7.261)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(7.43,4.46,25)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(7.43,4.46,14)},
+				}
+			}},
+	[2]	= { 43, "models/metrostroi/signals/mus/light_3.mdl", {
+				[0] = Vector(7.41,-27.54,35.1),
+				[1] = Vector(7.41,-27.54,25.26),
+				[2] = Vector(7.41,-27.54,14.2),---27.54
+				["glass"]	= {
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(7.43,4.46,35.2)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(7.43,4.46,25)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(7.43,4.46,14)},
 				}
 				}},
-	[4] = { 18, "models/metrostroi/signals/light_pathindicator.mdl",  Vector(13.1,2, 19.5), 1.75, 2.05, 4},
+
+	M = { 24, "models/metrostroi/signals/mus/light_pathindicator.mdl",  Vector(13.1,2, 19.5), 1.75, 2.05, 4},
 }
 
 
 --------------------------------------------------------------------------------
 -- Outside
 --------------------------------------------------------------------------------
-ENT.RenderOffset[1] = Vector(0,0,264)
+ENT.RenderOffset[1] = Vector(0,0,200)
 ENT.TrafficLightModels[1] = {
-	["m1"]	= "models/metrostroi/signals/pole_1.mdl",
-	["name"]	= Vector(0,2,-15),
-	[1]	= { 50, "models/metrostroi/signals/light_outside_2.mdl", {
-				[0] = Vector(0,15,20),
-				[1] = Vector(0,15, 8.8),
+	["m1"]	= "models/metrostroi/signals/mus/pole_1.mdl",
+	name	= Vector(0,3,40),
+	[1]	= { 46, "models/metrostroi/signals/mus/light_outside_2.mdl", {
+				[0] = Vector(-0.51,-18.76,19.95),
+				[1] = Vector(-0.51,-18.76,7.97),
+				["glass"]	= {
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(0,13.3,19.95)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(0,13.3,7.97 )},
+				}
 				}},
-	[2]	= { 60, "models/metrostroi/signals/light_outside_3.mdl", {
-				[0] = Vector(0,15,30.8),
-				[1] = Vector(0,15,20),
-				[2] = Vector(0,15, 8.8),
+	[2]	= { 56, "models/metrostroi/signals/mus/light_outside_3.mdl", {
+				[0] = Vector(-0.51,-18.76,30.88),
+				[1] = Vector(-0.51,-18.76,19.95),
+				[2] = Vector(-0.51,-18.76,7.97),
+				["glass"]	= {
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(0,13.3,30.88)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(0,13.3,19.95)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(0,13.3,7.97 )},
+				}
 				} },
 
-	[3] = { 25, "models/metrostroi/signals/light_outside_1.mdl" , {
-				[0] = Vector(0,15, 8)
+	W = { 25, "models/metrostroi/signals/mus/light_outside_1.mdl" , {
+				[0] = Vector(-0.51,-18.76,7.97),
+				["glass"]	= {
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(0,13.3,7.97 )},
+				}
 				}},
-	[4] = { 40, "models/metrostroi/signals/light_outside_path",  Vector(7,11, 25), 3.6, 3.4, 5},
+	M = { 40, "models/metrostroi/signals/mus/light_pathindicator3.mdl",  Vector(7,11, 25), 3.6, 3.4, 5},
+	noleft = true,
 }
-
 
 --------------------------------------------------------------------------------
 -- Outside box
 --------------------------------------------------------------------------------
-ENT.RenderOffset[2] = Vector(0,0,112+30)
+ENT.RenderOffset[2] = Vector(0,0.,112)
 ENT.TrafficLightModels[2] = {
-	["m1"]	= "models/metrostroi/signals/box_outside.mdl",
-	["m2"]	= "models/metrostroi/signals/pole_3.mdl",
-	["name"]	= Vector(-4,2.5,-20),
-	[1]	= { 32, "models/metrostroi/signals/light_outside2_2.mdl", {
-				[0] = Vector(10,4.1,27.5),
-				[1] = Vector(10,4.1,15.9),
+	["m1"]	= "models/metrostroi/signals/mus/box_outside.mdl",
+	["m2"]	= "models/metrostroi/signals/mus/pole_3.mdl",
+	["name"]	= Vector(-3,2.5,7),
+	name_one	= Vector(10.07,0.5,3),
+	[1]	= { 42, "models/metrostroi/signals/mus/light_outside2_2.mdl", {
+				[0] = Vector(10.07,-29.7,27.55),
+				[1] = Vector(10.07,-29.7,16),
+				["glass"]	= {
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(10.39,2.32,27.55)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(10.39,2.32,16)},
+				}
 				}},
-	[2]	= { 45, "models/metrostroi/signals/light_outside2_3.mdl", {
-				[0] = Vector(9.5,4.1,39),
-				[1] = Vector(9.5,4.1,27.2),
-				[2] = Vector(9.5,4.1,15.8),
+	[2]	= { 47, "models/metrostroi/signals/mus/light_outside2_3.mdl", {
+				[0] = Vector(10.07,-29.7,39.37),
+				[1] = Vector(10.07,-29.7,27.55),
+				[2] = Vector(10.07,-29.7,16),
+				["glass"]	= {
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(10.39,2.32,39.37)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(10.39,2.32,27.55)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(10.39,2.32,16)},
+				}
+				}},
+	[3]	= { 47, "models/metrostroi/signals/mus/light_outside2_4.mdl", {
+				[0] = Vector(10.07,-29.7,50.45),
+				[1] = Vector(10.07,-29.7,39.37),
+				[2] = Vector(10.07,-29.7,27.55),
+				[3] = Vector(10.07,-29.7,16),
+				["glass"]	= {
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(10.39,2.32,50.45)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(10.39,2.32,39.37)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(10.39,2.32,27.55)},
+					{"models/metrostroi/signals/mus/lamp_lens.mdl",Vector(10.39,2.32,16)},
+				}
 				}},
 
-	[4] = { 20, "models/metrostroi/signals/light_pathindicator_outside.mdl",  Vector(13.8,2, 22.8), 1.8, 2.1, 4},
+	M = { 24, "models/metrostroi/signals/mus/light_pathindicator.mdl",  Vector(13.8,2, 22.8), 1.8, 2.1, 4},
 }
 ENT.SignalConverter = {
 	R = 1,

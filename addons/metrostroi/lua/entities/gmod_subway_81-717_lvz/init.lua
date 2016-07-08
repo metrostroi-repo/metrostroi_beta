@@ -258,13 +258,13 @@ function ENT:Initialize()
 		-- Cabin texture light
 		[30] = { "headlight", 		Vector(412.0,30,60), Angle(60,-50,0), Color(176,161,132), farz = 128, nearz = 1, shadows = 0, brightness = 0.20, fov = 140 },
 		-- Manometers
-		[31] = { "headlight", 		Vector(460.00,3,8.5), Angle(0,-90,0), Color(216,161,92), farz = 32, nearz = 1, shadows = 0, brightness = 0.4, fov = 30 },
+		[31] = { "headlight", 		Vector(460.00,3,8.5), Angle(0,-90,0), Color(240,140,70), farz = 32, nearz = 1, shadows = 0, brightness = 1.0, fov = 30 },
 		-- Voltmeter
-		[32] = { "headlight", 		Vector(460.00,10,12.5), Angle(28,90,0), Color(216,161,92), farz = 16, nearz = 1, shadows = 0, brightness = 0.4, fov = 40 },
+		[32] = { "headlight", 		Vector(460.00,10,12.5), Angle(28,90,0), Color(240,140,70), farz = 16, nearz = 1, shadows = 0, brightness = 1.0, fov = 40 },
 		-- Ampermeter
-		[33] = { "headlight", 		Vector(458.05,-32.8+1.5,21.1), Angle(-90,0,0), Color(216,161,92), farz = 10, nearz = 1, shadows = 0, brightness = 4.0, fov = 60 },
+		[33] = { "headlight", 		Vector(458.05,-32.8+1.5,21.1), Angle(-90,0,0), Color(240,140,70), farz = 10, nearz = 1, shadows = 0, brightness = 1.0, fov = 60 },
 		-- Voltmeter
-		[34] = { "headlight", 		Vector(458.05,-32.8+1.5,24.85), Angle(-90,0,0), Color(216,161,92), farz = 10, nearz = 1, shadows = 0, brightness = 4.0, fov = 60 },
+		[34] = { "headlight", 		Vector(458.05,-32.8+1.5,24.85), Angle(-90,0,0), Color(240,140,70), farz = 10, nearz = 1, shadows = 0, brightness = 1.0, fov = 60 },
 
 
 		-- ARS panel lights
@@ -483,7 +483,7 @@ function ENT:Think()
 	--print(self.DeltaTime)
 	--print(self.SpeedSign)
 	--if not self.SpeedSign then return end
-
+self.Lights[1] = { "headlight",		Vector(465,0,-20), Angle(0,0,0), Color(216,161,92), fov = 100, farz=8192,brightness = 5}
 	--print(self.Panel["HeadLights1"])
 	--if not self.Panel["HeadLights1"] then return end
 	self.RetVal = self.BaseClass.Think(self)
@@ -928,7 +928,6 @@ function ENT:Think()
 
 
 	-- Total temperature
-	local IGLA_Temperature = math.max(self.Electric.T1,self.Electric.T2)
 
 	-- Feed packed floats
 	self:SetPackedRatio(0, 1-self.Pneumatic.DriverValvePosition/7)
@@ -961,13 +960,11 @@ function ENT:Think()
 		--print(self.Panel["V1"] * self.Battery.Voltage)
 		self:SetPackedRatio(10,(self.Panel["V1"] * self.Battery.Voltage) / 150.0)
 	end
-	self:SetPackedRatio(11,IGLA_Temperature)
 	self:SetPackedBool("LSP",(self.Electric.Overheat1 > 0) or (self.Electric.Overheat2 > 0))
 
 	-- Update ARS system
 	self:SetPackedRatio(3, self.ALS_ARS.Speed/100.0)
-	if (self.ALS_ARS.Ring == true) or --(self:ReadTrainWire(21) > 0) or
-		((IGLA_Temperature > 500) and ((CurTime() % 2.0) > 1.0) and self.A63.Value == 1) then
+	if self.ALS_ARS.Ring == true then
 		self:SetPackedBool(39,true)
 	end
 

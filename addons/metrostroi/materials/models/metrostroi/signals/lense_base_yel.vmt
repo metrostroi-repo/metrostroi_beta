@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/metrostroi/signals/lense_base_yel"
+	"$selfillum" 1
+}

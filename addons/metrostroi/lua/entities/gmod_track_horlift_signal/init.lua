@@ -2,64 +2,32 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
+--------------------------------------------------------------------------------
+-- Load key-values defined in VMF
+--------------------------------------------------------------------------------
+function ENT:KeyValue(key, value)
+	self.VMF = self.VMF or {}
+	self.VMF[key] = value
+end
+
 function ENT:Initialize()
-	self:SetModel("models/metrostroi/signals/light_outside2_2.mdl")
-	self.Sprites = {}
-	
+	self.VMF = self.VMF or {}
+	self.Type		= (tonumber(self.VMF.Type) or 0)
+	if self.Type == 0 then
+		self:SetModel("models/metrostroi/signals/mus/light_2_horlift_out.mdl")
+	else
+		self:SetModel("models/metrostroi/signals/mus/light_2_horlift_in.mdl")
+	end
+	self:SetNWInt("Type",self.Type)
+
 	self.YellowSignal = true
 	self.WhiteSignal = false
-end
 
-function ENT:SetSprite(index,active,model,scale,brightness,pos,color)
-	if active and self.Sprites[index] then return end
-	SafeRemoveEntity(self.Sprites[index])
-	self.Sprites[index] = nil
-	
-	if active then
-		local sprite = ents.Create("env_sprite")
-		sprite:SetParent(self)
-		sprite:SetLocalPos(pos)
-		sprite:SetLocalAngles(self:GetAngles())
-	
-		-- Set parameters
-		sprite:SetKeyValue("rendercolor",
-			Format("%i %i %i",
-				color.r*brightness,
-				color.g*brightness,
-				color.b*brightness
-			)
-		)
-		sprite:SetKeyValue("rendermode", 9) -- 9: WGlow, 3: Glow
-		sprite:SetKeyValue("renderfx", 14)
-		sprite:SetKeyValue("model", model)
-		sprite:SetKeyValue("scale", scale)
-		sprite:SetKeyValue("spawnflags", 1)
-	
-		-- Turn sprite on
-		sprite:Spawn()
-		self.Sprites[index] = sprite
-	end
 end
-
 function ENT:Think()
-	local yellow = self.WhiteSignal
-	local white = self.YellowSignal
-	
-	-- The LED glow
-	--[[self:SetSprite("a0",yellow,
-		"models/metrostroi_signals/signal_sprite_001.vmt",0.40,1.0,
-		Vector(10,4,16),Color(255,255,0,255))]]
-	self:SetSprite("a0",yellow,
-		"models/metrostroi_signals/signal_sprite_002.vmt",0.25,0.6,
-		Vector(10,4,16),Color(255,255,0,255))
-		
-	--[[self:SetSprite("b0",white,
-		"models/metrostroi_signals/signal_sprite_001.vmt",0.40,1.0,
-		Vector(10,4,27),Color(255,255,255,255))]]
-	self:SetSprite("b0",white,
-		"models/metrostroi_signals/signal_sprite_002.vmt",0.25,0.6,
-		Vector(10,4,27),Color(255,255,255,255))
-	
+	self:SetNWBool("Yellow",self.YellowSignal)
+	self:SetNWBool("White",self.WhiteSignal)
+	self:SetNWBool("White2",self.PeopleGoing)
 	self:NextThink(CurTime() + 0.50)
 	return true
 end
