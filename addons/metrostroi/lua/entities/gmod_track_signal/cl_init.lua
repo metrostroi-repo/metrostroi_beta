@@ -289,7 +289,7 @@ function ENT:Think()
 				self.RouteNumberOffset = nil
 				self.RN = nil
 			end
-			if self.AutostopPresent and LocalPlayer():SteamID() ~= "STEAM_0:0:28031484" and LocalPlayer():SteamID() ~= "STEAM_0:1:11146643" then
+			if self.AutostopPresent then
 				if not IsValid(self.Models[1]["autostop"]) then
 					self.Models[1]["autostop"] = ClientsideModel(self.AutostopModel[1],RENDERGROUP_OPAQUE)
 					self.Models[1]["autostop"]:SetPos(self:LocalToWorld(self.BasePosition+self.AutostopModel[2]))
