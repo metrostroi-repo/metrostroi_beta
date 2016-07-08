@@ -1,5 +1,9 @@
-"unlitgeneric"
+"VertexLitGeneric"
 {
-	$basetexture "\models\metrostroi\signals\text\-"
-	"$additive" 1
+
+	$basetexture "models/metrostroi/signals/text/minus"
+	$translucent 1
+	$selfillum 1
+
+
 }

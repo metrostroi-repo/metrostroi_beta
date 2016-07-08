@@ -1,4 +1,6 @@
-"VertexLitGeneric"
+"unlitgeneric"
 {
-	$basetexture "models/metrostroi/signals/pui/lamp"
+	"$additive" 1
+	"$basetexture" "models/metrostroi/signals/pui/lamp"
+	"$nocull" "1"
 }
