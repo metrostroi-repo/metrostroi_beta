@@ -55,7 +55,7 @@ end
 function TRAIN_SYSTEM:TriggerInput(name,value)
 end
 
-function TRAIN_SYSTEM:Thiink()
+function TRAIN_SYSTEM:Think()
 	local Train = self.Train
 	if Train.UAVA and Train.SpeedSign and Train.SpeedSign > 0 and Train.Speed > 0.25 then
 		local ars,arsback

@@ -468,7 +468,6 @@ function ENT:Think()
 			if (v:GetClass() == "gmod_track_horlift_signal") and (delta_z < 90 and v:GetNWInt("Type") == 0 or v:GetNWInt("Type") == 1) then
 				v.WhiteSignal = self:GetDoorState()
 				v.YellowSignal = not self:GetDoorState()
-					print(v,v.YellowSignal)
 				v.PeopleGoing = PeopleGoing
 			end
 		end

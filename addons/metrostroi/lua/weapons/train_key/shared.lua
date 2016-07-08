@@ -6,7 +6,7 @@ SWEP.Contact			= ""
 SWEP.Purpose			= "Key for open some shit"
 SWEP.Instructions		= "Used as a key for open some shit"
 SWEP.Spawnable			= true
-SWEP.AdminSpawnable		= true
+SWEP.AdminOnly		= true
 
 
 SWEP.UseHands			= false
