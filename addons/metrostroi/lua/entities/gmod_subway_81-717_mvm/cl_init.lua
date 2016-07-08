@@ -542,7 +542,7 @@ ENT.ButtonMap["Stopkran"] = {
 	height = 1300,
 	scale = 0.1/2,
 		buttons = {
-			{ID = "STOPKRANToggle",x=0, y=0, w=200, h=1300, tooltip="ЖЕНЯ ГДЕ ПУИ И ВСЁ ГОВНО(это метросим)"},
+			{ID = "STOPKRANToggle",x=0, y=0, w=200, h=1300, tooltip="Стопкран\nEmergency brake"},
 	}
 }
 
