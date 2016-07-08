@@ -1,6 +1,5 @@
 "unlitgeneric"
 {
-	$model 1
-	"$basetexture" "models/metrostroi/mus_clock/t5dot"
+	$model 1 	"$basetexture" "models/metrostroi/mus_clock/t5dot"
 	"$additive" 1
 }

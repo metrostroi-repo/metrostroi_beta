@@ -1,5 +1,8 @@
-"vertexlitgeneric"
+"VertexLitGeneric"
 {
-	"$basetexture" "models/metrostroi/station_info/ramka"
-	"$surfaceprop" "Metal"
+
+	$basetexture "models/metrostroi/signals/pui/pui"
+	$bumpmap "models/metrostroi/signals/pui/npm"
+
+
 }
