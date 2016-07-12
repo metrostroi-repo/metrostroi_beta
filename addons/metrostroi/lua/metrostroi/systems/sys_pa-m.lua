@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- ПА-М Поездная Аппаратура Модифицированная
--- PA-M Train Equipment Retrofit
+-- PA-M Modified Train Equipment
 --------------------------------------------------------------------------------
 Metrostroi.DefineSystem("PA-M")
 TRAIN_SYSTEM.DontAccelerateSimulation = true
@@ -78,13 +78,21 @@ function TRAIN_SYSTEM:ClientInitialize()
 		[5]  = "0ХТ",
 		[6]  = "T2",
 	}
-	self.Types = {
+	self.TypesRussian = {
 		[0] = "ЭПВ",
 		[1] = "КС",
 		[2] = "ОД",
 		[3] = "КВ",
 		[4] = "УА",
 		[5] = "ОС",
+	}
+	self.TypesEnglish = {
+		[0] = "EPV",
+		[1] = "KS",
+		[2] = "OD",
+		[3] = "KV",
+		[4] = "UA",
+		[5] = "OS",
 	}
 	self.QuestionsRussian = {
 		[1] = "проверку наката",
@@ -93,7 +101,7 @@ function TRAIN_SYSTEM:ClientInitialize()
 		[7] = "режим фиксации станции",
 	}
 	self.QuestionsEnglish = {
-		[1] = "roll check",
+		[1] = "overrun check",
 		[5] = "drive if Vf=0",
 		[6] = "change station rotation",
 		[7] = "lock station mode",
@@ -178,13 +186,13 @@ function TRAIN_SYSTEM:ClientInitialize()
 	}
 	self.TranslationsEnglish = {
 		[00] = "SRI Factory SENT",
-		[01] = "Machinist's Terminal (PA-M)",
+		[01] = "Driver's Terminal (PA-M)",
 		[02] = "SELF TEST COMPLETED",
 		[03] = "RESULTS",
 		[04] = "Initial test",
-		[05] = "norm",
+		[05] = "normal",
 		[06] = "Initial setup",
-		[07] = "Version of BZVM    =     0.6",
+		[07] = "Computer version       =     0.6",
 		[08] = "Insert reverser wrench",
 		[09] = "To enter the access code",
 		[10] = "press  Enter",
@@ -224,7 +232,7 @@ function TRAIN_SYSTEM:ClientInitialize()
 		[44] = "Т.       ",
 		[45] = "Max.    ",
 		[46] = "Time = ",
-		[47] = "Roll check",
+		[47] = "Overrun check",
 		[48] = "Drive with SD",
 		[49] = "Drive without SD",
 		[50] = "Drive with LPT control",
@@ -248,12 +256,14 @@ function TRAIN_SYSTEM:ClientInitialize()
 		[68] = "Station Code",
 		[69] = "Error in PA system",
 		[70] = "Cur:",
-		[71] = ", Pre:",
+		[71] = ", Fin:",
 		[72] = "Route N/A",
 		[73] = "Critical error",
 		[74] = "Clarification required",
 		[75] = "data"
 	}
+	self.BlokEN=0
+	self.Types=self.TypesRussian
 	self.Questions=self.QuestionsRussian
 	self.loctext=self.TranslationsRussian
 	self.AutoTimer = false
@@ -565,9 +575,11 @@ if CLIENT then
 		if self.bloken ~= train:GetNW2Bool("BlokEN") then
 			self.bloken = train:GetNW2Bool("BlokEN")
 			if self.bloken then
+				self.Types=self.TypesEnglish
 				self.Questions=self.QuestionsEnglish
 				self.loctext=self.TranslationsEnglish
 			else
+				self.Types=self.TypesRussian
 				self.Questions=self.QuestionsRussian
 				self.loctext=self.TranslationsRussian
 			end

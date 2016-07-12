@@ -1,9 +1,14 @@
 --------------------------------------------------------------------------------
--- ПА-М Поездная Аппаратура Модифицированная
+-- ПА-КСД-М Поездная Аппаратура - Комплексная Система Движения - Модифицированная
+-- PA-KSD-M Train Equipment - Integrated Traffic System - Modified
 --------------------------------------------------------------------------------
 -- Коды ошибок:
 -- 0x0000 - норма
 -- 0x0001 -
+-- Error codes:
+-- 0x0000 - Normal
+-- 0x0001 - Rear PA Unit Loading
+-- 0x9999 - Rear PA Unit Not Present
 --------------------------------------------------------------------------------
 Metrostroi.DefineSystem("PA-KSD-M")
 TRAIN_SYSTEM.DontAccelerateSimulation = true
@@ -78,7 +83,7 @@ function TRAIN_SYSTEM:ClientInitialize()
 		[5]  = "0ХТ",
 		[6]  = "T2",
 	}
-	self.Types = {
+	self.TypesRussian = {
 		[0] = "ЭП",
 		[1] = "КС",
 		[2] = "ОД",
@@ -86,16 +91,38 @@ function TRAIN_SYSTEM:ClientInitialize()
 		[4] = "УА",
 		[5] = "ОС",
 	}
-	self.Questions = {
-		[1] = "Подтверди проверку наката?",
-		[5] = "Подтверди движение с Vф=0?",
-		[6] = {"Подтверди изменение","станции оборота"},
-		[7] = {"Подтверди режим","фиксации станции"},
-		[8] = {"Следи за графиком","Ты будешь виноват в задержке"},
+	self.TypesEnglish = {
+		[0] = "EP",
+		[1] = "KS",
+		[2] = "OD",
+		[3] = "KV",
+		[4] = "UA",
+		[5] = "OS",
+	}
+	self.QuestionsRussian = {
+		[01] = "Подтверди проверку наката?",
+		[05] = "Подтверди движение с Vф=0?",
+		[06] = {"Подтверди изменение","станции оборота"},
+		[07] = {"Подтверди режим","фиксации станции"},
+		[08] = {"Следи за графиком","Ты будешь виноват в задержке"},
 		[11] = "Перейти в режим АВ?",
 		[12] = "Перейти в режим КС?",
 		[13] = "Перейти в режим ОД?",
 	}
+	self.QuestionsEnglish = {
+		[01] = "Confirm overrun check?",
+		[05] = "Confirm drive if Vf=0?",
+		[06] = {"Confirm change", "station rotation"},
+		[07] = {"Confirm lock", "station mode"},
+		[08] = {"Mind the schedule", "Delays are your fault"},
+		[11] = "Enter the AV mode?",
+		[12] = "Enter the KS mode?",
+		[13] = "Enter the OD mode?",
+	}
+	self.BlokEN=0
+	self.Types=self.TypesRussian
+	self.Questions=self.QuestionsRussian
+	--self.loctext=self.TranslationsRussian
 	self.AutodriveEnabled = false
 	self.KSZD = false
 	self.AutoTimer = false
@@ -112,7 +139,20 @@ if CLIENT then
 		local Announcer = self.Train.Announcer
 		surface.SetAlphaMultiplier(1)
 		draw.NoTexture()
-
+		
+		if self.bloken ~= train:GetNW2Bool("BlokEN") then
+			self.bloken = train:GetNW2Bool("BlokEN")
+			if self.bloken then
+				self.Types=self.TypesEnglish
+				self.Questions=self.QuestionsEnglish
+				--self.loctext=self.TranslationsEnglish
+			else
+				self.Types=self.TypesRussian
+				self.Questions=self.QuestionsRussian
+				--self.loctext=self.TranslationsRussian
+			end
+		end
+		
 		if train:GetNW2Int("PAKSDM:State",-1) ~= -1 then
 			surface.SetDrawColor(Color(20,20,20))
 			surface.DrawRect(0,0,512,425)
@@ -182,7 +222,7 @@ if CLIENT then
 
 		if train:GetNW2Int("PAKSDM:State",-1) == 3 then
 			self.ErrorCodes = {
-				[0x9999] = {"","Проверь хвостовую ПА"},
+				[0x9999] = {"","Терминал машиниста (ПА-КСД-М)"},
 				[0x0001] = {"","Хвостовая ПА загружается"},
 				[0x0002] = {"","Хвостовая ПА в режиме настройки"},
 			}
