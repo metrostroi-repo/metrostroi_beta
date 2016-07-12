@@ -395,6 +395,7 @@ function ENT:UpdateTextures()
 		end
 	end
 	self:SetNW2Int("Blok",(self.Blok or 1))
+	self:SetNW2Bool("BlokEN",self.BlokEN)
 	self:SetNW2Bool("Breakers",(self.Breakers or 0) > 0)
 	self:SetNW2Int("LampType",(self.LampType or 1))
 	self:SetNW2Bool("BPSNBuzzType",self.PNM)
