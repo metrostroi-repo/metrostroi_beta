@@ -37,10 +37,14 @@ Copyright (C) 2015-2016 oldy. All rights reserved.
 - Ев 
 - 81-704 Ем 
 - 81-705 Ема 
+- 81-502 Еma-502
 - 81-706 Емх 
 - 81-707 Еж 
+- 81-508 Еm508 
+- 81-509 Еm509
 - 81-708 Еж1 
 - 81-710 Еж3 
+- 81-508T Еm508T
 - 81-713 Ев3 
 
 All the models listed above belongs to their corresponding author.  This cars itself, its corresponding models of switches, buttons, sounds of engines and pneumatics also belongs to their corresponding author.
