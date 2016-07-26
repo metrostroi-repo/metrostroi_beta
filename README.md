@@ -32,16 +32,16 @@ permission for purposes of prototyping a subway train simulator.
 
 Copyright (C) 2015-2016 oldy. All rights reserved.
 
-*81-702 Д 
-*81-703 Е 
-*– Ев 
-*81-704 Ем 
-*81-705 Ема 
-*81-706 Емх 
-*81-707 Еж 
-*81-708 Еж1 
-*81-710 Еж3 
-*81-713 Ев3 
+- 81-702 Д 
+- 81-703 Е 
+- Ев 
+- 81-704 Ем 
+- 81-705 Ема 
+- 81-706 Емх 
+- 81-707 Еж 
+- 81-708 Еж1 
+- 81-710 Еж3 
+- 81-713 Ев3 
 
 All the models listed above belongs to their corresponding author.  This cars itself, its corresponding models of switches, buttons, sounds of engines and pneumatics also belongs to their corresponding author.
 These models of cars can only be used as addons in Steam Workshop as additions for Metrostroi simulator (Garrys Mod Modification) 
