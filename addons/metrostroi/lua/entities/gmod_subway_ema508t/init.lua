@@ -5,11 +5,11 @@ include("shared.lua")
 ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 
 ---------------------------------------------------
--- Defined train information                      
+-- Defined train information
 -- Types of wagon(for wagon limit system):
--- 0 = Head or intherim                           
--- 1 = Only head                                     
--- 2 = Only intherim                                
+-- 0 = Head or intherim
+-- 1 = Only head
+-- 2 = Only intherim
 ---------------------------------------------------
 ENT.SubwayTrain = {
 	Type = "E",
@@ -28,7 +28,7 @@ function ENT:Initialize()
 	-- Create bogeys
 	self.FrontBogey = self:CreateBogey(Vector( 325-20,0,-80),Angle(0,180,0),true)
 	self.RearBogey  = self:CreateBogey(Vector(-325-10,0,-80),Angle(0,0,0),false)
-	
+
 	self.InteractionZones = {
 		{	Pos = Vector(458,-30,-55),
 			Radius = 16,
@@ -72,30 +72,30 @@ function ENT:Initialize()
 		[5] = { "glow",				Vector(460,-8, 55), Angle(0,0,0), Color(255,255,255), brightness = 0.3 },
 		[6] = { "glow",				Vector(460, 2, 55), Angle(0,0,0), Color(255,255,255), brightness = 0.3 },
 		[7] = { "glow",				Vector(460, 2, 55), Angle(0,0,0), Color(255,255,255), brightness = 0.3 },
-		
+
 		-- Reverse
 		[8] = { "light",			Vector(458,-45, 55), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
 		[9] = { "light",			Vector(458, 45, 55), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
-		
+
 		-- Cabin
 		[10] = { "dynamiclight",	Vector( 420, 0, 35), Angle(0,0,0), Color(255,255,255), brightness = 0.1, distance = 550 },
-		
+
 		-- Interior
 		[11] = { "dynamiclight",	Vector( 250, 0, 5), Angle(0,0,0), Color(255,255,255), brightness = 3, distance = 400 },
 		[12] = { "dynamiclight",	Vector(   0, 0, 5), Angle(0,0,0), Color(255,255,255), brightness = 3, distance = 400 },
 		[13] = { "dynamiclight",	Vector(-250, 0, 5), Angle(0,0,0), Color(255,255,255), brightness = 3, distance = 400 },
-		
+
 		-- Side lights
 		[14] = { "light",			Vector(-50, 68, 51.9), Angle(0,0,0), Color(255,0,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		[15] = { "light",			Vector(6,   68, 51.9), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		[16] = { "light",			Vector(3,   68, 51.9), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		[17] = { "light",			Vector(-0,  68, 51.9), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-		
+
 		[18] = { "light",			Vector(-50, -69, 51.9), Angle(0,0,0), Color(255,0,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		[19] = { "light",			Vector(6,   -69, 51.9), Angle(0,0,0), Color(150,255,255), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		[20] = { "light",			Vector(3,   -69, 51.9), Angle(0,0,0), Color(50,255,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
 		[21] = { "light",			Vector(-0,  -69, 51.9), Angle(0,0,0), Color(255,255,0), brightness = 0.9, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
-			
+
 		-- Green RP
 		[22] = { "light",			Vector(439.4,12.5-9.6,-5.7), Angle(0,0,0), Color(100,255,0), brightness = 1.0, scale = 0.020 },
 		-- AVU
@@ -103,18 +103,18 @@ function ENT:Initialize()
 		-- LKTP
 		[24] = { "light",			Vector(441.2,12.5-23.0,-3.7), Angle(0,0,0), Color(255,40,0), brightness = 1.0, scale = 0.020 },
 	}
-		
+
 	for i = 1,23 do
 		self.Lights[69+i] = { "light", Vector(-470 + 35*i, 0, 65), Angle(180,0,0), Color(255,220,180), brightness = 0.25, scale = 0.75}
 		--self:SetLightPower(69+i,RealTime()%1*2>1)
 	end
-	
+
 	-- Cross connections in train wires
 	self.TrainWireCrossConnections = {
 		[5] = 4, -- Reverser F<->B
 		[31] = 32, -- Doors L<->R
 	}
-	
+
 	-- Setup door positions
 	self.LeftDoorPositions = {}
 	self.RightDoorPositions = {}
@@ -154,7 +154,7 @@ function ENT:UpdateTextures()
 		if texture and texture.textures[tex] then
 			self:SetSubMaterial(k-1,texture.textures[tex])
 		end
-		
+
 	end
 	self:SetNW2String("texture",self.Texture)
 	self:SetNW2String("passtexture",self.PassTexture)
@@ -167,21 +167,6 @@ function ENT:Think()
 	end
 	if self.YAR_13A.Slope > 0 and self:GetAngles().pitch*self.SpeedSign > -1 then
 		self.YAR_13A:TriggerInput("Slope",0)
-	end
-	self.TextureTime = self.TextureTime or CurTime()
-	if (CurTime() - self.TextureTime) > 1.0 then
-		--print(1)
-		self.TextureTime = CurTime()
-		if self.Texture then
-			for k,v in pairs(self:GetMaterials()) do
-				if v:find("ewagon") then
-					self:SetSubMaterial(k-1,self.Texture)
-				else
-					self:SetSubMaterial(k-1,"")
-				end
-			end
-			self:SetNW2String("texture",self.Texture)
-		end
 	end
 	local retVal = self.BaseClass.Think(self)
 
@@ -203,7 +188,7 @@ function ENT:Think()
 	for i = 1,23 do
 		self:SetLightPower(69+i,lightsActive2 and true or lightsActive1 and i%5==1 or false)
 	end
-	
+
 	-- Side lights
 	self:SetLightPower(15, self.Panel["TrainDoors"] > 0.5)
 	self:SetLightPower(19, self.Panel["TrainDoors"] > 0.5)
@@ -228,24 +213,24 @@ function ENT:Think()
 	self:SetPackedBool(112,(self.RheostatController.Velocity ~= 0.0))
 	self:SetPackedBool(156,self.RearDoor)
 	self:SetPackedBool(157,self.FrontDoor)
-	
+
 	self:SetPackedBool(160,self.ParkingBrake)
 
 	-- Signal if doors are open or no to platform simulation
-	self.LeftDoorsOpen = 
+	self.LeftDoorsOpen =
 		(self.Pneumatic.LeftDoorState[1] > 0.5) or
 		(self.Pneumatic.LeftDoorState[2] > 0.5) or
 		(self.Pneumatic.LeftDoorState[3] > 0.5) or
 		(self.Pneumatic.LeftDoorState[4] > 0.5)
-	self.RightDoorsOpen = 
+	self.RightDoorsOpen =
 		(self.Pneumatic.RightDoorState[1] > 0.5) or
 		(self.Pneumatic.RightDoorState[2] > 0.5) or
 		(self.Pneumatic.RightDoorState[3] > 0.5) or
 		(self.Pneumatic.RightDoorState[4] > 0.5)
-	
+
 	-- BPSN
 	self:SetPackedBool(52,self.PowerSupply.XT3_1 > 0)
-	
+
 	-- AV states
 	for i,v in ipairs(self.Panel.AVMap) do
 		if tonumber(v) then
@@ -260,7 +245,7 @@ function ENT:Think()
 			self:SetPackedBool(64+(i-1),self[v].Value == 1.0)
 		end
 	end
-    
+
 	-- Feed packed floats
 	self:SetPackedRatio(0, 1-self.Pneumatic.DriverValvePosition/5)
 	--self:SetPackedRatio(1, (self.KV.ControllerPosition+3)/7)
@@ -269,7 +254,7 @@ function ENT:Think()
 	self:SetPackedRatio(5, self.Pneumatic.TrainLinePressure/16.0)
 	self:SetPackedRatio(6, self.Pneumatic.BrakeCylinderPressure/6.0)
 	self:SetPackedRatio(7, self.Electric.Power750V/1000.0)
-	self:SetPackedRatio(8, math.abs(self.Electric.I24)/1000.0)	
+	self:SetPackedRatio(8, math.abs(self.Electric.I24)/1000.0)
 	--self:SetPackedRatio(9, self.Pneumatic.BrakeLinePressure_dPdT or 0)
 	if self.Pneumatic.TrainLineOpen then
 		self:SetPackedRatio(9, (-self.Pneumatic.TrainLinePressure_dPdT or 0)*6)
@@ -282,7 +267,7 @@ function ENT:Think()
 	local weightRatio = 2.00*math.max(0,math.min(1,(self:GetNW2Float("PassengerCount")/300)))
 	if math.abs(self:GetAngles().pitch) > 2.5 then weightRatio = weightRatio + 1.00 end
 	self.YAR_13A:TriggerInput("WeightLoadRatio",math.max(0,math.min(2.50,weightRatio)))
-	
+
 	-- Exchange some parameters between engines, pneumatic system, and real world
 	self.Engines:TriggerInput("Speed",self.Speed)
 	if IsValid(self.FrontBogey) and IsValid(self.RearBogey) then
@@ -299,7 +284,7 @@ function ENT:Think()
 		if self.Speed < 10 then P = P*(1.0 + 0.5*(10.0-self.Speed)/10.0) end
 		self.RearBogey.MotorPower  = P*0.5*((A > 0) and 1 or -1)
 		self.FrontBogey.MotorPower = P*0.5*((A > 0) and 1 or -1)
-		
+
 		-- Apply brakes
 		self.FrontBogey.PneumaticBrakeForce = 40000.0
 		self.FrontBogey.BrakeCylinderPressure = self.Pneumatic.BrakeCylinderPressure
@@ -318,7 +303,7 @@ end
 --------------------------------------------------------------------------------
 function ENT:OnCouple(train,isfront)
 	self.BaseClass.OnCouple(self,train,isfront)
-	
+
 	if isfront then
 		self.FrontBrakeLineIsolation:TriggerInput("Open",1.0)
 		self.FrontTrainLineIsolation:TriggerInput("Open",1.0)
@@ -345,7 +330,7 @@ function ENT:OnButtonPress(button)
 		end
 		return
 	end
-	
+
 	-- Generic button or switch sound
 	if string.find(button,"Set") then
 		self:PlayOnce("switch")
