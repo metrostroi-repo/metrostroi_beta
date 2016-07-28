@@ -362,7 +362,6 @@ function ENT:ARSLogic(tim)
 			if self.Routes[self.Route or 1].Manual then self.Routes[self.Route or 1].IsOpened = false end
 		end
 		if self.Occupied or not self.NextSignalLink or not self.NextSignalLink.FreeBS then
-			if self.Routes[self.Route or 1].Manual then self.Routes[self.Route or 1].IsOpened = false end
 			self.FreeBS = 0
 		else
 			self.FreeBS = math.min(10,self.NextSignalLink.FreeBS + 1)
@@ -405,7 +404,7 @@ function ENT:ARSLogic(tim)
 		for i = 1,#self.Routes do
 
 			--If all switches right - get this route!
-			if self.SwitchesFunction[i] and self.SwitchesFunction[i]()and (not self.Routes[i].Manual and not self.Routes[i].Emer or self.Routes[i].IsOpened) then
+			if self.SwitchesFunction[i] and self.SwitchesFunction[i]() and (not self.Routes[i].Manual and not self.Routes[i].Emer or self.Routes[i].IsOpened) then
 				--if self.Route ~= i then
 				route = i
 					--self.NextSignalLink = nil
@@ -462,6 +461,9 @@ function ENT:ARSLogic(tim)
 				end
 			end
 		end
+	end
+	if self.Occupied or not self.NextSignalLink or not self.NextSignalLink.FreeBS then
+		if self.Routes[self.Route or 1].Manual then self.Routes[self.Route or 1].IsOpened = false end
 	end
 end
 

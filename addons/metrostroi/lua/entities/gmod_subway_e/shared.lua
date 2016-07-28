@@ -82,7 +82,7 @@ function ENT:InitializeSystems()
 	self:LoadSystem("ALS_ARS")
 	self:LoadSystem("Horn")
 	self:LoadSystem("Announcer")
-	self:LoadSystem("RRI")
+	--self:LoadSystem("RRI")
 
 	self:LoadSystem("Custom1","Relay","Switch")
 	self:LoadSystem("Custom2","Relay","Switch")

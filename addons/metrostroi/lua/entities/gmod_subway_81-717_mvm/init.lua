@@ -202,7 +202,7 @@ function ENT:Initialize()
 	local vY = Angle(0,-90-0.2,56.3):Right()
 	self.Lights = {
 		-- Headlight glow
-		[1] = { "headlight",		Vector(465,0,-20), Angle(0,0,0), Color(216,161,92), fov = 100 },
+		[1] = { "headlight",		Vector(465,0,-20), Angle(0,0,0), Color(216,161,92), fov = 100, farz=6144,brightness = 4},
 
 		-- Head (type 1)
 		[2] = { "glow",				Vector(470,-51,-19), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 1.0 },
@@ -627,36 +627,6 @@ function ENT:Think()
 			self:SetLightPower(7, false)
 		end
 	end
-	--if self.ARSType == 3 then self.ARSType = 2 end
---[[
-		self:SetLightPower(3,   self.TrainModel == 2 and not self.LED and (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(7,   self.TrainModel == 2 and not self.LED and (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(5,   self.TrainModel == 2 and not self.LED and (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(4,   self.TrainModel == 2 and not self.LED and (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(6,   self.TrainModel == 2 and not self.LED and (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(2,   self.TrainModel == 2 and not self.LED and (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
-
-		self:SetLightPower(93, self.TrainModel == 1 and not self.LED and (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(94, self.TrainModel == 1 and not self.LED and (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(95, self.TrainModel == 1 and not self.LED and (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(96, self.TrainModel == 1 and not self.LED and (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(97, self.TrainModel == 1 and not self.LED and (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(92, self.TrainModel == 1 and not self.LED and (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
-
-		self:SetLightPower(99, self.TrainModel == 2 and self.LED and (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(103, self.TrainModel == 2 and self.LED and (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(101, self.TrainModel == 2 and self.LED and (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(100, self.TrainModel == 2 and self.LED and (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(102, self.TrainModel == 2 and self.LED and (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(98, self.TrainModel == 2 and self.LED and (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
-
-		self:SetLightPower(105,  self.TrainModel == 1 and self.LED and (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(106,  self.TrainModel == 1 and self.LED and (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(107,  self.TrainModel == 1 and self.LED and (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(108,  self.TrainModel == 1 and self.LED and (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(109,  self.TrainModel == 1 and self.LED and (self.Panel["HeadLights2"] > 0.5) and (self.L_4.Value > 0.5))
-		self:SetLightPower(104,  self.TrainModel == 1 and self.LED and (self.Panel["HeadLights1"] > 0.5) and (self.L_4.Value > 0.5))
-	]]
 	-- Reverser lights
 	self:SetLightPower(8, self.Panel["RedLightRight"] > 0.5)
 	self:SetLightPower(9, self.Panel["RedLightLeft"] > 0.5)

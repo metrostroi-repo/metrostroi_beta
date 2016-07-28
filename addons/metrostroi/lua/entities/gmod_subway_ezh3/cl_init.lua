@@ -987,19 +987,19 @@ function ENT:UpdateTextures()
 	local texture = Metrostroi.Skins["train"][self:GetNW2String("texture")]
 	local passtexture = Metrostroi.Skins["pass"][self:GetNW2String("passtexture")]
 	local cabintexture = Metrostroi.Skins["cab"][self:GetNW2String("cabtexture")]
-	for _,self in pairs(self.ClientEnts) do
-		if not IsValid(self) then continue end
-		for k,v in pairs(self:GetMaterials()) do
+	for _,ent in pairs(self.ClientEnts) do
+		if not IsValid(ent) then continue end
+		for k,v in pairs(ent:GetMaterials()) do
 			local tex = string.Explode("/",v)
 			tex = tex[#tex]
 			if cabintexture and cabintexture.textures[tex] then
-				self:SetSubMaterial(k-1,cabintexture.textures[tex])
+				ent:SetSubMaterial(k-1,cabintexture.textures[tex])
 			end
 			if passtexture and passtexture.textures[tex] then
-				self:SetSubMaterial(k-1,passtexture.textures[tex])
+				ent:SetSubMaterial(k-1,passtexture.textures[tex])
 			end
 			if texture and texture.textures[tex] then
-				self:SetSubMaterial(k-1,texture.textures[tex])
+				ent:SetSubMaterial(k-1,texture.textures[tex])
 			end
 		end
 	end
