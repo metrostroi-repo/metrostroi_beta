@@ -179,10 +179,10 @@ else
 	--Include map scripts
 	Metrostroi.AnnouncerData = {}
 	Metrostroi.NameConverter = {}
-	Metrostroi.NameConverter["81-714_mvm"] = "81-717_mvm"
-	Metrostroi.NameConverter["81-714_lvz"] = "81-717_lvz"
-	Metrostroi.NameConverter["ema508t"] = "ezh3"
-	Metrostroi.NameConverter["em"] = "ema"
+	Metrostroi.NameConverter["81-717_mvm"] = "81-714_mvm"
+	Metrostroi.NameConverter["81-717_lvz"] = "81-714_lvz"
+	Metrostroi.NameConverter["ezh3"] = "ema508t"
+	Metrostroi.NameConverter["ema"] = "em"
 	Metrostroi.TrainSpawnerConverter = {
 		"81-717_mvm",
 		"81-717_lvz",
