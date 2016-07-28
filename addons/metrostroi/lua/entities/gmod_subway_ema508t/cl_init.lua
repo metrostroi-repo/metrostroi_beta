@@ -110,7 +110,7 @@ ENT.ClientProps["gv_wrench"] = {
 end]]--
 --[[Metrostroi.ClientPropForButton("battery",{
 	panel = "Battery",
-	button = "VBToggle",	
+	button = "VBToggle",
 	model = "models/metrostroi/81-717/switch01.mdl",
 	z = -10.7,
 })]]--
@@ -118,7 +118,7 @@ end]]--
 --------------------------------------------------------------------------------
 -- Add doors
 local function GetDoorPosition(i,k,j)
-	if j == 0 
+	if j == 0
 	then return Vector(351.0 - 34*k     - 231*i,-65*(1-2*k),-2.8)
 	else return Vector(351.0 - 34*(1-k) - 231*i,-65*(1-2*k),-2.8)
 	end
@@ -159,19 +159,19 @@ function ENT:UpdateTextures()
 	local texture = Metrostroi.Skins["train"][self:GetNW2String("texture")]
 	local passtexture = Metrostroi.Skins["pass"][self:GetNW2String("passtexture")]
 	local cabintexture = Metrostroi.Skins["cab"][self:GetNW2String("cabtexture")]
-	for _,self in pairs(self.ClientEnts) do
-		if not IsValid(self) then continue end
-		for k,v in pairs(self:GetMaterials()) do
+	for _,ent in pairs(self.ClientEnts) do
+		if not IsValid(ent) then continue end
+		for k,v in pairs(ent:GetMaterials()) do
 			local tex = string.Explode("/",v)
 			tex = tex[#tex]
 			if cabintexture and cabintexture.textures[tex] then
-				self:SetSubMaterial(k-1,cabintexture.textures[tex])
+				ent:SetSubMaterial(k-1,cabintexture.textures[tex])
 			end
 			if passtexture and passtexture.textures[tex] then
-				self:SetSubMaterial(k-1,passtexture.textures[tex])
+				ent:SetSubMaterial(k-1,passtexture.textures[tex])
 			end
 			if texture and texture.textures[tex] then
-				self:SetSubMaterial(k-1,texture.textures[tex])
+				ent:SetSubMaterial(k-1,texture.textures[tex])
 			end
 		end
 	end
@@ -211,7 +211,7 @@ function ENT:Think()
 	end
 	local transient = (self.Transient or 0)*0.05
 	if (self.Transient or 0) ~= 0.0 then self.Transient = 0.0 end
-	
+
 	-- Simulate pressure gauges getting stuck a little
 	--self:Animate("brake", 			self:GetPackedRatio(0)^0.5, 		0.00, 0.65,  256,24)
 	--self:Animate("controller",		self:GetPackedRatio(1),				0.30, 0.70,  384,24)
@@ -227,18 +227,18 @@ function ENT:Think()
 	--self:Animate("volt2",			0, 									0.38, 0.63)
 
 	self:Animate("battery",			self:GetPackedBool(7) and 1 or 0, 	0,1, 16, false)
-	
+
 	-- Animate AV switches
 	for i,v in ipairs(self.Panel.AVMap) do
 		local value = self:GetPackedBool(64+(i-1)) and 1 or 0
 		self:Animate("a"..(i-1),value,0,1,8,false)
-	end	
-	
+	end
+
 	-- Main switch
 	if self.LastValue ~= self:GetPackedBool(5) then
 		self.ResetTime = CurTime()+2.0
 		self.LastValue = self:GetPackedBool(5)
-	end	
+	end
 	self:Animate("gv_wrench",	(self:GetPackedBool(5) and 1 or 0), 	0,0.51, 128,  1,false)
 	self:ShowHide("gv_wrench",	CurTime() < self.ResetTime)
 
@@ -263,7 +263,7 @@ function ENT:Think()
 	if self.ClientEnts["door1"] then self.ClientEnts["door1"]:SetSkin(self:GetSkin()) end
 	if self.ClientEnts["door2"] then self.ClientEnts["door2"]:SetSkin(self:GetSkin()) end
 
-	
+
 	-- Brake-related sounds
 	local brakeLinedPdT = self:GetPackedRatio(9)
 	local dT = self.DeltaTime
@@ -283,7 +283,7 @@ function ENT:Think()
 	end
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
 	self:SetSoundState("release3_w",self.BrakeLineRamp2 + math.max(0,self.BrakeLineRamp1/2-0.15),1.0)
-	
+
 	self:SetSoundState("cran1_w",math.min(1,self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),1.0)
 
 	-- Compressor
@@ -300,7 +300,7 @@ function ENT:Think()
 			--self:PlayOnce("compressor_e_end",nil,1,nil,true)
 		end
 	end
-	
+
 	-- RK rotation
 	if self:GetPackedBool(112) then self.RKTimer = CurTime() end
 	local state = (CurTime() - (self.RKTimer or 0)) < 0.2
@@ -315,7 +315,7 @@ function ENT:Think()
 			self:SetSoundState("rk_stop",0.7,1,nil,0.75)
 		end
 	end
-	
+
 	-- DIP sound
 	--self:SetSoundState("bpsn1",self:GetPackedBool(52) and 1 or 0,1.0)
 end
@@ -337,7 +337,7 @@ function ENT:DrawPost()
 	self:DrawOnPanel("AirDistributor",function()
 		draw.DrawText(self:GetNW2Bool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
 	end)
-	
+
 	self:DrawOnPanel("AirDistributor",function()
 		draw.DrawText(self:GetNW2Bool("AD") and "Air Distributor ON" or "Air Distributor OFF","Trebuchet24",0,0,Color(0,0,0,255))
 	end)

@@ -220,7 +220,7 @@ function ENT:Initialize()
 	local vY = Angle(0,-90-0.2,56.3):Right()
 	self.Lights = {
 		-- Headlight glow
-		[1] = { "headlight",		Vector(465,0,-20), Angle(0,0,0), Color(216,161,92), fov = 100 },
+		[1] = { "headlight",		Vector(465,0,-20), Angle(0,0,0), Color(216,161,92), fov = 100, farz=6144,brightness = 4},
 
 		-- Head (type 1)
 		[2] = { "glow",				Vector(470,-51,-19), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 1.0 },
@@ -483,7 +483,7 @@ function ENT:Think()
 	--print(self.DeltaTime)
 	--print(self.SpeedSign)
 	--if not self.SpeedSign then return end
-self.Lights[1] = { "headlight",		Vector(465,0,-20), Angle(0,0,0), Color(216,161,92), fov = 100, farz=8192,brightness = 5}
+	--self.Lights[1] = { "headlight",		Vector(465,0,-20), Angle(0,0,0), Color(216,161,92), fov = 100, farz=8192,brightness = 5}
 	--print(self.Panel["HeadLights1"])
 	--if not self.Panel["HeadLights1"] then return end
 	self.RetVal = self.BaseClass.Think(self)
