@@ -33,25 +33,47 @@ permission for purposes of prototyping a subway train simulator.
 
 Copyright (C) 2015-2016 oldy (textures and scripts) Aleksandr Kravchenko, Lacko (model) László Lakatos. All rights reserved.
 
-- 81-702 Д 
+- 81-702 Д (work in progress) 
+- 
+Estimated release date in a middle of autumn 2016
 
 ### "E" type metro trains models and scripts. 
 
 Copyright (C) 2015-2016 oldy Aleksandr Kravchenko. All rights reserved.
 
-- 81-703 Е 
-- Ев 
-- 81-704 Ем 
-- 81-705 Ема 
-- 81-502 Еma-502
-- 81-706 Емх 
-- 81-707 Еж 
-- 81-508 Еm508 
-- 81-509 Еm509
-- 81-708 Еж1 
-- 81-710 Еж3 
-- 81-508T Еm508T
-- 81-713 Ев3 
+- 81-703 Е (completed) 
+Release date in a middle of autumn 2016
+
+- Ев (work in progress)
+Estimated release date in a middle of winter 2017
+
+- 81-704 Ем (completed)
+Released
+
+- 81-705 Ема (completed)
+Released
+
+- 81-502 Еma-502 (work in progress)
+- 81-706 Емх (completed as Ema)
+- 81-707 Еж (work in progress)
+- 81-508 Еm508 (completed)
+- 81-509 Еm509 (work in progress)
+- 81-708 Еж1 (work in progress)
+- 81-710 Еж3 (work in progress)
+- 81-508T Еm508T (frozen)
+- 81-713 Ев3 (work in progress)
+- 
+### "81-717" type metro trains models and scripts. 
+
+- 81-717 LVZ (work in progress)
+- 81-714 LVZ (work in progress)
+- 81-717 LVZ (work in progress)
+- 81-714 LVZ (work in progress)
+- 81-717.5 (work in progress)
+- 81-714.5 (work in progress)
+
+Copyright (C) 2015-2016 oldy Aleksandr Kravchenko. All rights reserved.
+
 
 All the models listed above belongs to their corresponding author.  This cars itself, its corresponding models of switches, buttons, sounds of engines and pneumatics also belongs to their corresponding author.
 These models of cars can only be used as addons in Steam Workshop as additions for Metrostroi simulator (Garrys Mod Modification) 
