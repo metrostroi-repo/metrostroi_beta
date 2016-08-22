@@ -34,7 +34,6 @@ permission for purposes of prototyping a subway train simulator.
 Copyright (C) 2015-2016 oldy (textures and scripts) Aleksandr Kravchenko, Lacko (model) László Lakatos. All rights reserved.
 
 - 81-702 Д (work in progress) 
-- 
 Estimated release date in a middle of autumn 2016
 
 ### "E" type metro trains models and scripts. 
@@ -43,16 +42,12 @@ Copyright (C) 2015-2016 oldy Aleksandr Kravchenko. All rights reserved.
 
 - 81-703 Е (completed) 
 Release date in a middle of autumn 2016
-
 - Ев (work in progress)
 Estimated release date in a middle of winter 2017
-
 - 81-704 Ем (completed)
 Released
-
 - 81-705 Ема (completed)
 Released
-
 - 81-502 Еma-502 (work in progress)
 - 81-706 Емх (completed as Ema)
 - 81-707 Еж (work in progress)
