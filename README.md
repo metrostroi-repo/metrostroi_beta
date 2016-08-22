@@ -7,6 +7,7 @@ It's a beta version of original Metrostroi Subway Train Simulator
 
 This simulation features fully simulated 81-717 and Ezh3 metro trains - with all
 the electric circuits and pneumatic systems. Every relay of the train is modelled.
+Also there are E, Em508 and Ezh type of trains in their original state, unfortunately their system of electric brakes is  not fully simulated as it could be. 
 
 The following features are incomplete/missing:
 
@@ -28,11 +29,16 @@ Licensing
 All models and materials belong to their corresponding authors. Mainly used without
 permission for purposes of prototyping a subway train simulator.
 
-### "E" type metrocars
+### "D" type metro train model and scripts. 
 
-Copyright (C) 2015-2016 oldy. All rights reserved.
+Copyright (C) 2015-2016 oldy (textures and scripts) Aleksandr Kravchenko, Lacko (model) László Lakatos. All rights reserved.
 
 - 81-702 Д 
+
+### "E" type metro trains models and scripts. 
+
+Copyright (C) 2015-2016 oldy Aleksandr Kravchenko. All rights reserved.
+
 - 81-703 Е 
 - Ев 
 - 81-704 Ем 
