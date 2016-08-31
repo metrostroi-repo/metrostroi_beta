@@ -106,12 +106,16 @@ function TRAIN_SYSTEM:ClientInitialize()
 		[6] = "change station rotation",
 		[7] = "lock station mode",
 	}
-	self.i18n = util.JSONToTable(file.Read("metrostroi_data/language/pam_en.json"))
+	
+	local translate = file.Read("metrostroi_data/language/pam_en.json")
+	if translate then
+		self.i18n = util.JSONToTable(translate)
+	end
 	self.T = function (source)
-		if self.BlokEN and self.i18n[source] ~= nil then
+		if self.i18n and self.BlokEN and self.i18n[source] ~= nil then
 			return self.i18n[source]
 		else
-			if self.BlokEN then print("Need translation for \""..source.."\"") end
+			if self.i18n and self.BlokEN then print("Need translation for \""..source.."\"") end
 			return source
 		end
 	end
