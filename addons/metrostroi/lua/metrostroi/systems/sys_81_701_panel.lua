@@ -18,6 +18,8 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("VUS","Relay","Switch", {av = true})
 	self.Train:LoadSystem("VUD1","Relay","Switch", { normally_closed = true, vud = true })
 	self.Train:LoadSystem("VUD2","Relay","Switch", { normally_closed = true, vud = true }) -- Doors close
+	self.Train.VUD2:TriggerInput("Block",1)
+	self.Train:LoadSystem("VUD2L","Relay","Switch", { krishka = true }) -- Doors close
 	self.Train:LoadSystem("VDL","Relay","Switch", {switch = true}) -- Doors left open
 	self.Train:LoadSystem("KDL","Relay","Switch", {button = true})
 	self.Train:LoadSystem("KDP","Relay","Switch", {button = true})
@@ -29,8 +31,8 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("KVT","Relay","Switch", {button = true})
 	--self.Train:LoadSystem("KB","Relay","Switch", {button = true})
 	self.Train:LoadSystem("KRP","Relay","Switch", {vud = true})
-	
-	
+
+
 	self.Train:LoadSystem("R_UNch","Relay","Switch", {switch = true})
 	self.Train:LoadSystem("R_ZS","Relay","Switch", {switch = true})
 	self.Train:LoadSystem("R_G","Relay","Switch", {switch = true})
@@ -38,63 +40,16 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("R_Program1","Relay","Switch", {programm = true})
 	self.Train:LoadSystem("R_Program2","Relay","Switch", {programm = true})
 	self.Train:LoadSystem("RC1","Relay","Switch",{ normally_closed = true })
-	
+
 	--self.Train:LoadSystem("Radio13","Relay","Switch", {button = true})
 	--self.Train:LoadSystem("ARS13","Relay","Switch", {button = true})
-	
+
 	-- Педаль бдительности (ПБ)
 	self.Train:LoadSystem("PB","Relay","Switch", {pb = true})
-	
+
 	-- Автоматические выключатели (АВ)
 	self.Train:LoadSystem("VU3","Relay","Switch", {av = true})
-	--[[
-	self.Train:LoadSystem("A1","Relay","VA21-29")
-	self.Train:LoadSystem("A2","Relay","VA21-29")
-	self.Train:LoadSystem("A3","Relay","VA21-29")
-	self.Train:LoadSystem("A5","Relay","VA21-29")
-	self.Train:LoadSystem("A6","Relay","VA21-29")
-	self.Train:LoadSystem("A7","Relay","VA21-29")
-	self.Train:LoadSystem("A8","Relay","VA21-29")
-	self.Train:LoadSystem("A9","Relay","VA21-29")
-	self.Train:LoadSystem("A10","Relay","VA21-29")
-	self.Train:LoadSystem("A12","Relay","VA21-29")
-	self.Train:LoadSystem("A13","Relay","VA21-29")
-	self.Train:LoadSystem("A14","Relay","VA21-29")
-	self.Train:LoadSystem("A16","Relay","VA21-29")
-	self.Train:LoadSystem("A17","Relay","VA21-29")
-	self.Train:LoadSystem("A20","Relay","VA21-29")
-	self.Train:LoadSystem("A21","Relay","VA21-29")
-	self.Train:LoadSystem("A22","Relay","VA21-29")
-	self.Train:LoadSystem("A23","Relay","VA21-29")
-	self.Train:LoadSystem("A24","Relay","Switch", {normally_closed = true, mainav = true})
-	self.Train:LoadSystem("A25","Relay","VA21-29")
-	self.Train:LoadSystem("A27","Relay","VA21-29")
-	self.Train:LoadSystem("A29","Relay","VA21-29")
-	self.Train:LoadSystem("A30","Relay","VA21-29")
-	self.Train:LoadSystem("A31","Relay","VA21-29")
-	self.Train:LoadSystem("A32","Relay","VA21-29")
-	self.Train:LoadSystem("A39","Relay","VA21-29")
-	self.Train:LoadSystem("A41","Relay","VA21-29")
-	self.Train:LoadSystem("A42","Relay","VA21-29")
-	self.Train:LoadSystem("A43","Relay","VA21-29")
-	self.Train:LoadSystem("A44","Relay","VA21-29")
-	self.Train:LoadSystem("A45","Relay","VA21-29")
-	self.Train:LoadSystem("A46","Relay","VA21-29")
-	self.Train:LoadSystem("A47","Relay","VA21-29")
-	self.Train:LoadSystem("A50","Relay","VA21-29")
-	self.Train:LoadSystem("A51","Relay","VA21-29")
-	self.Train:LoadSystem("A53","Relay","Switch", {mainav = true})
-	self.Train:LoadSystem("A54","Relay","VA21-29")
-	self.Train:LoadSystem("A55","Relay","VA21-29")
-	self.Train:LoadSystem("A56","Relay","VA21-29")
-	self.Train:LoadSystem("A61","Relay","VA21-29")
-	self.Train:LoadSystem("A62","Relay","Switch", {av = true})
-	self.Train:LoadSystem("A63","Relay","VA21-29")
-	self.Train:LoadSystem("A64","Relay","Switch", {av = true})
-	self.Train:LoadSystem("A65","Relay","Switch", {av = true})
-	self.Train:LoadSystem("A75","Relay","Switch", {av = true})
-	self.Train:LoadSystem("A80","Relay","VA21-29")
-	]]
+
 	self.Train:LoadSystem("VU1","Relay","Switch", {av = true})
 	self.Train:LoadSystem("VU2","Relay","Switch", {av = true})
 	self.Train:LoadSystem("AV8B","Relay","Switch", {mainav = true})
@@ -106,10 +61,10 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("L_3","Relay","Switch",{switch = true})
 
 	self.Train:LoadSystem("RST","Relay","Switch", {av = true})
-	
+
 	-- Map of AV switches to indexes on panel
 	self:InitializeAVMap()
-	
+
 	self.CabinLight = 0
 	self.HeadLights1 = 0
 	self.HeadLights2 = 0
