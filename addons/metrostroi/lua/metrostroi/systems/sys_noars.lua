@@ -5,7 +5,6 @@ Metrostroi.DefineSystem("NoARS")
 TRAIN_SYSTEM.DontAccelerateSimulation = true
 
 function TRAIN_SYSTEM:Initialize()
-	
 	--self.Train:LoadSystem("UOS","Relay","Switch", {paketnik = true})
 	--self.Train:LoadSystem("BPS","Relay","Switch",{ paketnik = true,normally_closed = true })
 	-- ALS state
@@ -57,10 +56,6 @@ function TRAIN_SYSTEM:TriggerInput(name,value)
 end
 
 function TRAIN_SYSTEM:Think()
-
-	if self.Train.RV_2.Value < 1 then self.Train.RV_2:TriggerInput("Set",1) 
-	end
-	
 	local Train = self.Train
 	if Train.UAVA and Train.SpeedSign and Train.SpeedSign > 0 and Train.Speed > 0.25 then
 		local ars,arsback
@@ -101,7 +96,7 @@ function TRAIN_SYSTEM:Think()
 			end
 		end
 	end
-	self["33D"] = ((Train.Pneumatic and Train.Pneumatic.EmergencyValve) or self.UAVAContacts) and 0 or 1
+	self["33D"] = ((Train.Pneumatic and Train.Pneumatic.EmergencyValve) or self.UAVAContacts) and 1 or 0
 	if Train.UAVAContact and Train.UAVAContact.Value > 0.5 and not Train.Pneumatic.EmergencyValve then
 		self.UAVAContacts = nil
 	end
