@@ -212,7 +212,7 @@ StationNumbers["gm_metrostroi"] = {
 		["322"] = "avtostanciya yuzhnaya",
 }
 
-StationNames["gm_mus_orange_line"] = {
+StationNames["gm_orange_line"] = {
         ["garry's mod workers"] = Vector(3966.741943, -11455.978516, -1909.968750),
         ["vhe"] = Vector(10667, -48, -1399),
         ["wallace breen"] = Vector(13499.752930, -953.988647, -509.968750),
@@ -226,7 +226,7 @@ StationNames["gm_mus_orange_line"] = {
         ["depot"] = Vector(-1638.838257, 12994.800781, -1465.968750),
         ["console"] = Vector(-4980, -6841, 2085)--Пульт диспетчера
 }
-StationNumbers["gm_mus_orange_line"] = {
+StationNumbers["gm_orange_line"] = {
 		["110"] = "garry's mod workers",
 		["111"] = "vhe",
 		["112"] = "wallace breen",
@@ -240,7 +240,7 @@ StationNumbers["gm_mus_orange_line"] = {
 		["202"] = "airport",
 }
 
-StationNames["gm_mus_orange_line_short"] = {
+StationNames["gm_orange_line_short"] = {
         ["garry's mod workers"] = Vector(3966.741943, -11455.978516, -1909.968750),
         ["vhe"] = Vector(10667, -48, -1399),
         ["wallace breen"] = Vector(13499.752930, -953.988647, -509.968750),
@@ -249,7 +249,7 @@ StationNames["gm_mus_orange_line_short"] = {
         ["park"] = Vector(-4590.005371, 3595.914063, 450.031250),
         ["console"] = Vector(5871.823730, 13372.527344, -1471.968750)--Пульт диспетчера
 }
-StationNumbers["gm_mus_orange_line"] = {
+StationNumbers["gm_orange_line"] = {
 		["110"] = "garry's mod workers",
 		["111"] = "vhe",
 		["112"] = "wallace breen",
@@ -257,7 +257,7 @@ StationNumbers["gm_mus_orange_line"] = {
 		["114"] = "workshop",
 		["115"] = "park",
 }
-StationNames["gm_mus_orange"] = {
+StationNames["gm_orange"] = {
 	 ["airport"] = Vector(-10812,1140,2290),
 	 ["wallace breen"] = Vector(13511,-945.446716,-509),
 	 ["glorious country"] = Vector(13128,1518,1026),
@@ -273,7 +273,7 @@ StationNames["gm_mus_orange"] = {
 	 ["pionerskaya"] = Vector(11466,-1168,2196.031250),
 	 ["metro builders"] = Vector(110,2633,983),
 }
-StationNumbers["gm_mus_orange"] = {
+StationNumbers["gm_orange"] = {
 	 --Оранжевая
 	 ["401"] = "airport",
 	 ["402"] = "glorious country",
