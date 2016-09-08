@@ -309,6 +309,45 @@ StationNumbers["gm_loop"] = {
 ["655"] = "The glorious country",
 ["656"] = "Pioneer station",
 }
+StationNames["gm_metroflash"] = {
+        ["platov square"] = Vector(-12360.755859,-1425.643677,-15142.968750),
+        ["pervomayskaya"] = Vector(15212.445313,-41.892967,-14123.768555),
+        ["kievskaya"] = Vector(1120.402344,-9990.563477,-13094.968750),
+        ["pushkinskaya"] = Vector(13463.003906,-776.903320,-11775.968750),
+        ["dnepr"] = Vector(-13532.032227,-7642.859375,-11023.968750),
+        ["ploshad` lenina"] = Vector(-542.713318,8187.794922,-10288.980469),
+        ["warszawskaja"] = Vector(13195.750000,4316.209473,-9236.968750),
+        ["dispot"] = Vector(13291.212891,8302.918945,-9272.164063),
+        ["pto"] = Vector(-11189.838867,-2250.185059,-9235.099609),
+        ["krasnogwardejskaya"] = Vector(-11046.031250,-6234.737305,-4869.968750),
+        ["mikrorajon donskoj"] = Vector(-12272.569336,-3161.958252,-4104.968750),
+        ["vzletnaya"] = Vector(-4593.032715,-14003.032227,-3467.968750),
+        ["kupchino"] = Vector(15636.299805,2169.078369,-6310.868652),
+        ["pionerskaya"] = Vector(6778.138184,-14765.788086,-8078.968750),
+        ["dunaisky prospekt"] = Vector(-1291.650269,-7750.467285,-9739.968750),
+		["prokof`evskaya"] = Vector(9835.497070,-2600.487793,-10251.968750),
+		["depot"] = Vector(-7327.015625,-11915.084961,-6379.968750),
+		}
+StationNumbers["gm_metroflash"] = {
+["701"] = "platov square",
+["702"] = "pervomayskaya",
+["703"] = "kievskaya",
+["704"] = "pushkinskaya",
+["705"] = "dnepr",
+["706"] = "ploshad` lenina",
+["707"] = "warszawskaja",
+["dispot"] = "dispot",
+["pto"] = "pto",
+["708"] = "krasnogwardejskaya",
+["709"] = "mikrorajon donskoj",
+["710"] = "vzletnaya",
+["711"] = "kupchino",
+["712"] = "pionerskaya",
+["713"] = "dunaisky prospekt",
+["714"] = "prokof`evskaya",
+["depot"] = "depot"
+}
+
 function ulx.tps( calling_ply,station )
 		station = station:lower()
 		local map = Metrostroi.CurrentMap
