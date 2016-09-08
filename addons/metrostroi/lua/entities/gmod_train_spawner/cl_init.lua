@@ -37,6 +37,7 @@ local Settings = {
 	Breakers = 0,
 	Blok = 1,
 	PNM = 0,
+	BlokEN = 0,
 }
 ---Массив строчек, необходимых для таблиц тренспавнера, строчка соответствует номеру состава в массиве которая прописана в trainspawner stools
 local Types = {
@@ -236,6 +237,7 @@ local function Draw()
 	CreateSlider("NM",1,0.1,9,"Train Line Pressure")
 	CreateList("ARS","ARS Type",{"Standart(square lamps)","Standart(round lamps)","Kiev/St.Petersburg","Old ARS"})
 	CreateList("Blok","Autodrive panel",{"PUAV","PA-KSD","PA-M","PA-KSD-M"})
+	CreateCheckBox("BlokEN","Autodrive in English")
 	CreateList("Mask","Mask",{"2-2","2-2-2","1-4-1 bumper 1","1-4-1 bumper 2","1-1","Retro"})
 	CreateList("PiterMsk","PiterMsk",{"1-4-1","2-2 Down-2","2-2","2-2-2","1-3-1"})
 	CreateList("BPSN","BPSN type",{"Old high tone","Old medium tone","Normal(from St.Petersburg)","Normal(TKL)","Normal","Old tone","No sound(BPN-115)"})

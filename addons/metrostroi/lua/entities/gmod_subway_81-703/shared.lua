@@ -17,14 +17,7 @@ ENT.AdminSpawnable  = true
 --------------------------------------------------------------------------------
 function ENT:InitializeSounds()
 	self.BaseClass.InitializeSounds(self)
-	self.SoundNames["relay_close2"] = nil
-	self.SoundNames["rvt_close"] = nil
-	self.SoundNames["r1_5_close"] = nil
-	self.SoundNames["rvt_open"] = nil
-	self.SoundNames["r1_5_open"] = nil
-	self.SoundNames["relay_close4"] = {"subway_trains/new/relay_7.wav","subway_trains/new/lsd_4.wav"}
 	self.SoundNames["brake_loop"]		= "subway_trains/bogey/torm4_loop.wav"
-	self.SoundNames["cran1"]		= "subway_trains/ezh/pneumo_idle.wav"
 	
 end
 
@@ -101,9 +94,9 @@ function ENT:InitializeSystems()
 	--self:LoadSystem("KSAUP")
 	--self:LoadSystem("ADoorDisable","Relay")
 
-	self:LoadSystem("Custom1","Relay","Switch")
-	self:LoadSystem("Custom2","Relay","Switch")
-	self:LoadSystem("Custom3","Relay","Switch")
+	--self:LoadSystem("Custom1","Relay","Switch")
+	--self:LoadSystem("Custom2","Relay","Switch")
+	--self:LoadSystem("Custom3","Relay","Switch")
 	self:LoadSystem("CustomC","Relay","Switch")
 	self:LoadSystem("CustomD","Relay","Switch")
 	self:LoadSystem("CustomE","Relay","Switch")

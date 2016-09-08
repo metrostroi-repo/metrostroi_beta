@@ -35,10 +35,18 @@ ENT.ButtonMap["Main"] = {
 
 		----Down Panel
 		{ID = "KU1Toggle",			x=49,y=190,radius=20, tooltip="КУ1:Включение мотор-компрессора\nTurn motor-compressor on"},
-		{ID = "VUD1Toggle",		x=245,y=190,radius=20, tooltip="КУ2: Закрытие дверей\nKU2: Door control toggle (close doors)"},		
+		{ID = "VUD1Toggle",		x=245,y=190,radius=20, tooltip="КУ2: Закрытие дверей\nKU2: Door control toggle (close doors)"},	
+		{ID = "KRPSet",		x=145,y=190,radius=20, tooltip="КРП: Кнопка резервного пуска\nKRP: Emergency start button"},
+		
 	}
 }
 
+Metrostroi.ClientPropForButton("KRP",{
+	panel = "Main",
+	button = "KRPSet",
+	model = "models/metrostroi_train/switches/vudbrown.mdl",
+	z = -25,
+})
 
 Metrostroi.ClientPropForButton("DIPon",{
 	panel = "Main",
@@ -218,7 +226,7 @@ Metrostroi.ClientPropForButton("VU",{
 })
 
 ENT.ButtonMap["Stopkran"] = {
-	pos = Vector(454,15,20.7),
+	pos = Vector(459,27,20.7),
 	ang = Angle(0,-90,90),
 	width = 200,
 	height = 1300,
@@ -577,7 +585,7 @@ local rowamount = 16 -- How many rows to show (total)
 
 -- Temporary panels (possibly temporary)
 ENT.ButtonMap["FrontPneumatic"] = {
-	pos = Vector(475,-45.0,-50.0),
+	pos = Vector(468,-45.0,-59.9),
 	ang = Angle(0,90,90),
 	width = 900,
 	height = 100,
@@ -588,7 +596,7 @@ ENT.ButtonMap["FrontPneumatic"] = {
 	}
 }
 ENT.ButtonMap["RearPneumatic"] = {
-	pos = Vector(-475,45.0,-50.0),
+	pos = Vector(-468,45.0,-59.9),
 	ang = Angle(0,270,90),
 	width = 900,
 	height = 100,
@@ -859,8 +867,8 @@ ENT.ClientProps["RearTrain"] = {--
 -- Add doors
 local function GetDoorPosition(i,k,j)
 	if j == 0
-	then return Vector(323.0 - 2.05*k     - 233.2*i,-64.56*(1-2*k),-4.80)
-	else return Vector(323.0 - 2.05*(1-k) - 233.2*i,-64.56*(1-2*k),-4.80)
+	then return Vector(323.0 - 2.05*k     - 233.2*i,-63.86*(1-2.02*k),-4.80)
+	else return Vector(323.0 - 2.05*(1-k) - 233.2*i,-63.86*(1-2.02*k),-4.80)
 	end
 end
 for i=0,3 do
@@ -984,6 +992,12 @@ function ENT:Think()
 	]]
 	local transient = (self.Transient or 0)*0.05
 	if (self.Transient or 0) ~= 0.0 then self.Transient = 0.0 end
+	
+	self.KRUPos = self.KRUPos or 0
+	if self:GetPackedBool(27)
+	then self.KRUPos = self.KRUPos + (0.0 - self.KRUPos)*8.0*self.DeltaTime
+	else self.KRUPos = 1.0
+	end
 
 	-- Parking brake animation
 	self.ParkingBrakeAngle = self.ParkingBrakeAngle or 0
@@ -994,7 +1008,7 @@ function ENT:Think()
 	end
 	local Lamps = self:GetPackedBool(20) and 0.6 or 1
 
-	self:ShowHideSmooth("Lamps_emer",self:Animate("lamps_emer",self:GetPackedBool("Lamps_emer") and Lamps or 0,0,0.2,3,false))
+	self:ShowHideSmooth("Lamps_emer",self:Animate("lamps_emer",self:GetPackedBool("Lamps_emer") and Lamps or 0,0,1,3,false))
 	self:ShowHideSmooth("Lamps_full",self:Animate("lamps_full",self:GetPackedBool("Lamps_full") and Lamps or 0,0,1,5,false))
 
 	self:ShowHideSmooth("RK",self:Animate("RK_hs",self:GetPackedBool("RK") and 1 or 0,0,0.9,3.5,false))
@@ -1038,14 +1052,18 @@ function ENT:Think()
 	self:Animate("VozvratRP",self:GetPackedBool("VozvratRP") and 1 or 0, 	0,1, 12, false)
 	self:Animate("KSN",self:GetPackedBool("KSN") and 1 or 0, 	0,1, 12, false)
 	self:Animate("KDP",self:GetPackedBool("KDP") and 1 or 0, 	0,1, 12, false)
+	self:Animate("KRZD",self:GetPackedBool(17) and 1 or 0, 	0,1, 16, false)
 
 	self:Animate("KU1",self:GetPackedBool("KU1") and 1 or 0, 	0,1, 7, false)
 	self:Animate("VUD",self:GetPackedBool("VUD1") and 1 or 0, 	0,1, 7, false)
+	self:Animate("KRP",self:GetPackedBool(113) and 1 or 0, 0,1, 16, false)
 	
 	self:Animate("R_ZS",			self:GetPackedBool(127) and 0 or 1, 0,1, 16, false)
 	self:Animate("R_Radio",			self:GetPackedBool(126) and 1 or 0, 0,1, 16, false)
 	self:Animate("Program1",		self:GetPackedBool(128) and 1 or 0, 0,1, 16, false)
 	self:Animate("Program2",		self:GetPackedBool(129) and 1 or 0, 0,1, 16, false)
+	
+	
 	
 	--self:Animate("UOS",				self:GetPackedBool(134) and 0.87 or 1, 	0,1, 1, false)
 	
@@ -1077,7 +1095,7 @@ function ENT:Think()
 	
 	--self:SetSoundState("cran1",self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),5)
 	
-	--self:SetSoundState("cran1",self:GetPackedBool("DriverValveTLDisconnect") and 1 or 1,0)
+	self:SetSoundState("cran1",self:GetPackedBool("DriverValveTLDisconnect") and 1 or 1,0)
 
 	-- Simulate pressure gauges getting stuck a little
 	self:Animate("brake", 		1-self:GetPackedRatio(0), 			0.00, 0.48,  256,24)

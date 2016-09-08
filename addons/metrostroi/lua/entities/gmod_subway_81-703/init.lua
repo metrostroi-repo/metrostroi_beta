@@ -85,8 +85,9 @@ function ENT:Initialize()
 		[KEY_PAD_7] = "PneumaticBrakeSet7",
 		[KEY_PAD_DIVIDE] = "KRPSet",
 		[KEY_PAD_MULTIPLY] = "KAHSet",
+		[KEY_J] = "KVWrenchKRU",
 
-		[KEY_SPACE] = "PBSet",
+		--[KEY_SPACE] = "PBSet",
 		[KEY_BACKSPACE] = "EmergencyBrake",
 
 		[KEY_PAD_0] = "DriverValveDisconnect",
@@ -112,7 +113,6 @@ function ENT:Initialize()
 
 		[KEY_RSHIFT] = {
 			[KEY_7] = "KVWrenchNone",
-			[KEY_8] = "KVWrenchKRU",
 			[KEY_9] = "KVWrenchKV",
 			[KEY_0] = "KVWrench0",
 			[KEY_L] = "DriverValveDisconnect",
@@ -123,9 +123,9 @@ function ENT:Initialize()
 			[KEY_V] = "VUD1Toggle",
 			[KEY_L] = "EPKToggle",
 		},
-		[KEY_RALT] = {
-			[KEY_L] = "EPKToggle",
-		},
+		--[KEY_RALT] = {
+			--[KEY_L] = "EPKToggle",
+		--},
 	}
 
 	self.InteractionZones = {
@@ -450,8 +450,6 @@ function ENT:Think()
 	-- SD
 	self:SetPackedBool(40,self.Panel["SD"] > 0.5)
 
-	self:SetPackedBool("DriverValveBLDisconnect",self.DriverValveBLDisconnect.Value == 1.0)
-	self:SetPackedBool("DriverValveTLDisconnect",self.DriverValveTLDisconnect.Value == 1.0)
 	self:SetPackedBool("EPK",self.EPK.Value == 1.0)
 	for i=1,#self.NetworkSwitches do
 		local switch = self.NetworkSwitches[i]
@@ -536,6 +534,21 @@ function ENT:Think()
 	self:SetPackedRatio(6,  math.min(2.7,self.Pneumatic.BrakeCylinderPressure + 4.0*self.ManualBrake)/6.0)
 	self:SetPackedRatio(7, self.Electric.Power750V/1000.0)
 	self:SetPackedRatio(8, math.abs(self.Electric.I24)/1000.0)
+	self:SetPackedBool(6,self.DriverValveDisconnect.Value == 1.0)
+
+	self:SetPackedBool("DriverValveBLDisconnect",self.DriverValveBLDisconnect.Value == 1.0)
+	self:SetPackedBool("DriverValveTLDisconnect",self.DriverValveTLDisconnect.Value == 1.0)
+	if self.DriverValveDisconnect.Blocked > 0 and self.Pneumatic.ValveType == 2 then
+		self.DriverValveDisconnect:TriggerInput("Block",0)
+		self.DriverValveBLDisconnect:TriggerInput("Block",1)
+		self.DriverValveTLDisconnect:TriggerInput("Block",1)
+	end
+	if self.DriverValveDisconnect.Blocked == 0 and self.Pneumatic.ValveType == 1 then
+		self.DriverValveDisconnect:TriggerInput("Block",1)
+		self.DriverValveBLDisconnect:TriggerInput("Block",0)
+		self.DriverValveTLDisconnect:TriggerInput("Block",0)
+	end
+	
 	
 	if self.Pneumatic.TrainLineOpen then
 		self:SetPackedRatio(9, (-self.Pneumatic.TrainLinePressure_dPdT or 0)*6)
@@ -544,8 +557,10 @@ function ENT:Think()
 	end
 	self:SetPackedRatio(10,(self.Panel["V1"] * self.Battery.Voltage) / 82.0)
 	self:SetPackedRatio(11,IGLA_Temperature)
+	self:SetPackedBool(17,self.KRZD.Value == 1.0)
 	self:SetPackedBool("STOPKRAN",self.STOPKRAN.Value > 0)
 	self:SetPackedBool(152,self.UAVA.Value == 1.0)
+	self:SetPackedBool(113,self.KRP.Value == 1.0)
 	
 	---ASNP Programs
 	self:SetPackedBool(128,self.R_Program1.Value == 1.0)
@@ -601,11 +616,11 @@ function ENT:Think()
 
 		if ((math.random() > 0.00) or (jerk > 10)) and (CurTime() - self.PrevTriggerTime1 > 1.5) then
 			self.PrevTriggerTime1 = CurTime()
-			self.FrontBogey:EmitSound("subway_trains/bogey/chassis_"..math.random(1,5)..".wav", 100, math.random(95,110))
+			self.FrontBogey:EmitSound("subway_trains/bogey/chassis_"..math.random(1,5)..".wav", 90, math.random(95,110))
 		end
 		if ((math.random() > 0.00) or (jerk > 10)) and (CurTime() - self.PrevTriggerTime2 > 1.5) then
 			self.PrevTriggerTime2 = CurTime()
-			self.RearBogey:EmitSound("subway_trains/bogey/chassis_"..math.random(1,5)..".wav", 100, math.random(95,110))
+			self.RearBogey:EmitSound("subway_trains/bogey/chassis_"..math.random(1,5)..".wav", 90, math.random(95,110))
 		end
 	end
 
@@ -832,7 +847,7 @@ function ENT:OnButtonPress(button)
 		end
 	end
 	--THERE IS NO KRU IN THIS EZH MODEL
-	--[[
+	
 	if button == "KVWrenchKRU" then
 		if self.KVWrenchMode == 3 then
 			self:PlayOnce("kru_in","cabin",0.7)
@@ -843,7 +858,7 @@ function ENT:OnButtonPress(button)
 			self.KRU:TriggerInput("Enabled",1)
 			self.KRU:TriggerInput("LockX3",1)
 		end
-	end]]
+	end
 	if button == "KVWrenchNone" then
 		if self.KVWrenchMode ~= 3 and self.KV.ReverserPosition == 0 then
 			if self.KVWrenchMode == 2 then

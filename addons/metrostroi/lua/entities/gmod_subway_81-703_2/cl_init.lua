@@ -473,7 +473,7 @@ local rowamount = 16 -- How many rows to show (total)
 
 -- Temporary panels (possibly temporary)
 ENT.ButtonMap["FrontPneumatic"] = {
-	pos = Vector(475,-45.0,-50.0),
+	pos = Vector(468,-45.0,-59.9),
 	ang = Angle(0,90,90),
 	width = 900,
 	height = 100,
@@ -484,7 +484,7 @@ ENT.ButtonMap["FrontPneumatic"] = {
 	}
 }
 ENT.ButtonMap["RearPneumatic"] = {
-	pos = Vector(-475,45.0,-50.0),
+	pos = Vector(-468,45.0,-59.9),
 	ang = Angle(0,270,90),
 	width = 900,
 	height = 100,
@@ -749,8 +749,8 @@ ENT.ClientProps["RearTrain"] = {--
 -- Add doors
 local function GetDoorPosition(i,k,j)
 	if j == 0
-	then return Vector(323.0 - 2.05*k     - 233.2*i,-64.56*(1-2*k),-4.80)
-	else return Vector(323.0 - 2.05*(1-k) - 233.2*i,-64.56*(1-2*k),-4.80)
+	then return Vector(323.0 - 2.05*k     - 233.2*i,-63.86*(1-2.02*k),-4.80)
+	else return Vector(323.0 - 2.05*(1-k) - 233.2*i,-63.86*(1-2.02*k),-4.80)
 	end
 end
 for i=0,3 do
