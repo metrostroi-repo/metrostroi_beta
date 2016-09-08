@@ -605,7 +605,7 @@ function ENT:Think()
 		end
 		if ((math.random() > 0.00) or (jerk > 10)) and (CurTime() - self.PrevTriggerTime2 > 1.5) then
 			self.PrevTriggerTime2 = CurTime()
-			self.RearBogey:EmitSound("subway_trains/bogey/chassis"..math.random(1,5)..".wav", 100, math.random(95,110))
+			self.RearBogey:EmitSound("subway_trains/bogey/chassis_"..math.random(1,5)..".wav", 100, math.random(95,110))
 		end
 	end
 
