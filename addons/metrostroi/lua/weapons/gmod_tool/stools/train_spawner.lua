@@ -35,8 +35,7 @@ TOOL.ClientConVar["lamp"] = 1
 TOOL.ClientConVar["breakers"] = 0
 TOOL.ClientConVar["blok"] = 1
 TOOL.ClientConVar["pnm"] = 0
-TOOL.ClientConVar["bloken"] = 0
-local Trains = {{"81-717_mvm","81-714_mvm"},{"81-717_lvz","81-714_lvz"},{"E","E"},{"Ema","Em"},{"Ezh3","Ema508T"},{"81-7036","81-7037"}}
+local Trains = {{"81-717_mvm","81-714_mvm"},{"81-717_lvz","81-714_lvz"},{"81-703","81-703_2"},{"Ema","Em"},{"Ezh3","Ema508T"},{"81-7036","81-7037"},{"em508"}}
 local Switches = {	"A61","A55","A54","A56","A27","A21","A10","A53","A43","A45","A42","A41",
 					"VU","A64","A63","A50","A51","A23","A14","A1","A2","A3","A17",
 					"A62","A29","A5","A6","A8","A20","A25","A22","A30","A39","A44","A80"
@@ -105,14 +104,17 @@ function TOOL:GetCurrentModel(trNum,head,pr)
 			return "models/metrostroi/81/81-714.mdl"
 		end
 	elseif trNum == 3 then
-			return "models/metrostroi_train/e/e.mdl"
+			return "models/metrostroi_train/81-703/81-703_2.mdl"
 	elseif trNum == 4 then
 			return "models/metrostroi_train/em/em.mdl"
 	elseif trNum == 5 then
 			return "models/metrostroi/e/"..(pr and "ema508t" or "em508")..".mdl"
-	else
-		return "models/metrostroi/81/81-703"..(pr and 7 or 6)..".mdl"
+	--else
+		--return "models/metrostroi/81/81-703"..(pr and 6 or 7)..".mdl"
+	elseif trNum == 7 then
+			return "models/metrostroi_train/81-508/81-508.mdl"
 	end
+	
 end
 
 function TOOL:GetConvar()
@@ -151,7 +153,6 @@ function TOOL:GetConvar()
 	tbl.Breakers = self:GetClientNumber("breakers")
 	tbl.Blok = self:GetClientNumber("blok")
 	tbl.PNM = self:GetClientNumber("pnm")
-	tbl.BlokEN = self:GetClientNumber("bloken")
 	return tbl
 end
 
@@ -187,7 +188,7 @@ function TOOL:UpdateGhost(pl, ent)
 	end
 	if not ent then return end
 	if self.tbl.Train == 4 then
-	--[[
+	--
 		local path = Metrostroi.Skins["ezh3"][self.tbl.Texture].path
 		if path == "RND" then path = Metrostroi.Skins["ezh3"][math.random(1,#Metrostroi.Skins["ezh3"])].path end
 		for k,v in pairs(ent:GetMaterials()) do
@@ -197,7 +198,7 @@ function TOOL:UpdateGhost(pl, ent)
 				ent:SetSubMaterial(k-1,"")
 			end
 		end
-		]]
+		
 	else
 		--ent:SetSkin(self.tbl.Paint == 1 and math.random(0,2) or self.tbl.Paint-2)
 		ent:SetBodygroup(1,(self.tbl.ARS or 1)-1)
@@ -300,7 +301,6 @@ function TOOL:SetSettings(ent, ply, i,inth)
 				ent:SetNW2Int("ARSType", ent.ARSType)
 			else
 				ent.Blok = self.tbl.Blok
-				ent.BlokEN = self.tbl.BlokEN > 0
 				ent.MaskType = self.tbl.PiterMsk
 			end
 			ent.Pneumatic.ValveType = self.tbl.Cran
@@ -368,12 +368,12 @@ function TOOL:SetSettings(ent, ply, i,inth)
 		end
 	end
 
-	if ent.UpdateTextures then
+	if ent.UpdateTextures then 
 		local tex = Metrostroi.Skins["train"][self.tbl.Texture]
 		local ptex = Metrostroi.Skins["pass"][self.tbl.PassTexture]
 		local ctex = Metrostroi.Skins["cab"][self.tbl.CabTexture]
-		if tex and (ent:GetClass() == "gmod_subway_"..tex.typ  or Metrostroi.NameConverter[tex.typ] and ent:GetClass()  == "gmod_subway_"..Metrostroi.NameConverter[tex.typ]) then
-			ent.Texture = self.tbl.Texture
+		if tex and (ent:GetClass() == "gmod_subway_"..tex.typ  or Metrostroi.NameConverter[tex.typ] and ent:GetClass()  == "gmod_subway_"..Metrostroi.NameConverter[tex.typ]) then print("1tex.typ")
+			ent.Texture = self.tbl.Texture  
 		end
 		if ptex and (ent:GetClass() == "gmod_subway_"..ptex.typ  or Metrostroi.NameConverter[ptex.typ] and ent:GetClass()  == "gmod_subway_"..Metrostroi.NameConverter[ptex.typ]) then
 			ent.PassTexture = self.tbl.PassTexture

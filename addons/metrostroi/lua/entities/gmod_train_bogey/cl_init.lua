@@ -35,13 +35,13 @@ function ENT:ReinitializeSounds()
 	--self.SoundNames["run1"]			= "subway_trains/run_1.wav"
 	--self.SoundNames["run2"]			= "subway_trains/run_2.wav"
 	--self.SoundNames["run3"]			= "subway_trains/run_3.wav"
-	self.SoundNames["run2"]			= "subway_trains/new/run_1.wav"
+	self.SoundNames["run2"]			= "subway_trains/ezh/run_ezh_1.wav"
 	self.SoundNames["run3"]			= "subway_trains/run.wav"
 	--self.SoundNames["run2"]			= "subway_trains/new/noise.wav"
 	--self.SoundNames["run3"]			= "subway_trains/new/noise.wav"
 	--self.SoundNames["run4"]			= "subway_trains/run_4a.mp3"
 	--self.SoundNames["run5"]			= "subway_announcer/00_00.mp3"
-	self.SoundNames["release"]		= "subway_trains/new/release_1.wav"
+	self.SoundNames["release"]		= "subway_trains/ezh/release_1.wav"
 	self.SoundNames["brake1"]		= "subway_trains/brake_1.wav"
 	self.SoundNames["brake2"]		= "subway_trains/brake_2.wav"
 	self.SoundNames["brake3"]		= "subway_trains/brake_3.wav"
@@ -49,7 +49,7 @@ function ENT:ReinitializeSounds()
 	self.SoundNames["brake3a"]		= "subway_trains/brake_3.wav"
 	self.SoundNames["flange1"]		= "subway_trains/flange_9.wav"
 	self.SoundNames["flange2"]		= "subway_trains/flange_10.wav"
-	self.SoundNames["brake_loop"]		= "subway_trains/torm_loop.wav"
+	self.SoundNames["brake_loop"]		= "subway_trains/bogey/torm4_loop.wav"
 	
 	-- Remove old sounds
 	if self.Sounds then

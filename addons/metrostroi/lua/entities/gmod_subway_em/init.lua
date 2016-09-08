@@ -357,7 +357,7 @@ function ENT:Think()
 	--self:SetLightPower(9, self.Panel["RedLightLeft"] > 0.5)
 	self:SetPackedBool("HeadLights1",self.Panel["HeadLights1"] > 0.5)
 	self:SetPackedBool("HeadLights2",self.Panel["HeadLights2"] > 0.5)
-	self:SetPackedBool("RedLight",self.Panel["RedLightLeft"] > 0.5 or self.Panel["RedLightRight"] > 0.5)
+	self:SetPackedBool("RedLight",((self.Panel["RedLightLeft"] > 0.5 or self.Panel["RedLightRight"] > 0.5 ) and IsValid(self.FrontTrain)))
 
 	local lightsActive2 = self.PowerSupply.XT3_4 > 65.0
 	local lightsActive1 = self.Panel["EmergencyLight"] > 0.5 or lightsActive2

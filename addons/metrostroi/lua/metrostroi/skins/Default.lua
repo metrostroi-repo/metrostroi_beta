@@ -19,6 +19,62 @@
 -- Em
 -- E
 --------------------------------------------------------------------------------
+Metrostroi.AddSkin("train","Def_EMVMNative",{
+	name = "FL Green",
+	typ = "81-703",
+	textures = {
+	}
+})
+Metrostroi.AddSkin("train","Def_EAPL",{
+	name = "FL Blue",
+	typ = "81-703",
+	textures = {
+		["703body_green"] = "models/metrostroi_train/81-703/703body",
+	}
+})
+Metrostroi.AddSkin("train","Def_ESPB",{
+	name = "SPB",
+	typ = "81-703",
+	textures = {
+		["703body_green"] = "models/metrostroi_train/81-703/703body_spb",
+	}
+})
+Metrostroi.AddSkin("train","Def_EFL",{
+	name = "APL/SL",
+	typ = "81-703",
+	textures = {
+		["703body_green"] = "models/metrostroi_train/81-703/703body_blue",
+	}
+})
+Metrostroi.AddSkin("train","Def_ENative",{
+	name = "Native",
+	typ = "81-703",
+	textures = {
+		["703body_green"] = "models/metrostroi_train/81-703/703body_green_kl",
+	}
+})
+---Em508 and Em509
+Metrostroi.AddSkin("train","Def_508S",{
+	name = "Fl",
+	typ = "em508",
+	textures = {
+		["508body"] = "models/metrostroi_train/81-508/508body_green",
+	}
+})
+Metrostroi.AddSkin("train","Def_508APL",{
+	name = "APL/SL",
+	typ = "em508",
+	textures = {
+		["508body"] = "models/metrostroi_train/81-508/508body_blue",
+	}
+})
+Metrostroi.AddSkin("train","Def_508Native",{
+	name = "Native",
+	typ = "em508",
+	textures = {
+	}
+})
+
 Metrostroi.AddSkin("train","Def_EmOld",{
 	name = "Old",
 	typ = "ema",
@@ -34,6 +90,7 @@ Metrostroi.AddSkin("train","Def_EmNew",{
 		ema_doorsvar = "metrostroi_skins/em/em_piter_doorsvar",
 	}
 })
+
 Metrostroi.AddSkin("train","Def_Green-Blue",{
 	name = "Green-blue",
 	typ = "ezh3",
@@ -163,7 +220,7 @@ Metrostroi.AddSkin("train","Def_Moscow4",{
 	textures = {
 		b01a = "metrostroi_skins/81-717/8",
 	}
-})	
+})
 Metrostroi.AddSkin("train","Def_Red Arrow",{
 	name = "Red arrow",
 	typ = "81-717_mvm",

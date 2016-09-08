@@ -37,15 +37,16 @@ local Settings = {
 	Breakers = 0,
 	Blok = 1,
 	PNM = 0,
-	BlokEN = 0,
 }
+---Массив строчек, необходимых для таблиц тренспавнера, строчка соответствует номеру состава в массиве которая прописана в trainspawner stools
 local Types = {
 	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,ARS,Cran,Mask,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,MVM,Hand,Seat,Lamp,Breakers,Adv,PNM",
-	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,Blok,Cran,PiterMsk,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,Hand,Seat,Lamp,Breakers,Adv,PNM,BlokEN",
+	"Train,WagNum,PassTexture,CabTexture,Texture,Lighter,Blok,Cran,PiterMsk,LED,BPSN,KVSnd,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,Bort,Hand,Seat,Lamp,Breakers,Adv,PNM",
 	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,DoorsL,DoorsR,GV,PB,Adv",
 	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,DoorsL,DoorsR,GV,PB,Adv",
 	"Train,WagNum,Texture,Prom,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,PNM",
 	"Train,WagNum",
+	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,DoorsL,DoorsR,GV,PB,Adv", 
 }
 local function UpdateConCMD()
 	for k,v in pairs(Settings) do
@@ -225,7 +226,7 @@ local function Draw()
 	for k,v in pairs(Metrostroi.Skins["cab"] or {}) do
 		if v.typ == Metrostroi.TrainSpawnerConverter[Settings.Train or 1] then CabTexture[v.name or k] = v.name or k end
 	end
-	CreateList("Train","Train("..GetGlobalInt("metrostroi_train_count").."/"..MaxWagons.."):\nMax for you:"..MaxWagonsOnPlayer,{"81-71x MVM","81-71x LVZ","E","EmA","Ezh","81-703x"},UpdateTrainList)
+	CreateList("Train","Train("..GetGlobalInt("metrostroi_train_count").."/"..MaxWagons.."):\nMax for you:"..MaxWagonsOnPlayer,{"81-71x MVM","81-71x LVZ","Тип E (81-703)","EmA","Ezh","81-703x","Тип Em (81-508)"},UpdateTrainList)
 	CreateSlider("WagNum",0,1, GetGlobalInt("metrostroi_maxwagons"),"Wagons")
 	CreateList("Texture","Texture",Texture)
 	CreateList("PassTexture","Passenger texture",PassTexture)
@@ -235,7 +236,6 @@ local function Draw()
 	CreateSlider("NM",1,0.1,9,"Train Line Pressure")
 	CreateList("ARS","ARS Type",{"Standart(square lamps)","Standart(round lamps)","Kiev/St.Petersburg","Old ARS"})
 	CreateList("Blok","Autodrive panel",{"PUAV","PA-KSD","PA-M","PA-KSD-M"})
-	CreateCheckBox("BlokEN","Autodrive in English")
 	CreateList("Mask","Mask",{"2-2","2-2-2","1-4-1 bumper 1","1-4-1 bumper 2","1-1","Retro"})
 	CreateList("PiterMsk","PiterMsk",{"1-4-1","2-2 Down-2","2-2","2-2-2","1-3-1"})
 	CreateList("BPSN","BPSN type",{"Old high tone","Old medium tone","Normal(from St.Petersburg)","Normal(TKL)","Normal","Old tone","No sound(BPN-115)"})

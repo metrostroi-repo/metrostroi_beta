@@ -1,17 +1,17 @@
 --------------------------------------------------------------------------------
--- Add all required clientside files
+-- Add all required clientside files 
 --------------------------------------------------------------------------------
-local function resource_AddDir(dir)
+local function resource_AddDir(dir) 
 	local files,dirs = file.Find(dir.."/*","GAME")
 	for _, fdir in pairs(dirs) do
-		resource_AddDir(dir.."/"..fdir)
-	end
+		resource_AddDir(dir.."/"..fdir)     
+	end   
 
 	for _,v in pairs(files) do
 		resource.AddFile(dir.."/"..v)
 	end
 end
-
+ 
 if SERVER then
 	util.AddNetworkString("metrostroi-cabin-button")
 	util.AddNetworkString("metrostroi-cabin-reset")
@@ -27,6 +27,8 @@ if SERVER then
 	resource_AddDir("models/metrostroi/81-717")
 	resource_AddDir("models/metrostroi/e")
 	resource_AddDir("models/metrostroi/81")
+	resource_AddDir("models/metrostroi/81-703")
+	resource_AddDir("models/metrostroi/81-508")
 	resource_AddDir("models/metrostroi/metro")
 	resource_AddDir("models/metrostroi/passengers")
 	resource_AddDir("models/metrostroi/signals")
@@ -37,9 +39,9 @@ if SERVER then
 	resource_AddDir("sound/subway_stations_test1")
 	resource_AddDir("sound/subway_trains/new")
 end
+ 
 
-
---------------------------------------------------------------------------------
+------ --------------------------------------------------------------------------
 -- Create metrostroi global library
 --------------------------------------------------------------------------------
 if not Metrostroi then
@@ -148,17 +150,21 @@ if SERVER then
 	--Include map scripts
 	Metrostroi.AnnouncerData = {}
 	Metrostroi.NameConverter = {}
+	---Конвертер имен для трейнспавнера, нужен для спавна промежутков
 	Metrostroi.NameConverter["81-717_mvm"] = "81-714_mvm"
 	Metrostroi.NameConverter["81-717_lvz"] = "81-714_lvz"
 	Metrostroi.NameConverter["ezh3"] = "ema508t"
 	Metrostroi.NameConverter["ema"] = "em"
+	Metrostroi.NameConverter["81-703"] = "81-703_2"
+		Metrostroi.NameConverter["81-508"] = "81-508"
 	Metrostroi.TrainSpawnerConverter = {
 		"81-717_mvm",
 		"81-717_lvz",
-		"e",
+		"81-703",
 		"ema",
 		"ezh3",
 		"81-7036",
+		"81-508",
 	}
 	Metrostroi.Skins["717_schemes"] = {}
 	Metrostroi.Skins["717_schemes"][""] = "metrostroi_skins/81-717_schemes/int_blank"
@@ -177,19 +183,22 @@ else
 	files = file.Find("metrostroi/skins/*.lua","LUA")
 	for _,filename in pairs(files) do include("metrostroi/skins/"..filename) end
 	--Include map scripts
-	Metrostroi.AnnouncerData = {}
+	Metrostroi.AnnouncerData = {} 
 	Metrostroi.NameConverter = {}
-	Metrostroi.NameConverter["81-717_mvm"] = "81-714_mvm"
-	Metrostroi.NameConverter["81-717_lvz"] = "81-714_lvz"
+	Metrostroi.NameConverter["81-714_mvm"] = "81-717_mvm"
+	Metrostroi.NameConverter["81-714_lvz"] = "81-717_lvz"
 	Metrostroi.NameConverter["ezh3"] = "ema508t"
 	Metrostroi.NameConverter["ema"] = "em"
+	Metrostroi.NameConverter["81-703"] = "81-703_2"
+	Metrostroi.NameConverter["em508"] = "em508"
 	Metrostroi.TrainSpawnerConverter = {
 		"81-717_mvm",
 		"81-717_lvz",
-		"e",
+		"81-703",
 		"ema",
 		"ezh3",
 		"81-7036",
+		"em508",
 	}
 	Metrostroi.Skins["717_schemes"] = {}
 	Metrostroi.Skins["717_schemes"][""] = "metrostroi_skins/81-717_schemes/int_blank"
@@ -210,12 +219,12 @@ end
 
 function Metrostroi.DefineSystem(name)
 	if not Metrostroi.BaseSystems[name] then
-		Metrostroi.BaseSystems[name] = {}
-	end
+		Metrostroi.BaseSystems[name] = {} 
+	end 
 	TRAIN_SYSTEM = Metrostroi.BaseSystems[name]
-	TRAIN_SYSTEM_NAME = name
+	TRAIN_SYSTEM_NAME = name 
 end
-
+ 
 local function loadSystem(filename)
 	-- Get the Lua code
 	include(filename)
@@ -268,10 +277,10 @@ local function loadSystem(filename)
 			tbl:ClientInitialize(...)
 		end
 		tbl.OutputsList = tbl:Outputs()
-		tbl.InputsList = tbl:Inputs()
+		tbl.InputsList = tbl:Inputs() 
 		tbl.IsInput = {}
 		for _,v in pairs(tbl.InputsList) do tbl.IsInput[v] = true end
-		return tbl
+		return tbl  
 	end
 end
 
