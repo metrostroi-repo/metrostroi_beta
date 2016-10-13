@@ -787,7 +787,7 @@ ENT.ClientProps["door2"] = {
 	ang = Angle(0,-90,0),
 }
 ENT.ClientProps["door3"] = {
-	model = "models/metrostroi_train/81-508/81-508_door_pass.mdl",
+	model = "models/metrostroi_train/81-703/81-703_door_pass.mdl",
 	pos = Vector(396.7,17.84,-10),
 	ang = Angle(0,-90,0),
 }
