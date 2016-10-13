@@ -221,8 +221,9 @@ ENT.ButtonMap["VU"] = {
 Metrostroi.ClientPropForButton("VU",{
 	panel = "VU",
 	button = "VUToggle",
-	model = "models/metrostroi_train/switches/autowh.mdl",
+	model = "models/metrostroi_train/Equipment/vu22_black.mdl",
 	z=20,
+	ang =180,
 })
 
 ENT.ButtonMap["Stopkran"] = {
@@ -298,8 +299,9 @@ for k,v in pairs(ENT.ButtonMap["AV1"].buttons) do
 	Metrostroi.ClientPropForButton(v.ID:sub(0,-7),{
 		panel = "AV1",
 		button = v.ID,
-		model = "models/metrostroi_train/switches/autobr.mdl",
+		model = "models/metrostroi_train/Equipment/vu22_black.mdl",
 		z=10,
+		ang = 180,
 	})
 end
 
@@ -310,6 +312,14 @@ ENT.ButtonMap["InfoRoute"] = {
 	height = 100,
 	scale = 0.1,
 }
+
+ENT.ClientProps["tab"] = {
+	model = "models/metrostroi_train/Equipment/tab.mdl",
+	pos = Vector(12.0,0,-2),
+	ang = Angle(0,0,0),
+	skin = 0,
+	}
+
 
 
 ENT.ButtonMap["AV2"] = {
@@ -339,13 +349,14 @@ for k,v in pairs(ENT.ButtonMap["AV2"].buttons) do
 	Metrostroi.ClientPropForButton(v.ID:sub(0,-7),{
 		panel = "AV2",
 		button = v.ID,
-		model = "models/metrostroi_train/switches/autowh.mdl",
+		model = "models/metrostroi_train/Equipment/vu22_white.mdl",
 		z=20,
+		ang = 180,
 	})
 end
 
 ENT.ButtonMap["Announcer"] = {
-	pos = Vector(453,-36,28.4),
+	pos = Vector(453,-35,28.4),
 	ang = Angle(0,-95,90),
 	width = 170,
 	height = 100,
@@ -353,16 +364,16 @@ ENT.ButtonMap["Announcer"] = {
 
 	buttons = {
 
-		{ID = "Custom2Set", x=155, y=50, radius=10, tooltip="+"},
-		{ID = "Custom1Set", x=155, y=72, radius=10, tooltip="-"},
-		{ID = "Custom3Set", x=20, y=72, radius=10, tooltip="Меню\nMenu"},
+		{ID = "Custom2Set", x=25, y=60, radius=15, tooltip="+"},
+		{ID = "Custom1Set", x=25, y=96, radius=15, tooltip="-"},
+		{ID = "Custom3Set", x=95, y=28, radius=15, tooltip="Меню\nMenu"},
 	}
 }
 
 -- Announcer panel
 ENT.ButtonMap["AnnouncerDisplay"] = {
-	pos = Vector(453.6,-36.4,27.5),
-	ang = Angle(0,-95,110),
+	pos = Vector(453.8+2.6,-35.4,27.99),
+	ang = Angle(0,-97,110),
 	width = 10,
 	height = 10,
 	scale = 0.008,
@@ -386,23 +397,25 @@ ENT.ButtonMap["Battery"] = {
 Metrostroi.ClientPropForButton("R_ZS",{
 	panel = "Back1",
 	button = "R_ZSToggle",
-	model = "models/metrostroi_train/switches/autobr2.mdl",
-	ang = 90,
+	model = "models/metrostroi_train/Equipment/vu22_black_2.mdl",
+	ang = 180,
 })
 
 Metrostroi.ClientPropForButton("R_Radio",{
 	panel = "Battery",
 	button = "R_RadioToggle",
-	model = "models/metrostroi_train/switches/autowh.mdl",
+	model = "models/metrostroi_train/Equipment/vu22_black.mdl",
 	z = 0,
+	ang = 180,
 })
 
 
 Metrostroi.ClientPropForButton("VB",{
 	panel = "Battery",
 	button = "VBToggle",
-	model = "models/metrostroi_train/switches/autobr3.mdl",
+	model = "models/metrostroi_train/Equipment/vu22_brown_3.mdl",
 	z=15,
+	ang = 180,
 })
 
 -- Parking brake panel
@@ -815,8 +828,8 @@ ENT.ClientProps["Ema_salon"] = {
 	ang = Angle(0,0,0)
 }
 ENT.ClientProps["E_informator"] = {
-	model = "models/metrostroi_train/81-703/81-703_informator.mdl",
-	pos = Vector(-0.3,0,-3.1),
+	model = "models/metrostroi_train/Equipment/informator.mdl",
+	pos = Vector(-6,0,-1.1),
 	ang = Angle(0,0,0)
 	}
 ENT.ClientProps["Ema_salon2"] = {
@@ -896,7 +909,7 @@ ENT.ClientProps["door2"] = {
 	ang = Angle(0,-90,0),
 }
 ENT.ClientProps["door3"] = {
-	model = "models/metrostroi_train/81-703/81-703_door_pass.mdl",
+	model = "models/metrostroi_train/81-508/81-508_door_pass.mdl",
 	pos = Vector(396.7,17.84,-10),
 	ang = Angle(0,-90,0),
 }
@@ -1093,9 +1106,6 @@ function ENT:Think()
 	
 	self:Animate("UAVALever",	self:GetPackedBool(152) and 1 or 0, 	0,0.25, 128,  3,false)
 	
-	--self:SetSoundState("cran1",self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),5)
-	
-	self:SetSoundState("cran1",self:GetPackedBool("DriverValveTLDisconnect") and 1 or 1,0)
 
 	-- Simulate pressure gauges getting stuck a little
 	self:Animate("brake", 		1-self:GetPackedRatio(0), 			0.00, 0.48,  256,24)
@@ -1174,7 +1184,11 @@ function ENT:Think()
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
 	self:SetSoundState("release3",self.BrakeLineRamp2 + math.max(0,self.BrakeLineRamp1/2-0.15),1.0)
 
-	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),1.0)
+	local valve = self:GetPackedBool(6) -- 6- DriverValveDisconnect
+		if not self:GetPackedBool(22) then
+		valve = self:GetPackedBool("DriverValveBLDisconnect")
+		end
+	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(valve and 1 or 0)),1.0)
 
 
 	-- Compressor

@@ -179,8 +179,9 @@ ENT.ButtonMap["VU"] = {
 Metrostroi.ClientPropForButton("VU",{
 	panel = "VU",
 	button = "VUToggle",
-	model = "models/metrostroi_train/switches/autobr.mdl",
+	model = "models/metrostroi_train/Equipment/vu22_black.mdl",
 	z=20,
+	ang=180,
 })
 
 ENT.ButtonMap["Stopkran"] = {
@@ -254,8 +255,9 @@ for k,v in pairs(ENT.ButtonMap["AV1"].buttons) do
 	Metrostroi.ClientPropForButton(v.ID:sub(0,-7),{
 		panel = "AV1",
 		button = v.ID,
-		model = "models/metrostroi_train/switches/autobr.mdl",
+		model = "models/metrostroi_train/Equipment/vu22_brown.mdl",
 		z=10,
+		ang =180,
 	})
 end
 
@@ -287,8 +289,9 @@ for k,v in pairs(ENT.ButtonMap["AV2"].buttons) do
 	Metrostroi.ClientPropForButton(v.ID:sub(0,-7),{
 		panel = "AV2",
 		button = v.ID,
-		model = "models/metrostroi_train/switches/autowh.mdl",
+		model = "models/metrostroi_train/Equipment/vu22_black.mdl",
 		z=20,
+		ang = 180,
 	})
 end
 
@@ -307,8 +310,9 @@ ENT.ButtonMap["Battery"] = {
 Metrostroi.ClientPropForButton("VB",{
 	panel = "Battery",
 	button = "VBToggle",
-	model = "models/metrostroi_train/switches/autobl3.mdl",
+	model = "models/metrostroi_train/Equipment/vu22_brown_3.mdl",
 	z=15,
+	ang = 180,
 })
 
 -- Parking brake panel
@@ -743,7 +747,12 @@ ENT.ClientProps["RearTrain"] = {--
 	pos = Vector(-450, 30, -68),
 	ang = Angle(0,90,0)
 }
-
+ENT.ClientProps["tab"] = {
+	model = "models/metrostroi_train/Equipment/tab.mdl",
+	pos = Vector(12.0,0,-2),
+	ang = Angle(0,0,0),
+	skin = 0,
+	}
 
 --------------------------------------------------------------------------------
 -- Add doors
@@ -778,7 +787,7 @@ ENT.ClientProps["door2"] = {
 	ang = Angle(0,-90,0),
 }
 ENT.ClientProps["door3"] = {
-	model = "models/metrostroi_train/81-703/81-703_door_pass.mdl",
+	model = "models/metrostroi_train/81-508/81-508_door_pass.mdl",
 	pos = Vector(396.7,17.84,-10),
 	ang = Angle(0,-90,0),
 }
@@ -903,16 +912,16 @@ function ENT:Think()
 
 	self:SetCSBodygroup("RSTPl",1,self:GetPackedBool("RSTPl") and 0 or 1)
 
-	self:Animate("VU1",self:GetPackedBool("VU1") and 0 or 1, 	0,1, 12, false)
-	self:Animate("VU3",self:GetPackedBool("VU3") and 0 or 1, 	0,1, 12, false)
-	self:Animate("VU2",self:GetPackedBool("VU2") and 0 or 1, 	0,1, 12, false)
+	self:Animate("VU1",self:GetPackedBool("VU1") and 1 or 0, 	0,1, 12, false)
+	self:Animate("VU3",self:GetPackedBool("VU3") and 1 or 0, 	0,1, 12, false)
+	self:Animate("VU2",self:GetPackedBool("VU2") and 1 or 0, 	0,1, 12, false)
 
 	self:Animate("VU",self:GetPackedBool("VU") and 1 or 0, 	0,1, 12, false)
 	self:Animate("RezMK",self:GetPackedBool("RezMK") and 1 or 0, 	0,1, 7, false)
 
 	self:Animate("VRD",self:GetPackedBool("VRD") and 0 or 1, 	0,1, 12, false)
 
-	self:Animate("VB",self:GetPackedBool("VB") and 0 or 1, 	0,1, 8, false)
+	self:Animate("VB",self:GetPackedBool("VB") and 1 or 0, 	0,1, 8, false)
 
 	self:ShowHideSmooth("RadioLamp",self:Animate("radiolamp",self:GetPackedBool("VPR") and 1 or 0,0,1,5,false))
 	self:ShowHideSmooth("RadioLamp1",self.Anims["radiolamp"].val)
@@ -1028,7 +1037,6 @@ function ENT:Think()
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
 	self:SetSoundState("release4",self.BrakeLineRamp2 + math.max(0,self.BrakeLineRamp1/2-0.15),1.0)
 
-	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),1.0)
 
 
 	-- Compressor

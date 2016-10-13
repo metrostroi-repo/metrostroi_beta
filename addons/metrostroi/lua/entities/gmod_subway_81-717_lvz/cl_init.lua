@@ -2583,8 +2583,17 @@ function ENT:Think()
 	end
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
 	self:SetSoundState("release3",self.BrakeLineRamp2 + math.max(0,self.BrakeLineRamp1/2-0.15),1.0)
-
-	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(self:GetPackedBool(6) and 1 or 0)),1.0)
+	
+	local valve = self:GetPackedBool(6) -- 6- DriverValveDisconnect
+		if not self:GetPackedBool(22) then
+		valve = self:GetPackedBool("DriverValveBLDisconnect")
+	end
+	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(valve and 1 or 0)),1.0)
+	
+	
+	--self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(self:GetPackedBool("DriverValveBLDisconnect") and 1 or 0)),1.0)
+	
+	
 
 	-- Compressor
 	local state = self:GetPackedBool(20)

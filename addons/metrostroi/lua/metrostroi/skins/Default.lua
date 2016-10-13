@@ -54,22 +54,37 @@ Metrostroi.AddSkin("train","Def_ENative",{
 	}
 })
 ---Em508 and Em509
-Metrostroi.AddSkin("train","Def_508S",{
-	name = "Fl",
+Metrostroi.AddSkin("train","Def_508FL",{
+	name = "FL Green",
 	typ = "em508",
 	textures = {
 		["508body"] = "models/metrostroi_train/81-508/508body_green",
 	}
 })
-Metrostroi.AddSkin("train","Def_508APL",{
-	name = "APL/SL",
+Metrostroi.AddSkin("train","Def_508SL",{
+	name = "SL 90",
 	typ = "em508",
 	textures = {
 		["508body"] = "models/metrostroi_train/81-508/508body_blue",
 	}
 })
 Metrostroi.AddSkin("train","Def_508Native",{
-	name = "Native",
+	name = "APL 03",
+	typ = "em508",
+	textures = {
+	}
+})
+---Em508 and Em509 салоны
+Metrostroi.AddSkin("pass","Def_508pass2",{
+	name = "Redwood plastic",
+	typ = "em508",
+	textures = {
+		["508int"] = "models/metrostroi_train/81-508/508int_2",
+	}
+})
+
+Metrostroi.AddSkin("pass","Def_508pass1",{
+	name = "Green plastic",
 	typ = "em508",
 	textures = {
 	}

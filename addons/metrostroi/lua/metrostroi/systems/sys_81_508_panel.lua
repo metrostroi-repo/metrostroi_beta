@@ -35,13 +35,17 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("KRP","Relay","Switch", {vud = true})
 
 
+	self.Train:LoadSystem("Custom1","Relay","Switch",{programm = true})
+	self.Train:LoadSystem("Custom2","Relay","Switch",{programm = true})
+	self.Train:LoadSystem("Custom3","Relay","Switch",{programm = true})
 	self.Train:LoadSystem("R_UNch","Relay","Switch", {switch = true})
-	self.Train:LoadSystem("R_ZS","Relay","Switch", {switch = true})
+	self.Train:LoadSystem("R_ZS","Relay","Switch", {av = true})
 	self.Train:LoadSystem("R_G","Relay","Switch", {switch = true})
-	self.Train:LoadSystem("R_Radio","Relay","Switch", {switch = true})
+	self.Train:LoadSystem("R_Radio","Relay","Switch", {av = true})
 	self.Train:LoadSystem("R_Program1","Relay","Switch", {programm = true})
 	self.Train:LoadSystem("R_Program2","Relay","Switch", {programm = true})
 	self.Train:LoadSystem("RC1","Relay","Switch",{ normally_closed = true })
+
 
 	--self.Train:LoadSystem("Radio13","Relay","Switch", {button = true})
 	--self.Train:LoadSystem("ARS13","Relay","Switch", {button = true})

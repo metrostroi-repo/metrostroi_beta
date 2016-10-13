@@ -3,12 +3,12 @@
 --------------------------------------------------------------------------------
 local function resource_AddDir(dir) 
 	local files,dirs = file.Find(dir.."/*","GAME")
-	for _, fdir in pairs(dirs) do
+	for _, fdir in pairs(dirs) do 
 		resource_AddDir(dir.."/"..fdir)     
 	end   
 
-	for _,v in pairs(files) do
-		resource.AddFile(dir.."/"..v)
+	for _,v in pairs(files) do 
+		resource.AddFile(dir.."/"..v) 
 	end
 end
  
@@ -17,7 +17,7 @@ if SERVER then
 	util.AddNetworkString("metrostroi-cabin-reset")
 	util.AddNetworkString("metrostroi-panel-touch")
 
-	resource_AddDir("materials/metrostroi/props")
+	--[[resource_AddDir("materials/metrostroi/props")
 	resource_AddDir("materials/models/metrostroi_signs")
 	resource_AddDir("materials/models/metrostroi_train")
 	resource_AddDir("materials/models/metrostroi_passengers")
@@ -37,7 +37,7 @@ if SERVER then
 	resource_AddDir("sound/subway_trains")
 	resource_AddDir("sound/subway_announcer")
 	resource_AddDir("sound/subway_stations_test1")
-	resource_AddDir("sound/subway_trains/new")
+	resource_AddDir("sound/subway_trains/new")]]
 end
  
 
@@ -156,7 +156,7 @@ if SERVER then
 	Metrostroi.NameConverter["ezh3"] = "ema508t"
 	Metrostroi.NameConverter["ema"] = "em"
 	Metrostroi.NameConverter["81-703"] = "81-703_2"
-		Metrostroi.NameConverter["81-508"] = "81-508"
+		Metrostroi.NameConverter["em508"] = "em508_int"
 	Metrostroi.TrainSpawnerConverter = {
 		"81-717_mvm",
 		"81-717_lvz",
@@ -164,7 +164,7 @@ if SERVER then
 		"ema",
 		"ezh3",
 		"81-7036",
-		"81-508",
+		"em508",
 	}
 	Metrostroi.Skins["717_schemes"] = {}
 	Metrostroi.Skins["717_schemes"][""] = "metrostroi_skins/81-717_schemes/int_blank"
@@ -190,7 +190,7 @@ else
 	Metrostroi.NameConverter["ezh3"] = "ema508t"
 	Metrostroi.NameConverter["ema"] = "em"
 	Metrostroi.NameConverter["81-703"] = "81-703_2"
-	Metrostroi.NameConverter["em508"] = "em508"
+	Metrostroi.NameConverter["em508"] = "em508_int"
 	Metrostroi.TrainSpawnerConverter = {
 		"81-717_mvm",
 		"81-717_lvz",

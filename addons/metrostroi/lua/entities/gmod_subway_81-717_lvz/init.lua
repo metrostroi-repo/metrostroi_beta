@@ -1019,11 +1019,11 @@ function ENT:Think()
 
 		if ((math.random() > 0.00) or (jerk > 10)) and (CurTime() - self.PrevTriggerTime1 > 1.5) then
 			self.PrevTriggerTime1 = CurTime()
-			self.FrontBogey:EmitSound("subway_trains/bogey/chassis_"..math.random(1,5)..".wav", 70, math.random(96,110))
+			self.FrontBogey:EmitSound("subway_trains/bogey/chassis_"..math.random(1,5)..".wav", 90, math.random(96,110))
 		end
 		if ((math.random() > 0.00) or (jerk > 10)) and (CurTime() - self.PrevTriggerTime2 > 1.5) then
 			self.PrevTriggerTime2 = CurTime()
-			self.RearBogey:EmitSound("subway_trains/bogey/chassis_"..math.random(1,5)..".wav", 70, math.random(96,110))
+			self.RearBogey:EmitSound("subway_trains/bogey/chassis_"..math.random(1,5)..".wav", 90, math.random(96,110))
 		end
 	end
 

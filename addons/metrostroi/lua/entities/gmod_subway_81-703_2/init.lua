@@ -12,8 +12,8 @@ ENT.BogeyDistance = 650 -- Needed for gm trainspawner
 -- 2 = Only intherim
 ---------------------------------------------------
 ENT.SubwayTrain = {
-	Type = "81-703",
-	Name = "81-703",
+	Type = "E",
+	Name = "81-703_interim",
 	WagType = 0,
 	ARS = {
 		HaveASNP = false,
