@@ -1295,7 +1295,7 @@ function ENT:Think()
 	then self.BrakeLineRamp1 = self.BrakeLineRamp1 + 4.0*(0-self.BrakeLineRamp1)*dT
 	else self.BrakeLineRamp1 = self.BrakeLineRamp1 + 4.0*((-0.6*brakeLinedPdT)-self.BrakeLineRamp1)*dT
 	end
-	BrakeLineRamp1 = math.Clamp(self.BrakeLineRamp1,0,1)
+	self.BrakeLineRamp1 = math.Clamp(self.BrakeLineRamp1,0,1)
 	self:SetSoundState("release2",self.BrakeLineRamp1^1.65,1.0)
 
 	self.BrakeLineRamp2 = self.BrakeLineRamp2 or 0
