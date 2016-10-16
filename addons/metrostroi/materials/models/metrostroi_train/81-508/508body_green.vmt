@@ -1,0 +1,21 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/metrostroi_train/81-508/508body_green"
+	"$model" "1"
+
+
+	"$phong" "1"
+	
+ 	$detail detail\noise_detail_01 // e.g. for brickwork, concrete...
+	$detailscale 100
+	$detailblendfactor 0.3
+	$detailblendmode 0
+	"$bumpmap"				"models/metrostroi_train/81-508/508body_n"
+	"$phongexponenttexture"	"models/metrostroi_train/81-508/508body_spec_expo"
+	"$phongboost"				7
+	"$phongfresnelranges"		"[0.4 0.8 0.99]"
+	$envmap			env_cubemap
+	$normalmapalphaenvmapmask 1
+	$envmaptint "[0.1 0.1 0.1]"
+	
+}

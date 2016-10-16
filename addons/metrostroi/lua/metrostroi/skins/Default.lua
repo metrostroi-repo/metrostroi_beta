@@ -25,11 +25,11 @@ Metrostroi.AddSkin("train","Def_EMVMNative",{
 	textures = {
 	}
 })
-Metrostroi.AddSkin("train","Def_EAPL",{
-	name = "FL Blue",
+Metrostroi.AddSkin("train","Def_ESPBOLD",{
+	name = "SPB Old",
 	typ = "81-703",
 	textures = {
-		["703body_green"] = "models/metrostroi_train/81-703/703body",
+		["703body_green"] = "models/metrostroi_train/81-703/703body_sbp_old",
 	}
 })
 Metrostroi.AddSkin("train","Def_ESPB",{
@@ -46,11 +46,11 @@ Metrostroi.AddSkin("train","Def_EFL",{
 		["703body_green"] = "models/metrostroi_train/81-703/703body_blue",
 	}
 })
-Metrostroi.AddSkin("train","Def_ENative",{
-	name = "Native",
+Metrostroi.AddSkin("train","Def_EParad",{
+	name = "Parad",
 	typ = "81-703",
 	textures = {
-		["703body_green"] = "models/metrostroi_train/81-703/703body_green_kl",
+		["703body_green"] = "models/metrostroi_train/81-703/703body_parad",
 	}
 })
 ---Em508 and Em509

@@ -281,10 +281,10 @@ function ENT:InitializeSounds()
 		"subway_trains/pneumo_1.wav",
 		"subway_trains/pneumo_2.wav",
 	}
-	self.SoundNames["pneumo_disconnect1"] = {
+	self.SoundNames["pneumo_disconnect2"] = {
 		"subway_trains/trains/pneumo_close.wav",
 	}
-	self.SoundNames["pneumo_disconnect2"] = {
+	self.SoundNames["pneumo_disconnect1"] = {
 		"subway_trains/trains/pneumo_open.wav",
 		"subway_trains/trains/pneumo_open2.wav",
 	}

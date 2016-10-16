@@ -1050,7 +1050,7 @@ function ENT:Think()
 
 	self:Animate("VRD",self:GetPackedBool("VRD") and 0 or 1, 	0,1, 12, false)
 
-	self:Animate("VB",self:GetPackedBool("VB") and 0 or 1, 	0,1, 8, false)
+	self:Animate("VB",self:GetPackedBool("VB") and 1 or 0, 	0,1, 8, false)
 
 	self:ShowHideSmooth("RadioLamp",self:Animate("radiolamp",self:GetPackedBool("VPR") and 1 or 0,0,1,5,false))
 	self:ShowHideSmooth("RadioLamp1",self.Anims["radiolamp"].val)
