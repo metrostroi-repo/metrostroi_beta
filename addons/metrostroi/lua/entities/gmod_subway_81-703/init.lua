@@ -887,40 +887,65 @@ function ENT:OnButtonPress(button)
 		self.DriverValveBLDisconnect:TriggerInput("Set",1)
 		return
 	end
+
 	if button == "DriverValveDisconnect" then
-		if self.DriverValveBLDisconnect.Value == 0 or self.DriverValveTLDisconnect.Value == 0 then
-			if self.DriverValveBLDisconnect.Value == 0.0 then
-			self:PlayOnce("TDL","cabin",0.9)
+		if self.Pneumatic.ValveType == 2 then
+			if self.DriverValveDisconnect.Value == 1.0 then
+				self.DriverValveDisconnect:TriggerInput("Set",0)
+				self:PlayOnce("pneumo_disconnect2","cabin",0.9)
+				if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 			else
-			self:PlayOnce("TDL","cabin",0.9)
+				self.DriverValveDisconnect:TriggerInput("Set",1)
+				self:PlayOnce("pneumo_disconnect1","cabin",0.9)
+				if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
 			end
-			self:PlayOnce("pneumo_disconnect2","cabin",0.9)
-			self.DriverValveBLDisconnect:TriggerInput("Set",1)
-			self.DriverValveTLDisconnect:TriggerInput("Set",1)
 		else
-			--self:PlayOnce("pneumo_disconnect1","cabin",0.9)
-			self.DriverValveBLDisconnect:TriggerInput("Set",0)
-			self.DriverValveTLDisconnect:TriggerInput("Set",0)
+			if self.DriverValveBLDisconnect.Value == 0 or self.DriverValveTLDisconnect.Value == 0 then
+				self.DriverValveBLDisconnect:TriggerInput("Set",1)
+				self.DriverValveTLDisconnect:TriggerInput("Set",1)
+
+			else
+				self.DriverValveBLDisconnect:TriggerInput("Set",0)
+				self.DriverValveTLDisconnect:TriggerInput("Set",0)
+		
+			end
+			if self.DriverValveBLDisconnect.Value == 1.0 then
+				if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+			else
+				if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+			end
 		end
-		if self.DriverValveBLDisconnect.Value == 1.0 then
-			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
-		if self.DriverValveBLDisconnect.Value == 0 then self:PlayOnce("epv_off","cabin",0.9) end
-		else
-		--self:PlayOnce("pneumo_disconnect2","cabin",0.9)
+		return
+	end
+
+	if button == "DriverValveDisconnectToggle" then
+		if self.DriverValveDisconnect.Value == 1.0 then
+			self:PlayOnce("pneumo_disconnect2","cabin",1)
 			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+		else
+			self:PlayOnce("pneumo_disconnect1","cabin",1)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 		end
 		return
 	end
 
 	if button == "DriverValveBLDisconnectToggle" then
 		if self.DriverValveBLDisconnect.Value == 1.0 then
-			self:PlayOnce("pneumo_disconnect2","cabin",0.9)
-		--	if self.EPK.Value == 1 then self:PlayOnce("pneumo_diconnect2","cabin",0.9) end
+			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
 		else
 			self:PlayOnce("pneumo_disconnect2","cabin",0.9)
-		--	if self.EPK.Value == 1 then self:PlayOnce("pneumo_diconnect2","cabin",0.9) end
+			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
 		end
-		
+		return
+	end
+	
+		if button == "DriverValveTLDisconnectToggle" then
+		if self.DriverValveTLDisconnect.Value == 1.0 then
+			self:PlayOnce("pneumo_TL_connect","cabin",0.9)
+		else
+			self:PlayOnce("pneumo_TL_disconnect","cabin",0.9)
+		end
 		return
 	end
 

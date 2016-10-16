@@ -572,7 +572,8 @@ function ENT:Think()
 	
 	-- Update ARS system (no ars on E)
 	self:SetPackedRatio(3, self.ALS_ARS.Speed/100.0)
-	self:SetPackedRatio("Speed", self.Speed/110)
+	self:SetPackedRatio("Speed", self.Speed/100)
+	---print (self.Speed)
 	if (self.ALS_ARS.Ring == true) then
 		self:SetPackedBool(39,true)
 	end
@@ -1003,6 +1004,16 @@ function ENT:OnButtonPress(button)
 		end
 		return
 	end
+	
+	if button == "DriverValveTLDisconnectToggle" then
+		if self.DriverValveTLDisconnect.Value == 1.0 then
+			self:PlayOnce("pneumo_TL_connect","cabin",0.9)
+		else
+			self:PlayOnce("pneumo_TL_disconnect","cabin",0.9)
+		end
+		return
+	end
+
 
 	if button == "EPKToggle" and
 		(self.Pneumatic.ValveType == 1 and self.DriverValveBLDisconnect.Value == 1.0 or self.Pneumatic.ValveType == 2 and self.DriverValveDisconnect.Value == 1.0) then

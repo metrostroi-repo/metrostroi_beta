@@ -521,7 +521,7 @@ ENT.ButtonMap["AirDistributor"] = {
 
 
 -- UAVA
-ENT.ButtonMap["UAVAPanel"] = {
+--[[ENT.ButtonMap["UAVAPanel"] = {
 	pos = Vector(444,56,-5),
 	ang = Angle(0,-70,90),
 	width = 230,
@@ -533,7 +533,7 @@ ENT.ButtonMap["UAVAPanel"] = {
 		{ID = "UAVAContactSet",x=0, y=0, w=230/2, h=170, tooltip="УАВА: Универсальный Автоматический Выключатель Автостопа (восстановление контактов)\nUAVA: Universal Automatic Autostop Disabler(contacts reset)"},
 	}
 }
-
+]]
 
 
 -- Wagon numbers
@@ -801,11 +801,11 @@ ENT.ClientProps["door4"] = {
 	pos = Vector(400,61,-8),--Vector(415.0,-58.5,-18.2),
 	ang = Angle(0,0,0)
 }]]
-ENT.ClientProps["UAVALever"] = {
+--[[ENT.ClientProps["UAVALever"] = {
 	model = "models/metrostroi_train/81-703/cabin_uava.mdl",
 	pos = Vector(449.14598,56.0,-10.23349),
 	ang = Angle(0,-93,0)
-}
+}]]
 
 ENT.ClientProps["RedLights"] = {
 	model = "models/metrostroi_train/81-703/81-703_red_light.mdl",

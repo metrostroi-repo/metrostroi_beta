@@ -926,7 +926,7 @@ ENT.ClientProps["door4"] = {
 ENT.ClientProps["UAVALever"] = {
 	model = "models/metrostroi_train/81-703/cabin_uava.mdl",
 	pos = Vector(449.14598,56.0,-10.23349),
-	ang = Angle(0,-93,0)
+	ang = Angle(0,-93,90)
 }
 
 ENT.ClientProps["RedLights"] = {
@@ -1058,7 +1058,8 @@ function ENT:Think()
 	self:ShowHideSmooth("RedLights",self:Animate("redlights",self:GetPackedBool("RedLight") and 1 or 0,0,1,5,false))
 	self:ShowHideSmooth("WhiteLights",self:Animate("whitelights",self:GetPackedBool("HeadLights2") and 1 or 0,0,1,5,false))
 	self:ShowHideSmooth("DistantLights",self:Animate("distantlights",self:GetPackedBool("HeadLights1") and 1 or 0,0,1,5,false))
-
+	
+	self:Animate("UAVALever",	self:GetPackedBool(152) and 0 or 1, 	0,0.25, 128,  3,false)
 	self:Animate("KDL",self:GetPackedBool("KDL") and 1 or 0, 	0,1, 12, false)
 	self:Animate("DIPon",self:GetPackedBool("DIPon") and 1 or 0, 	0,1, 12, false)
 	self:Animate("DIPoff",self:GetPackedBool("DIPoff") and 1 or 0, 	0,1, 12, false)
@@ -1103,8 +1104,7 @@ function ENT:Think()
 
 	self:Animate("brake_disconnect",self:GetPackedBool("DriverValveBLDisconnect") and 1 or 0,0,0.5,  4,false)
 	self:Animate("train_disconnect",self:GetPackedBool("DriverValveTLDisconnect") and 1 or 0,0,0.5,  4,false)
-	
-	self:Animate("UAVALever",	self:GetPackedBool(152) and 1 or 0, 	0,0.25, 128,  3,false)
+
 	
 
 	-- Simulate pressure gauges getting stuck a little
@@ -1120,7 +1120,7 @@ function ENT:Think()
 	self:Animate("voltmeter",		self:GetPackedRatio(7),				0.587, 0.874)
 	self:Animate("ampermeter",		self:GetPackedRatio(8),				0.42, 0.627,				nil, nil,  256,2,0.01)
 	--self:Animate("volt2",			0, 									0.38, 0.63)
-	self:Animate("UAVALever",	self:GetPackedBool(152) and 1 or 0, 	0,0,0.5,  3,false)
+
 
 	local wheel_radius = 0.5*44.1 -- units
 	local speed = self:GetPackedRatio(3)*100  

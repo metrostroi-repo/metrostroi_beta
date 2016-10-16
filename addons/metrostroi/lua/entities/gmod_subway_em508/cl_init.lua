@@ -342,7 +342,7 @@ Metrostroi.ClientPropForButton("VU",{
 })
 
 ENT.ButtonMap["Stopkran"] = {
-	pos = Vector(454+7,18,20.7),
+	pos = Vector(459+7,27,20.7),
 	ang = Angle(0,-90,90),
 	width = 200,
 	height = 1300,
@@ -676,7 +676,7 @@ local rowamount = 16 -- How many rows to show (total)
 
 -- Temporary panels (possibly temporary)
 ENT.ButtonMap["FrontPneumatic"] = {
-	pos = Vector(475,-45.0,-50.0),
+	pos = Vector(468+7,-45.0,-59.9),
 	ang = Angle(0,90,90),
 	width = 900,
 	height = 100,
@@ -687,7 +687,7 @@ ENT.ButtonMap["FrontPneumatic"] = {
 	}
 }
 ENT.ButtonMap["RearPneumatic"] = {
-	pos = Vector(-475,45.0,-50.0),
+	pos = Vector(-468-7,45.0,-59.9),
 	ang = Angle(0,270,90),
 	width = 900,
 	height = 100,
@@ -737,36 +737,36 @@ ENT.ButtonMap["UAVAPanel"] = {
 
 -- Wagon numbers
 ENT.ButtonMap["TrainNumber1"] = {
-	pos = Vector(-440,-68,-11),
+	pos = Vector(-440+7,-68,-11),
 	ang = Angle(0,0,90),
 	width = 130,
 	height = 55,
-	scale = 0.20,
+	scale = 0.18,
 }
 ENT.ButtonMap["TrainNumber2"] = {
-	pos = Vector(416,68,-11),
+	pos = Vector(406+7,69,-11),
 	ang = Angle(0,180,90),
 	width = 130,
 	height = 55,
-	scale = 0.20,
+	scale = 0.18,
 }
 
 ENT.ButtonMap["InfoTableSelect"] = {
-	pos = Vector(454.0+12.15,-27.0,50.0),
+	pos = Vector(455+7.0,35,14.0),
 	ang = Angle(0,-90,90),
-	width = 250,
+	width = 400,
 	height = 100,
 	scale = 0.1,
 
 
 	buttons = {
-		{ID = "PrevSign",x=0,y=0,w=50,h=100, tooltip="Предыдущая надпись\nPrevious sign"},
-		{ID = "NextSign",x=50,y=0,w=50,h=100, tooltip="Следующая надпись\nNext sign"},
+		{ID = "PrevSign",x=300,y=0,w=50,h=100, tooltip="Предыдущая надпись\nPrevious sign"},
+		{ID = "NextSign",x=350,y=0,w=50,h=100, tooltip="Следующая надпись\nNext sign"},
 
-		{ID = "Num2P",x=150,y=0,w=50,h=50, tooltip="Маршрут: Увеличить число 2\nRoute: Increase 2nd number"},
-		{ID = "Num2M",x=150,y=50,w=50,h=50, tooltip="Маршрут: Уменьшить число 2\nRoute: Decrease 2nd number"},
-		{ID = "Num1P",x=200,y=0,w=50,h=50, tooltip="Маршрут: Увеличить число 1\nRoute: Increase 1st number"},
-		{ID = "Num1M",x=200,y=50,w=50,h=50, tooltip="Маршрут: Уменьшить число 1\nRoute: Decrease 1st number"},
+		{ID = "Num2P",x=0,y=0,w=50,h=50, tooltip="Маршрут: Увеличить число 2\nRoute: Increase 2nd number"},
+		{ID = "Num2M",x=0,y=50,w=50,h=50, tooltip="Маршрут: Уменьшить число 2\nRoute: Decrease 2nd number"},
+		{ID = "Num1P",x=50,y=0,w=50,h=50, tooltip="Маршрут: Увеличить число 1\nRoute: Increase 1st number"},
+		{ID = "Num1M",x=50,y=50,w=50,h=50, tooltip="Маршрут: Уменьшить число 1\nRoute: Decrease 1st number"},
 	}
 }
 
@@ -948,22 +948,22 @@ ENT.ClientProps["Lamps_full"] = {
 
 ENT.ClientProps["FrontBrake"] = {--
 	model = "models/metrostroi_train/81/tmiso.mdl",
-	pos = Vector(445, -30, -68),
+	pos = Vector(445+7, -30, -68),
 	ang = Angle(0,-90,0)
 }
 ENT.ClientProps["FrontTrain"] = {--
 	model = "models/metrostroi_train/81/nmsio.mdl",
-	pos = Vector(445, 30, -68),
+	pos = Vector(445+7, 30, -68),
 	ang = Angle(0,-90,0)
 }
 ENT.ClientProps["RearBrake"] = {--
 	model = "models/metrostroi_train/81/tmiso.mdl",
-	pos = Vector(-450+7, -30, -68),
+	pos = Vector(-450-6, -30, -68),
 	ang = Angle(0,90,0)
 }
 ENT.ClientProps["RearTrain"] = {--
 	model = "models/metrostroi_train/81/nmsio.mdl",
-	pos = Vector(-450+7, 30, -68),
+	pos = Vector(-450-6, 30, -68),
 	ang = Angle(0,90,0)
 }
 ----Циферблат
@@ -986,7 +986,7 @@ ENT.ClientProps["speedo2"] = {
 local function GetDoorPosition(i,k,j)
 	if j == 0
 	then return Vector(344.7-0.3*k     - 233.2*i,-63.86*(1-2.02*k),-4.80)
-	else return Vector(344.7-0.3*(1-k) - 233.2*i,-63.86*(1-2.02*k),-4.80)
+	else return Vector(344.6-0.3*(1-k) - 233.2*i,-63.86*(1-2.02*k),-4.80)
 	end
 end
 for i=0,3 do
@@ -1295,7 +1295,7 @@ function ENT:Think()
 	then self.BrakeLineRamp1 = self.BrakeLineRamp1 + 4.0*(0-self.BrakeLineRamp1)*dT
 	else self.BrakeLineRamp1 = self.BrakeLineRamp1 + 4.0*((-0.6*brakeLinedPdT)-self.BrakeLineRamp1)*dT
 	end
-	self.BrakeLineRamp1 = math.Clamp(self.BrakeLineRamp1,0,1)
+	BrakeLineRamp1 = math.Clamp(self.BrakeLineRamp1,0,1)
 	self:SetSoundState("release2",self.BrakeLineRamp1^1.65,1.0)
 
 	self.BrakeLineRamp2 = self.BrakeLineRamp2 or 0
@@ -1305,13 +1305,13 @@ function ENT:Think()
 	end
 	self.BrakeLineRamp2 = math.Clamp(self.BrakeLineRamp2,0,1)
 	self:SetSoundState("release3",self.BrakeLineRamp2 + math.max(0,self.BrakeLineRamp1/2-0.15),1.0)
-
+	
 	---
 	local valve = self:GetPackedBool(6) -- 6- DriverValveDisconnect
 		if not self:GetPackedBool(22) then
 		valve = self:GetPackedBool("DriverValveBLDisconnect")
 		end
-	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(valve and 1 or 0)),1.0)
+	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(valve and 1 or 0)),0.76)
 	
 	
 
