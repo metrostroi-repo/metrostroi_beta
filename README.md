@@ -3,7 +3,7 @@ Metrostroi Subway Train Simulator
 A prototype of a subway simulator, based on Garry's Mod (Source Engine).
 For the licensing information, see at the bottom.
 
-It's a beta version of original Metrostroi Subway Train Simulator
+It's a beta version of original Metrostroi Subway Train Simulator.
 
 This simulation features fully simulated 81-717 and Ezh3 metro trains - with all
 the electric circuits and pneumatic systems. Every relay of the train is modelled.
