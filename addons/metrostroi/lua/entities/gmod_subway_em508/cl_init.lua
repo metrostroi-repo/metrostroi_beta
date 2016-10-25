@@ -17,6 +17,24 @@ ENT.ButtonMap["ARS"] = {
 	}
 }
 
+ENT.ButtonMap["SOS"] = {
+	pos = Vector(456+7,-25,2.5),
+	ang = Angle(0,290,90),
+	width = 60,
+	height = 100,
+	scale = 0.0625,
+
+	buttons = {
+		{ID = "SOSToggle",x=0, y=0,  w=40, h=90, tooltip="Metrostroi Radio"},
+	}
+}
+
+ENT.ClientProps["Radio"] = {
+	model = "models/metrostroi_train/Equipment/radio.mdl",
+	pos = Vector(456+7,-25,2.5-8),
+	ang = Angle(6,22,0),
+}
+
 ENT.ButtonMap["AVU"] = {
 	pos = Vector(458.31597,-22.43482,32.93294),
 	ang = Angle(-8,-90+21.5,90+15),
@@ -30,12 +48,15 @@ ENT.ButtonMap["AVU"] = {
 		{ID = "OtklAVUPl",x=30, y=75, radius=30, tooltip="Пломба крышки ОтклАВУ\nOtklAVU plomb"},
 	}
 }
+
+
 Metrostroi.ClientPropForButton("OtklAVUPl",{
 	panel = "AVU",
 	button = "OtklAVUPl",
 	model = "models/metrostroi_train/81/plomb.mdl",
 	z = 0,
 })
+
 Metrostroi.ClientPropForButton("AVULight",{
 	panel = "AVU",
 	button = "AVULight",
@@ -917,7 +938,7 @@ ENT.ClientProps["tab"] = {
 	model = "models/metrostroi_train/Equipment/tab.mdl",
 	pos = Vector(-0.0,0,-0),
 	ang = Angle(0,0,0),
-	skin = 0,
+	skin = 2,
 	}
 ENT.ClientProps["route"] = {
 	model = "models/metrostroi_train/Equipment/route.mdl",
@@ -986,7 +1007,7 @@ ENT.ClientProps["speedo2"] = {
 local function GetDoorPosition(i,k,j)
 	if j == 0
 	then return Vector(344.7-0.3*k     - 233.2*i,-63.86*(1-2.02*k),-4.80)
-	else return Vector(344.6-0.3*(1-k) - 233.2*i,-63.86*(1-2.02*k),-4.80)
+	else return Vector(344.7-0.3*(1-k) - 233.2*i,-63.86*(1-2.02*k),-4.80)
 	end
 end
 for i=0,3 do
@@ -1213,7 +1234,6 @@ function ENT:Think()
 	self:Animate("Program1",		self:GetPackedBool(128) and 1 or 0, 0,1, 16, false)
 	self:Animate("Program2",		self:GetPackedBool(129) and 1 or 0, 0,1, 16, false)
 	
-
 	self:Animate("OtklAVU",	self:GetPackedBool(19) and 0 or 1, 	0,1, 10, false)
 	self:SetCSBodygroup("OtklAVUPl",1,self:GetPackedBool("OtklAVUPl") and 0 or 1)
 	self:HideButton("OtklAVU",self:GetPackedBool("OtklAVUPl"))
@@ -1224,7 +1244,11 @@ function ENT:Think()
 	self:Animate("brake_disconnect",self:GetPackedBool("DriverValveBLDisconnect") and 1 or 0,0,0.5,  4,false)
 	self:Animate("train_disconnect",self:GetPackedBool("DriverValveTLDisconnect") and 1 or 0,0,0.5,  4,false)
 	
+	
 	self:Animate("UAVALever",	self:GetPackedBool(152) and 0 or 1, 	0,0.25, 128,  3,false)
+	
+	--Quest
+	self:Animate("SOS",	self:GetPackedBool("SOS") and 0 or 1, 0, 1, 10, false)
 	
 
 	-- Simulate pressure gauges getting stuck a little
@@ -1296,7 +1320,7 @@ function ENT:Think()
 	else self.BrakeLineRamp1 = self.BrakeLineRamp1 + 4.0*((-0.6*brakeLinedPdT)-self.BrakeLineRamp1)*dT
 	end
 	self.BrakeLineRamp1 = math.Clamp(self.BrakeLineRamp1,0,1)
-	self:SetSoundState("release2",self.BrakeLineRamp1^1.65,1.0)
+	self:SetSoundState("release2_ezh",self.BrakeLineRamp1^1.65,1.0)
 
 	self.BrakeLineRamp2 = self.BrakeLineRamp2 or 0
 	if (brakeLinedPdT < 0.001)
@@ -1309,9 +1333,9 @@ function ENT:Think()
 	---
 	local valve = self:GetPackedBool(6) -- 6- DriverValveDisconnect
 		if not self:GetPackedBool(22) then
-		valve = self:GetPackedBool("DriverValveBLDisconnect")
+		valve = self:GetPackedBool("DriverValveTLDisconnect")
 		end
-	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(valve and 1 or 0)),0.76)
+	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(valve and 1 or 0)),1)
 	
 	
 
@@ -1371,6 +1395,20 @@ function ENT:Think()
 			self:PlayOnce("vpr_end","cabin",1)
 		end
 	end
+	
+	state = self:GetPackedBool("SOS")
+	self.PreviousSOSState = self.PreviousSOSState or false
+	if self.PreviousSOSState ~= state then
+		self.PreviousSOSState = state
+		if state then
+			self:SetSoundState("sos",1,1)
+		else
+			self:SetSoundState("sos",0,0)
+			self:PlayOnce("vpr_end","cabin",1)
+		end
+	end
+	
+
 
 	-- RK rotation
 	if self:GetPackedBool(112) then self.RKTimer = CurTime() end
@@ -1386,9 +1424,18 @@ function ENT:Think()
 			self:SetSoundState("rk_stop",0.7,1,nil,0.75)
 		end
 	end
+	
 
 	--DIP sound or idle electric noise
 	self:SetSoundState("idle_electric",self:GetPackedBool(32) and 1 or 0,1.0)
+	
+	--SPECIAL SOUNDS TESTING
+	--local speed1 = self:GetPackedRatio(3)*100
+	--[[if speed1 > 25 then
+			self:SetSoundState("skripy",1,1,nil,1)
+		else
+			self:SetSoundState("skripy",0,0,nil,1)
+	end]]
 end
 
 function ENT:Draw()

@@ -676,11 +676,11 @@ ENT.ClientProps["gv_wrench"] = {
 	ang = Angle(0,0,0)
 }
 --------------------------------------------------------------------------------
-ENT.ClientProps["book"] = {
+--[[ENT.ClientProps["book"] = {
 	model = "models/props_lab/binderredlabel.mdl",
 	pos = Vector(401.763123,-32.429512,48.305576),
 	ang = Angle(53,0,90),
-}
+}]]
 
 ENT.ButtonMap["InfoRoute"] = {
 	pos = Vector(456.31,40.0,12.4),
@@ -700,7 +700,7 @@ ENT.ClientProps["tab"] = {
 	model = "models/metrostroi_train/Equipment/tab.mdl",
 	pos = Vector(18.0,0,-0),
 	ang = Angle(0,0,0),
-	skin = 0,
+	skin = 2,
 	}
 
 ENT.ClientProps["Ema_salon2"] = {

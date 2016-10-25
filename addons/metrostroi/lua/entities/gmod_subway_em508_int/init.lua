@@ -361,7 +361,7 @@ function ENT:Think()
 	self:SetLightPower(10, self.Panel["CabinLight"] > 0.5)
 
 	local lightsActive2 = self.PowerSupply.XT3_4 > 65.0
-	local lightsActive1 = self.Panel["EmergencyLight"] > 0.5 or lightsActive2
+	local lightsActive1 = self.Panel["EmergencyLight"] > 0.5 or lightsActive2 
 	self:SetPackedBool("Lamps_emer",lightsActive1)
 	self:SetPackedBool("Lamps_full",lightsActive2)
 	--local I = math.Round((self.Electric.I24-150)/1000.0,1.5)
@@ -926,6 +926,27 @@ function ENT:OnButtonPress(button)
 		end
 		return
 	end]]
+	
+	if button == "DriverValveBLDisconnectToggle" then
+		if self.DriverValveBLDisconnect.Value == 1.0 then
+			self:PlayOnce("pneumo_BL_disconnect","cabin",0.85)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",1.1) end
+		else
+			self:PlayOnce("pneumo_BL_disconnect","cabin",1)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",1.1) end
+		end
+		return
+	end
+	
+	
+	if button == "DriverValveTLDisconnectToggle" then
+		if self.DriverValveTLDisconnect.Value == 1.0 then
+			self:PlayOnce("pneumo_TL_disconnect","cabin",1)
+		else
+			self:PlayOnce("pneumo_TL_open","cabin",1)
+		end
+		return
+	end
 
 
 	if button == "EPKToggle" and self.DriverValveBLDisconnect.Value == 1.0 then

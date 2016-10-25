@@ -26,6 +26,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("KRZD","Relay","Switch", {button = true})
 	self.Train:LoadSystem("KSN","Relay","Switch", {button = true})
 	self.Train:LoadSystem("OtklAVU","Relay","Switch", {switch = true})
+	self.Train:LoadSystem("VZ1","Relay","Switch", {button = true})
 	self.Train:LoadSystem("ARS","Relay","Switch", {av = true})
 	self.Train:LoadSystem("ALS","Relay","Switch", {switch = true})
 	self.Train:LoadSystem("KVT","Relay","Switch", {button = true})
@@ -42,6 +43,9 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("R_Program1","Relay","Switch", {programm = true})
 	self.Train:LoadSystem("R_Program2","Relay","Switch", {programm = true})
 	self.Train:LoadSystem("RC1","Relay","Switch",{ normally_closed = true })
+	
+	--Quest
+	self.Train:LoadSystem("SOS","Relay","Switch", {switch = true})
 
 	--self.Train:LoadSystem("Radio13","Relay","Switch", {button = true})
 	--self.Train:LoadSystem("ARS13","Relay","Switch", {button = true})

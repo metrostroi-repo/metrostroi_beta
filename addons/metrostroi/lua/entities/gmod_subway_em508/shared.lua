@@ -17,7 +17,7 @@ ENT.AdminSpawnable  = true
 --------------------------------------------------------------------------------
 function ENT:InitializeSounds()
 	self.BaseClass.InitializeSounds(self)
-	
+	self.SoundNames["r1_5_close"] = {"subway_trains/ezh/drive_on.wav"}
 end
 
 function ENT:PassengerCapacity()

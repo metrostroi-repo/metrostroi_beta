@@ -244,7 +244,7 @@ function ENT:Initialize()
 
 		"KRP",
 
-		"PB","VU3","VU1","VU2","AV8B","VU","KDLK","VDLK","KDPK","L_3","RST", "DoorSelect", "VZ1",
+		"PB","VU3","VU1","VU2","AV8B","VU","KDLK","VDLK","KDPK","L_3","RST", "DoorSelect", "VZ1", "SOS",
 	}
 	self.Plombs = {
 		RST = true,
@@ -481,12 +481,15 @@ function ENT:Think()
 	self:SetPackedBool(112,(self.RheostatController.Velocity ~= 0.0))
 	self:SetPackedBool(55,(self.DoorSelect.Value == 1.0))
 	self:SetPackedBool("VZ1",(self.VZ1.Value == 1))
+
 	self:SetPackedBool(17,self.KRZD.Value == 1.0)
 	self:SetPackedBool(156,self.RearDoor)
 	self:SetPackedBool(157,self.FrontDoor)
 	self:SetPackedBool(158,self.PassengerDoor)
 	self:SetPackedBool(159,self.CabinDoor)
 	
+	--QUEST
+	self:SetPackedBool("SOS",(self.SOS.Value == 1.0))
 
 	
 	
@@ -502,6 +505,7 @@ function ENT:Think()
 	self:SetPackedBool(115,self.Custom2.Value == 1.0)
 	self:SetPackedBool(116,self.Custom3.Value == 1.0)
 	self:SetPackedBool(124,self.CustomC.Value == 1.0)
+	
 	
 	for k,v in pairs(self.Plombs) do
 		self:SetPackedBool(k.."Pl",v)
@@ -890,6 +894,9 @@ function ENT:OnButtonPress(button)
 		self.DriverValveBLDisconnect:TriggerInput("Set",1)
 		return
 	end
+	
+	--QUEST
+	
 	if button == "DriverValveDisconnect" then
 		if self.DriverValveBLDisconnect.Value == 0 or self.DriverValveTLDisconnect.Value == 0 then
 			if self.DriverValveBLDisconnect.Value == 0.0 then
@@ -996,20 +1003,21 @@ function ENT:OnButtonPress(button)
 
 	if button == "DriverValveBLDisconnectToggle" then
 		if self.DriverValveBLDisconnect.Value == 1.0 then
-			self:PlayOnce("pneumo_disconnect1","cabin",0.9)
-			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",0.9) end
+			self:PlayOnce("pneumo_BL_disconnect","cabin",0.85)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_off","cabin",1.1) end
 		else
-			self:PlayOnce("pneumo_disconnect2","cabin",0.9)
-			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",0.9) end
+			self:PlayOnce("pneumo_BL_disconnect","cabin",1)
+			if self.EPK.Value == 1 then self:PlayOnce("epv_on","cabin",1.1) end
 		end
 		return
 	end
 	
+	
 	if button == "DriverValveTLDisconnectToggle" then
 		if self.DriverValveTLDisconnect.Value == 1.0 then
-			self:PlayOnce("pneumo_TL_connect","cabin",0.9)
+			self:PlayOnce("pneumo_TL_disconnect","cabin",1)
 		else
-			self:PlayOnce("pneumo_TL_disconnect","cabin",0.9)
+			self:PlayOnce("pneumo_TL_open","cabin",1)
 		end
 		return
 	end

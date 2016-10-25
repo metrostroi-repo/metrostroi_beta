@@ -136,6 +136,7 @@ function ENT:InitializeSounds()
 		--"subway_trains/but_off6.wav",
 		--"subway_trains/but_off7.wav",
 	}
+	self.SoundNames["skripy"]			= "subway_trains/trains/skripy.wav"
 
 	self.SoundNames["epv_on"]			= "subway_trains/trains/epv/epv_on.wav"
 	self.SoundNames["epv_off"]			= "subway_trains/trains/epv/epv_off.wav"
@@ -186,10 +187,18 @@ function ENT:InitializeSounds()
 	self.SoundNames["release1"]		= "subway_trains/trains/release_1.wav"
 	self.SoundNames["release2"]		= "subway_trains/trains/release_2.wav"
 	self.SoundNames["release3"]		= "subway_trains/trains/epv/epv_loop.wav"
+	
+	self.SoundNames["release2_ezh"]		= "subway_trains/ezh/release_ezh_2.wav"
+	self.SoundNames["release1_ezh"]		= "subway_trains/ezh/release_ezh_1.wav"
+	
 	self.SoundPositions["release2"] = "cabin"
 	self.SoundPositions["release3"] = "cabin"
+	self.SoundPositions["release2_ezh"] = "cabin"
+	self.SoundPositions["release1_ezh"] = "cabin"
+	
 	self.SoundNames["cran1"]		= "subway_trains/trains/pneumo_idle.wav"
 	self.SoundNames["idle_electric"]		= "subway_trains/ezh/idle_electric.wav"
+	
 	self.SoundPositions["cran1"] = "cabin"
 	self.SoundPositions["idle_electric"] = "cabin"
 
@@ -262,7 +271,9 @@ function ENT:InitializeSounds()
 		"subway_trains/new/334_3.wav",
 		"subway_trains/new/334_4.wav",
 	}
-
+	
+ 	self.SoundNames["sos"] = "subway_trains/themessage.wav"
+		
 	self.SoundNames["br_334_1-2"]		= "subway_trains/trains/334_1-2.wav"
 	self.SoundNames["br_334_2-1"]		= "subway_trains/trains/334_2-1.wav"
 	self.SoundNames["br_334_2-3"]		= "subway_trains/trains/334_2-3.wav"
@@ -284,6 +295,16 @@ function ENT:InitializeSounds()
 	self.SoundNames["pneumo_disconnect2"] = {
 		"subway_trains/trains/pneumo_close.wav",
 	}
+	self.SoundNames["pneumo_TL_open"] = {
+		"subway_trains/ezh/pneumo_BL_open1.wav",
+	}
+	self.SoundNames["pneumo_TL_disconnect"] = {
+		"subway_trains/ezh/pneumo_BL_disconnect1.wav",
+	}
+	self.SoundNames["pneumo_BL_disconnect"] = {
+		"subway_trains/ezh/pneumo_TL_disconnect1.wav",
+	}
+	
 	self.SoundNames["pneumo_disconnect1"] = {
 		"subway_trains/trains/pneumo_open.wav",
 		"subway_trains/trains/pneumo_open2.wav",
@@ -312,6 +333,11 @@ function ENT:InitializeSounds()
 		"subway_trains/trains/717/drive_on1.wav",
 		"subway_trains/trains/717/drive_on2.wav",
 	}
+	
+	self.SoundNames["r1_5_close_ezh"] = {
+		"subway_trains/ezh/drive_on.wav",
+	}
+	
 	self.SoundNames["rvt_open"] = {
 		"subway_trains/trains/717/brake_off1.wav",
 		"subway_trains/trains/717/brake_off2.wav",

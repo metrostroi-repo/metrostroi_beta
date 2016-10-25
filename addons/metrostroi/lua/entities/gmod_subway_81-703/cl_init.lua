@@ -4,6 +4,25 @@
 --------------------------------------------------------------------------------
 ENT.ClientProps = {}
 ENT.ButtonMap = {}
+
+ENT.ButtonMap["SOS"] = {
+	pos = Vector(456+1,-26,2.5),
+	ang = Angle(0,290,90),
+	width = 60,
+	height = 100,
+	scale = 0.0625,
+
+	buttons = {
+		{ID = "SOSToggle",x=0, y=0,  w=40, h=90, tooltip="Metrostroi Radio"},
+	}
+}
+
+ENT.ClientProps["Radio"] = {
+	model = "models/metrostroi_train/Equipment/radio.mdl",
+	pos = Vector(456+1,-26,2.5-8),
+	ang = Angle(6,22,0),
+}
+
 -- Main panel
 
 ENT.ButtonMap["Main"] = {
@@ -1077,6 +1096,9 @@ function ENT:Think()
 	self:Animate("Program1",		self:GetPackedBool(128) and 1 or 0, 0,1, 16, false)
 	self:Animate("Program2",		self:GetPackedBool(129) and 1 or 0, 0,1, 16, false)
 	
+	--Quest
+	self:Animate("SOS",	self:GetPackedBool("SOS") and 0 or 1, 0, 1, 10, false)
+	
 	
 	
 	--self:Animate("UOS",				self:GetPackedBool(134) and 0.87 or 1, 	0,1, 1, false)
@@ -1123,14 +1145,13 @@ function ENT:Think()
 
 
 	local wheel_radius = 0.5*44.1 -- units
-	local speed = self:GetPackedRatio(3)*100  
-	local ang_vel = speed/(2*math.pi*wheel_radius)
+	local speed = self:GetPackedRatio("Speed")*100
+	local ang_vel = speed/(2*math.pi*wheel_radius+math.random(0,20))
 
 	-- Rotate wheel
 	self.Angle = ((self.Angle or math.random()) + ang_vel*self.DeltaTime) % 1.0
-    self:Animate("speed1", 			self:GetPackedRatio("Speed") + math.sin(math.pi*8*self.Angle)*1/120,			0.495, 0.716,				nil, nil,  256,2,0.01)
-	--self:Animate("speed1", 			self:GetPackedRatio("Speed") + math.sin(math.pi*8*self.Angle)*1/120,			0.495, 0.716,				nil, nil,  256,2,0.01) -EMA
-	--self:Animate("speed1", 			/120,			0.495, 0.716,				nil, nil,  256,2,0.01) -?
+
+	self:Animate("speed1", 			self:GetPackedRatio("Speed") + math.sin(math.pi*15*self.Angle)*1/120,			0.495, 0.716,				nil, nil,  256,2,0.01)
 
 	----
 	self:Animate("door1",	self:GetPackedBool(157) and (self.Door1 or 0.99) or 0,0,0.22, 1024, 1)
@@ -1174,7 +1195,7 @@ function ENT:Think()
 	else self.BrakeLineRamp1 = self.BrakeLineRamp1 + 4.0*((-0.6*brakeLinedPdT)-self.BrakeLineRamp1)*dT
 	end
 	self.BrakeLineRamp1 = math.Clamp(self.BrakeLineRamp1,0,1)
-	self:SetSoundState("release2",self.BrakeLineRamp1^1.65,1.0)
+	self:SetSoundState("release2_ezh",self.BrakeLineRamp1^1.65,1.0)
 
 	self.BrakeLineRamp2 = self.BrakeLineRamp2 or 0
 	if (brakeLinedPdT < 0.001)
@@ -1186,9 +1207,9 @@ function ENT:Think()
 
 	local valve = self:GetPackedBool(6) -- 6- DriverValveDisconnect
 		if not self:GetPackedBool(22) then
-		valve = self:GetPackedBool("DriverValveBLDisconnect")
+		valve = self:GetPackedBool("DriverValveTLDisconnect")
 		end
-	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(valve and 1 or 0)),1.0)
+	self:SetSoundState("cran1",math.min(1,self:GetPackedRatio(4)/50*(valve and 1 or 0)),1)
 
 
 	-- Compressor
@@ -1232,7 +1253,19 @@ function ENT:Think()
 			self:PlayOnce("vpr_end","cabin",1)
 		end
 	end
-
+	
+	state = self:GetPackedBool("SOS")
+	self.PreviousSOSState = self.PreviousSOSState or false
+	if self.PreviousSOSState ~= state then
+		self.PreviousSOSState = state
+		if state then
+			self:SetSoundState("sos",1,1)
+		else
+			self:SetSoundState("sos",0,0)
+			self:PlayOnce("vpr_end","cabin",1)
+		end
+	end
+	
 	-- RK rotation
 	if self:GetPackedBool(112) then self.RKTimer = CurTime() end
 	state = (CurTime() - (self.RKTimer or 0)) < 0.2

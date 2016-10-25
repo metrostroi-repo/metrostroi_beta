@@ -49,6 +49,9 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("R_Program1","Relay","Switch", {programm = true})
 	self.Train:LoadSystem("R_Program2","Relay","Switch", {programm = true})
 	self.Train:LoadSystem("RC1","Relay","Switch",{ normally_closed = true })
+	
+	--Quest
+	self.Train:LoadSystem("SOS","Relay","Switch", {switch = true})
 
 
 	--self.Train:LoadSystem("Radio13","Relay","Switch", {button = true})
@@ -110,6 +113,6 @@ function TRAIN_SYSTEM:InitializeAVMap()
 		  61,55,54,56,27,21,10,53,43,45,42,41,
 		"VU",64,63,50,51,23,14,75, 1, 2, 3,17,
 		  62,29, 5, 6, 8,20,25,22,30,39,44,80,
-		  65,"L_5",24,32,31,16,13,12, 7, 9,46,47
+		  65,"L_5",24,32,31,16,"KSD",12, 7, 9,46,47
 	}
 end
