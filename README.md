@@ -29,39 +29,16 @@ Licensing
 All models and materials belong to their corresponding authors. Mainly used without
 permission for purposes of prototyping a subway train simulator.
 
-### "D" type metro train model. 
 
-Copyright (C) 2015-2016 oldy (textures and scripts) Aleksandr Kravchenko, Lacko (model) László Lakatos. All rights reserved.
-
-- 81-702 Д (work in progress) 
-Estimated release date in a middle of autumn 2016
 
 ### "E" type metro trains modelss. 
 
 Copyright (C) 2015-2016 oldy Aleksandr Kravchenko. All rights reserved.
 
 - 81-703 Е 
-- Ев (work in progress)
 - 81-704 Ем 
-- 81-705 Ема
-- 81-502 Еma-502 (work in progress)
-- 81-707 Еж 
 - 81-508 Еm508 
-- 81-509 Еm509 
-- 81-708 Еж1 
-- 81-710 Еж3 (work in progress)
-- 81-508T Еm508T (frozen)
-- 81-713 Ев3 (work in progress)
 
-
-### "81-717" type metro trains models. 
-
-- 81-717 LVZ (work in progress)
-- 81-714 LVZ (work in progress)
-- 81-717 MVM (work in progress)
-- 81-714 MVM (work in progress)
-- 81-717.5 (work in progress)
-- 81-714.5 (work in progress)
 
 Copyright (C) 2015-2016 oldy Aleksandr Kravchenko. All rights reserved.
 
