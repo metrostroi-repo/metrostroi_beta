@@ -31,7 +31,7 @@ permission for purposes of prototyping a subway train simulator.
 
 
 
-### "E" type metro trains modelss. 
+### "E" type metro trains models. 
 
 Copyright (C) 2015-2016 oldy Aleksandr Kravchenko. All rights reserved.
 
