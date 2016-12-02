@@ -36,11 +36,9 @@ permission for purposes of prototyping a subway train simulator.
 Copyright (C) 2015-2016 oldy Aleksandr Kravchenko. All rights reserved.
 
 - 81-703 Е 
-- 81-704 Ем 
-- 81-508 Еm508 
-
-
-Copyright (C) 2015-2016 oldy Aleksandr Kravchenko. All rights reserved.
+- 81-704 Ема/Ем 
+- 81-508 Еm508
+- 81-707 Еж/Еж1 АРС МП
 
 
 All the models listed above belongs to their corresponding author.  This cars itself, its corresponding models of switches, buttons, sounds of engines and pneumatics also belongs to their corresponding author.
