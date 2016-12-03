@@ -1,5 +1,4 @@
 Metrostroi Subway Train Simulator
-Test message
 ================================================================================
 A prototype of a subway simulator, based on Garry's Mod (Source Engine).
 For the licensing information, see at the bottom.
