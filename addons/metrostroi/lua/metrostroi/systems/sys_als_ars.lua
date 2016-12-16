@@ -301,7 +301,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		if self.SpeedLimit == 40 and self.Special and self.NextLimit == self.SpeedLimit and (not self.Train.ARSType or self.Train.ARSType <= 2) and GetConVarNumber("metrostroi_ars_sfreq") > 0 and self.Train.SubwayTrain.Name == "81-717.5m" then
 			self.LN = true
 		end
-		if (self.Train.ARSType and self.Train.ARSType > 2) or GetConVarNumber("metrostroi_ars_sfreq") == 0 or self.Train.SubwayTrain.Name ~= "81-717.5m" then
+		if (self.Train.ARSType and self.Train.ARSType > 2) or GetConVarNumber("metrostroi_ars_sfreq") == 0 or (self.Train.SubwayTrain and self.Train.SubwayTrain.Name ~= "81-717.5m") then
 			self.LN = false
 		end
 		--Train.RPB:TriggerInput("Set",1)
