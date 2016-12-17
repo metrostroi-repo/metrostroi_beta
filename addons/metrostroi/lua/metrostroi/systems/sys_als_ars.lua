@@ -298,7 +298,7 @@ end
 function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKActivated)
 	local Train = self.Train
 	if EnableARS then
-		if self.SpeedLimit == 40 and self.Special and self.NextLimit == self.SpeedLimit and (not self.Train.ARSType or self.Train.ARSType <= 2) and GetConVarNumber("metrostroi_ars_sfreq") > 0 and (self.Train.SubwayTrain and self.Train.SubwayTrain.Name ~= "81-717.5m") then
+		if self.SpeedLimit == 40 and self.Special and self.NextLimit == self.SpeedLimit and (not self.Train.ARSType or self.Train.ARSType <= 2) and GetConVarNumber("metrostroi_ars_sfreq") > 0 and (self.Train.SubwayTrain and self.Train.SubwayTrain.Name == "81-717.5m") then
 			self.LN = true
 		end
 		if (self.Train.ARSType and self.Train.ARSType > 2) or GetConVarNumber("metrostroi_ars_sfreq") == 0 or (self.Train.SubwayTrain and self.Train.SubwayTrain.Name ~= "81-717.5m") then
@@ -482,7 +482,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		self.PneumaticBrake1 = false
 		self.PneumaticBrake2 = true
 		self.ARSBrake = true
-		if self.LN and (not self.Train.ARSType or self.Train.ARSType <= 2) and GetConVarNumber("metrostroi_ars_sfreq") > 0 and (self.Train.SubwayTrain and self.Train.SubwayTrain.Name ~= "81-717.5m") then
+		if self.LN and (not self.Train.ARSType or self.Train.ARSType <= 2) and GetConVarNumber("metrostroi_ars_sfreq") > 0 and (self.Train.SubwayTrain and self.Train.SubwayTrain.Name == "81-717.5m") then
 			RunConsoleCommand("say","Lose direction signal",Train:GetDriverName())
 		end
 		self.LN = false
@@ -788,7 +788,7 @@ function TRAIN_SYSTEM:Think(dT)
 		if self.Signal70 then Vlimit = 70 end
 		if self.Signal80 then Vlimit = 80 end
 
-		if not self.LN and Vlimit > 40 and GetConVarNumber("metrostroi_ars_sfreq") > 0 and (not self.Train.ARSType or self.Train.ARSType <= 2) and (self.Train.SubwayTrain and self.Train.SubwayTrain.Name ~= "81-717.5m") then
+		if not self.LN and Vlimit > 40 and GetConVarNumber("metrostroi_ars_sfreq") > 0 and (not self.Train.ARSType or self.Train.ARSType <= 2) and (self.Train.SubwayTrain and self.Train.SubwayTrain.Name == "81-717.5m") then
 			VLimit2 = Vlimit
 			Vlimit = Vlimit < 40 and 0 or 40
 		end
