@@ -482,7 +482,7 @@ function TRAIN_SYSTEM:MoscowARS(EnableARS,KRUEnabled,BPSWorking,EnableUOS,EPKAct
 		self.PneumaticBrake1 = false
 		self.PneumaticBrake2 = true
 		self.ARSBrake = true
-		if self.LN and (not self.Train.ARSType or self.Train.ARSType <= 2) and GetConVarNumber("metrostroi_ars_sfreq") > 0 and self.Train.SubwayTrain.Name == "81-717.5m" then
+		if self.LN and (not self.Train.ARSType or self.Train.ARSType <= 2) and GetConVarNumber("metrostroi_ars_sfreq") > 0 and (self.Train.SubwayTrain and self.Train.SubwayTrain.Name == "81-717.5m") then
 			RunConsoleCommand("say","Lose direction signal",Train:GetDriverName())
 		end
 		self.LN = false
