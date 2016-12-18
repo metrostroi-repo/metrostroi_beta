@@ -1210,7 +1210,7 @@ hook.Add("CalcView", "Metrostroi_TrainView", function(ply,pos,ang,fov,znear,zfar
 		return {
 			origin = train:LocalToWorld(train:WorldToLocal(pos)+Vector(math.Round((GetConVarNumber("metrostroi_disablecamaccel") == 0 and (train:Animate("accel",(train:GetNW2Float("Accel")+1)/2,-1,1, 4, 1)*20 - 5) or 0),2),0,0)),--train:LocalToWorld(Vector(math.Round(train.HeadAcceleration,2),0,0)) ,
 			angles = angles,
-			fov = fov/90*75,
+			fov = fov/80*75,
 			znear = znear,
 			zfar = zfar
 		}

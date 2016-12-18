@@ -21,11 +21,6 @@ end
 
 function ENT:InitializeSounds()
 	self.BaseClass.InitializeSounds(self)
-	self.SoundNames["relay_close2"] = nil
-	self.SoundNames["rvt_close"] = nil
-	self.SoundNames["r1_5_close"] = nil
-	self.SoundNames["rvt_open"] = nil
-	self.SoundNames["r1_5_open"] = nil
 	self.SoundNames["relay_close4"] = {"subway_trains/new/relay_7.wav","subway_trains/new/lsd_4.wav"}
 	self.SoundNames["brake_loop"]		= "subway_trains/ezh/torm4_loop.wav"
 	self.SoundNames["rk_spin"]		= "subway_trains/ezh/rk_spin.wav"
@@ -53,7 +48,7 @@ function ENT:InitializeSystems()
 	self:LoadSystem("Engines","DK_108D")
 
 	-- Резисторы для реостата/пусковых сопротивлений
-	self:LoadSystem("KF_47A","KF_47A")
+	self:LoadSystem("KF_47A","KF_47A6")
 	-- Резисторы для ослабления возбуждения
 	self:LoadSystem("KF_50A")
 	-- Ящик с предохранителями
@@ -62,7 +57,7 @@ function ENT:InitializeSystems()
 	-- Резисторы для цепей управления
 	--self:LoadSystem("YAS_44V")
 	-- Реостатный контроллер для управления пусковыми сопротивления
-	self:LoadSystem("RheostatController","EKG_17A")
+	self:LoadSystem("RheostatController","EKG_17B")
 	-- Групповой переключатель положений
 	self:LoadSystem("PositionSwitch","EKG_18B")
 	-- Кулачковый контроллер
@@ -73,7 +68,7 @@ function ENT:InitializeSystems()
 
 	-- Ящики с реле и контакторами
 	self:LoadSystem("LK_755A")
-	self:LoadSystem("YAR_13A")
+	self:LoadSystem("YAR_13A","YAR_15A")
 	self:LoadSystem("YAR_27")
 	self:LoadSystem("YAK_36")
 	self:LoadSystem("YAK_37E")

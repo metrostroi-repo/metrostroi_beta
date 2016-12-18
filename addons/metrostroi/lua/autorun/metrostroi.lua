@@ -4,19 +4,19 @@
 local function resource_AddDir(dir) 
 	local files,dirs = file.Find(dir.."/*","GAME")
 	for _, fdir in pairs(dirs) do 
-		resource_AddDir(dir.."/"..fdir)     
-	end   
-
-	for _,v in pairs(files) do 
+		resource_AddDir(dir.."/"..fdir)       
+	end       
+  
+	for _,v in pairs(files) do       
 		resource.AddFile(dir.."/"..v) 
 	end
-end
- 
-if SERVER then
-	util.AddNetworkString("metrostroi-cabin-button")
+end 
+  
+if SERVER then 
+	util.AddNetworkString("metrostroi-cabin-button")  
 	util.AddNetworkString("metrostroi-cabin-reset")
 	util.AddNetworkString("metrostroi-panel-touch")
-
+ 
 	--[[resource_AddDir("materials/metrostroi/props")
 	resource_AddDir("materials/models/metrostroi_signs")
 	resource_AddDir("materials/models/metrostroi_train")
@@ -155,15 +155,15 @@ if SERVER then
 	Metrostroi.NameConverter["81-717_lvz"] = "81-714_lvz"
 	Metrostroi.NameConverter["ezh3"] = "ema508t"
 	Metrostroi.NameConverter["ema"] = "em"
-	Metrostroi.NameConverter["81-703"] = "81-703_2"
-		Metrostroi.NameConverter["em508"] = "em508_int"
+	Metrostroi.NameConverter["ezh"] = "ezh1"
+	Metrostroi.NameConverter["em508"] = "em508_int"
 	Metrostroi.TrainSpawnerConverter = {
 		"81-717_mvm",
 		"81-717_lvz",
 		"81-703",
 		"ema",
 		"ezh3",
-		"81-7036",
+		"ezh",
 		"em508",
 	}
 	Metrostroi.Skins["717_schemes"] = {}
@@ -178,7 +178,7 @@ else
 	local files = file.Find("metrostroi/cl_*.lua","LUA")
 	for _,filename in pairs(files) do include("metrostroi/"..filename) end
 
-	-- Add skins
+	-- Add skins 
 	Metrostroi.Skins = {}
 	files = file.Find("metrostroi/skins/*.lua","LUA")
 	for _,filename in pairs(files) do include("metrostroi/skins/"..filename) end
@@ -190,6 +190,7 @@ else
 	Metrostroi.NameConverter["ezh3"] = "ema508t"
 	Metrostroi.NameConverter["ema"] = "em"
 	Metrostroi.NameConverter["81-703"] = "81-703_2"
+	Metrostroi.NameConverter["ezh"] = "ezh1"
 	Metrostroi.NameConverter["em508"] = "em508_int"
 	Metrostroi.TrainSpawnerConverter = {
 		"81-717_mvm",
@@ -197,7 +198,7 @@ else
 		"81-703",
 		"ema",
 		"ezh3",
-		"81-7036",
+		"ezh",
 		"em508",
 	}
 	Metrostroi.Skins["717_schemes"] = {}
@@ -269,8 +270,8 @@ local function loadSystem(filename)
 		tbl.Outputs = tbl.Outputs or function() return {} end
 		tbl.TriggerOutput = tbl.TriggerOutput or function() end
 		tbl.TriggerInput = tbl.TriggerInput or function() end
-
-		tbl.Train = train
+ 
+		tbl.Train = train 
 		if SERVER then
 			tbl:Initialize(...)
 		else

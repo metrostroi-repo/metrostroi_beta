@@ -214,7 +214,7 @@ function TRAIN_SYSTEM:TriggerInput(name,value)
 			end
 			self.TargetValue = math.max(0.0,math.min(2.0,math.floor(value)))
 		else
-			if value > self.trigger_level
+			if value > self.trigger_level 
 			then self:TriggerInput("Close",self.trigger_level+1)
 			else self:TriggerInput("Open",self.trigger_level+1)
 			end
@@ -305,6 +305,7 @@ function TRAIN_SYSTEM:Think(dT)
 				if self.krishka then self.Train:PlayOnce("kr_close","cabin") end
 				if self.paketnik then self.Train:PlayOnce("pak_on","cabin") end
 				if self.switch then self.Train:PlayOnce("switch_on","cabin") end
+				if self.rcr then self.Train:PlayOnce("rcr_on","cabin") end
 			end
 			if self.Value == 0.0 and self.maxvalue ~= 2 or self.Value == 1.0 and self.maxvalue == 2 then
 				if self.av3 then self.Train:PlayOnce("vu22b_off","cabin") end
@@ -319,6 +320,7 @@ function TRAIN_SYSTEM:Think(dT)
 				if self.krishka then self.Train:PlayOnce("kr_open","cabin") end
 				if self.paketnik then self.Train:PlayOnce("pak_off","cabin") end
 				if self.switch then self.Train:PlayOnce("switch_off","cabin") end
+				if self.rcr then self.Train:PlayOnce("rcr_off","cabin") end
 			end
 		end
 	end

@@ -33,7 +33,7 @@ function TRAIN_SYSTEM:TriggerInput(...)
 end
 function TRAIN_SYSTEM:Think(...)
 	if self.OldSelectedPosition ~= self.SelectedPosition then
-		self.Train:PlayOnce("pkg",nil,0.7)
+		self.Train:PlayOnce("pkg",nil,1)
 		self.OldSelectedPosition =  self.SelectedPosition
 	end
 	return Metrostroi.BaseSystems["EKG"].Think(self,...)

@@ -177,24 +177,25 @@ function ENT:Initialize()
 
 	self.Lights = {
 		-- Head
-		[1] = { "headlight",		Vector(475,0,-20), Angle(0,0,0), Color(216,161,92), fov = 100 },
+		[1] = { "headlight",		Vector(460,0,-35), Angle(20,0,0), Color(240,140,70), fov = 90 },
 		[2] = { "glow",				Vector(469.4, 45.43,-30.7), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 1.0 },
 		[3] = { "glow",				Vector(469.4,-45.43,-30.7), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 1.0 },
 		[4] = { "glow",				Vector(458+9,-14.86, 58), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
 		[5] = { "glow",				Vector(458+9,0,  58), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
 		[6] = { "glow",				Vector(458+9, 14.86,  58), Angle(0,0,0), Color(255,220,180), brightness = 1, scale = 0.5 },
 
-		-- Reverse
-		--[8] = { "light",			Vector(458+11,-30.7, 54.2), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
-		--[9] = { "light",			Vector(458+11, 30.7, 54.2), Angle(0,0,0), Color(255,0,0),     brightness = 10, scale = 1.0 },
-
+		-- Emergency lit
+		[9] = { "headlight",	Vector(412-7,0,51), Angle(80,0,0), Color(255,255,255), brightness = 1, farz = 117, nearz = 0.01, shadows = 0, fov = 120 },
+		[3] = { "glow",				Vector(405-7, 1,52), Angle(0,0,0), Color(255,255,255), brightness = 1, scale = 1.0 },
 		-- Cabin
-		[10] = { "dynamiclight",	Vector(435,0,20), Angle(0,-0,0), Color(230,110,50), brightness = 0.006, distance = 600, shadows = 1},
+		[2] = { "glow",				Vector(432.5+9-7, -51.141986,34.10), Angle(0,0,0), Color(255,200,130), brightness = 1, scale = 0.75 },
+		[10] = { "headlight", 		Vector(432.5+5-7,-38.141986,40.90), Angle(60,-50,-30), Color(255,200,130), farz = 68, nearz = 0.1, shadows = 0, brightness = 2.0, fov = 57 },
+		
 
 		-- Interior
-		[11] = { "dynamiclight",	Vector( 250, 0, 0), Angle(0,0,0), Color(255,110,30), brightness = 6, distance = 150, shadows = 1, fov=120,farz = 328 },
-		[12] = { "dynamiclight",	Vector(   0, 0, 0), Angle(0,0,0), Color(255,110,30), brightness = 7, distance = 400, shadows = 1, fov=180,farz = 328 },
-		[13] = { "dynamiclight",	Vector(-300, 0, 0), Angle(0,0,0), Color(255,110,30), brightness = 5, distance = 600, shadows = 1, fov=180,farz = 328 },
+		[11] = { "dynamiclight",	Vector( 250, 0, 0), Angle(0,0,0), Color(255,110,30), brightness = 5, distance = 250, shadows = 0, fov=120,farz = 250 },
+		[12] = { "dynamiclight",	Vector(   0, 0, 0), Angle(0,0,0), Color(255,110,30), brightness = 7, distance = 400, shadows = 0, fov=180,farz = 250 },
+		[13] = { "dynamiclight",	Vector(-300, 0, 0), Angle(0,0,0), Color(255,110,30), brightness = 6, distance = 600, shadows = 0, fov=180,farz = 250 },
 
 		-- Side lights
 		--//[14] = { "light",			Vector(390+12.15, 69, 54), Angle(0,0,0), Color(255,0,0), brightness = 0.5, scale = 0.10, texture = "models/metrostroi_signals/signal_sprite_002.vmt" },
@@ -358,37 +359,33 @@ function ENT:Think()
 	self:SetPackedBool("HeadLights1",self.Panel["HeadLights1"] > 0.5)
 	self:SetPackedBool("HeadLights2",self.Panel["HeadLights2"] > 0.5)
 	self:SetPackedBool("RedLight",(self.Panel["RedLightLeft"] > 0.5 or self.Panel["RedLightRight"] > 0.5 ) and not IsValid(self.FrontTrain))
+	
+	-- Emergency E cabin lights
+	self:SetLightPower(9, self.AV8B.Value < 0.5 and self.VU2.Value > 0.5 and self.Panel["V1"] > 0.5)
+	self:SetLightPower(3, self.AV8B.Value < 0.5 and self.VU2.Value > 0.5 and self.Panel["V1"] > 0.5)
+	
 	-- Interior/cabin lights
-	self:SetLightPower(10, self.Panel["CabinLight"] > 0.5)
+	self:SetLightPower(10, self.VU3.Value > 0.5 and self.Panel["V1"] > 0.5)
+	self:SetLightPower(2, self.VU3.Value > 0.5 and self.Panel["V1"] > 0.5)
 
 	local lightsActive2 = self.PowerSupply.XT3_4 > 65.0
-	local lightsActive1 = self.Panel["EmergencyLight"] > 0.5 or lightsActive2
+	local lightsActive1 = (self.VU2.Value > 0.5 and self.Panel["V1"] > 0.5) or lightsActive2
 	self:SetPackedBool("Lamps_emer",lightsActive1)
 	self:SetPackedBool("Lamps_full",lightsActive2)
 	--local I = math.Round((self.Electric.I24-150)/1000.0,1.5)
 	local Light
 	if self.Pneumatic.Compressor == 1 then
 		Light = (lightsActive2 and 0.6 or 0.3)
-		--[[
-		if I > 0 then
-			Light = Light*(1-math.abs(I*0.1))
-		end
-		]]
 		self:SetLightPower(11, lightsActive1, Light)
 		self:SetLightPower(12, lightsActive1, Light)
 		self:SetLightPower(13, lightsActive1, Light)
 	else
 		Light = (lightsActive2 and 0.8 or 0.4)
-		--[[
-		if I > 0 then
-			Light = Light*(1-math.abs(I*0.1))
-		end
-		]]
 		self:SetLightPower(11, lightsActive1, Light)
 		self:SetLightPower(12, lightsActive1, Light)
 		self:SetLightPower(13, lightsActive1, Light)
 	end
-	self:SetPackedRatio("LampsI",math.Round((self.Electric.I24-150)/1000.0)) 
+	self:SetPackedRatio("LampsI",math.Round((self.Electric.I24-150)/1000.0,1.5)) 
 	--self:SetLightPower(12, lightsActive1,0.1 + ((self.PowerSupply.XT3_4 > 65.0) and 0.7 or 0))
 	--self:SetLightPower(13, lightsActive2, 0.8)
 	--for i = 1,23 do
@@ -449,6 +446,8 @@ function ENT:Think()
 	self:SetPackedBool(39,self.Panel["Ring"] > 0.5)
 	-- SD
 	self:SetPackedBool(40,self.Panel["SD"] > 0.5)
+	-- KSD
+	self:SetPackedBool("KSD",self.KSD.Value == 0.00)
 
 	self:SetPackedBool("EPK",self.EPK.Value == 1.0)
 	for i=1,#self.NetworkSwitches do
@@ -467,6 +466,9 @@ function ENT:Think()
 	self:SetPackedBool(157,self.FrontDoor)
 	self:SetPackedBool(158,self.PassengerDoor)
 	self:SetPackedBool(159,self.CabinDoor)
+	
+	--KRR
+	self:SetPackedBool("KRR",self.KRR.Value > 0.5)
 	
 	--Radiostation
 	self:SetPackedBool(125,self.R_G.Value == 1.0)
@@ -860,13 +862,42 @@ function ENT:OnButtonPress(button)
 			self.DriversWrenchMissing = true
 			self.KV:TriggerInput("Enabled",0)
 			self.KRU:TriggerInput("Enabled",1)
-			self.KRU:TriggerInput("LockX3",1)
+			self.KRU:TriggerInput("LockX3",0)
 		end
 	end
 	if button == "KVWrenchNone" then
 		if self.KVWrenchMode ~= 3 and self.KV.ReverserPosition == 0 then
 			if self.KVWrenchMode == 2 then
 				self:PlayOnce("kru_out","cabin",0.7,120.0)
+			else
+				self:PlayOnce("revers_out","cabin",0.7,120.0)
+			end
+			self.KVWrenchMode = 3
+			self.DriversWrenchPresent = false
+			self.DriversWrenchMissing = true
+			self.KV:TriggerInput("Enabled",0)
+			self.KRU:TriggerInput("Enabled",0)
+		end
+	end
+	if button == "KVWrenchKRU" then
+		if self.KVWrenchMode == 3 then
+			self:PlayOnce("kru_in","cabin",0.7)
+			self.KVWrenchMode = 2
+			self.DriversWrenchPresent = false
+			self.DriversWrenchMissing = true
+			self.KV:TriggerInput("Enabled",0)
+			self.KRU:TriggerInput("Enabled",1)
+			self.KRU:TriggerInput("LockX3",1)
+			local drv = self:GetDriverName()
+			RunConsoleCommand("say",drv.." want drive with KRU!")
+		end
+	end
+	if button == "KVWrenchNone" then
+		if self.KVWrenchMode ~= 3 then
+			if self.KVWrenchMode == 2 then
+				self:PlayOnce("kru_out","cabin",0.7,120.0)
+				local drv = self:GetDriverName()
+				RunConsoleCommand("say",drv.." stop drive with KRU!")
 			else
 				self:PlayOnce("revers_out","cabin",0.7,120.0)
 			end
@@ -988,16 +1019,6 @@ function ENT:OnButtonPress(button)
 		end
 		return
 	end]]
-
-
-	if button == "EPKToggle" and self.DriverValveBLDisconnect.Value == 1.0 then
-		if self.EPK.Value == 0.0 then
-			self:PlayOnce("epv_off","cabin",0.9)
-		else
-			self:PlayOnce("epv_on","cabin",0.9)
-		end
-		return
-	end
 end
 
 function ENT:OnButtonRelease(button)

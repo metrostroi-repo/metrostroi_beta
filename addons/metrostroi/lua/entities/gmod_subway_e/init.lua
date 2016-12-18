@@ -326,8 +326,37 @@ function ENT:Think()
 
 	-- Interior/cabin lights
 	self:SetLightPower(10, self.Panel["CabinLight"] > 0.5)
-
+	
 	local lightsActive2 = self.PowerSupply.XT3_4 > 65.0
+	local lightsActive1 = self.Panel["EmergencyLight"] > 0.5 or lightsActive2
+	self:SetPackedBool("Lamps_emer",lightsActive1)
+	self:SetPackedBool("Lamps_full",lightsActive2)
+	--local I = math.Round((self.Electric.I24-150)/1000.0,1.5)
+	local Light
+	if self.Pneumatic.Compressor == 1 then
+		Light = (lightsActive2 and 0.6 or 0.3)
+		--[[
+		if I > 0 then
+			Light = Light*(1-math.abs(I*0.1))
+		end
+		]]
+		self:SetLightPower(11, lightsActive1, Light)
+		self:SetLightPower(12, lightsActive1, Light)
+		self:SetLightPower(13, lightsActive1, Light)
+	else
+		Light = (lightsActive2 and 0.8 or 0.4)
+		--[[
+		if I > 0 then
+			Light = Light*(1-math.abs(I*0.1))
+		end
+		]]
+		self:SetLightPower(11, lightsActive1, Light)
+		self:SetLightPower(12, lightsActive1, Light)
+		self:SetLightPower(13, lightsActive1, Light)
+	end
+	self:SetPackedRatio("LampsI",math.Round((self.Electric.I24-150)/1000.0,1.5))
+
+	--[[local lightsActive2 = self.PowerSupply.XT3_4 > 65.0
 	local lightsActive1 = self.Panel["EmergencyLight"] > 0.5
 	self:SetPackedBool("Lamps",lightsActive2)
 	local I = math.Round((self.Electric.I24-150)/1000.0,1.5)
@@ -347,7 +376,7 @@ function ENT:Think()
 		self:SetLightPower(11, lightsActive2, Light)
 		self:SetLightPower(12, lightsActive2, Light)
 		self:SetLightPower(13, lightsActive2, Light)
-	end
+	end]]
 	--self:SetLightPower(12, lightsActive1,0.1 + ((self.PowerSupply.XT3_4 > 65.0) and 0.7 or 0))
 	--self:SetLightPower(13, lightsActive2, 0.8)
 	--for i = 1,23 do

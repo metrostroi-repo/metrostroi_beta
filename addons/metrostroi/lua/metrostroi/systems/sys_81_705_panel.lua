@@ -48,7 +48,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("OtklAVU","Relay","Switch", {av = true})
 	self.Train:LoadSystem("KRP","Relay","Switch", {vud = true})
 
-	self.Train:LoadSystem("RC1","Relay","Switch",{ paketnik = true,normally_closed = true })
+	self.Train:LoadSystem("RC1","Relay","Switch",{rcr = true, normally_closed = true })
 	
 	--self.Train:LoadSystem("Radio13","Relay","Switch", {button = true})
 	--self.Train:LoadSystem("ARS13","Relay","Switch", {button = true})

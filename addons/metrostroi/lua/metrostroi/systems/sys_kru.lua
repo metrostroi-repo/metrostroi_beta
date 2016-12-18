@@ -107,6 +107,7 @@ function TRAIN_SYSTEM:Think()
 		local P,R = self.RealPosition,self.Position
 		if P == 0 and R == 1 then self.Train:PlayOnce("kru_0_1", "cabin",0.9) end
 		if P == 1 and R == 2 then self.Train:PlayOnce("kru_1_2", "cabin",0.9) end
+		if P == 2 and R == 3 then self.Train:PlayOnce("kru_2_3", "cabin",0.9) end
 		self.Timer = CurTime()
 		self.RealPosition = self.RealPosition + 1
 			-- Play sounds
@@ -115,6 +116,7 @@ function TRAIN_SYSTEM:Think()
 		local P,R = self.RealPosition,self.Position
 		if P == 1 and R == 0 then self.Train:PlayOnce("kru_1_0", "cabin",0.9) end
 		if P == 2 and R == 1 then self.Train:PlayOnce("kru_2_1", "cabin",0.9) end
+		if P == 3 and R == 2 then self.Train:PlayOnce("kru_3_2", "cabin",0.9) end
 		self.Timer = CurTime()
 		self.RealPosition = self.RealPosition - 1
 	end

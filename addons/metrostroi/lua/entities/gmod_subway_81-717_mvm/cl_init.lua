@@ -720,9 +720,9 @@ ENT.ClientProps["brake013"] = {
 	ang = Angle(0,180,0)
 }
 ENT.ClientProps["brake334"] = {
-	model = "models/metrostroi_train/81/334cran.mdl",
+	model = "models/metrostroi_train/81-703/cabin_cran_334.mdl",
 	pos = Vector(438.4,-20.75,-0.6),
-	ang = Angle(0,90-30,0)
+	ang = Angle(0,-133,0),
 }
 ENT.ClientProps["controller"] = {
 	model = "models/metrostroi/81-717/controller.mdl",
@@ -1009,40 +1009,46 @@ Metrostroi.ClientPropForButton("LST_light",{
 Metrostroi.ClientPropForButton("headlights",{
 	panel = "Front",
 	button = "VUSToggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_1.mdl",
+	ang = 180,
+	z=-1,
 })
 --------------------------------------------------------------------------------
 
 Metrostroi.ClientPropForButton("R_UNch",{
 	panel = "Main",
 	button = "R_UNchToggle",
-	model = "models/metrostroi_train/81/tumbler4.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_3.mdl",
+	ang = 180,
+	z=-2,
 })
 Metrostroi.ClientPropForButton("R_ZS",{
 	panel = "Main",
 	button = "R_ZSToggle",
-	model = "models/metrostroi_train/81/tumbler4.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_1.mdl",
+	ang = 180,
+	z=-2,
 })
 Metrostroi.ClientPropForButton("R_G",{
 	panel = "Main",
 	button = "R_GToggle",
-	model = "models/metrostroi_train/81/tumbler4.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_3.mdl",
+	ang = 180,
+	z=-2,
 })
 Metrostroi.ClientPropForButton("R_VPR",{
 	panel = "Main",
 	button = "R_VPRToggle",
-	model = "models/metrostroi_train/81/tumbler2.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_3.mdl",
+	ang = 180,
+	z=-2,
 })
 Metrostroi.ClientPropForButton("R_Radio",{
 	panel = "Main",
 	button = "R_RadioToggle",
-	model = "models/metrostroi_train/81/tumbler4.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_3.mdl",
+	ang = 180,
+	z=-2,
 })
 Metrostroi.ClientPropForButton("R_Program",{
 	panel = "Main",
@@ -1053,33 +1059,34 @@ Metrostroi.ClientPropForButton("R_Program",{
 Metrostroi.ClientPropForButton("BPSNon",{
 	panel = "BPSNFront",
 	button = "BPSNonToggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_2.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("VozvratRP",{
 	panel = "Main",
 	button = "VozvratRPSet",
-	model = "models/metrostroi_train/81/button2.mdl",
-	skin = 4,
-	z = 1,
+	model = "models/metrostroi_train/Equipment/button_ezh_6.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("VMK",{
 	panel = "BPSNFront",
 	button = "VMKToggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_2.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("RezMK",{
 	panel = "BPSNFront",
 	button = "RezMKSet",
-	model = "models/metrostroi_train/81/button.mdl",
+	model = "models/metrostroi_train/Equipment/button_ezh_4.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("KAH",{
 	panel = "Front",
 	button = "KAHSet",
-	model = "models/metrostroi_train/81/button2.mdl",
-	skin = 1,
-	z = 3,
+	model = "models/metrostroi_train/Equipment/button_ezh_2.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("KAHPl",{
 	panel = "Front",
@@ -1098,8 +1105,9 @@ Metrostroi.ClientPropForButton("KAHK",{
 Metrostroi.ClientPropForButton("VAH",{
 	panel = "Front",
 	button = "VAHToggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_2.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("VAHPl",{
 	panel = "Front",
@@ -1111,8 +1119,9 @@ Metrostroi.ClientPropForButton("VAHPl",{
 Metrostroi.ClientPropForButton("VAD",{
 	panel = "Front",
 	button = "VADToggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_2.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("VADPl",{
 	panel = "Front",
@@ -1123,20 +1132,23 @@ Metrostroi.ClientPropForButton("VADPl",{
 Metrostroi.ClientPropForButton("ALS",{
 	panel = "Main",
 	button = "ALSToggle",
-	model = "models/metrostroi_train/81/tumbler2.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_3.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("ARS",{
 	panel = "Main",
 	button = "ARSToggle",
-	model = "models/metrostroi_train/81/tumbler2.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_3.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("OtklAVU",{
 	panel = "Main",
 	button = "OtklAVUToggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_2.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("OtklAVUPl",{
 	panel = "Main",
@@ -1147,9 +1159,8 @@ Metrostroi.ClientPropForButton("OtklAVUPl",{
 Metrostroi.ClientPropForButton("KRZD",{
 	panel = "Main",
 	button = "KRZDSet",
-	model = "models/metrostroi_train/81/button2.mdl",
-	skin = 4,
-	z = 3,
+	model = "models/metrostroi_train/Equipment/button_ezh_2.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("VUD1",{
 	panel = "Main",
@@ -1160,8 +1171,9 @@ Metrostroi.ClientPropForButton("VUD1",{
 Metrostroi.ClientPropForButton("DoorSelect",{
 	panel = "Main",
 	button = "DoorSelectToggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_3.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("KDL",{
 	panel = "Main",
@@ -1206,19 +1218,20 @@ Metrostroi.ClientPropForButton("KDPK",{
 Metrostroi.ClientPropForButton("VZ1",{
 	panel = "Main",
 	button = "VZ1Set",
-	model = "models/metrostroi_train/81/button2.mdl",
-	z=2
+	model = "models/metrostroi_train/Equipment/button_ezh_2.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("KSN",{
 	panel = "Main",
 	button = "KSNSet",
-	model = "models/metrostroi_train/81/button2.mdl"
+	model = "models/metrostroi_train/Equipment/button_ezh_6.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("KRP",{
 	panel = "Front",
 	button = "KRPSet",
-	model = "models/metrostroi_train/81/button2.mdl",
-	skin = 4
+	model = "models/metrostroi_train/Equipment/button_ezh_4.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("KDLR",{
 	panel = "Main",
@@ -1269,24 +1282,28 @@ Metrostroi.ClientPropForButton("Program2",{
 Metrostroi.ClientPropForButton("SelectMain",{
 	panel = "Announcer",
 	button = "DURASelectMain",
-	model = "models/metrostroi_train/81/button.mdl",
+	model = "models/metrostroi_train/Equipment/button_ezh_4.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("SelectAlternate",{
 	panel = "Announcer",
 	button = "DURASelectAlternate",
-	model = "models/metrostroi_train/81/button.mdl",
+	model = "models/metrostroi_train/Equipment/button_ezh_4.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("SelectChannel",{
 	panel = "Announcer",
 	button = "DURAToggleChannel",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_3.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("DURAPower",{
 	panel = "Announcer",
 	button = "DURAPowerToggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_3.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("GreenRPLight",{
 	panel = "Main",
@@ -1386,14 +1403,16 @@ Metrostroi.ClientPropForButton("PneumoLight_light",{
 Metrostroi.ClientPropForButton("L_4",{
 	panel = "Front",
 	button = "L_4Toggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_2.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("TormAT",{
 	panel = "Main",
 	button = "TormATToggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_2.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("TormATPl",{
 	panel = "Main",
@@ -1404,20 +1423,23 @@ Metrostroi.ClientPropForButton("TormATPl",{
 Metrostroi.ClientPropForButton("L_1",{
 	panel = "Main",
 	button = "L_1Toggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_2.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("L_2",{
 	panel = "Main",
 	button = "L_2Toggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_2.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("L_3",{
 	panel = "Main",
 	button = "L_3Toggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_2.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("ConverterProtection",{
 	panel = "Main",
@@ -1434,18 +1456,20 @@ Metrostroi.ClientPropForButton("ConverterProtection_light",{
 Metrostroi.ClientPropForButton("DIPoff",{
 	panel = "Main",
 	button = "DIPoffSet",
-	model = "models/metrostroi_train/81/button.mdl"
+	model = "models/metrostroi_train/Equipment/button_ezh_2.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("KB",{
 	panel = "Main",
 	button = "2:KVTSet",
-	model = "models/metrostroi_train/81/button.mdl",
-	skin = 5,
+	model = "models/metrostroi_train/Equipment/button_ezh_6.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("ARS13",{
 	panel = "BPSNFront",
 	button = "ARS13Set",
-	model = "models/metrostroi_train/81/button.mdl"
+	model = "models/metrostroi_train/Equipment/button_ezh_4.mdl",
+	z = 2,
 })
 --[[
 Metrostroi.ClientPropForButton("Radio13",{
@@ -1459,26 +1483,28 @@ Metrostroi.ClientPropForButton("Radio13",{
 Metrostroi.ClientPropForButton("Custom1",{
 	panel = "Announcer",
 	button = "Custom1Set",
-	model = "models/metrostroi_train/81/button.mdl",
-	skin = 5,
+	model = "models/metrostroi_train/Equipment/button_ezh_4.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("Custom2",{
 	panel = "Announcer",
 	button = "Custom2Set",
-	model = "models/metrostroi_train/81/button.mdl",
-	skin = 5,
+	model = "models/metrostroi_train/Equipment/button_ezh_4.mdl",
+	z = 2,
 })
 Metrostroi.ClientPropForButton("Custom3",{
 	panel = "Announcer",
 	button = "Custom3Set",
-	model = "models/metrostroi_train/81/button.mdl"
+	model = "models/metrostroi_train/Equipment/button_ezh_4.mdl",
+	z = 2,
 })
 
 Metrostroi.ClientPropForButton("CustomC",{
 	panel = "Announcer",
 	button = "CustomCToggle",
-	model = "models/metrostroi_train/81/tumbler1.mdl",
-	ang = 90
+	model = "models/metrostroi_train/Equipment/switch_2.mdl",
+	ang = 180,
+	z=-1,
 })
 Metrostroi.ClientPropForButton("CustomD",{
 	panel = "Announcer",
@@ -1708,7 +1734,7 @@ ENT.ClientProps["RearTrain"] = {--
 	ang = Angle(0,90,0)
 }
 ENT.ClientProps["PB"] = {--
-	model = "models/metrostroi_train/81/pb.mdl",
+	model = "models/metrostroi_train/81-707/pedal.mdl",
 	pos = Vector(451.5, 22.5, -27.5),
 	ang = Angle(0,-90,40)
 }
@@ -1929,19 +1955,19 @@ function ENT:Think()
 	self:Animate("ampermeter",		self:GetPackedRatio(8),				0.42, 0.627,				nil, nil,  256,2,0.01)
 
 	self:Animate("headlights",		self:GetPackedBool(1) and 1 or 0, 	0,1, 8, false)
-	self:Animate("VozvratRP",		self:GetPackedBool(2) and 1 or 0, 	0,1, 16, false)
+	self:Animate("VozvratRP",		self:GetPackedBool(2) and 0 or 1, 	0,1, 16, false)
 	self:Animate("DIPon",			self:GetPackedBool(3) and 1 or 0, 	0,1, 16, false)
-	self:Animate("DIPoff",			self:GetPackedBool(4) and 1 or 0, 	0,1, 16, false)
+	self:Animate("DIPoff",			self:GetPackedBool(4) and 0 or 1, 	0,1, 16, false)
 	self:Animate("battery",			self:GetPackedBool(7) and 0.87 or 1, 	0,1, 1, false)
 	self:Animate("battery_2",			self:GetPackedBool(7) and 0.87 or 1, 	0,1, 1, false)
-	self:Animate("RezMK",			self:GetPackedBool(8) and 1 or 0, 	0,1, 16, false)
+	self:Animate("RezMK",			self:GetPackedBool(8) and 0 or 1, 	0,1, 16, false)
 	self:Animate("VMK",				self:GetPackedBool(9) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VAH",				self:GetPackedBool(10) and 1 or 0, 	0,1, 16, false)
 	local VAD = self:Animate("VAD",				self:GetPackedBool(11) and 1 or 0, 	0,1, 16, false)
 	self:Animate("VUD1",			(self:GetPackedBool(12) and 1 or 0), 	0,1, 8, false)
 	self:Animate("VUD2",			self:GetPackedBool(13) and 1 or 0, 	0,1, 8, false)
 	self:Animate("VDL",				self:GetPackedBool(14) and 1 or 0, 	0,1, 8, false)
-	self:Animate("VZ1",				self:GetPackedBool("VZ1") and 1 or 0, 	0,1, 16, false)
+	self:Animate("VZ1",				self:GetPackedBool("VZ1") and 0 or 1, 	0,1, 16, false)
 	self:Animate("KDLR",				self:GetPackedBool("KDLR") and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDLR_light","KDLR")
 	self:Animate("KDL",				self:GetPackedBool(15) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDL_light","KDL")
 	self:Animate("KDP",				self:GetPackedBool(16) and 1 or 0, 	0,1, 16, false)	self:AnimateFrom("KDP_light","KDP")
@@ -1997,18 +2023,18 @@ function ENT:Think()
 	self:ShowHideSmooth("KDLR_light",An)
 	self:ShowHideSmooth("KDP_light",self:Animate("KDPr",self:GetPackedBool("Right") and 1 or 0,0,1,10,false))
 
-	self:Animate("KRZD",			self:GetPackedBool(17) and 1 or 0, 	0,1, 16, false)
-	self:Animate("KSN",				self:GetPackedBool(18) and 1 or 0, 	0,1, 16, false)
+	self:Animate("KRZD",			self:GetPackedBool(17) and 0 or 1, 	0,1, 16, false)
+	self:Animate("KSN",				self:GetPackedBool(18) and 0 or 1, 	0,1, 16, false)
 	self:Animate("OtklAVU",			self:GetPackedBool(19) and 1 or 0, 	0,1, 16, false)
 	self:Animate("TormAT",			self:GetPackedBool("TormAT") and 1 or 0, 	0,1, 16, false)
 	self:Animate("DURAPower",		self:GetPackedBool(24) and 1 or 0, 	0,1, 16, false)
-	self:Animate("SelectMain",		self:GetPackedBool(29) and 1 or 0, 	0,1, 16, false)
-	self:Animate("SelectAlternate",	self:GetPackedBool(30) and 1 or 0, 	0,1, 16, false)
+	self:Animate("SelectMain",		self:GetPackedBool(29) and 0 or 1, 	0,1, 16, false)
+	self:Animate("SelectAlternate",	self:GetPackedBool(30) and 0 or 1, 	0,1, 16, false)
 	self:Animate("SelectChannel",	self:GetPackedBool(31) and 1 or 0, 	0,1, 16, false)
 	self:Animate("ARS",				self:GetPackedBool(56) and 1 or 0, 	0,1, 16, false)
 	self:Animate("ALS",				self:GetPackedBool(57) and 1 or 0, 	0,1, 16, false)
-	self:Animate("KVT",				self:GetPackedBool(28) and 1 or 0, 	0,1, 16, false)
-	self:Animate("KB",			self:GetPackedBool(28) and 1 or 0, 	0,1, 16, false)
+	self:Animate("KVT",				self:GetPackedBool(28) and 0 or 1, 	0,1, 16, false)
+	self:Animate("KB",			self:GetPackedBool(28) and 0 or 1, 	0,1, 16, false)
 	self:Animate("BPSNon",			self:GetPackedBool(59) and 1 or 0, 	0,1, 16, false)
 	self:Animate("L_1",				self:GetPackedBool(60) and 1 or 0, 	0,1, 16, false)
 	self:Animate("L_2",				self:GetPackedBool(61) and 1 or 0, 	0,1, 16, false)
@@ -2017,17 +2043,17 @@ function ENT:Think()
 	self:Animate("L_5",				self:GetPackedBool(53) and 1 or 0,0,1,8,false)
 	self:Animate("L_5_1",				self:GetPackedBool(53) and 1 or 0,0,1,8,false)
 	self:Animate("DoorSelect",		self:GetPackedBool(55) and 1 or 0, 	0,1, 16, false)
-	self:Animate("KRP",				self:GetPackedBool(113) and 1 or 0, 0,1, 16, false)
-	self:Animate("Custom1",			self:GetPackedBool(114) and 1 or 0, 0,1, 16, false)
-	self:Animate("Custom2",			self:GetPackedBool(115) and 1 or 0, 0,1, 16, false)
-	self:Animate("Custom3",			self:GetPackedBool(116) and 1 or 0, 0,1, 16, false)
-	self:Animate("Custom4",			self:GetPackedBool(117) and 1 or 0, 0,1, 16, false)
-	self:Animate("Custom5",			self:GetPackedBool(118) and 1 or 0, 0,1, 16, false)
-	self:Animate("Custom6",			self:GetPackedBool(119) and 1 or 0, 0,1, 16, false)
-	self:Animate("Custom7",			self:GetPackedBool(120) and 1 or 0, 0,1, 16, false)
-	self:Animate("Custom8",			self:GetPackedBool(121) and 1 or 0, 0,1, 16, false)
-	self:Animate("CustomA",			self:GetPackedBool(122) and 1 or 0, 0,1, 16, false)
-	self:Animate("CustomB",			self:GetPackedBool(123) and 1 or 0, 0,1, 16, false)
+	self:Animate("KRP",				self:GetPackedBool(113) and 0 or 1, 0,1, 16, false)
+	self:Animate("Custom1",			self:GetPackedBool(114) and 0 or 1, 0,1, 16, false)
+	self:Animate("Custom2",			self:GetPackedBool(115) and 0 or 1, 0,1, 16, false)
+	self:Animate("Custom3",			self:GetPackedBool(116) and 0 or 1, 0,1, 16, false)
+	self:Animate("Custom4",			self:GetPackedBool(117) and 0 or 1, 0,1, 16, false)
+	self:Animate("Custom5",			self:GetPackedBool(118) and 0 or 1, 0,1, 16, false)
+	self:Animate("Custom6",			self:GetPackedBool(119) and 0 or 1, 0,1, 16, false)
+	self:Animate("Custom7",			self:GetPackedBool(120) and 0 or 1, 0,1, 16, false)
+	self:Animate("Custom8",			self:GetPackedBool(121) and 0 or 1, 0,1, 16, false)
+	self:Animate("CustomA",			self:GetPackedBool(122) and 0 or 1, 0,1, 16, false)
+	self:Animate("CustomB",			self:GetPackedBool(123) and 0 or 1, 0,1, 16, false)
 	self:Animate("CustomC",			self:GetPackedBool(124) and 1 or 0, 0,1, 16, false)
 	self:Animate("R_G",				self:GetPackedBool(125) and 1 or 0, 0,1, 16, false)
 	self:Animate("R_Radio",			self:GetPackedBool(126) and 1 or 0, 0,1, 16, false)
@@ -2043,11 +2069,11 @@ function ENT:Think()
 	self:Animate("UOS_2",				self:GetPackedBool(134) and 1 or 0.87, 	0,1, 1, false)
 	self:Animate("BPS_2",				self:GetPackedBool(135) and 0.87 or 1, 	0,1, 1, false)
 	--self:Animate("Autodrive",		self:GetPackedBool(132) and 1 or 0,	0,1, 16, false)
-	self:Animate("ARS13",			self:GetPackedBool(150) and 1 or 0, 0,1, 16, false)
-	self:Animate("Radio13",			self:GetPackedBool(151) and 1 or 0, 0,1, 16, false)
+	self:Animate("ARS13",			self:GetPackedBool(150) and 0 or 1, 0,1, 16, false)
+	self:Animate("Radio13",			self:GetPackedBool(151) and 0 or 1, 0,1, 16, false)
 	self:Animate("UAVALever",	self:GetPackedBool(152) and 1 or 0, 	0,0.25, 128,  3,false)
 	self:Animate("EPK_disconnect",	self:GetPackedBool(155) and 0 or 1,0,0.5, 3, false)
-	self:Animate("KAH",	self:GetPackedBool(163) and 1 or 0,0,1, 16, false)
+	self:Animate("KAH",	self:GetPackedBool(163) and 0 or 1,0,1, 16, false)
 	self:Animate("Indicate",self:GetPackedBool("Indicate3") and 0.4 or self:GetPackedBool("Indicate2") and 0.29 or self:GetPackedBool("Indicate1") and 0.17 or 0,0.0,1,2,false)
 	self:Animate("BCCD",self:GetPackedBool("BCCD") and 1 or 0,0,1,8,false)
 	self:Animate("VZP",self:GetPackedBool("VZP") and 1 or 0,0,1,8,false)

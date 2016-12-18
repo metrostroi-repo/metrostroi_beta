@@ -61,6 +61,7 @@ function TRAIN_SYSTEM:Think()
 	if self.Train.RV_2.Value < 1 then self.Train.RV_2:TriggerInput("Set",1) 
 	end
 	
+	
 	local Train = self.Train
 	if Train.UAVA and Train.SpeedSign and Train.SpeedSign > 0 and Train.Speed > 0.25 then
 		local ars,arsback

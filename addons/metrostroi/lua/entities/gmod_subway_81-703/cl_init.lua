@@ -47,6 +47,7 @@ ENT.ButtonMap["Main"] = {
 		{ID = "DIPoffSet",		x=35.8+44*1, y=127.3, radius=20, tooltip="КУ5:Отключение освещения\nTurn interior lights off"},
 		{ID = "VozvratRPSet",	x=35.8+44*2, y=127.3, radius=20, tooltip="КУ9:Возврат РП\nReset overload relay"},
 		{ID = "KSNSet",				x=35.8+44*3, y=127.3, radius=20,  tooltip="КУ8:Принудительное срабатывание РП на неисправном вагоне (сигнализация неисправности)\nKSN: Failure indication button"},
+		{ID = "KSDSet",				x=35.8+44*4, y=127.3, radius=20,  tooltip="КСД: Контроль сигнализации дверей(проверка СД)\nKSD: Door state controle(SD check)"},
 		{ID = "KDPSet",				x=35.8+44*5, y=127.3, radius=20, tooltip="КДП:Правые двери\nKDP: Right doors open"},
 
 		{ID = "KDLSet",				x=96.8, y=171.8, radius=20, tooltip="КУ12: Кнопка левых дверей\nKDL: Left doors open"},
@@ -59,6 +60,13 @@ ENT.ButtonMap["Main"] = {
 		
 	}
 }
+Metrostroi.ClientPropForButton("KSD",{
+	panel = "Main",
+	button = "KSDSet",
+	model = "models/metrostroi_train/81-703/cabin_button_red.mdl",
+	ang = 90,
+	z = 2,
+})
 
 Metrostroi.ClientPropForButton("KRP",{
 	panel = "Main",
@@ -172,8 +180,8 @@ Metrostroi.ClientPropForButton("Blue",{
 ENT.ButtonMap["Back1"] = {
 	pos = Vector(398.5,-53.9,36.0),
 	ang = Angle(0,90,90),
-	width = 280,
-	height = 400,
+	width = 340,
+	height = 500,
 	scale = 0.1088,
 
 	buttons = {
@@ -183,8 +191,8 @@ ENT.ButtonMap["Back1"] = {
 	{x=-9, y=236, radius=50, tooltip="Регулятор давления\nPressure controller"},
 	{x=60, y=200, radius=40, tooltip="Громкоговоритель\nSpeaker"},
 	--{x=90, y=170, w=180, h=100, tooltip="Щиток с низковольтными предохранителями\nShield with low-voltage fuses"},
-	{x=230, y=300, w=40, h=50, tooltip="Реле ручного пуска\nRelay of manual start"},
-	{x=230, y=360, w=40, h=50, tooltip="Контроллер резервного пуска\nStart backup controller"},
+	--{x=250, y=330, w=80, h=50, tooltip="Реле ручного пуска\nRelay of manual start"},
+	{x=250, y=370, w=80, h=50, tooltip="Контроллер резервного разворота реверсоров\nReserve engine reversers controller "},
 	}
 }
 
@@ -296,6 +304,26 @@ Metrostroi.ClientPropForButton("AV8B",{
 	z=43,
 	skin=2
 })
+
+ENT.ButtonMap["KRR"] = {
+	pos = Vector(402.5-6,-36.8,4),
+	ang = Angle(0,90,90),
+	width = 335,
+	height = 380,
+	scale = 0.0625,
+
+	buttons = {
+		{ID = "KRRToggle", x=200, y=120,  radius=20, tooltip="KРР: Кнопка разворота реверсоров\nKRR: Button of enabling reversors"},
+	}
+}
+
+--[[Metrostroi.ClientPropForButton("KRR",{
+	panel = "KRR",
+	button = "KRRToggle",
+	model = "models/metrostroi_train/Equipment/button_ezh_6.mdl",
+	z=15,
+})]]
+
 
 ---AV1 Panel
 ENT.ButtonMap["AV1"] = {
@@ -734,9 +762,9 @@ ENT.ButtonMap["CabinDoor"] = {
 }
 
 ENT.ButtonMap["PassengerDoor"] = {
-	pos = Vector(384,-16,43.4),
+	pos = Vector(384+7.6,-16,43.4),
 	ang = Angle(0,90,90),
-	width = 642,
+	width = 500,
 	height = 1900,
 	scale = 0.1/2,
 	buttons = {
@@ -752,9 +780,9 @@ ENT.ClientProps["brake"] = {
 	ang = Angle(0,-133,0),
 }
 ENT.ClientProps["controller"] = {
-	model = "models/metrostroi_train/em/kv.mdl",
-	pos = Vector(451.36,-23.43,-4),
-	ang = Angle(0,-36,0)
+	model = "models/metrostroi_train/81-707/kv_ezh.mdl",
+	pos = Vector(451.36,-23.43,-4.0),
+	ang = Angle(0,180+15,0)
 }
 
 ENT.ClientProps["reverser"] = {
@@ -782,27 +810,27 @@ ENT.ClientProps["parking_brake"] = {
 
 --------------------------------------------------------------------------------
 ENT.ClientProps["train_line"] = {
-	model = "models/metrostroi_train/e/black_pneumo_needle.mdl",
-	pos = Vector(448.20,-54.80,7.1),
-	ang = Angle(87,-90-54,95)
+	model = "models/metrostroi_train/Equipment/arrow_e_nm.mdl",
+	pos = Vector(448.00,-54.50,7.3),
+	ang = Angle(170,-90-54,90)
 }
 ENT.ClientProps["brake_line"] = {
-	model = "models/metrostroi_train/e/red_pneumo_needle.mdl",
-	pos = Vector(448.20,-54.70,7.1),
-	ang = Angle(87,-90-54,90)
+	model = "models/metrostroi_train/Equipment/arrow_e_tm.mdl",
+	pos = Vector(448.00,-54.60,7.3),
+	ang = Angle(170,-90-54,90)
 
 }
 
 ENT.ClientProps["brake_cylinder"] = {
-	model = "models/metrostroi_train/e/small_pneumo_needle.mdl",
-	pos = Vector(453.199,-52.4,0.83000),
-	ang = Angle(313.335266,63.532555,-90.000000),
+	model = "models/metrostroi_train/Equipment/arrow_bc_old.mdl",
+	pos = Vector(453.409,-52.45,0.81200),
+	ang = Angle(-120,63.532555,-90.000000),
 }
 ----------------------------------------------------------------
 ENT.ClientProps["voltmeter"] = {
-	model = "models/metrostroi_train/e/volt_needle.mdl",
-	pos = Vector(443.284607+5.63,-56.327834,33),
-	ang = Angle(92,40,-90)
+	model = "models/metrostroi_train/Equipment/arrow_volt3.mdl",
+	pos = Vector(443.284607+5.2,-56.327834,32),
+	ang = Angle(0,40,-90)
 }
 
 ENT.ClientProps["ampermeter"] = {
@@ -819,9 +847,9 @@ ENT.ClientProps["volt1"] = {
 }
 
 ENT.ClientProps["speed1"] = {
-	model = "models/metrostroi_train/e/black_pneumo_needle.mdl",
-	pos = Vector(445.3,-54.941986,18.329993),
-	ang = Angle(96.164711,120.947121,-3.000000),
+	model = "models/metrostroi_train/Equipment/arrow_voltmeter_old.mdl",
+	pos = Vector(444.3,-55.691986,17.829993),
+	ang = Angle(98,120.947121,-3.000000),
 }
 --------------------------------------------------------------------------------
 ENT.ClientProps["gv"] = {
@@ -1052,6 +1080,8 @@ function ENT:Think()
 
 
 	self:Animate("AV8B",self:GetPackedBool("AV8B") and 1 or 0, 	0,1, 8, false)
+	--SD Check button
+	self:Animate("KSD", self:GetPackedBool("KSD") and 0 or 1, 	0,1, 12, false)
 
 	self:Animate("RST",self:GetPackedBool("RST") and 0 or 1, 	0,1, 12, false)
 	self:Animate("VSOSD",self:GetPackedBool("VSOSD") and 0 or 1, 	0,1, 12, false)
@@ -1060,9 +1090,9 @@ function ENT:Think()
 
 	self:SetCSBodygroup("RSTPl",1,self:GetPackedBool("RSTPl") and 0 or 1)
 
-	self:Animate("VU1",self:GetPackedBool("VU1") and 0 or 1, 	0,1, 12, false)
-	self:Animate("VU3",self:GetPackedBool("VU3") and 0 or 1, 	0,1, 12, false)
-	self:Animate("VU2",self:GetPackedBool("VU2") and 0 or 1, 	0,1, 12, false)
+	self:Animate("VU1",self:GetPackedBool("VU1") and 1 or 0, 	0,1, 12, false)
+	self:Animate("VU3",self:GetPackedBool("VU3") and 1 or 0, 	0,1, 12, false)
+	self:Animate("VU2",self:GetPackedBool("VU2") and 1 or 0, 	0,1, 12, false)
 
 	self:Animate("VU",self:GetPackedBool("VU") and 1 or 0, 	0,1, 12, false)
 	self:Animate("RezMK",self:GetPackedBool("RezMK") and 1 or 0, 	0,1, 7, false)
@@ -1090,6 +1120,7 @@ function ENT:Think()
 	self:Animate("KU1",self:GetPackedBool("KU1") and 1 or 0, 	0,1, 7, false)
 	self:Animate("VUD",self:GetPackedBool("VUD1") and 1 or 0, 	0,1, 7, false)
 	self:Animate("KRP",self:GetPackedBool(113) and 1 or 0, 0,1, 16, false)
+	self:Animate("KRR",				self:GetPackedBool("KRR") and 0 or 1,0,1, 16, false)
 	
 	self:Animate("R_ZS",			self:GetPackedBool(127) and 0 or 1, 0,1, 16, false)
 	self:Animate("R_Radio",			self:GetPackedBool(126) and 1 or 0, 0,1, 16, false)
@@ -1136,8 +1167,8 @@ function ENT:Think()
 	self:Animate("volt1", 			self:GetPackedRatio(10),			0,0.244,256,2)
 	self:ShowHide("reverser",		self:GetPackedBool(0))
 
-	self:Animate("brake_line",		self:GetPackedRatio(4),				0.626, 0.91,  256,2)--,,0.01)
-	self:Animate("train_line",		self:GetPackedRatio(5)-transient,	0.626, 0.91,  256,2)--,,0.01)
+	self:Animate("brake_line",		self:GetPackedRatio(4),				0.626, 0.85,  256,2)--,,0.01)
+	self:Animate("train_line",		self:GetPackedRatio(5)-transient,	0.626, 0.85,  256,2)--,,0.01)
 	self:Animate("brake_cylinder",	self:GetPackedRatio(6),	 			0, 0.721,  325,2)--,,0.03)
 	self:Animate("voltmeter",		self:GetPackedRatio(7),				0.587, 0.874)
 	self:Animate("ampermeter",		self:GetPackedRatio(8),				0.42, 0.627,				nil, nil,  256,2,0.01)
@@ -1145,13 +1176,13 @@ function ENT:Think()
 
 
 	local wheel_radius = 0.5*44.1 -- units
-	local speed = self:GetPackedRatio("Speed")*100
-	local ang_vel = speed/(2*math.pi*wheel_radius+math.random(0,20))
+	local speed = self:GetPackedRatio("Speed")*100/(100/120)
+	local ang_vel = speed/(2*math.pi*wheel_radius+math.random(0,40))
 
 	-- Rotate wheel
 	self.Angle = ((self.Angle or math.random()) + ang_vel*self.DeltaTime) % 1.0
 
-	self:Animate("speed1", 			self:GetPackedRatio("Speed") + math.sin(math.pi*15*self.Angle)*1/120,			0.495, 0.716,				nil, nil,  256,2,0.01)
+	self:Animate("speed1", 			self:GetPackedRatio("Speed") + math.sin(math.pi*8*self.Angle)*1/120,			0.71, 0.89,				nil, nil,  256,2,0.01)
 
 	----
 	self:Animate("door1",	self:GetPackedBool(157) and (self.Door1 or 0.99) or 0,0,0.22, 1024, 1)

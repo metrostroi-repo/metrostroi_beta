@@ -34,7 +34,7 @@ function TRAIN_SYSTEM.SolveE(Train,Triggers)
 	S["1T-1P"] = Train.NR.Value+Train.RPU.Value
 	S["2Zh-2A"] = (1.0-Train.KSB1.Value)+(1.0-Train.TR1.Value)
 	S["2Zh-2A"] = Train.ThyristorBU5_6.Value+S["2Zh-2A"]
-	--S["2Zh-2A"] = Train.KSB2.Value+S["2Zh-2A"] No thyristor
+	--S["2Zh-2A"] = Train.KSB2.Value+S["2Zh-2A"]
 	S["8A-8Ye"] = C(RK == 1)+(1.0-Train.LK4.Value)
 	S["15A-15B"] = Train.KV["15A-15B"]+Train.KD.Value
 	S["10AYa-10E"] = (1.0-Train.LK3.Value)+Train.Rper.Value
@@ -114,8 +114,8 @@ function TRAIN_SYSTEM.SolveE(Train,Triggers)
 	S["B13"] = S["B12"]--*Train.A24.Value
 	S["B3"] = S["B2"]--*Train.A44.Value
 	S["1-7R-29"] = S["B3"]*Train.RezMK.Value
-	S["4"] = S["10AK"]*Train.KV["10AK-4"]
-	S["5"] = S["10AK"]*Train.KV["10AK-5"]+(-10*Train.KRU["5/3-ZM31"]*0 + Train.KRU["14/1-B3"]*S["B3"]*1)
+	S["4"] = S["10AK"]*Train.KV["10AK-4"]+(-10*Train.KRU["5/3-ZM31"]*0 + Train.KRU["14/1-B3"]*S["B3"]*(1-Train.KRR.Value)*1)
+	S["5"] = S["10AK"]*Train.KV["10AK-5"]+(-10*Train.KRU["5/3-ZM31"]*0 + Train.KRU["14/1-B3"]*S["B3"]*(Train.KRR.Value)*1)
 	S["U2"] = S["10AS"]*Train.KV["U2-10AS"]
 	S["24"] = S["U2"]*Train.KSN.Value
 	S["2-7R-21"] = S["U2"]*1+(-1*max(0,Train:ReadTrainWire(18)))
@@ -140,13 +140,13 @@ function TRAIN_SYSTEM.SolveE(Train,Triggers)
 	S["10B"] = S["10AE"]*S["10AE-10B"]
 	S["10/4a"] = S["10/4"]*Train.VB.Value
 	S["22K"] = S["10/4"]--*Train.A10.Value
-	S["22E'"] = S["22K"]*Train.KU1.Value*Train.AK.Value
+	S["22E'"] = S["22K"]*Train.KU1.Value*Train.AK.Value*Train.AV8B.Value
 	S["U0"] = S["10/4"]--*Train.A27.Value
 	S["U0a"] = S["U0"]*1+(-10*S["10AN"])
 	S["s3"] = S["U0"]*Train.DIPon.Value
 	S["s10"] = S["U0"]*Train.DIPoff.Value
 	S["F1"] = S["10/4"]*Train.KV["10/4-F1"]
-	S["D4"] = S["10/4"]--*Train.A13.Value
+	S["D4"] = S["10/4"]*(1.00-Train.KSD.Value)
 	S["15"] = S["D4"]*Train.KV["D4-15"]+(-10*Train:ReadTrainWire(11)) + Train.KRU["14/1-B3"]*S["B3"]*20
 	S["D4/3"] = S["D4"]*1
 	--S["D1"] = S["10/4"]*Train.A21.Value*Train.KV["D-D1"]+(1*Train.KRU["11/3-D1/1"]*Train.KRU["14/1-B3"]*S["B3"])
@@ -224,7 +224,7 @@ function TRAIN_SYSTEM.SolveE(Train,Triggers)
 	Train.RPU:TriggerInput("Set",S["27A"])
 	T[5] = min(1,S["22A"])
 	Train:WriteTrainWire(25,S["25"])
-	T[1] = min(1,S["27A"])
+	T[1] = min(1,S["28A"])
 	Train.KK:TriggerInput("Set",S["22V"])
 	Train:WriteTrainWire(5,S["5"])
 	Triggers["RUTpod"](S["10H"])

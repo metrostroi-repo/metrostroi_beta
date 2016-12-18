@@ -35,7 +35,7 @@ TOOL.ClientConVar["lamp"] = 1
 TOOL.ClientConVar["breakers"] = 0
 TOOL.ClientConVar["blok"] = 1
 TOOL.ClientConVar["pnm"] = 0
-local Trains = {{"81-717_mvm","81-714_mvm"},{"81-717_lvz","81-714_lvz"},{"81-703","81-703_2"},{"Ema","Em"},{"Ezh3","Ema508T"},{"81-7036","81-7037"},{"em508","em508_int"}}
+local Trains = {{"81-717_mvm","81-714_mvm"},{"81-717_lvz","81-714_lvz"},{"81-703","81-703_2"},{"Ema","Em"},{"Ezh3","Ema508T"},{"ezh","ezh1"},{"em508","em508_int"}}
 local Switches = {	"A61","A55","A54","A56","A27","A21","A10","A53","A43","A45","A42","A41",
 					"VU","A64","A63","A50","A51","A23","A14","A1","A2","A3","A17",
 					"A62","A29","A5","A6","A8","A20","A25","A22","A30","A39","A44","A80"
@@ -113,6 +113,8 @@ function TOOL:GetCurrentModel(trNum,head,pr)
 		--return "models/metrostroi/81/81-703"..(pr and 6 or 7)..".mdl"
 	elseif trNum == 7 then
 			return "models/metrostroi_train/81-508/81-508.mdl"
+	elseif trNum == 6 then
+		return "models/metrostroi_train/81-707/81-707.mdl"
 	end
 	
 end
@@ -234,7 +236,7 @@ local owner
 function TOOL:Think()
 	owner = self:GetOwner()
 	self.tbl = self:GetConvar()
-	self.int = self.tbl.Prom > 0 or !Trains[self.tbl.Train][1]:find("Ezh")
+	self.int = self.tbl.Prom > 0 or !Trains[self.tbl.Train][1]:find("Ezh3")
 	if not self.Spawned then
 		if (!IsValid(self.GhostEntity) or self.GhostEntity:GetModel() ~= self:GetCurrentModel(self.tbl.Train)) then
 			self:MakeGhostEntity(self:GetCurrentModel(self.tbl.Train), Vector( 0, 0, 0 ), Angle( 0, 0, 0 ))
@@ -345,7 +347,7 @@ function TOOL:SetSettings(ent, ply, i,inth)
 		for k,v in pairs(ent.SoundNames) do
 			if type(v) ~= "string" then continue end
 			if not k:find("kv_") then continue end
-			if k:find("ezh") then continue end
+			if k:find("ezh3") then continue end
 			ent.SoundNames[k] = string.gsub(v,"kv%d","kv"..self:GetClientNumber("kvsnd"))
 			ent.KVSnd = self:GetClientNumber("kvsnd")
 			ent.NewKV = self:GetClientNumber("kvsnd") > 1

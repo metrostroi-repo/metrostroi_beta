@@ -46,8 +46,8 @@ local Types = {
 	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,DoorsL,DoorsR,GV,PB,Adv",
 	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,DoorsL,DoorsR,GV,PB,Adv",
 	"Train,WagNum,Texture,Prom,Horn,NM,Battery,Switches,SwitchesR,DoorsL,DoorsR,GV,PB,PNM",
-	"Train,WagNum",
 	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,DoorsL,DoorsR,GV,PB,Adv", 
+	"Train,WagNum,PassTexture,CabTexture,Texture,NM,Battery,DoorsL,DoorsR,GV,PB,Adv",
 }
 local function UpdateConCMD()
 	for k,v in pairs(Settings) do
@@ -227,7 +227,7 @@ local function Draw()
 	for k,v in pairs(Metrostroi.Skins["cab"] or {}) do
 		if v.typ == Metrostroi.TrainSpawnerConverter[Settings.Train or 1] then CabTexture[v.name or k] = v.name or k end
 	end
-	CreateList("Train","Train("..GetGlobalInt("metrostroi_train_count").."/"..MaxWagons.."):\nMax for you:"..MaxWagonsOnPlayer,{"81-71x MVM","81-71x LVZ","Тип E (81-703)","EmA","Ezh","81-703x","Тип Em (81-508)"},UpdateTrainList)
+	CreateList("Train","Train("..GetGlobalInt("metrostroi_train_count").."/"..MaxWagons.."):\nMax for you:"..MaxWagonsOnPlayer,{"81-71x MVM","81-71x LVZ","E (81-703)","EmA","Ezh","Еж АРС МП (81-707)","Eм508 (81-508)"},UpdateTrainList)
 	CreateSlider("WagNum",0,1, GetGlobalInt("metrostroi_maxwagons"),"Wagons")
 	CreateList("Texture","Texture",Texture)
 	CreateList("PassTexture","Passenger texture",PassTexture)

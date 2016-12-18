@@ -38,10 +38,10 @@ function ENT:InitializeSystems()
 	-- Токоприёмник
 	self:LoadSystem("TR","TR_3B")
 	-- Электротяговые двигатели
-	self:LoadSystem("Engines","DK_117DM")
+	self:LoadSystem("Engines","DK_108D")
 
 	-- Резисторы для реостата/пусковых сопротивлений
-	self:LoadSystem("KF_47A","KF_47A")
+	self:LoadSystem("KF_47A","KF_47A6")
 	-- Резисторы для ослабления возбуждения
 	self:LoadSystem("KF_50A")
 	-- Ящик с предохранителями
@@ -61,7 +61,7 @@ function ENT:InitializeSystems()
 
 	-- Ящики с реле и контакторами
 	self:LoadSystem("LK_755A")
-	self:LoadSystem("YAR_13A")
+	self:LoadSystem("YAR_13A","YAR_15A")
 	self:LoadSystem("YAR_27")
 	self:LoadSystem("YAK_36")
 	self:LoadSystem("YAK_37E")

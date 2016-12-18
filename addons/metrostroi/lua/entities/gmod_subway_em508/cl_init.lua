@@ -157,11 +157,11 @@ ENT.ButtonMap["Back1"] = {
 
 	buttons = {
 	{x=121, y=71, radius=30, tooltip="УЛСПМ (Уствойство связи пассажир-машинист)\nULSPM"},
-	{x=191, y=71, radius=30, tooltip="УЛСПМ (Уствойство связи пассажир-машинист)\nULSPM"},
+	{x=191, y=71, radius=30, tooltip="Тональное устройство - Звонок\nRing"},
 	{x=-9, y=236, radius=50, tooltip="Регулятор давления\nPressure controller"},
-	{x=90, y=9, radius=30, tooltip="Радиостанция\nRadiostation"},
+	{x=90, y=9, radius=30, tooltip="Громкоговоритель\nSpeaker"},
 	{x=70, y=145, w=180, h=50, tooltip="Щиток с низковольтными предохранителями\nShield with low-voltage fuses"},
-	{ID = "R_ZSToggle",	x=-30, y=20, w=100, h=140, tooltip="Питание усилителя\nRadioinformator"},
+	{ID = "R_ZSToggle",	x=-30, y=20, w=100, h=140, tooltip="Питание статива РРИ\nRadioinformator control"},
 	}
 }
 
@@ -330,17 +330,43 @@ Metrostroi.ClientPropForButton("Red",{
 
 --VU1 Panel
 ENT.ButtonMap["VU1"] = {
-	pos = Vector(455,45,46),
-	ang = Angle(0,270,110),
-	width = 100,
-	height = 110,
+	pos = Vector(456+7.6,-16.7,31.2),
+	ang = Angle(0,270,90),
+	width = 120,
+	height = 300,
 	scale = 0.0625,
 
 	buttons = {
-		
+		{ID = "KRPSet", x=42, y=210, w=50, h=110, tooltip="Резервный пуск \nMotor emergency toggle"},
 	}
 }
 
+
+Metrostroi.ClientPropForButton("KRP",{
+	panel = "VU1",
+	button = "KRPSet",
+	model = "models/metrostroi_train/switches/vudblack.mdl",
+	z=20,
+})
+
+ENT.ButtonMap["KRR"] = {
+	pos = Vector(402.5,-36.8,10),
+	ang = Angle(0,90,90),
+	width = 335,
+	height = 380,
+	scale = 0.0625,
+
+	buttons = {
+		{ID = "KRRToggle", x=170, y=120,  radius=20, tooltip="KРР: Кнопка разворота реверсоров\nKRR: Button of enabling reversors"},
+	}
+}
+
+Metrostroi.ClientPropForButton("KRR",{
+	panel = "KRR",
+	button = "KRRToggle",
+	model = "models/metrostroi_train/Equipment/button_ezh_6.mdl",
+	z=15,
+})
 
 --VU Panel
 ENT.ButtonMap["VU"] = {
@@ -832,9 +858,9 @@ ENT.ClientProps["brake"] = {
 	ang = Angle(0,-133,0),
 }
 ENT.ClientProps["controller"] = {
-	model = "models/metrostroi_train/em/kv.mdl",
-	pos = Vector(451.36+6.8,-24.23,-3.9),
-	ang = Angle(0,-36,0)
+	model = "models/metrostroi_train/81-707/kv_ezh.mdl",
+	pos = Vector(451.36+6.4,-24.73,-3.5),
+	ang = Angle(0,180+15,0)
 }
 
 ENT.ClientProps["reverser"] = {
@@ -843,15 +869,21 @@ ENT.ClientProps["reverser"] = {
 	ang = Angle(0,45,90)
 }
 ENT.ClientProps["brake_disconnect"] = {
-	model = "models/metrostroi/81-717/uava.mdl",
-	pos = Vector(441.0+7.6,-55.30,-33.91),
-	ang = Angle(0,-90,0),
-	color = Color(500,500,500),
+	model = "models/metrostroi_train/81-707/cran1.mdl",
+	pos = Vector(441.0+8.2,-55.30,-33.91),
+	ang = Angle(0,92,-90),
 }
+
+--[[ENT.ClientProps["krureverser"] = {
+	model = "models/metrostroi/81-717/reverser.mdl",
+	pos = Vector(413,-23.8,-2.0),
+	ang = Angle(0,0,0)
+}]]
+
 ENT.ClientProps["train_disconnect"] = {
-	model = "models/metrostroi/81-717/uava.mdl",
-	pos = Vector(444.482483+7.6,-50.546734,-27.333017),
-	ang = Angle(0.000000,-101.794258,0.000000),
+	model = "models/metrostroi_train/81-707/cran3.mdl",
+	pos = Vector(444.482483+8.4,-50.746734,-27.333017),
+	ang = Angle(90,-100,90),
 }
 ENT.ClientProps["parking_brake"] = {
 	model = "models/metrostroi_train/81-703/cabin_parking.mdl",
@@ -861,39 +893,38 @@ ENT.ClientProps["parking_brake"] = {
 
 --------------------------------------------------------------------------------
 ENT.ClientProps["train_line"] = {
-	model = "models/metrostroi_train/e/small_pneumo_needle.mdl",
-	pos = Vector(448.20+7.8,-54.80,12.1),
-	ang = Angle(232.669312,-90-54,95)
+	model = "models/metrostroi_train/Equipment/arrow_nm.mdl",
+	pos = Vector(448.20+7.87,-50.91-4,12.1),
+	ang = Angle(-90,-90-48,90)
 }
 ENT.ClientProps["brake_line"] = {
-	model = "models/metrostroi_train/e/small_pneumo_needle.mdl",
-	pos = Vector(448.20+7.8,-54.70,12.1),
-	ang = Angle(232.669312,-90-40,90)
-
+	model = "models/metrostroi_train/Equipment/arrow_tm.mdl",
+	pos = Vector(448.20+7.89,-50.94-4,12.1),
+	ang = Angle(-90,-90-48,90)
 }
 
 ENT.ClientProps["brake_cylinder"] = {
-	model = "models/metrostroi_train/e/small_pneumo_needle.mdl",
-	pos = Vector(453.199+7.5,-52.52,2.73000),
-	ang = Angle(313.335266,80.532555,-90.000000),
+	model = "models/metrostroi_train/Equipment/arrow_nm.mdl",
+	pos = Vector(453.199+7.4,-52.52,2.73000),
+	ang = Angle(222,80,-90.000000),
 }
 ----------------------------------------------------------------
 ENT.ClientProps["voltmeter"] = {
-	model = "models/metrostroi_train/e/volt_needle.mdl",
-	pos = Vector(450.284607+6.0,-56.887834,27),
-	ang = Angle(92,40,-90)
+	model = "models/metrostroi_train/Equipment/arrow_volt3.mdl",
+	pos = Vector(450.284607+6.0,-56.887834,26.5),
+	ang = Angle(90,35,-90)
 }
 
 ENT.ClientProps["ampermeter"] = {
-	model = "models/metrostroi_train/e/volt_needle.mdl",
-	pos = Vector(450.284607+5.9,-56.987834,31),
-	ang = Angle(-22,40,-90)
+	model = "models/metrostroi_train/Equipment/arrow_volt3.mdl",
+	pos = Vector(450.284607+5.9,-56.987834,30.5),
+	ang = Angle(90,35,-90)
 }
 
 ENT.ClientProps["volt1"] = {
-	model = "models/metrostroi_train/e/volt_needle.mdl",
-	pos = Vector(458.81455+4.2,-19.33349,7.95662),
-	ang = Angle(-60,-90,90),
+	model = "models/metrostroi_train/Equipment/arrow_volt1.mdl",
+	pos = Vector(458.81455+4.2,-19.63349,7.95662-1),
+	ang = Angle(50,-90,90),
 	scale = 2
 }
 
@@ -909,11 +940,11 @@ ENT.ClientProps["gv_wrench"] = {
 	ang = Angle(0,0,0)
 }
 --------------------------------------------------------------------------------
-ENT.ClientProps["book"] = {
+--[[ENT.ClientProps["book"] = {
 	model = "models/props_lab/binderredlabel.mdl",
 	pos = Vector(401.763123,-32.429512,48.305576),
 	ang = Angle(53,0,90),
-}
+}]]
 
 ENT.ButtonMap["InfoRoute"] = {
 	pos = Vector(456.31+7.99,39.0,12.4),
@@ -1006,8 +1037,8 @@ ENT.ClientProps["speedo2"] = {
 -- Add doors
 local function GetDoorPosition(i,k,j)
 	if j == 0
-	then return Vector(344.7-0.3*k     - 233.2*i,-63.86*(1-2.02*k),-4.80)
-	else return Vector(344.7-0.3*(1-k) - 233.2*i,-63.86*(1-2.02*k),-4.80)
+	then return Vector(344.9-0.1*k     - 233.6*i,-63.86*(1-2.02*k),-5.75)
+	else return Vector(344.9-0.1*(1-k) - 233.6*i,-63.86*(1-2.02*k),-5.75)
 	end
 end
 for i=0,3 do
@@ -1154,25 +1185,14 @@ function ENT:Think()
 	self:ShowHideSmooth("GreenRP",self:Animate("RedRP_hs",self:GetPackedBool(36) and 1 or 0,0,1,5,false))
 	
 	---SD and KSD
-	local kontrolsd = self:GetPackedBool(40) 
-		if not self:GetPackedBool(40) then
-		kontrolsd = self:GetPackedBool("DoorsWag")
-	end
-	self:ShowHideSmooth("SD",kontrolsd and 0 or 1,0,1,2,false)
-	
-	
-	
-	
-	--self:ShowHideSmooth("SD",(self:GetPackedBool(40) and self:GetPackedBool("DoorsWag")) and 0 or 1,0,1,5,false)
+	self:ShowHideSmooth("SD", self:GetPackedBool(40) and 0 or 1,0,1,5,false)
 	self:ShowHideSmooth("Red",self:GetPackedBool(37) and 1 or 0,0,1,5,false)
-	
 	self:Animate("GreenRP",				self:GetPackedBool("KSN") and 0 or 1, 	0,1, 12, false)
 	
 	---SCECIAL EM-509 EM-509 and Ezh with no ARS
 	self:Animate("UKS",				self:GetPackedBool(134) and 1 or 0, 	0,1, 5, false)
-	self:Animate("KRR",				self:GetPackedBool(163) and 1 or 0,0,1, 16, false)
+	self:Animate("KRR",				self:GetPackedBool("KRR") and 0 or 1,0,1, 16, false)
 	self:Animate("KRP",				self:GetPackedBool(113) and 1 or 0,0,1, 16, false)
-
 
 	self:Animate("AV8B",self:GetPackedBool("AV8B") and 1 or 0, 	0,1, 8, false)
 
@@ -1208,10 +1228,11 @@ function ENT:Think()
 	self:Animate("KSN",self:GetPackedBool("KSN") and 1 or 0, 	0,1, 12, false)
 	self:Animate("KDP",self:GetPackedBool("KDP") and 1 or 0, 	0,1, 12, false)
 	self:Animate("DoorSelect",self:GetPackedBool(55) and 1 or 0, 	0,1, 12, false)
-	self:Animate("KSD", not self:GetPackedBool("KSD") and 0 or 1, 	0,1, 12, false)
+	self:Animate("KSD", self:GetPackedBool("KSD") and 0 or 1, 	0,1, 12, false)
 	
 	self:Animate("R_Radio",			self:GetPackedBool(126) and 1 or 0, 0,1, 16, false)
 	self:Animate("R_ZS",			self:GetPackedBool(127) and 1 or 0, 0,1, 16, false)
+
 
 	self:Animate("KU1",self:GetPackedBool("KU1") and 1 or 0, 	0,1, 7, false)
 	self:Animate("VUD",self:GetPackedBool("VUD1") and 1 or 0, 	0,1, 7, false)
@@ -1241,8 +1262,8 @@ function ENT:Think()
 
 	--self:Animate("PB",self:GetPackedBool("PB") and 1 or 0,0,0.2,  12,false)
 
-	self:Animate("brake_disconnect",self:GetPackedBool("DriverValveBLDisconnect") and 1 or 0,0,0.5,  4,false)
-	self:Animate("train_disconnect",self:GetPackedBool("DriverValveTLDisconnect") and 1 or 0,0,0.5,  4,false)
+self:Animate("brake_disconnect",self:GetPackedBool("DriverValveBLDisconnect") and 0 or 1,0.25,0.5,  4,false)
+	self:Animate("train_disconnect",self:GetPackedBool("DriverValveTLDisconnect") and 1 or 0,0.25,0,  4,false)
 	
 	
 	self:Animate("UAVALever",	self:GetPackedBool(152) and 0 or 1, 	0,0.25, 128,  3,false)
@@ -1255,16 +1276,16 @@ function ENT:Think()
 	self:Animate("brake", 		1-self:GetPackedRatio(0), 			0.00, 0.48,  256,24)
 	self:Animate("controller",		self:GetPackedRatio(1),				0, 0.31,  2,false)
 	self:Animate("reverser",		self:GetPackedRatio(2),				0.26, 0.35,  4,false)
-	self:Animate("volt1", 			self:GetPackedRatio(10),			0,0.244,256,2)
+	self:Animate("volt1", 			self:GetPackedRatio(10),			0,0.14,90,2)
 	self:ShowHide("reverser",		self:GetPackedBool(0))
 	
-	self:Animate("brake_line",		self:GetPackedRatio(4),				0, 0.725,  270,2)--,,0.01)
-	self:Animate("train_line",		self:GetPackedRatio(5)-transient,	0, 0.725,  270,2)--,,0.01)
+	self:Animate("brake_line",		self:GetPackedRatio(4),				0.2, 0.85,  359,2)--,,0.01)
+	self:Animate("train_line",		self:GetPackedRatio(5)-transient,	0.2, 0.85,  359,2)--,,0.01)
 	--self:Animate("brake_line",		self:GetPackedRatio(4),				0.626, 0.91,  256,2)--,,0.01)
 	--self:Animate("train_line",		self:GetPackedRatio(5)-transient,	0.626, 0.91,  256,2)--,,0.01)
-	self:Animate("brake_cylinder",	self:GetPackedRatio(6),	 			0, 0.721,  325,2)--,,0.03)
-	self:Animate("voltmeter",		self:GetPackedRatio(7),				0.587, 0.874)
-	self:Animate("ampermeter",		self:GetPackedRatio(8),				0.42, 0.627,				nil, nil,  256,2,0.01)
+	self:Animate("brake_cylinder",	self:GetPackedRatio(6),	 			0, 0.95,  359,2)--,,0.03)
+	self:Animate("voltmeter",		self:GetPackedRatio(7),				0, 0.145)
+	self:Animate("ampermeter",		self:GetPackedRatio(8),				0, 0.24,				nil, nil,  256,2,0.01)
 	--self:Animate("ampermeter",		self:GetPackedRatio(8),				0.628, 0.875)
 	--self:Animate("volt2",			0, 									0.38, 0.63)
 	--self:Animate("UAVALever",	self:GetPackedBool(152) and 1 or 0, 	0,0,0.5,  3,false)
@@ -1362,11 +1383,11 @@ function ENT:Think()
 	if self.PreviousCompressorState ~= state then
 		self.PreviousCompressorState = state
 		if 	state then
-			self:SetSoundState("compressor_ezh",1,1)
+			self:SetSoundState("compressor_ezh",0.4,1)
 		else
 			self:SetSoundState("compressor_ezh",0,1)
 			self:SetSoundState("compressor_ezh_end",0,1)
-			self:SetSoundState("compressor_ezh_end",1,1)
+			self:SetSoundState("compressor_ezh_end",0.4,1)
 		end
 	end
 	
@@ -1376,11 +1397,11 @@ function ENT:Think()
 	if self.PreviousAlertState ~= state then
 		self.PreviousAlertState = state
 		if state then
-			self:SetSoundState("ring_old",1,0.92)
+			self:SetSoundState("ring_old",0.5,0.92)
 		else
 			self:SetSoundState("ring_old",0,0)
 			self:SetSoundState("ring_old_end",0,0.92)
-			self:SetSoundState("ring_old_end",1,0.92)
+			self:SetSoundState("ring_old_end",0.5,0.92)
 		end
 	end
 

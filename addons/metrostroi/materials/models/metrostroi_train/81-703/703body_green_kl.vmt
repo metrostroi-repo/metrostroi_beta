@@ -7,9 +7,9 @@
  
 	"$bumpmap"				"models/metrostroi_train/81-703/703body_n"
 	"$phongexponenttexture"	"models/metrostroi_train/81-703/703body_spec_expo"
-	"$phongboost"				10.0
-	"$phongfresnelranges"		"[0.4 0.6 1]"
+	"$phongboost"				3.0
+	"$phongfresnelranges"		"[1 1 1]"
 	$envmap			env_cubemap
 	$normalmapalphaenvmapmask 1
-	$envmaptint [0.1 0.1 0.1]
+	$envmaptint [0.05 0.05 0.05]
 }

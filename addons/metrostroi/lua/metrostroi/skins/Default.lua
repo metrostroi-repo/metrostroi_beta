@@ -74,6 +74,58 @@ Metrostroi.AddSkin("train","Def_508Native",{
 	textures = {
 	}
 })
+
+---Еж/Еж1
+Metrostroi.AddSkin("train","Def_707FL",{
+	name = "FL/KRL Green",
+	typ = "ezh",
+	textures = {
+		["body_original_green"] = "models/metrostroi_train/81-707/body_green_fl",
+	}
+})
+Metrostroi.AddSkin("train","Def_707SL",{
+	name = "SL/APL 90",
+	typ = "ezh",
+	textures = {
+		["body_original_green"] = "models/metrostroi_train/81-707/body_blue_sl",
+	}
+})
+Metrostroi.AddSkin("train","Def_707Marinin",{
+	name = "APL Marininsky",
+	typ = "ezh",
+	textures = {
+		["body_original_green"] = "models/metrostroi_train/81-707/body_marinin",
+	}
+})
+Metrostroi.AddSkin("train","Def_707KRL",{
+	name = "KRL 80",
+	typ = "ezh",
+	textures = {
+		["body_original_green"] = "models/metrostroi_train/81-707/body_blue_krl",
+	}
+})
+Metrostroi.AddSkin("train","Def_707Native",{
+	name = "MVM",
+	typ = "ezh",
+	textures = {
+	}
+})
+---Eж и Еж1 салоны
+Metrostroi.AddSkin("pass","Def_707pass2",{
+	name = "Blue plastic",
+	typ = "ezh",
+	textures = {
+		["int1"] = "models/metrostroi_train/81-707/int1_blue",
+	}
+})
+
+Metrostroi.AddSkin("pass","Def_707pass1",{
+	name = "White plastic",
+	typ = "ezh",
+	textures = {
+	}
+})
+
 ---Em508 and Em509 салоны
 Metrostroi.AddSkin("pass","Def_508pass2",{
 	name = "Redwood plastic",
@@ -89,7 +141,7 @@ Metrostroi.AddSkin("pass","Def_508pass1",{
 	textures = {
 	}
 })
-
+--Ем Ема старые
 Metrostroi.AddSkin("train","Def_EmOld",{
 	name = "Old",
 	typ = "ema",

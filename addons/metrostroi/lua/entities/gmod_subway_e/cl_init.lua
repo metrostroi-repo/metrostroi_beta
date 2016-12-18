@@ -1500,7 +1500,7 @@ function ENT:Draw()
 end
 
 function ENT:DrawPost()
-	--local dc = render.GetLightColor(self:LocalToWorld(Vector(460.0,0.0,5.0)))
+	local dc = render.GetLightColor(self:LocalToWorld(Vector(460.0,0.0,5.0)))
 	self:DrawOnPanel("InfoTable",function()
 		surface.SetDrawColor(0,0,0) --255*dc.x,250*dc.y,220*dc.z)
 		surface.DrawRect(50,0,540,100)

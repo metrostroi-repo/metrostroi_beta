@@ -14,6 +14,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("RezMK","Relay","Switch", {vud = true})
 	self.Train:LoadSystem("KU1","Relay","Switch", {vud = true})
 	self.Train:LoadSystem("VAH","Relay","Switch", {switch = true})
+	self.Train:LoadSystem("KAH","Relay","Switch", {switch = true})
 	self.Train:LoadSystem("VAD","Relay","Switch", {switch = true})
 	self.Train:LoadSystem("VUS","Relay","Switch", {av = true})
 	self.Train:LoadSystem("VUD1","Relay","Switch", { normally_closed = true, vud = true })
@@ -57,7 +58,7 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("VU3","Relay","Switch", {av = true})
 
 	self.Train:LoadSystem("VU1","Relay","Switch", {av = true})
-	self.Train:LoadSystem("VU2","Relay","Switch", {av = true})
+	self.Train:LoadSystem("VU2","Relay","Switch", {av = true,  normally_closed = true})
 	self.Train:LoadSystem("AV8B","Relay","Switch", {mainav = true})
 	self.Train:LoadSystem("VU","Relay","Switch", {av = true})
 	self.Train:LoadSystem("KDLK","Relay","Switch", { normally_closed = true })
@@ -65,7 +66,8 @@ function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("KDPK","Relay","Switch", { normally_closed = true })
 	self.Train:LoadSystem("KAHK","Relay","Switch", { normally_closed = true })
 	self.Train:LoadSystem("L_3","Relay","Switch",{switch = true})
-
+	self.Train:LoadSystem("KSD","Relay","Switch", {button = true})
+	self.Train:LoadSystem("KRR","Relay","Switch", {button = true})
 	self.Train:LoadSystem("RST","Relay","Switch", {av = true})
 	
 	
@@ -108,6 +110,6 @@ function TRAIN_SYSTEM:InitializeAVMap()
 		  61,55,54,56,27,21,10,53,43,45,42,41,
 		"VU",64,63,50,51,23,14,75, 1, 2, 3,17,
 		  62,29, 5, 6, 8,20,25,22,30,39,44,80,
-		  65,"L_5",24,32,31,16,13,12, 7, 9,46,47
+		  65,"L_5",24,32,31,16,"KSD",12, 7, 9,46,47
 	}
 end
