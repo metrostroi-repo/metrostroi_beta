@@ -4,7 +4,7 @@
 Metrostroi.DefineSystem("ARS_EZh3")
 TRAIN_SYSTEM.DontAccelerateSimulation = true
 
-if CreateConVar then
+--[[if CreateConVar then
 	concommand.Add("metrostroi_give_upps", function(ply, _, args)
 		print("Trains on server: "..Metrostroi.TrainCount())
 		if CPPI then
@@ -22,7 +22,7 @@ if CreateConVar then
 	end)
 
 	CreateConVar("metrostroi_upps",0,FCVAR_ARCHIVE)
-end
+end]]--
 
 function TRAIN_SYSTEM:Initialize()
 	self.Train:LoadSystem("UOS","Relay","Switch", {paketnik = true})
