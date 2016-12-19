@@ -71,13 +71,14 @@ function ENT:InitializeSystems()
 	self:LoadSystem("Pneumatic","81_717_Pneumatic")
 	self.Pneumatic.ValveType = 1
 	-- Панель управления Еж1
-	self:LoadSystem("Panel","81_508_Panel")
+	self:LoadSystem("Panel","81_708_Panel")
 	-- Everything else
 	self:LoadSystem("Battery")
 	self:LoadSystem("PowerSupply","DIP_01K")
 	self:LoadSystem("DURA")
 	self:LoadSystem("ALS_ARS","NoARS")
 	self:LoadSystem("Horn")
+	self:LoadSystem("Announcer")
 
 
 
