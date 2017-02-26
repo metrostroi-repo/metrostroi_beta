@@ -38,7 +38,10 @@ Copyright (C) 2015-2016 oldy Aleksandr Kravchenko. All rights reserved.
 - 81-703 Е 
 - 81-704 Ема/Ем 
 - 81-508 Еm508
-- 81-707 Еж/Еж1 АРС МП
+- 81-707 Еж АРС МП
+- 81-708 Еж1
+- 81-710 Еж3
+- 81-508T Еm508T
 
 
 All the models listed above belongs to their corresponding author.  This cars itself, its corresponding models of switches, buttons, sounds of engines and pneumatics also belongs to their corresponding author.
