@@ -33,7 +33,7 @@ permission for purposes of prototyping a subway train simulator.
 
 ### "E" type metro trains models. 
 
-Copyright (C) 2015-2016 oldy Aleksandr Kravchenko. All rights reserved.
+Copyright (C) 2015-2017 oldy Aleksandr Kravchenko. All rights reserved.
 
 - 81-703 Е 
 - 81-704 Ема/Ем 
@@ -73,7 +73,7 @@ These files are provided with the following restrictions:
 
 ### Other source files
 
-Copyright (C) 2013-2016 Black Phoenix, Hunter NL, glebqip
+Copyright (C) 2013-2017 Black Phoenix, Hunter NL, glebqip
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
