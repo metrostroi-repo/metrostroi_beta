@@ -68,7 +68,7 @@ function ENT:InitializeSystems()
 
 	-- Ящики с реле и контакторами
 	self:LoadSystem("LK_755A")
-	self:LoadSystem("YAR_13A","YAR_15A")
+	self:LoadSystem("YAR_13A")
 	self:LoadSystem("YAR_27")
 	self:LoadSystem("YAK_36")
 	self:LoadSystem("YAK_37E")

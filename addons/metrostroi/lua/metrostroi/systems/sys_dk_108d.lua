@@ -59,7 +59,7 @@ function TRAIN_SYSTEM:Think(dT)
 	local currentRotationRate = 3000 * (self.Speed/80)
 	self.RotationRate = self.RotationRate + 5.0 * (currentRotationRate - self.RotationRate) * dT
 
-	self.Rws = 0.0356 -- Ohms, stator
+	self.Rws = 0.0396 -- Ohms, stator
 	self.Rwa = 0.1215-self.Rws -- Ohms, anchor
 
 	-- Calculate magnetic flux in the engine
@@ -68,8 +68,8 @@ function TRAIN_SYSTEM:Think(dT)
 	local c = 0.3861
 	local Is13 = math.abs(Train.Electric.Istator13)
 	local Is24 = math.abs(Train.Electric.Istator24)
-	self.MagneticFlux13 = (Is13/210)*math.min(1.0,a+b*math.exp(-c*Is13/100)) --(Is13/290)*math.min(1.0,a+b*math.exp(-c*Is13/100))
-	self.MagneticFlux24 = (Is24/210)*math.min(1.0,a+b*math.exp(-c*Is24/100)) --(Is24/290)*math.min(1.0,a+b*math.exp(-c*Is24/100))
+	self.MagneticFlux13 = (Is13/290)*math.min(1.0,a+b*math.exp(-c*Is13/100)) --(Is13/290)*math.min(1.0,a+b*math.exp(-c*Is13/100))
+	self.MagneticFlux24 = (Is24/290)*math.min(1.0,a+b*math.exp(-c*Is24/100)) --(Is24/290)*math.min(1.0,a+b*math.exp(-c*Is24/100))
 	self.MagneticFlux13 = math.min(8.0,math.max(0.01,self.MagneticFlux13))
 	self.MagneticFlux24 = math.min(8.0,math.max(0.01,self.MagneticFlux24))
 	
@@ -81,7 +81,7 @@ function TRAIN_SYSTEM:Think(dT)
 	self.E24 = math.max(-4000,math.min(4000,self.E24))
 
 	-- Calculate engine force (moment)
-	local b = (1.4539/(110/68)) --1.4539
+	local b = (1.4539/(100/92)) --1.4539
 	local c = 8.1975e-3
 	local I13 = math.abs(Train.Electric.I13)
 	local I24 = math.abs(Train.Electric.I24)
