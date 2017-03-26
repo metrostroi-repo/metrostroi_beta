@@ -157,6 +157,7 @@ if SERVER then
 	Metrostroi.NameConverter["ema"] = "em"
 	Metrostroi.NameConverter["ezh"] = "ezh1"
 	Metrostroi.NameConverter["em508"] = "em508_int"
+	Metrostroi.NameConverter["81-703"] = "81-703_2"
 	Metrostroi.TrainSpawnerConverter = {
 		"81-717_mvm",
 		"81-717_lvz",
