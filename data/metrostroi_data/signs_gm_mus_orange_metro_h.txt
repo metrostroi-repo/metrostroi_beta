@@ -5030,6 +5030,7 @@
 	},
 	"151":  
 	{
+		"Approve0": true,
 		"LensesStr": "WYY-YRW",
 		"RouteNumber": "",
 		"Class": "gmod_track_signal",
@@ -5038,28 +5039,28 @@
 		"Name": "BR2",
 		"ARSOnly": false,
 		"Angles": "{0 270 0}",
-		"Pos": "[9346.4756 -15006.207 -3102.6157]",
+		"Pos": "[9329.71 -15006.207 -3102.6157]",
 		"Routes": 
 		[
 			
 			{
-				"Manual": false,
+				"Repeater": false,
 				"ARSCodes": "0",
-				"RouteName": "",
+				"Manual": false,
 				"Lights": "5",
 				"NextSignal": "BR2905",
 				"Switches": "8241+,730+",
-				"Repeater": false
+				"RouteName": ""
 			},
 			
 			{
-				"Repeater": false,
+				"Manual": false,
 				"RouteName": "",
-				"ARSCodes": "04",
+				"Repeater": false,
 				"Lights": "5-53-42-42b",
 				"NextSignal": "BR2905",
 				"Switches": "8241-,730-",
-				"Manual": false
+				"ARSCodes": "04"
 			}
 		],
 		"Left": false
@@ -5157,37 +5158,30 @@
 	},
 	"155": 
 	{
-		"IsolateSwitches": true,
-		"SignalType": 0,
+		"Approve0": true,
 		"LensesStr": "YYG-RW",
 		"RouteNumber": "",
-		"Left": false,
-		"Angles": "{0 270 0}",
 		"Class": "gmod_track_signal",
+		"IsolateSwitches": false,
+		"SignalType": 0,
+		"Name": "BR2905",
+		"ARSOnly": false,
+		"Angles": "{0 270 0}",
+		"Pos": "[147.2642 -13998.207 -3102.5056]",
 		"Routes": 
-		{
-			"1": 
+		[
+			
 			{
-				"Switches": "",
-				"Manual": false,
-				"ARSCodes": "04",
 				"Repeater": false,
+				"RouteName": "",
+				"Manual": false,
 				"Lights": "4-42-2-31-3",
 				"NextSignal": "301",
-				"RouteName": "",
-				"LightsExploded": 
-				{
-					"1": "4",
-					"2": "42",
-					"3": "2",
-					"4": "31",
-					"5": "3"
-				}
+				"Switches": "",
+				"ARSCodes": "04"
 			}
-		},
-		"ARSOnly": false,
-		"Pos": "[170.5038 -13998.207 -3102.5056]",
-		"Name": "BR2905"
+		],
+		"Left": false
 	},
 	"156": 
 	{
