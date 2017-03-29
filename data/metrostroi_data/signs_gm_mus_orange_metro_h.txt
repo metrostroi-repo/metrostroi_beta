@@ -5028,52 +5028,41 @@
 		"Pos": "[15769.5088 -15006.207 -3102.6157]",
 		"Name": "BR2914C"
 	},
-	"151": 
+	"151":  
 	{
-		"IsolateSwitches": false,
-		"SignalType": 0,
 		"LensesStr": "WYY-YRW",
 		"RouteNumber": "",
-		"Left": false,
-		"Angles": "{0 270 0}",
 		"Class": "gmod_track_signal",
+		"IsolateSwitches": false,
+		"SignalType": 0,
+		"Name": "BR2",
+		"ARSOnly": false,
+		"Angles": "{0 270 0}",
+		"Pos": "[9346.4756 -15006.207 -3102.6157]",
 		"Routes": 
-		{
-			"1": 
+		[
+			
 			{
-				"Repeater": false,
 				"Manual": false,
 				"ARSCodes": "0",
-				"Switches": "8241+,730+",
+				"RouteName": "",
 				"Lights": "5",
 				"NextSignal": "BR2905",
-				"RouteName": "",
-				"LightsExploded": 
-				{
-					"1": "5"
-				}
+				"Switches": "8241+,730+",
+				"Repeater": false
 			},
-			"2": 
+			
 			{
-				"Manual": false,
 				"Repeater": false,
 				"RouteName": "",
-				"Switches": "8241-,730-",
+				"ARSCodes": "04",
 				"Lights": "5-53-42-42b",
 				"NextSignal": "BR2905",
-				"ARSCodes": "04",
-				"LightsExploded": 
-				{
-					"1": "5",
-					"2": "53",
-					"3": "42",
-					"4": "42b"
-				}
+				"Switches": "8241-,730-",
+				"Manual": false
 			}
-		},
-		"ARSOnly": false,
-		"Pos": "[9346.4756 -15006.207 -3102.6157]",
-		"Name": "BR2"
+		],
+		"Left": false
 	},
 	"152": 
 	{
