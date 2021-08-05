@@ -33,7 +33,7 @@ permission for purposes of prototyping a subway train simulator.
 
 ### "E" type metro trains models. 
 
-Copyright (C) 2015-2017 oldy Aleksandr Kravchenko. All rights reserved.
+Copyright (C) 2015-2017 oldy Alexandr Ivanov. All rights reserved.
 
 - 81-703 Е 
 - 81-704 Ема/Ем 
